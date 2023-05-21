@@ -1,12 +1,13 @@
 import { Button, Container, Nav, Navbar as NavbarBS } from "react-bootstrap";
 import userLogo from "../assets/user-logo.svg";
 import { useNavigate, NavLink } from "react-router-dom";
+import { palette } from "../utils/colors";
 
 export function Navbar() {
   const navigate = useNavigate();
 
   return (
-    <NavbarBS sticky="top" style={{ backgroundColor: "#FEF1F8" }}>
+    <NavbarBS sticky="top" style={{ backgroundColor: palette.pageBG }}>
       <Container>
         <Nav className="me-auto">
           <Nav.Link to="/" as={NavLink}>
@@ -15,7 +16,7 @@ export function Navbar() {
         </Nav>
         <Button
           style={{
-            backgroundColor: "#FEF1F8",
+            backgroundColor: palette.pageBG,
             border: "none",
           }}
           onClick={() => navigate("/userInfo")}
