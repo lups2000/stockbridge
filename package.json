@@ -1,0 +1,22 @@
+{
+  "name": "stockbridge",
+  "version": "0.1.0",
+  "main": "index.js",
+  "repository": "https://gitlab.lrz.de/seba-master-2023/team-27/stockbridge.git",
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "start": "concurrently \"yarn workspace server start\" \"yarn workspace client start\"",
+    "server": "yarn workspace server start",
+    "server:dev": "yarn workspace server dev",
+    "client": "yarn workspace client start",
+    "build": "concurrently \"yarn workspace server build\" \"yarn workspace client build\""
+  },
+  "workspaces": [
+    "server",
+    "client"
+  ],
+  "devDependencies": {
+    "concurrently": "^8.0.1"
+  }
+}
