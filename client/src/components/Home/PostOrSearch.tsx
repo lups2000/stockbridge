@@ -4,10 +4,12 @@ import { Button } from "react-bootstrap";
 import { BodyText } from "../Text/BodyText";
 import { Title } from "../Text/Title";
 import { SearchBar } from "./SearchBar";
+import { useNavigate } from "react-router-dom";
 /**
  * Component to manage the section of the homepage where the user can click on "post advert" or decide to search for something
  */
 export function PostOrSearch() {
+  const navigate = useNavigate()
   return (
     <div
       style={{
@@ -46,7 +48,7 @@ export function PostOrSearch() {
             maxWidth: 260,
             marginTop: "15%",
           }}
-          onClick={() => console.log("button clicked")}
+          onClick={() => navigate("/signUp")}
         >
           <BodyText
             style={{
