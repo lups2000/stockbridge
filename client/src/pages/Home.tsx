@@ -6,6 +6,7 @@ import howWorks1 from "../assets/howWorks1.svg";
 import howWorks2 from "../assets/howWorks2.svg";
 import howWorks3 from "../assets/howWorks3.svg";
 import { PostOrSearch } from "../components/Home/PostOrSearch";
+import { Navbar } from "../components/Navbar";
 
 const stepDescriptions: { message: string; icon: string }[] = [
   {
@@ -25,6 +26,7 @@ const stepDescriptions: { message: string; icon: string }[] = [
 export function Home() {
   return (
     <>
+      <Navbar />
       <PostOrSearch />
       <div
         style={{
@@ -57,7 +59,7 @@ export function Home() {
           {stepDescriptions.map((step, index) => {
             return (
               <StepDescription
-                number={index+1}
+                number={index + 1}
                 message={step.message}
                 icon={step.icon}
               />

@@ -1,6 +1,5 @@
 import React from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
-import { Navbar } from "./components/Navbar";
 import { Home } from "./pages/Home";
 import { Routes, Route } from "react-router-dom";
 import { UserInfo } from "./pages/UserInfo";
@@ -9,15 +8,12 @@ import { SignIn } from "./pages/SignIn";
 
 function App() {
   return (
-    <>
-      <Navbar />
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/userInfo" element={<UserInfo />} />
-        <Route path="/signUp" element={<SignUp />} />
-        <Route path="/signIn" element={<SignIn />} />
-      </Routes>
-    </>
+    <Routes>
+      <Route path="/" element={<Home />} />
+      <Route path="/userInfo" element={<UserInfo />} />
+      <Route path="/signUp" element={<SignUp />} />
+      <Route path="/signIn" element={<SignIn />} />
+    </Routes>
   );
 }
 

@@ -1,5 +1,5 @@
 import { Button, Container, Nav, Navbar as NavbarBS } from "react-bootstrap";
-import userLogo from "../assets/user-logo.svg";
+//import userLogo from "../assets/user-logo.svg";
 import { useNavigate, NavLink } from "react-router-dom";
 import { palette } from "../utils/colors";
 
