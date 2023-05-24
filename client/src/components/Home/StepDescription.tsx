@@ -28,7 +28,7 @@ export function StepDescription(props: StepDescriptionProps) {
           textAlign: "center",
           fontSize: 24,
           color: palette.subSectionsBgAccent,
-          fontWeight: 900,
+          fontWeight: 700,
         }}
         message={props.number + "."}
       />
@@ -38,8 +38,8 @@ export function StepDescription(props: StepDescriptionProps) {
           textAlign: "center",
           fontSize: 15,
           color: "black",
-          fontWeight: 100,
           marginRight: 10,
+          fontWeight: 200
         }}
         message={props.message}
       />

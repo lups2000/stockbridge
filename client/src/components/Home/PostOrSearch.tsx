@@ -55,7 +55,7 @@ export function PostOrSearch() {
               margin: "auto",
               fontSize: 15,
               color: "white",
-              fontWeight: 700,
+              fontWeight: 600,
             }}
             message="POST YOUR ADVERT"
           />
@@ -65,6 +65,7 @@ export function PostOrSearch() {
             marginLeft: "8%",
             fontSize: 20,
             color: "white",
+            fontWeight: 400,
           }}
           message="OR"
         />
@@ -83,7 +84,7 @@ export function PostOrSearch() {
               fontSize: 36,
               color: "white",
               textAlign: "center",
-              fontWeight: "bold"
+              fontWeight: 500
             }}
             message="Out of stock?or got too much stock?No worries!"
           />

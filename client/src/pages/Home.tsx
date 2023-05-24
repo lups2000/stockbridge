@@ -42,7 +42,7 @@ export function Home() {
             textAlign: "center",
             fontSize: 28,
             color: "black",
-            fontWeight: 600,
+            fontWeight: 500,
             paddingTop: 50,
             marginBottom: -60,
           }}

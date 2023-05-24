@@ -8,5 +8,5 @@ export type TextProps = {
  * Component to display a title.
  */
 export function Title(props: TextProps) {
-  return <h1 style={props.style}>{props.message}</h1>;
+  return <h1 className="font-link" style={props.style}>{props.message}</h1>;
 }

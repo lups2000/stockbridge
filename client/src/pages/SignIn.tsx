@@ -21,23 +21,24 @@ export const SignIn: FC = () => {
             style={{
               color: palette.loginTitle,
               textAlign: "center",
+              fontWeight: 600,
             }}
             message="Sign in "
           />
           <Form>
             <Form.Group className="mb-2 mx-sm-4" controlId="formBasicEmail">
-              <Form.Label style={{ fontFamily: "Poppins" }}>
+              <Form.Label className="font-link">
                 Email address
               </Form.Label>
               <Form.Control type="email" placeholder="name@address.com" />
             </Form.Group>
             <Form.Group className="mb-2 mx-sm-4" controlId="formBasicPassword">
-              <Form.Label style={{ fontFamily: "Poppins" }}>
+              <Form.Label className="font-link">
                 Password
               </Form.Label>
               <Form.Control type="password" placeholder="Password" />
             </Form.Group>
-            <div className="mx-sm-4 d-grid" style={{ marginTop: 50 }}>
+            <div className="mx-sm-4 d-grid font-link" style={{ marginTop: 50 }}>
               <Button
                 type="submit"
                 style={{
@@ -45,7 +46,7 @@ export const SignIn: FC = () => {
                   backgroundColor: palette.subSectionsBgAccent,
                   borderColor: palette.subSectionsBgAccent,
                   fontSize: 20,
-                  fontWeight: "500",
+                  fontWeight: 500,
                 }}
               >
                 SIGN IN

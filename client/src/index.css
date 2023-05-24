@@ -1,10 +1,5 @@
-@import url('https://fonts.googleapis.com/css?family=Poppins');
-html {
-  font-family: 'Poppins';
-}
 body {
   margin: 0;
-  font-family: 'Poppins';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -12,4 +7,7 @@ body {
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
+}
+.font-link {
+  font-family: 'Poppins', cursive;
 }
