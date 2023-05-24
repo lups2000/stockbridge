@@ -7,7 +7,7 @@ export function Navbar() {
   const navigate = useNavigate();
 
   return (
-    <NavbarBS sticky="top" style={{ backgroundColor: palette.pageBG }}>
+    <NavbarBS sticky="top" style={{ backgroundColor: palette.pageBG , height: 100}}>
       <Container>
         <Nav className="me-auto">
           <Nav.Link to="/" as={NavLink}>
@@ -15,6 +15,18 @@ export function Navbar() {
           </Nav.Link>
         </Nav>
         <Button
+        className="font-link"
+          style={{
+            backgroundColor: palette.pageBG,
+            border: "none",
+            color: palette.subSectionsBgAccent,
+            fontSize: 20,
+          }}
+          onClick={() => navigate("/signIn")}
+        >
+          Sign In
+        </Button>
+        {/*<Button
           style={{
             backgroundColor: palette.pageBG,
             border: "none",
@@ -22,7 +34,7 @@ export function Navbar() {
           onClick={() => navigate("/userInfo")}
         >
           <img src={userLogo} alt="user info" />
-        </Button>
+        </Button>*/}
       </Container>
     </NavbarBS>
   );
