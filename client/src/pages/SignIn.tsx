@@ -4,7 +4,10 @@ import { Title } from "../components/Text/Title";
 import { palette } from "../utils/colors";
 import signUpImage from "../assets/signUp.png";
 import { BodyText } from "../components/Text/BodyText";
+import backIcon from "../assets/back.svg";
+import { useNavigate } from "react-router-dom";
 export const SignIn: FC = () => {
+  const navigate = useNavigate();
   return (
     <>
       <div
@@ -25,17 +28,19 @@ export const SignIn: FC = () => {
             }}
             message="Sign in "
           />
+          <Button
+            style={{ position: "absolute", left: 20, top: 20, backgroundColor: palette.pageBG, border: "none" }}
+            onClick={() => navigate("/")}
+          >
+            <img src={backIcon} alt="delete" />
+          </Button>
           <Form>
             <Form.Group className="mb-2 mx-sm-4" controlId="formBasicEmail">
-              <Form.Label className="font-link">
-                Email address
-              </Form.Label>
+              <Form.Label className="font-link">Email address</Form.Label>
               <Form.Control type="email" placeholder="name@address.com" />
             </Form.Group>
             <Form.Group className="mb-2 mx-sm-4" controlId="formBasicPassword">
-              <Form.Label className="font-link">
-                Password
-              </Form.Label>
+              <Form.Label className="font-link">Password</Form.Label>
               <Form.Control type="password" placeholder="Password" />
             </Form.Group>
             <div className="mx-sm-4 d-grid font-link" style={{ marginTop: 50 }}>

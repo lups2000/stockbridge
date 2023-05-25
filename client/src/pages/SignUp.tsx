@@ -4,7 +4,10 @@ import { Title } from "../components/Text/Title";
 import { palette } from "../utils/colors";
 import signUpImage from "../assets/signUp.png";
 import { BodyText } from "../components/Text/BodyText";
+import { useNavigate } from "react-router-dom";
+import backIcon from "../assets/back.svg";
 export const SignUp: FC = () => {
+  const navigate = useNavigate();
   return (
     <>
       <div
@@ -25,6 +28,18 @@ export const SignUp: FC = () => {
             }}
             message="Sign up "
           />
+          <Button
+            style={{
+              position: "absolute",
+              left: 20,
+              top: 20,
+              backgroundColor: palette.pageBG,
+              border: "none",
+            }}
+            onClick={() => navigate("/")}
+          >
+            <img src={backIcon} alt="delete" />
+          </Button>
           <Form>
             <Form.Group className="mb-2 mx-sm-4" controlId="formBasicEmail">
               <Form.Label className="font-link">Email address</Form.Label>
