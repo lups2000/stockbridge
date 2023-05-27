@@ -7,6 +7,7 @@ import howWorks2 from "../assets/howWorks2.svg";
 import howWorks3 from "../assets/howWorks3.svg";
 import { PostOrSearch } from "../components/Home/PostOrSearch";
 import { Navbar } from "../components/Navbar";
+import useMediaQuery from "../hooks/useMediaQuery";
 
 const stepDescriptions: { message: string; icon: string }[] = [
   {
@@ -24,6 +25,7 @@ const stepDescriptions: { message: string; icon: string }[] = [
 ];
 
 export function Home() {
+  const matches = useMediaQuery("(min-width: 768px)");
   return (
     <>
       <Navbar />
@@ -32,11 +34,11 @@ export function Home() {
         style={{
           position: "relative",
           width: "100%",
-          height: 400,
           backgroundColor: palette.subSectionsBgLighter,
           alignItems: "center",
           display: "flex",
           flexDirection: "column",
+          gap: 70,
         }}
       >
         <Title
@@ -55,7 +57,7 @@ export function Home() {
           height={5}
           width={120}
         />
-        <div style={{ display: "flex", flexDirection: "row", gap: 70 }}>
+        <div style={{ display: "flex", flexDirection: matches ? "row" : "column", gap: matches ? 70 : 20 }}>
           {stepDescriptions.map((step, index) => {
             return (
               <StepDescription

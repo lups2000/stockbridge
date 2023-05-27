@@ -2,6 +2,7 @@ import { Button, Container, Nav, Navbar as NavbarBS } from "react-bootstrap";
 //import userLogo from "../assets/user-logo.svg";
 import { useNavigate, NavLink } from "react-router-dom";
 import { palette } from "../utils/colors";
+import logo from "../assets/logo.svg"
 
 export function Navbar() {
   const navigate = useNavigate();
@@ -11,7 +12,7 @@ export function Navbar() {
       <Container>
         <Nav className="me-auto">
           <Nav.Link to="/" as={NavLink}>
-            Logo StockBridge
+            <img src={logo} alt="logo" />
           </Nav.Link>
         </Nav>
         <Button

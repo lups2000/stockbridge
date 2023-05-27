@@ -6,7 +6,7 @@ import useMediaQuery from "../../hooks/useMediaQuery";
  * Component that will manage the search of an advert...
  */
 export function SearchBar() {
-  const matches = useMediaQuery("(min-width: 768px)");
+  const matches = useMediaQuery("(min-width: 1300px)");
   return (
     <div
       style={{
