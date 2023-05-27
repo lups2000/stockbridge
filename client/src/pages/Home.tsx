@@ -56,7 +56,7 @@ export function Home() {
         <ColoredLine
           color={palette.subSectionsBgAccent}
           height={5}
-          width={120}
+          width={60}
         />
         <div
           style={{

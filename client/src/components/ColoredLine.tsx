@@ -1,8 +1,11 @@
+
 type ColoredLineProps = {
   color: string;
   height: number;
   width: number;
   marginTop?: number;
+  gap?: number,
+  children?: React.ReactNode
 };
 
 /**
@@ -12,13 +15,28 @@ export function ColoredLine(props: ColoredLineProps) {
   return (
     <div
       style={{
-        color: props.color,
-        backgroundColor: props.color,
-        height: props.height,
-        width: props.width,
+        display: "flex",
+        flexDirection: "row",
+        alignItems: "center",
+        gap: props.gap ?? 0,
         marginTop: props.marginTop,
-        margin: "auto",
       }}
-    />
+    >
+      <div
+        style={{
+          width: props.width,
+          height: props.height,
+          backgroundColor: props.color,
+        }}
+      />
+      {props.children}
+      <div
+        style={{
+          width: props.width,
+          height: props.height,
+          backgroundColor: props.color,
+        }}
+      />
+    </div>
   );
 }

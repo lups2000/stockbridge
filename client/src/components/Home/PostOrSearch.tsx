@@ -6,11 +6,12 @@ import { Title } from "../Text/Title";
 import { SearchBar } from "./SearchBar";
 import { useNavigate } from "react-router-dom";
 import useMediaQuery from "../../hooks/useMediaQuery";
+import { ColoredLine } from "../ColoredLine";
 /**
  * Component to manage the section of the homepage where the user can click on "post advert" or decide to search for something
  */
 export function PostOrSearch() {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const matches = useMediaQuery("(min-width: 1200px)");
   return (
     <div
@@ -62,15 +63,17 @@ export function PostOrSearch() {
             message="POST YOUR ADVERT"
           />
         </Button>
-        <Title
-          style={{
-            marginLeft: "8%",
-            fontSize: 20,
-            color: "white",
-            fontWeight: 400,
-          }}
-          message="OR"
-        />
+        <ColoredLine width={60} height={2} color="white" gap={5}>
+          <Title
+            style={{
+              marginTop: 10,
+              fontSize: 20,
+              color: "white",
+              fontWeight: 400,
+            }}
+            message="OR"
+          />
+        </ColoredLine>
         <SearchBar />
         <div
           style={{
@@ -86,7 +89,7 @@ export function PostOrSearch() {
               fontSize: matches ? 36 : 30,
               color: "white",
               textAlign: "center",
-              fontWeight: 500
+              fontWeight: 500,
             }}
             message="Out of stock?or got too much stock?No worries!"
           />
