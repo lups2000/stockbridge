@@ -39,6 +39,7 @@ export function Home() {
           display: "flex",
           flexDirection: "column",
           gap: 70,
+          paddingBottom: 50,
         }}
       >
         <Title
@@ -57,7 +58,13 @@ export function Home() {
           height={5}
           width={120}
         />
-        <div style={{ display: "flex", flexDirection: matches ? "row" : "column", gap: matches ? 70 : 20 }}>
+        <div
+          style={{
+            display: "flex",
+            flexDirection: matches ? "row" : "column",
+            gap: matches ? 70 : 20,
+          }}
+        >
           {stepDescriptions.map((step, index) => {
             return (
               <StepDescription
@@ -69,6 +76,15 @@ export function Home() {
           })}
         </div>
       </div>
+      <div style={{ height: 2000, backgroundColor: palette.pageBG }}>
+        <Title
+          style={{ fontSize: 36, textAlign: "center", paddingTop: 20 }}
+          message="Active Adverts"
+        ></Title>
+      </div>
+      <div
+        style={{ height: 300, backgroundColor: palette.subSectionsBgLighter }}
+      ></div>
     </>
   );
 }
