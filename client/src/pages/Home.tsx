@@ -8,6 +8,7 @@ import howWorks3 from "../assets/howWorks3.svg";
 import { PostOrSearch } from "../components/Home/PostOrSearch";
 import { Navbar } from "../components/Navbar";
 import useMediaQuery from "../hooks/useMediaQuery";
+import { BottomBar } from "../components/Home/BottomBar";
 
 const stepDescriptions: { message: string; icon: string }[] = [
   {
@@ -82,9 +83,7 @@ export function Home() {
           message="Active Adverts"
         ></Title>
       </div>
-      <div
-        style={{ height: 300, backgroundColor: palette.subSectionsBgLighter }}
-      ></div>
+      <BottomBar />
     </>
   );
 }
