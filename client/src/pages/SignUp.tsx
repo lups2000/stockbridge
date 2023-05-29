@@ -8,12 +8,16 @@ import { useNavigate } from "react-router-dom";
 import backIcon from "../assets/back.svg";
 import useMediaQuery from "../hooks/useMediaQuery";
 import addIcon from "../assets/add.svg";
+import { PaymentModal } from "../components/SignUp/PaymentModal";
 export const SignUp: FC = () => {
   const navigate = useNavigate();
   const matches = useMediaQuery("(min-width: 768px)");
 
   const [isFirstPartCompleted, setIsFirstPartCompleted] =
     useState<boolean>(false);
+
+  const [isModalShowing, setIsModalShowing] = useState(false);
+
   return (
     <>
       <div
@@ -159,13 +163,13 @@ export const SignUp: FC = () => {
                     marginTop: 10,
                     display: "flex",
                     flexDirection: "row",
-                    cursor: "pointer"
+                    cursor: "pointer",
                   }}
-                  onClick={()=>navigate("/")} //TODO: Open Modal
+                  onClick={() => setIsModalShowing(true)}
                 >
                   <img src={addIcon} alt="addIcon" />
                   <BodyText
-                    style={{ fontSize: 15, marginTop: 15, marginLeft: 8}}
+                    style={{ fontSize: 15, marginTop: 15, marginLeft: 8 }}
                     message="Add a payment method"
                   />
                 </div>
@@ -223,6 +227,12 @@ export const SignUp: FC = () => {
           alt="signUp"
         />*/}
       </div>
+      {isModalShowing ? (
+        <PaymentModal
+          isShowing={isModalShowing}
+          onClose={() => setIsModalShowing(false)}
+        />
+      ) : undefined}
     </>
   );
 };
