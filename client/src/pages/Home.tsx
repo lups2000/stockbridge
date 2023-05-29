@@ -6,9 +6,8 @@ import howWorks1 from "../assets/howWorks1.svg";
 import howWorks2 from "../assets/howWorks2.svg";
 import howWorks3 from "../assets/howWorks3.svg";
 import { PostOrSearch } from "../components/Home/PostOrSearch";
-import { Navbar } from "../components/Navbar";
 import useMediaQuery from "../hooks/useMediaQuery";
-import { BottomBar } from "../components/Home/BottomBar";
+import { Page } from "../components/Page";
 
 const stepDescriptions: { message: string; icon: string }[] = [
   {
@@ -28,8 +27,7 @@ const stepDescriptions: { message: string; icon: string }[] = [
 export function Home() {
   const matches = useMediaQuery("(min-width: 768px)");
   return (
-    <>
-      <Navbar />
+    <Page>
       <PostOrSearch />
       <div
         style={{
@@ -83,7 +81,6 @@ export function Home() {
           message="Active Adverts"
         ></Title>
       </div>
-      <BottomBar />
-    </>
+    </Page>
   );
 }

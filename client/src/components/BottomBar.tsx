@@ -1,8 +1,8 @@
 import { FC } from "react";
-import { palette } from "../../utils/colors";
+import { palette } from "../utils/colors";
 import { Dropdown } from "react-bootstrap";
-import { BodyText } from "../Text/BodyText";
-import { ColoredLine } from "../ColoredLine";
+import { BodyText } from "./Text/BodyText";
+import { ColoredLine } from "./ColoredLine";
 
 export const BottomBar: FC = () => {
   return (
@@ -15,7 +15,7 @@ export const BottomBar: FC = () => {
         alignItems: "stretch",
         justifyContent: "center",
         gap: 100,
-        paddingTop: 100
+        paddingTop: 100,
       }}
     >
       <div>

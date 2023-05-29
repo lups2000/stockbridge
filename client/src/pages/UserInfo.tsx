@@ -1,3 +1,9 @@
+import { Page } from "../components/Page";
+
 export function UserInfo() {
-  return <h1>User Info</h1>;
+  return (
+    <Page>
+      <h1>User info</h1>
+    </Page>
+  );
 }
