@@ -159,7 +159,9 @@ export const SignUp: FC = () => {
                     marginTop: 10,
                     display: "flex",
                     flexDirection: "row",
+                    cursor: "pointer"
                   }}
+                  onClick={()=>navigate("/")} //TODO: Open Modal
                 >
                   <img src={addIcon} alt="addIcon" />
                   <BodyText
