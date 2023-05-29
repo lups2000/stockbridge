@@ -1,6 +1,6 @@
 import userModel from "../models/User";
 import type {User} from "../entities/userEntity";
-import logger from "../utils/logger";
+import logger from "../config/logger";
 import {AppError} from "../utils/errorHandler";
 
 const serviceName = 'userServices';
