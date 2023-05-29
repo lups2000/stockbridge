@@ -1,0 +1,1037 @@
+openapi: 3.0.3
+info:
+  title: Team 27 - StockBridge
+  description: |-
+    StockBridge was developed for the Software Engineering Business Application course at TUM.
+  version: '0.1'
+servers:
+  - url: http://localhost:3000/api/v1
+tags:
+  - name: Adverts
+    description: Everything about Adverts
+  - name: Offers
+    description: Everything about Offers
+  - name: Review
+    description: Everything about Reviews
+  - name: Orders
+    description: Everything about Orders
+  - name: User
+    description: Everything about User
+  - name: Authentication
+    description: Everything about User Authentication
+
+paths:
+  /auth/register:
+    post:
+      tags:
+        - Authentication
+      summary: Create user
+      description: This is public
+      operationId: createUser
+      requestBody:
+        $ref: '#/components/requestBodies/UserRegistration'
+      responses:
+        '201':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '400':
+          description: Invalid Input
+  /user/login:
+    post:
+      tags:
+        - Authentication
+      summary: Logs user into the system
+      operationId: loginUser
+      parameters:
+        - name: username
+          in: query
+          description: The user name for login
+          required: false
+          schema:
+            type: string
+        - name: password
+          in: query
+          description: The password for login in clear text
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: successful operation
+          headers:
+            X-Expires-After:
+              description: date in UTC when token expires
+              schema:
+                type: string
+                format: date-time
+          content:
+            application/json:
+              schema:
+                type: string
+        '400':
+          description: Invalid username/password supplied
+  /user/logout:
+    get:
+      tags:
+        - Authentication
+      summary: Logs out current logged in user session
+      description: ''
+      operationId: logoutUser
+      parameters: []
+      responses:
+        default:
+          description: successful operation
+  /user/{id}:
+    get:
+      tags:
+        - User
+      summary: Get user by user name
+      description: ''
+      operationId: getUserById
+      parameters:
+        - name: id
+          in: path
+          description: 'The name that needs to be fetched. Use user1 for testing. '
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '400':
+          description: Invalid username supplied
+        '404':
+          description: User not found
+      security:
+        - bearerAuth: []
+    put:
+      tags:
+        - User
+      summary: Update user
+      description: This can only be done by the logged in user.
+      operationId: updateUser
+      parameters:
+        - name: id
+          in: path
+          description: name that need to be deleted
+          required: true
+          schema:
+            type: string
+      requestBody:
+        $ref: '#/components/requestBodies/User'
+      responses:
+        '200':
+          description: successful operation
+        '301':
+          description: Unauthorized
+      security:
+        - bearerAuth: []
+    delete:
+      tags:
+        - User
+      summary: Delete user
+      description: This can only be done by the logged in user.
+      operationId: deleteUser
+      parameters:
+        - name: id
+          in: path
+          description: The name that needs to be deleted
+          required: true
+          schema:
+            type: string
+      responses:
+        '400':
+          description: Invalid username supplied
+        '404':
+          description: User not found
+      security:
+        - bearerAuth: []
+  /reviews:
+    post:
+      tags:
+        - Review
+      summary: Post a new review
+      description: Post a new review
+      operationId: postReview
+      requestBody:
+        $ref: '#/components/requestBodies/Review'
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Review'
+        '405':
+          description: Invalid input
+  /reviews/{id}:
+    get:
+      tags:
+        - Review
+      summary: get review by id
+      description: ''
+      operationId: getReviewById
+      parameters:
+        - name: id
+          in: path
+          description: 'the id of the review that needs to be fetched'
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Review'
+        '400':
+          description: Invalid username supplied
+        '404':
+          description: review found
+      security:
+        - bearerAuth: []
+    put:
+      tags:
+        - Review
+      summary: Update review
+      operationId: updateReview
+      parameters:
+        - name: id
+          in: path
+          description: id that need to be deleted
+          required: true
+          schema:
+            type: string
+      requestBody:
+        $ref: '#/components/requestBodies/Review'
+      responses:
+        '200':
+          description: successful operation
+        '301':
+          description: Unauthorized
+      security:
+        - bearerAuth: []
+    delete:
+      tags:
+        - Review
+      summary: Delete review
+      operationId: deleteReview
+      parameters:
+        - name: id
+          in: path
+          description: The name that needs to be deleted
+          required: true
+          schema:
+            type: string
+      responses:
+        '400':
+          description: Invalid username supplied
+        '404':
+          description: review not found
+      security:
+        - bearerAuth: []
+  /getReviewsByReviewer/{id}:
+    get:
+      tags:
+        - Review
+      summary: get review by reviwer id
+      description: ''
+      operationId: getReviewsByReviwer
+      parameters:
+        - name: id
+          in: path
+          description: 'the id of the author of the review'
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Review'
+        '400':
+          description: Invalid username supplied
+        '404':
+          description: review found
+      security:
+        - bearerAuth: []
+  /getReviewsByReviewee/{id}:
+    get:
+      tags:
+        - Review
+      summary: get review by reviwee id
+      description: ''
+      operationId: getReviewsByReviwee
+      parameters:
+        - name: id
+          in: path
+          description: 'the id of the author of the review'
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Review'
+        '400':
+          description: Invalid username supplied
+        '404':
+          description: review found
+      security:
+        - bearerAuth: []
+
+  /adverts:
+    summary: Operations for adverts
+    post:
+      tags:
+        - Adverts
+      summary: Post new advert
+      operationId: postAdvert
+      responses:
+        200:
+          description: Advert posted successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Advert'
+        405:
+          description: Invalid input
+  /adverts/{id}:
+    get:
+      tags:
+        - Adverts
+      summary: Get advert by id
+      operationId: getAdvert
+      parameters:
+        - name: id
+          in: path
+          description: 'the id of the advert that needs to be fetched'
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: Successfully fetched advert by id
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Advert'
+        404:
+          description: Advert Not found
+        405:
+          description: Invalid id
+      security:
+        - bearerAuth: []
+    put:
+      tags:
+        - Adverts
+      summary: Update advert
+      operationId: updateAdvert
+      parameters:
+        - name: id
+          in: path
+          description: Id of the advert that needs to be updates
+          required: true
+          schema:
+            type: string
+      requestBody:
+        $ref: '#/components/requestBodies/Advert'
+      responses:
+        '200':
+          description: successful operation
+        '301':
+          description: Unauthorized
+      security:
+        - bearerAuth: []
+    delete:
+      tags:
+        - Adverts
+      summary: Delete advert
+      operationId: deleteAdvert
+      parameters:
+        - name: id
+          in: path
+          description: The advert that needs to be deleted
+          required: true
+          schema:
+            type: string
+      responses:
+        '400':
+          description: Invalid id supplied
+        '404':
+          description: Advert not found
+      security:
+        - bearerAuth: []
+  /getAdvertsByCategory/{cat}:
+    summary: ''
+    get:
+      tags:
+        - Adverts
+      summary: Get all adverts in category
+      operationId: getAdvertByCategory
+      parameters:
+        - name: cat
+          in: path
+          description: id of the category
+          required: true
+          schema:
+            type: string
+      responses:
+        '400':
+          description: Invalid id supplied
+        '404':
+          description: Advert not found
+      security:
+        - bearerAuth: []
+
+  /offers:
+    post:
+      tags:
+        - Offers
+      summary: post a new offer
+      description: ''
+      operationId: postOffer
+      requestBody:
+        $ref: '#/components/requestBodies/Offer'
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Offer'
+        '405':
+          description: Invalid input
+      security:
+        - bearerAuth: []
+  /offers/{id}:
+    get:
+      tags:
+        - Offers
+      summary: get offer by id
+      description: ''
+      operationId: getOfferById
+      parameters:
+        - name: id
+          in: path
+          description: 'the id of the offer that needs to be fetched'
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Offer'
+        '400':
+          description: Invalid id supplied
+        '404':
+          description: offer not found
+      security:
+        - bearerAuth: []
+    put:
+      tags:
+        - Offers
+      summary: Update offer
+      operationId: updateOffer
+      parameters:
+        - name: id
+          in: path
+          description: id offer that need to be updated
+          required: true
+          schema:
+            type: string
+      requestBody:
+        $ref: '#/components/requestBodies/Offer'
+      responses:
+        '200':
+          description: successful operation
+        '301':
+          description: Unauthorized
+      security:
+        - bearerAuth: []
+    delete:
+      tags:
+        - Offers
+      summary: Delete offer
+      operationId: deleteOffer
+      parameters:
+        - name: id
+          in: path
+          description: The id that needs to be deleted
+          required: true
+          schema:
+            type: string
+      responses:
+        '400':
+          description: Invalid id supplied
+        '404':
+          description: offer not found
+      security:
+        - bearerAuth: []
+  /getOffersByAdvert/{id}:
+    get:
+      tags:
+        - Offers
+      summary: get offer by advert id
+      description: ''
+      operationId: getOffersByAdvert
+      parameters:
+        - name: id
+          in: path
+          description: 'the id of the advert'
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Offer'
+        '400':
+          description: Invalid id supplied
+        '404':
+          description: offer not found
+      security:
+        - bearerAuth: []
+  /getOffersByOfferor/{id}:
+    get:
+      tags:
+        - Offers
+      summary: get offer by offeror id
+      description: ''
+      operationId: getOffersByOfferor
+      parameters:
+        - name: id
+          in: path
+          description: 'the id of the author of the offer'
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Offer'
+        '400':
+          description: Invalid id supplied
+        '404':
+          description: offer not found
+      security:
+        - bearerAuth: []
+  /getOffersByOfferee/{id}:
+    get:
+      tags:
+        - Offers
+      summary: get offer by offeree id
+      description: ''
+      operationId: getOffersByOfferee
+      parameters:
+        - name: id
+          in: path
+          description: 'the id of the offeree'
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Offer'
+        '400':
+          description: Invalid id supplied
+        '404':
+          description: offer not found
+      security:
+        - bearerAuth: []
+
+
+  /orders:
+    post:
+      tags:
+        - Orders
+      summary: post a new order
+      description: ''
+      operationId: postOrder
+      requestBody:
+        $ref: '#/components/requestBodies/Order'
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Order'
+        '405':
+          description: Invalid input
+      security:
+        - bearerAuth: []
+  /orders/{id}:
+    get:
+      tags:
+        - Orders
+      summary: get order by id
+      description: ''
+      operationId: getOrderById
+      parameters:
+        - name: id
+          in: path
+          description: 'the id of the order that needs to be fetched'
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Order'
+        '400':
+          description: Invalid id supplied
+        '404':
+          description: offer not found
+      security:
+        - bearerAuth: []
+    put:
+      tags:
+        - Orders
+      summary: Update order
+      operationId: updateOrder
+      parameters:
+        - name: id
+          in: path
+          description: id of the order that needs to be updated
+          required: true
+          schema:
+            type: string
+      requestBody:
+        $ref: '#/components/requestBodies/Order'
+      responses:
+        '200':
+          description: successful operation
+        '301':
+          description: Unauthorized
+      security:
+        - bearerAuth: []
+    delete:
+      tags:
+        - Orders
+      summary: Deletes an order
+      operationId: deleteOrder
+      parameters:
+        - name: id
+          in: path
+          description: The id of the order that needs to be deleted
+          required: true
+          schema:
+            type: string
+      responses:
+        '400':
+          description: Invalid id supplied
+        '404':
+          description: offer not found
+      security:
+        - bearerAuth: []
+  /getOrderByOffer/{id}:
+    get:
+      tags:
+        - Orders
+      summary: gets an order by id.
+      description: ''
+      operationId: getOrdersByOffer
+      parameters:
+        - name: id
+          in: path
+          description: 'the id of the offer of the order'
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Order'
+        '400':
+          description: Invalid username supplied
+        '404':
+          description: review found
+      security:
+        - bearerAuth: []
+
+
+
+
+
+components:
+  schemas:
+    User:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        email:
+          type: string
+          format: email
+        password:
+          type: string
+          format: password
+        prioritisationTickets:
+          type: integer
+          format: int64
+        phoneNumber:
+          type: string
+        pPhoto:
+          type: string
+          format: byte
+        createdAt:
+          type: string
+          format: Date
+        address:
+          $ref: '#/components/schemas/Address'
+        subscription:
+          $ref: '#/components/schemas/Subscription'
+        paymentMethod:
+          $ref: '#/components/schemas/PaymentMethod'
+    PaymentMethod:
+      type: object
+      properties:
+        name:
+          type: string
+        iban:
+          type: string
+        bic:
+          type: string
+        cvv:
+          type: string
+    Subscription:
+      type: object
+      properties:
+        from:
+          type: string
+          format: date
+        to:
+          type: string
+          format: date
+        renew:
+          type: boolean
+    Address:
+      type: object
+      properties:
+        street:
+          type: string
+        houseNumber:
+          type: string
+        city:
+          type: string
+        postalCode:
+          type: string
+          example: 80636
+        country:
+          type: string
+          example: Germany
+    Review:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        rating:
+          type: integer
+          format: int32
+          minimum: 0
+          maximum: 5
+        description:
+          type: string
+        createdAt:
+          type: string
+          format: date
+        reviewer:
+          $ref: '#/components/schemas/User'
+        reviewee:
+          $ref: '#/components/schemas/User'
+    AdvertType:
+      type: string
+      enum:
+        - ASK
+        - SELL
+    AdvertStatus:
+      type: string
+      enum:
+        - ONGOING
+        - DELETED
+        - CLOSED
+    ProductCategory:
+      type: string
+      enum:
+        - "Apparel and Accessories"
+        - "Electronics and Gadgets"
+        - "Home and Kitchen"
+        - "Furniture and Decor"
+        - "Health and Beauty"
+        - "Sports and Fitness"
+        - "Books and Media"
+        - "Toys and Games"
+        - "Automotive Parts"
+        - "Food and Beverages"
+        - "Office Supplies"
+        - "Tools and Hardware"
+        - "Pet Supplies"
+        - "Baby and Kids' Products"
+        - "Jewelry and Accessories"
+        - "Gardening Supplies"
+        - "Art and Craft Supplies"
+        - "Musical Instruments"
+        - "Travel and Luggage"
+        - "Flowers and Bouquets"
+    Advert:
+      type: object
+      properties:
+        name:
+          type: string
+        prioritized:
+          type: boolean
+        quantity:
+          type: integer
+        description:
+          type: string
+        price:
+          type: integer
+        expirationDate:
+          type: string
+          format: date
+        status:
+          $ref: '#/components/schemas/AdvertStatus'
+        advertType:
+          $ref: '#/components/schemas/AdvertType'
+        category:
+          $ref: '#/components/schemas/ProductCategory'
+        offers:
+          type: array
+          items:
+            $ref: '#/components/schemas/Offer'
+    Offer:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        price:
+          type: number
+          format: double
+        quantity:
+          type: integer
+        status:
+          type: string
+        message:
+          type: string
+        createdAt:
+          type: string
+          format: date
+        offeror:
+          $ref: '#/components/schemas/User'
+        offeree:
+          $ref: '#/components/schemas/User'
+        advert:
+          $ref: '#/components/schemas/Advert'
+    Order:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        toatlPrice:
+          type: number
+          format: double
+        quantity:
+          type: integer
+        status:
+          type: string
+          enum:
+            - PAYMENT_PENDING
+            - SHIPMENT_PENDING
+            - RECEIVED
+        offer:
+          $ref: '#/components/schemas/Offer'
+      # Might change this in offer
+      #   buyer:
+      #     $ref: '#/components/schemas/User'
+      #   seller:
+      #     $ref: '#/components/schemas/User'
+
+  requestBodies:
+    UserRegistration:
+      required: true
+      content:
+        application/json:
+          schema:
+            properties:
+              name:
+                type: string
+              email:
+                type: string
+                format: email
+              password:
+                type: string
+                format: password
+    User:
+      required: true
+      content:
+        application/json:
+          schema:
+            properties:
+              name:
+                type: string
+              email:
+                type: string
+                format: email
+              password:
+                type: string
+                format: password
+              prioritisationTickets:
+                type: integer
+                format: int64
+              phoneNumber:
+                type: string
+              pPhoto:
+                type: string
+                format: byte
+              address:
+                $ref: '#/components/schemas/Address'
+              subscription:
+                $ref: '#/components/schemas/Subscription'
+              paymentMethod:
+                $ref: '#/components/schemas/PaymentMethod'
+    Review:
+      content:
+        application/json:
+          schema:
+            properties:
+              rating:
+                type: integer
+                format: int32
+                minimum: 0
+                maximum: 5
+              description:
+                type: string
+              createdAt:
+                type: string
+                format: date
+              reviewer:
+                $ref: '#/components/schemas/User'
+              reviewee:
+                $ref: '#/components/schemas/User'
+    Advert:
+      content:
+        application/json:
+          schema:
+            properties:
+              name:
+                type: string
+              prioritized:
+                type: boolean
+              quantity:
+                type: integer
+                format: int32
+                minimum: 0
+              description:
+                type: string
+              price:
+                type: integer
+              expirationDate:
+                type: string
+                format: date
+              advertType:
+                $ref: '#/components/schemas/AdvertType'
+              category:
+                $ref: '#/components/schemas/ProductCategory'
+              offers:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Offer'
+    Offer:
+      content:
+        application/json:
+          schema:
+            properties:
+              price:
+                type: number
+                format: double
+              quantity:
+                type: integer
+              status:
+                type: string
+              message:
+                type: string
+              createdAt:
+                type: string
+                format: date
+              offerer:
+                $ref: '#/components/schemas/User'
+
+    Order:
+      content:
+        application/json:
+          schema:
+            properties:
+              totalPrice:
+                type: number
+                format: double
+              quantity:
+                type: integer
+              status:
+                type: string
+              offer:
+                $ref: '#/components/schemas/Offer'
+
+    UserArray:
+      description: List of user object
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: '#/components/schemas/User'
+  securitySchemes:
+    bearerAuth:            # arbitrary name for the security scheme
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
