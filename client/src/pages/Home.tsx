@@ -8,6 +8,7 @@ import howWorks3 from "../assets/howWorks3.svg";
 import { PostOrSearch } from "../components/Home/PostOrSearch";
 import useMediaQuery from "../hooks/useMediaQuery";
 import { Page } from "../components/Page";
+import { Filters } from "../components/Home/Filters";
 
 const stepDescriptions: { message: string; icon: string }[] = [
   {
@@ -75,11 +76,14 @@ export function Home() {
           })}
         </div>
       </div>
-      <div style={{ height: 2000, backgroundColor: palette.pageBG }}>
+      <div style={{ height: 2000 }}>
         <Title
           style={{ fontSize: 36, textAlign: "center", paddingTop: 20 }}
           message="Active Adverts"
         ></Title>
+        <div style={{ marginTop: 100 }}>
+          <Filters />
+        </div>
       </div>
     </Page>
   );

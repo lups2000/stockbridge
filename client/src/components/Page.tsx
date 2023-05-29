@@ -1,7 +1,6 @@
 import React, { FC } from "react";
 import { Navbar } from "./Navbar";
 import { BottomBar } from "./BottomBar";
-import { palette } from "../utils/colors";
 
 interface PageProps {
   children: React.ReactNode;
