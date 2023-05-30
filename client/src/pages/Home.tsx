@@ -9,6 +9,8 @@ import { PostOrSearch } from "../components/Home/PostOrSearch";
 import useMediaQuery from "../hooks/useMediaQuery";
 import { Page } from "../components/Page";
 import { Filters } from "../components/Home/Filters";
+import { BodyText } from "../components/Text/BodyText";
+import sortIcon from "../assets/sort-icon.svg";
 
 const stepDescriptions: { message: string; icon: string }[] = [
   {
@@ -82,6 +84,32 @@ export function Home() {
           message="Active Adverts"
         ></Title>
         <div style={{ marginTop: 100 }}>
+          <img
+            src={sortIcon}
+            alt="sortIcon"
+            style={{ position: "absolute", right: 0 }}
+          />
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "row",
+              gap: 20,
+              justifyContent: "center",
+            }}
+          >
+            <BodyText
+              style={{
+                color: palette.subSectionsBgAccent,
+                fontSize: 30,
+                fontWeight: 600,
+              }}
+              message="Selling"
+            />
+            <BodyText
+              style={{ color: palette.subSectionsBgLighter, fontSize: 30 }}
+              message="Buying"
+            />
+          </div>
           <Filters />
         </div>
       </div>
