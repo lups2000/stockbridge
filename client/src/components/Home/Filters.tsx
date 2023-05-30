@@ -5,21 +5,24 @@ import { ColoredLine } from "../ColoredLine";
 import { Dropdown, Form } from "react-bootstrap";
 import { DatePicker } from "../DatePicker";
 import Slider from "@mui/material/Slider";
+import { BodyText } from "../Text/BodyText";
+import { useMediaQuery } from "@mui/material";
 
 export const Filters: FC = () => {
   const [rangePrice, setRangePrice] = useState<number[]>([0, 1000]);
   const [rangeQuantity, setRangeQuantity] = useState<number[]>([0, 100]);
+  const matches = useMediaQuery("(min-width: 768px)");
   return (
     <div
       style={{
         position: "absolute",
         left: 0,
-        //height: 2000,
+        height: "100%",
         width: 350,
         borderRadius: 15,
         backgroundColor: palette.subSectionsBgLighter,
         alignItems: "center",
-        display: "flex",
+        display: matches ? "flex" : "none",
         flexDirection: "column",
       }}
     >
@@ -35,6 +38,7 @@ export const Filters: FC = () => {
             border: "none",
             color: "black",
             width: 200,
+            fontFamily: "Poppins",
           }}
           id="dropdown-basic"
         >
@@ -46,40 +50,44 @@ export const Filters: FC = () => {
           <Dropdown.Item href="#/action-3">Something else</Dropdown.Item>
         </Dropdown.Menu>
       </Dropdown>
-      <div style={{ width: 200 }}>
-        Price:
+      <div style={{ width: 200, marginTop: 20 }}>
+        <BodyText style={{ textAlign: "center" }} message="Price:" />
         <Slider
-          style={{ color: "black" }}
+          style={{ color: "black", marginTop: -20 }}
+          size="small"
           value={rangePrice}
-          onChange={(_,newRange) => setRangePrice(newRange as number[])}
+          onChange={(_, newRange) => setRangePrice(newRange as number[])}
           valueLabelDisplay="auto"
           min={0}
           max={1000}
         />
       </div>
       <div style={{ width: 200 }}>
-        Quantity:
+        <BodyText style={{ textAlign: "center" }} message="Quantity:" />
         <Slider
-          style={{ color: "black" }}
+          style={{ color: "black", marginTop: -20 }}
+          size="small"
           value={rangeQuantity}
-          onChange={(_,newRange) => setRangeQuantity(newRange as number[])}
+          onChange={(_, newRange) => setRangeQuantity(newRange as number[])}
           valueLabelDisplay="auto"
           min={0}
           max={100}
         />
       </div>
-      <div style={{ marginTop: 30 }}>
+      <div style={{ marginTop: 20 }}>
         <DatePicker />
       </div>
-      <div style={{ marginTop: 30 }}>
+      <div style={{ marginTop: 30 , width: 100}}>
         <div className="row">
           <div>
-            <Form.Group controlId="dob">
-              <Form.Label>Postal Code:</Form.Label>
+            <Form.Group>
+              <BodyText
+                style={{ textAlign: "center",marginBottom: 10 }}
+                message="Postal Code:"
+              />
               <Form.Control
-                style={{ backgroundColor: "#6C757D", border: "none" }}
+                style={{ border: "none" }}
                 type="text"
-                name="dob"
                 placeholder="XXXXX"
               />
             </Form.Group>

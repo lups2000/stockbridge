@@ -5,12 +5,11 @@ export const DatePicker: FC = () => {
   return (
     <div className="row">
       <div>
-        <Form.Group controlId="dob">
-          <Form.Label>Available From:</Form.Label>
+        <Form.Group>
+          <Form.Label style={{fontFamily: "Poppins"}}>Available From:</Form.Label>
           <Form.Control
-            style={{ backgroundColor: "#6C757D", border: "none" }}
+            style={{ border: "none" }}
             type="date"
-            name="dob"
             placeholder="DD.MM.YYYY"
           />
         </Form.Group>
