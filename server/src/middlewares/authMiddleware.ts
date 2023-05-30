@@ -2,8 +2,8 @@ import jwt, { JwtPayload } from "jsonwebtoken";
 import { Request, Response, NextFunction } from 'express';
 import asyncHandler from "express-async-handler";
 import userModel from "../models/User";
-import {AppError} from "./errorHandler";
-import environment from "./environment";
+import {AppError} from "../utils/errorHandler";
+import environment from "../utils/environment";
 import {User} from "../entities/userEntity";
 
 export interface AuthenticatedRequest extends Request {

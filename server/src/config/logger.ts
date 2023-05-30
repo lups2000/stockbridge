@@ -1,5 +1,5 @@
 import winston from "winston";
-import environment from "./environment";
+import environment from "../utils/environment";
 
 
 /**
