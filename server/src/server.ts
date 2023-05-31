@@ -11,7 +11,7 @@ import http from "http";
 // import xss from 'xss-clean';
 import { connectDB } from './config/db';
 import environment from "./utils/environment";
-import logger from "./utils/logger";
+import logger from "./config/logger";
 import {errorHandler, listenToErrorEvents} from "./utils/errorHandler";
 
 //Routes

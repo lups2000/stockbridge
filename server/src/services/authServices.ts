@@ -1,6 +1,6 @@
 import userModel from "../models/User";
 import type {User} from "../entities/userEntity";
-import logger from "../utils/logger";
+import logger from "../config/logger";
 import environment from "../utils/environment";
 import {AppError} from "../utils/errorHandler";
 
@@ -25,6 +25,24 @@ export const registerUser = async (user: User) => {
  * @returns Promise containing the user and the token
  */
 export const loginUser = async (email: string, password: string) => {
+    // Check for user
+    const user = await userModel.findOne({ email }).select('+password');
+
+    if (!user) {
+        throw new AppError('Invalid credentials', 'Invalid credentials', 401);
+    }
+
+    // Check if password matches
+    const isMatch = await user.matchPassword(password);
+
+    if (!isMatch) {
+        throw new AppError('Invalid credentials', 'Invalid credentials', 401);
+    }
+
+    return sendTokenResponse(user);
+}
+
+export const logoutUser = async (email: string, password: string) => {
     // Check for user
     const user = await userModel.findOne({ email }).select('+password');
 
