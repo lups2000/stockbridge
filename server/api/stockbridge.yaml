@@ -964,7 +964,7 @@ components:
         application/json:
           schema:
             properties:
-              name:
+              title:
                 type: string
               prioritized:
                 type: boolean
