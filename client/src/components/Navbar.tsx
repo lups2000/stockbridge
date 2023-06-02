@@ -14,6 +14,7 @@ export function Navbar() {
   const handleLogoutClick = () => {
     setLoggedIn(false);
     setUser("");
+    navigate("/") //come back to homepage
   };
 
   return (
@@ -49,7 +50,7 @@ export function Navbar() {
               color: palette.subSectionsBgAccent,
               fontSize: 20,
             }}
-            onClick={handleLogoutClick}
+            onClick={() => handleLogoutClick()}
           >
             Logout
           </Button>

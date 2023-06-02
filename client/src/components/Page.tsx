@@ -1,6 +1,6 @@
 import React, { FC } from "react";
 import { Navbar } from "./Navbar";
-import { BottomBar } from "./BottomBar";
+import { Footer } from "./Footer";
 
 interface PageProps {
   children: React.ReactNode;
@@ -11,10 +11,12 @@ interface PageProps {
  */
 export const Page: FC<PageProps> = (props) => {
   return (
-    <div>
+    <div
+      style={{ minHeight: "100vh", display: "flex", flexDirection: "column" }}
+    >
       <Navbar />
       {props.children}
-      <BottomBar />
+      <Footer />
     </div>
   );
 };

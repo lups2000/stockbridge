@@ -19,7 +19,6 @@ export function PostOrSearch() {
         width: "100%",
         height: 700,
         backgroundColor: palette.imageBg,
-        zIndex: 1,
       }}
     >
       <img

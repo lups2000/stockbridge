@@ -4,7 +4,7 @@ import { Dropdown } from "react-bootstrap";
 import { BodyText } from "./Text/BodyText";
 import { ColoredLine } from "./ColoredLine";
 
-export const BottomBar: FC = () => {
+export const Footer: FC = () => {
   return (
     <div
       style={{
@@ -16,6 +16,7 @@ export const BottomBar: FC = () => {
         justifyContent: "center",
         gap: 100,
         paddingTop: 100,
+        marginTop: "auto",
       }}
     >
       <div>
