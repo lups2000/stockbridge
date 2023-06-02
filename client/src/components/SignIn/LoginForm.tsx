@@ -10,34 +10,39 @@ export const LoginForm: FC = () => {
   const [email, setEmail] = useState<string>();
   const [password, setPassword] = useState<string>();
 
+  const [error, setError] = useState<boolean>(false);
+  const [errorMessage, setErrorMessage] = useState<string>("");
+
   const { setLoggedIn, setUser } = useContext(LoginContext);
 
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const handleOnSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault(); // Prevent the default submit and page reload
 
     await axiosClient
       .post("/auth/login", { email, password })
+      .then(() => {
+        setError(false);
+        setErrorMessage("");
+        setLoggedIn(true);
+        setUser(email ?? ""); // now i save the email as a string, but i must save the user
+
+        navigate("/"); //return to the homepage
+      })
       .catch((error) => {
-        //to do better
+        setError(true);
         if (!error?.response) {
-          console.log("No Server Response");
+          setErrorMessage("No Server Response");
         } else if (error.response?.status === 400) {
-          console.log("Missing Username or Password");
+          setErrorMessage("Missing Username or Password");
         } else if (error.response?.status === 401) {
-          console.log("Unauthorized");
+          setErrorMessage("Invalid Credentials");
         } else {
-          console.log("Login Failed");
+          setErrorMessage("Login Failed");
         }
         setLoggedIn(false);
         setUser("");
-      })
-      .then((response) => {
-        setLoggedIn(true);
-        setUser(email ?? ""); // now i save the email as a string, but i must save the user
-        
-        navigate("/") //return to the homepage
       });
   };
 
@@ -70,7 +75,10 @@ export const LoginForm: FC = () => {
           }
         />
       </Form.Group>
-      <div className="d-grid font-link" style={{ marginTop: 50 }}>
+      {error ? (
+        <BodyText style={{ color: "red" }} message={errorMessage}></BodyText>
+      ) : undefined}
+      <div className="d-grid font-link" style={{ marginTop: 30 }}>
         <Button
           type="submit"
           style={{

@@ -12,6 +12,7 @@ const axiosClient = axios.create({
 });
 
 // using interceptors to clean redirects
+/*
 axiosClient.interceptors.response.use(
   function (response) {
     return response;
@@ -25,5 +26,5 @@ axiosClient.interceptors.response.use(
     return Promise.reject(error);
   }
 );
-
+*/
 export default axiosClient;
