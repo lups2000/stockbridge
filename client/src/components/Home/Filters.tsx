@@ -17,7 +17,7 @@ export const Filters: FC = () => {
       style={{
         position: "absolute",
         left: 0,
-        height: "100%",
+        paddingBottom: 150,
         width: 350,
         borderRadius: 15,
         backgroundColor: palette.subSectionsBgLighter,
