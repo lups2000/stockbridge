@@ -1,14 +1,18 @@
-import { ChangeEvent, FC, FormEvent, useState } from "react";
+import { ChangeEvent, FC, FormEvent, useContext, useState } from "react";
 import { Button, Form } from "react-bootstrap";
 import { palette } from "../../utils/colors";
 import { BodyText } from "../Text/BodyText";
 import axiosClient from "../../api/apiClient";
-
+import { LoginContext } from "../../contexts/LoginContext";
+import { useNavigate } from "react-router-dom";
 
 export const LoginForm: FC = () => {
   const [email, setEmail] = useState<string>();
   const [password, setPassword] = useState<string>();
 
+  const { setLoggedIn, setUser } = useContext(LoginContext);
+
+  const navigate = useNavigate()
 
   const handleOnSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault(); // Prevent the default submit and page reload
@@ -16,6 +20,7 @@ export const LoginForm: FC = () => {
     await axiosClient
       .post("/auth/login", { email, password })
       .catch((error) => {
+        //to do better
         if (!error?.response) {
           console.log("No Server Response");
         } else if (error.response?.status === 400) {
@@ -25,9 +30,14 @@ export const LoginForm: FC = () => {
         } else {
           console.log("Login Failed");
         }
+        setLoggedIn(false);
+        setUser("");
       })
       .then((response) => {
-        //TODO
+        setLoggedIn(true);
+        setUser(email ?? ""); // now i save the email as a string, but i must save the user
+        
+        navigate("/") //return to the homepage
       });
   };
 
