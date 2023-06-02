@@ -1,7 +1,7 @@
 import {type Request, type Response} from 'express';
 import asyncHandler from "express-async-handler"
 import { registerUser as registerUserService, loginUser as loginUserService} from "../services/authServices";
-import {createLoginResponseDto, createRegisterResponseDto} from "../dto/authDtos";
+import {createLoginResponseDto, createRegisterResponseDto} from "../dto/authDto";
 
 
 
