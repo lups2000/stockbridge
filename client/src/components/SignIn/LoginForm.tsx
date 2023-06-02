@@ -17,33 +17,42 @@ export const LoginForm: FC = () => {
 
   const navigate = useNavigate();
 
+  function isValidEmail(email: string) {
+    return /^\w+([.-]?\w+)*@\w+(.-]?\w+)*(\.\w{2,3})+$/.test(email);
+  }
+
   const handleOnSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault(); // Prevent the default submit and page reload
 
-    await axiosClient
-      .post("/auth/login", { email, password })
-      .then(() => {
-        setError(false);
-        setErrorMessage("");
-        setLoggedIn(true);
-        setUser(email ?? ""); // now i save the email as a string, but i must save the user
+    if (email && isValidEmail(email)) {
+      await axiosClient
+        .post("/auth/login", { email, password })
+        .then(() => {
+          setError(false);
+          setErrorMessage("");
+          setLoggedIn(true);
+          setUser(email ?? ""); // now i save the email as a string, but i must save the user
 
-        navigate("/"); //return to the homepage
-      })
-      .catch((error) => {
-        setError(true);
-        if (!error?.response) {
-          setErrorMessage("No Server Response");
-        } else if (error.response?.status === 400) {
-          setErrorMessage("Missing Username or Password");
-        } else if (error.response?.status === 401) {
-          setErrorMessage("Invalid Credentials");
-        } else {
-          setErrorMessage("Login Failed");
-        }
-        setLoggedIn(false);
-        setUser("");
-      });
+          navigate("/"); //return to the homepage
+        })
+        .catch((error) => {
+          setError(true);
+          if (!error?.response) {
+            setErrorMessage("No Server Response");
+          } else if (error.response?.status === 400) {
+            setErrorMessage("Missing Username or Password");
+          } else if (error.response?.status === 401) {
+            setErrorMessage("Invalid Credentials");
+          } else {
+            setErrorMessage("Login Failed");
+          }
+          setLoggedIn(false);
+          setUser("");
+        });
+    } else {
+      setError(true);
+      setErrorMessage("Email invalid");
+    }
   };
 
   return (
