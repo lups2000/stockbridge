@@ -13,6 +13,14 @@ const serviceName = 'authServices';
  * @returns Promise containing the created user
  */
 export const registerUser = async (user: User) => {
+
+    //check if the user is already registered
+    const userRegistered = await userModel.findOne({email: user.email}).select('+password');
+
+    if(userRegistered) { //if the user is present , throws an error (409-conflict)
+        throw new AppError('User already registered', 'User already registered', 409);
+    }
+
     logger.debug(`${serviceName}: Creating user ${user}`)
     const createdUser = await userModel.create(user);
     return sendTokenResponse(createdUser);
