@@ -45,7 +45,12 @@ const advertSchema = new mongoose.Schema<Advert>({
         type: Types.ObjectId,
         ref: 'Offer',
         required: true
-    }]
+    }],
+    store: {
+        type: Types.ObjectId,
+        ref: 'User',
+        required: true
+    }
 })
 
 const advertModel = mongoose.model('Advert', advertSchema, 'adverts');

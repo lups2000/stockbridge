@@ -35,14 +35,19 @@ export enum PRODUCT_CATEGORY {
 
 export interface Advert {
     id: string;
-    title: string;
-    prioritized: boolean;
-    quantity: number;
+    productname: string;
     description: string;
-    price: number;
+    imageurl: string;
+    prioritized?: boolean;
+    color: string;
     expirationDate: Date;
-    status: ADVERT_STATUS;
-    advertType: ADVERT_TYPE,
-    category: PRODUCT_CATEGORY;
+    quantity: number;
+    price: number;
+    date: Date;
+    status: string;
+    type: string;
+    category: string;
     offers: string[];
+    reviews: string[];
+    store: string;
 }
