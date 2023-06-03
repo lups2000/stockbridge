@@ -9,6 +9,9 @@ interface PaymentModalProps {
   onClose: () => void;
 }
 
+/**
+ * This component represents the modal where the user can insert his payment method.
+ */
 export const PaymentModal: FC<PaymentModalProps> = (props) => {
   return (
     <Modal show={props.isShowing} onHide={props.onClose}>
