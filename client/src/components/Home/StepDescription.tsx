@@ -1,6 +1,7 @@
 import { BodyText } from "../Text/BodyText";
 import { Title } from "../Text/Title";
 import { palette } from "../../utils/colors";
+import { Image } from "react-bootstrap";
 
 type StepDescriptionProps = {
   number: number;
@@ -32,7 +33,7 @@ export function StepDescription(props: StepDescriptionProps) {
         }}
         message={props.number + "."}
       />
-      <img style={{ alignSelf: "center" }} src={props.icon} alt="howWorks1" />
+      <Image style={{ alignSelf: "center" }} src={props.icon} />
       <BodyText
         style={{
           textAlign: "center",

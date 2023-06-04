@@ -1,6 +1,9 @@
 import { FC } from "react";
 import { Form } from "react-bootstrap";
 
+/**
+ * This component represents a simple date picker.
+ */
 export const DatePicker: FC = () => {
   return (
     <div className="row">

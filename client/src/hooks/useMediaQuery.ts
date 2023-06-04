@@ -1,6 +1,9 @@
 
 import { useState, useEffect } from "react";
 
+/**
+ * Custom hook to manage the resize of the window.
+ */
 const useMediaQuery = (query: string) => {
   const [matches, setMatches] = useState(false);
 

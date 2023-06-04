@@ -11,6 +11,7 @@ import { Page } from "../components/Page";
 import { Filters } from "../components/Home/Filters";
 import { BodyText } from "../components/Text/BodyText";
 import sortIcon from "../assets/sort-icon.svg";
+import { Image } from "react-bootstrap";
 
 const stepDescriptions: { message: string; icon: string }[] = [
   {
@@ -84,9 +85,8 @@ export function Home() {
           message="Active Adverts"
         ></Title>
         <div style={{ marginTop: 100 }}>
-          <img
+          <Image
             src={sortIcon}
-            alt="sortIcon"
             style={{ position: "absolute", right: 0 }}
           />
           <div

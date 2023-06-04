@@ -8,6 +8,9 @@ import Slider from "@mui/material/Slider";
 import { BodyText } from "../Text/BodyText";
 import { useMediaQuery } from "@mui/material";
 
+/**
+ * This components represents the filters section in the home page.
+ */
 export const Filters: FC = () => {
   const [rangePrice, setRangePrice] = useState<number[]>([0, 1000]);
   const [rangeQuantity, setRangeQuantity] = useState<number[]>([0, 100]);

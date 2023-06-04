@@ -1,6 +1,6 @@
 import { palette } from "../../utils/colors";
 import homepageImage from "../../assets/homepageImage.png";
-import { Button } from "react-bootstrap";
+import { Button, Image } from "react-bootstrap";
 import { BodyText } from "../Text/BodyText";
 import { Title } from "../Text/Title";
 import { SearchBar } from "./SearchBar";
@@ -21,7 +21,7 @@ export function PostOrSearch() {
         backgroundColor: palette.imageBg,
       }}
     >
-      <img
+      <Image
         style={{
           maxWidth: "100%",
           height: 700,
@@ -30,7 +30,7 @@ export function PostOrSearch() {
           objectFit: "cover",
         }}
         src={homepageImage}
-        alt="homepage"
+        fluid
       />
       <div
         style={{
