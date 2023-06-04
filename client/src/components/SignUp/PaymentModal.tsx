@@ -5,6 +5,7 @@ import Modal from "react-bootstrap/Modal";
 import { palette } from "../../utils/colors";
 import { BodyText } from "../Text/BodyText";
 import {
+  checkCVV,
   chekCreditCardNumber,
   spaceBetweenDigits,
 } from "../../utils/functions";
@@ -44,7 +45,6 @@ export const PaymentModal: FC<PaymentModalProps> = (props) => {
 
   const checkPaymentDetails = () => {
     if (name && number && expDate && cvv) {
-      
     } else {
       setError(true);
       setErrorMessage("Missing Information");

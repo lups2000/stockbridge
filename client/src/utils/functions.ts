@@ -21,5 +21,9 @@ export function spaceBetweenDigits(event: ChangeEvent<HTMLInputElement>) {
 }
 
 export function chekCreditCardNumber(creditCardNumber: string) {
-  return creditCardNumber.length === 19 // 16 + 3 spaces
+  return creditCardNumber.length === 19; // 16 + 3 spaces
+}
+
+export function checkCVV(cvv: string) {
+  return cvv.length === 3 && cvv.match(/^[0-9]+$/) != null;
 }
