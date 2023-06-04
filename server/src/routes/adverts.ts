@@ -10,7 +10,6 @@ import {
   findAllAdverts,
 } from "../services/advertServices";
 
-
 /**
  * This method returns an advert by id   *
  * @param req - The request object

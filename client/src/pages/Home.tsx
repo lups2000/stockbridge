@@ -11,7 +11,9 @@ import { Page } from "../components/Page";
 import { Filters } from "../components/Home/Filters";
 import { BodyText } from "../components/Text/BodyText";
 import sortIcon from "../assets/sort-icon.svg";
-
+import { Text } from "../components";
+import { Button } from "react-bootstrap";
+import { useNavigate } from "react-router-dom";
 const stepDescriptions: { message: string; icon: string }[] = [
   {
     message: "Search for what you are looking for.",
@@ -29,9 +31,10 @@ const stepDescriptions: { message: string; icon: string }[] = [
 
 export function Home() {
   const matches = useMediaQuery("(min-width: 768px)");
+  const navigate = useNavigate();
   return (
     <Page>
-      <PostOrSearch />
+      <PostOrSearch loggedin= {true}/>
       <div
         style={{
           position: "relative",
@@ -89,28 +92,41 @@ export function Home() {
             alt="sortIcon"
             style={{ position: "absolute", right: 0 }}
           />
-          <div
-            style={{
-              display: "flex",
-              flexDirection: "row",
-              gap: 20,
-              justifyContent: "center",
-            }}
-          >
-            <BodyText
+            <div
               style={{
-                color: palette.subSectionsBgAccent,
-                fontSize: 30,
-                fontWeight: 600,
+                display: "flex",
+                flexDirection: "row",
+                gap: 20,
+                justifyContent: "center",
               }}
-              message="Selling"
-            />
-            <BodyText
-              style={{ color: palette.subSectionsBgLighter, fontSize: 30 }}
-              message="Buying"
-            />
+            >
+                  <BodyText
+                    style={{
+                      color: palette.subSectionsBgAccent,
+                      fontSize: 30,
+                      fontWeight: 600,
+                    }}
+                    message="Selling"
+                  />
+                  <BodyText
+                    style={{ color: palette.subSectionsBgLighter, fontSize: 30 }}
+                    message="Buying"
+                  />
+                  </div>
+          <div style={{
+                display: "flex",
+                flexDirection: "row",
+                gap: 20,
+                justifyContent: "center",
+              }}>
+          <Filters/>
+          <Button onClick={() => navigate("/productoverview")}>
+          <BodyText style={{ color: palette.loginTitle, fontSize: 30 }} 
+                  message="Product"/>
+          </Button>
+          
           </div>
-          <Filters />
+
         </div>
       </div>
     </Page>

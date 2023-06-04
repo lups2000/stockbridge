@@ -7,12 +7,28 @@ import { SearchBar } from "./SearchBar";
 import { useNavigate } from "react-router-dom";
 import useMediaQuery from "../../hooks/useMediaQuery";
 import { ColoredLine } from "../ColoredLine";
+import { useState } from "react";
+import { EditAdvertModal } from "../../components";
+
 /**
  * Component to manage the section of the homepage where the user can click on "post advert" or decide to search for something
  */
-export function PostOrSearch() {
+
+interface PostOrSearchProps {
+  loggedin: boolean;
+}
+
+export function PostOrSearch(props: PostOrSearchProps) {
   const navigate = useNavigate();
   const matches = useMediaQuery("(min-width: 1200px)");
+  const [showModal, setShowModal] = useState(false);
+  const openModal = () => {
+    setShowModal(true);
+  };
+
+  const closeModal = () => {
+    setShowModal(false);
+  }
   return (
     <div
       style={{
@@ -50,10 +66,12 @@ export function PostOrSearch() {
             maxWidth: 260,
             marginTop: "15%",
           }}
-          onClick={() => navigate("/signUp")}
+          onClick={() =>
+            props.loggedin ? openModal() : navigate("/signin")
+          }
         >
           <BodyText
-            style={{
+            style={{  
               margin: "auto",
               fontSize: 15,
               color: "white",
@@ -62,6 +80,7 @@ export function PostOrSearch() {
             message="POST YOUR ADVERT"
           />
         </Button>
+        {showModal && <EditAdvertModal isShowing={showModal} onClose={closeModal}/>}
         <ColoredLine width={60} height={2} color="white" gap={5}>
           <Title
             style={{
