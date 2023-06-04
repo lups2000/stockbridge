@@ -2,10 +2,10 @@ import { ChangeEvent, FC, FormEvent, useContext, useState } from "react";
 import { Button, Form } from "react-bootstrap";
 import { palette } from "../../utils/colors";
 import { BodyText } from "../Text/BodyText";
-import axiosClient from "../../api/apiClient";
 import { LoginContext } from "../../contexts/LoginContext";
 import { useNavigate } from "react-router-dom";
 import { isValidEmail } from "../../utils/functions";
+import { ApiClient } from "../../api/ApiClient";
 
 /**
  * This component represents the form to manage the login and it makes also the axios call to the relative endpoint.
@@ -25,8 +25,7 @@ export const LoginForm: FC = () => {
     e.preventDefault(); // Prevent the default submit and page reload
 
     if (email && isValidEmail(email)) {
-      await axiosClient
-        .post("/auth/login", { email, password })
+      new ApiClient().post("/auth/login", { email, password })
         .then(() => {
           setError(false);
           setErrorMessage("");
@@ -37,14 +36,12 @@ export const LoginForm: FC = () => {
         })
         .catch((error) => {
           setError(true);
-          if (!error?.response) {
-            setErrorMessage("No Server Response");
-          } else if (error.response?.status === 400) {
+          if (error.response?.status === 400) {
             setErrorMessage("Missing Username or Password");
           } else if (error.response?.status === 401) {
             setErrorMessage("Invalid Credentials");
           } else {
-            setErrorMessage("Login Failed");
+            setErrorMessage("No Server Response");
           }
           setLoggedIn(false);
           setUser("");
