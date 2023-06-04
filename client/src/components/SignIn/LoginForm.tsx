@@ -5,6 +5,7 @@ import { BodyText } from "../Text/BodyText";
 import axiosClient from "../../api/apiClient";
 import { LoginContext } from "../../contexts/LoginContext";
 import { useNavigate } from "react-router-dom";
+import { isValidEmail } from "../../utils/functions";
 
 /**
  * This component represents the form to manage the login and it makes also the axios call to the relative endpoint.
@@ -19,10 +20,6 @@ export const LoginForm: FC = () => {
   const { setLoggedIn, setUser } = useContext(LoginContext);
 
   const navigate = useNavigate();
-
-  function isValidEmail(email: string) {
-    return /^\w+([.-]?\w+)*@\w+(.-]?\w+)*(\.\w{2,3})+$/.test(email);
-  }
 
   const handleOnSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault(); // Prevent the default submit and page reload
@@ -54,7 +51,7 @@ export const LoginForm: FC = () => {
         });
     } else {
       setError(true);
-      setErrorMessage("Email invalid");
+      setErrorMessage("Email format invalid");
     }
   };
 
@@ -65,7 +62,7 @@ export const LoginForm: FC = () => {
       method="POST"
       onSubmit={(e) => handleOnSubmit(e)}
     >
-      <Form.Group className="mb-2" controlId="formBasicEmail">
+      <Form.Group className="mb-2">
         <Form.Label className="font-link">Email address</Form.Label>
         <Form.Control
           type="email"
@@ -76,7 +73,7 @@ export const LoginForm: FC = () => {
           }
         />
       </Form.Group>
-      <Form.Group className="mb-2" controlId="formBasicPassword">
+      <Form.Group className="mb-2">
         <Form.Label className="font-link">Password</Form.Label>
         <Form.Control
           type="password"

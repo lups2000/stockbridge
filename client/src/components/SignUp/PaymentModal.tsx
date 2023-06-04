@@ -45,9 +45,6 @@ export const PaymentModal: FC<PaymentModalProps> = (props) => {
         </Form>
       </Modal.Body>
       <Modal.Footer>
-        <Button variant="secondary" onClick={props.onClose}>
-          Close
-        </Button>
         <Button style={{backgroundColor: palette.subSectionsBgAccent, border: "none"}} onClick={props.onClose}>
           Save Changes
         </Button>
