@@ -5,7 +5,7 @@ import { PRODUCT_CATEGORY } from "../../api/collections/advert";
 
 interface CategoryDropdownProps {
   category: string | undefined;
-  setCategory: (cat: string) => void;
+  onChangeCategory: (cat: string) => void;
 }
 
 const categories = Object.keys(PRODUCT_CATEGORY).filter((v) =>
@@ -13,7 +13,7 @@ const categories = Object.keys(PRODUCT_CATEGORY).filter((v) =>
 ) as (keyof typeof PRODUCT_CATEGORY)[];
 
 export const CategoryDropdown: FC<CategoryDropdownProps> = (props) => {
-  const { category, setCategory } = props;
+  const { category, onChangeCategory } = props;
 
   return (
     <Dropdown>
@@ -30,7 +30,7 @@ export const CategoryDropdown: FC<CategoryDropdownProps> = (props) => {
         {categories.map((category, index) => {
           const newCategory = category.replaceAll("_", " "); //just for design and user experience
           return (
-            <Dropdown.Item key={index} onClick={() => setCategory(newCategory)}>
+            <Dropdown.Item key={index} onClick={() => onChangeCategory(newCategory)}>
               {newCategory}
             </Dropdown.Item>
           );

@@ -211,7 +211,7 @@ export const SignupForm: FC = () => {
               <Form.Label className="font-link">Category</Form.Label>
               <CategoryDropdown
                 category={category}
-                setCategory={(cat) => setCategory(cat)}
+                onChangeCategory={(cat) => setCategory(cat)}
               />
             </Form.Group>
             <Form.Group className="mb-2">
