@@ -35,6 +35,10 @@ export const SignupForm: FC = () => {
   const [country, setCountry] = useState<string>();
 
   //payment info
+  const [cardName, setCardName] = useState<string>();
+  const [numberCard, setNumberCard] = useState<string>();
+  const [expDateCard, setExpDateCard] = useState<Date>();
+  const [cvvCard, setCvvCard] = useState<string>();
 
   const [error, setError] = useState<boolean>(false);
   const [errorMessage, setErrorMessage] = useState<string>("");
@@ -323,6 +327,14 @@ export const SignupForm: FC = () => {
       )}
       {isModalShowing ? (
         <PaymentModal
+          name={cardName}
+          number={numberCard}
+          expDate={expDateCard}
+          cvv={cvvCard}
+          onChangeName={(name) => setCardName(name)}
+          onChangeNumber={(number) => setNumberCard(number)}
+          onChangeDate={(date) => setExpDateCard(date)}
+          onChangeCVV={(cvv) => setCvvCard(cvv)}
           isShowing={isModalShowing}
           onClose={() => setIsModalShowing(false)}
         />
