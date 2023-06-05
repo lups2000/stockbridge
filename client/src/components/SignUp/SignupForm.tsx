@@ -8,6 +8,7 @@ import addIcon from "../../assets/add.svg";
 import backIcon from "../../assets/back.svg";
 import { checkPassword, isValidEmail } from "../../utils/functions";
 import { PaymentModal } from "./PaymentModal";
+import { ApiClient } from "../../api/ApiClient";
 
 /**
  * This component represents the form to manage the sign up and it makes also the axios call to the relative endpoint.
@@ -29,13 +30,12 @@ export const SignupForm: FC = () => {
   const [address, setAddress] = useState<string>();
   const [houseNumber, setHouseNumber] = useState<string>();
   const [city, setCity] = useState<string>();
-  const [province, setProvince] = useState<string>("");
   const [postalCode, setPostalCode] = useState<string>();
   const [country, setCountry] = useState<string>();
 
   //payment info
   const [cardName, setCardName] = useState<string>();
-  const [numberCard, setNumberCard] = useState<string>();
+  const [cardNumber, setCardNumber] = useState<string>();
   const [expDateCard, setExpDateCard] = useState<string>();
   const [cvvCard, setCvvCard] = useState<string>();
 
@@ -70,6 +70,33 @@ export const SignupForm: FC = () => {
     e.preventDefault(); // Prevent the default submit and page reload
 
     if (address && city && postalCode && country) {
+      new ApiClient()
+        .post("/auth/register", {
+          email,
+          password,
+          name: shopName,
+          address: {
+            street: address,
+            houseNumber,
+            city,
+            postalCode,
+            country,
+          },
+          paymentMethod: {
+            name: cardName,
+            cardNumber,
+            expirationDate: expDateCard,
+            cvv: cvvCard,
+          },
+        })
+        .catch((error) => {
+          setError(true);
+          if (error.response?.status === 401) {
+            setErrorMessage("User already registered");
+          } else {
+            setErrorMessage("No Server Response");
+          }
+        });
     } else {
       setError(true);
       setErrorMessage("Missing Information");
@@ -237,7 +264,7 @@ export const SignupForm: FC = () => {
               </div>
             </div>
             <div className="row">
-              <div className="col-md-4">
+              <div className="col-md-8">
                 <Form.Group className="mb-2">
                   <Form.Label className="font-link">City*</Form.Label>
                   <Form.Control
@@ -245,18 +272,6 @@ export const SignupForm: FC = () => {
                     placeholder="City"
                     onChange={(e: ChangeEvent<HTMLInputElement>) =>
                       setCity(e.target.value)
-                    }
-                  />
-                </Form.Group>
-              </div>
-              <div className="col-md-4">
-                <Form.Group className="mb-2">
-                  <Form.Label className="font-link">State/Province</Form.Label>
-                  <Form.Control
-                    type="text"
-                    placeholder="State/Province"
-                    onChange={(e: ChangeEvent<HTMLInputElement>) =>
-                      setProvince(e.target.value)
                     }
                   />
                 </Form.Group>
@@ -336,11 +351,11 @@ export const SignupForm: FC = () => {
       {isModalShowing ? (
         <PaymentModal
           name={cardName}
-          number={numberCard}
+          number={cardNumber}
           expDate={expDateCard}
           cvv={cvvCard}
           onChangeName={(name) => setCardName(name)}
-          onChangeNumber={(number) => setNumberCard(number)}
+          onChangeNumber={(number) => setCardNumber(number)}
           onChangeDate={(date) => setExpDateCard(date)}
           onChangeCVV={(cvv) => setCvvCard(cvv)}
           isShowing={isModalShowing}
