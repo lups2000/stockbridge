@@ -12,6 +12,9 @@ const categories = Object.keys(PRODUCT_CATEGORY).filter((v) =>
   isNaN(Number(v))
 ) as (keyof typeof PRODUCT_CATEGORY)[];
 
+/**
+ * So far I'm not using it anymore but maybe it's useful
+ */
 export const CategoryDropdown: FC<CategoryDropdownProps> = (props) => {
   const { category, onChangeCategory } = props;
 

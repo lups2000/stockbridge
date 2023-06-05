@@ -1,7 +1,7 @@
 import {type Request, type Response} from 'express';
 import asyncHandler from "express-async-handler"
 import { registerUser as registerUserService, loginUser as loginUserService} from "../services/authServices";
-import {createLoginResponseDto, createRegisterResponseDto} from "../dto/authDto";
+import {createLoginResponseDto, createAuthResponseDto} from "../dto/authDto";
 
 
 
@@ -13,7 +13,7 @@ import {createLoginResponseDto, createRegisterResponseDto} from "../dto/authDto"
  */
 const registerUser = asyncHandler(async (req: Request, res: Response) => {
     const { user, token, options } = await registerUserService(req.body);
-    res.status(201).cookie('jwtToken', token, options).json(createRegisterResponseDto('User registered successfully', user, token));
+    res.status(201).cookie('jwtToken', token, options).json(createAuthResponseDto('User registered successfully', user, token));
 });
 
 /**
@@ -23,8 +23,8 @@ const registerUser = asyncHandler(async (req: Request, res: Response) => {
  * @returns a JWT as a cookie and the login DTO including the token.
  */
 const loginUser = asyncHandler(async (req: Request, res: Response) => {
-    const {token, options } = await loginUserService(req.body.email, req.body.password);
-    res.status(200).cookie('jwtToken', token, options).json(createLoginResponseDto('User logged in successfully', token))
+    const {user, token, options } = await loginUserService(req.body.email, req.body.password);
+    res.status(200).cookie('jwtToken', token, options).json(createAuthResponseDto('User logged in successfully', user, token))
 });
 
 /**

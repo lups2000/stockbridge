@@ -7,7 +7,6 @@ import { useNavigate } from "react-router-dom";
 import addIcon from "../../assets/add.svg";
 import backIcon from "../../assets/back.svg";
 import { checkPassword, isValidEmail } from "../../utils/functions";
-import { CategoryDropdown } from "./CategoryDropdown";
 import { PaymentModal } from "./PaymentModal";
 
 /**
@@ -27,8 +26,8 @@ export const SignupForm: FC = () => {
 
   //second form info
   const [shopName, setShopName] = useState<string>("");
-  const [category, setCategory] = useState<string>("");
   const [address, setAddress] = useState<string>();
+  const [houseNumber, setHouseNumber] = useState<string>();
   const [city, setCity] = useState<string>();
   const [province, setProvince] = useState<string>("");
   const [postalCode, setPostalCode] = useState<string>();
@@ -37,7 +36,7 @@ export const SignupForm: FC = () => {
   //payment info
   const [cardName, setCardName] = useState<string>();
   const [numberCard, setNumberCard] = useState<string>();
-  const [expDateCard, setExpDateCard] = useState<Date>();
+  const [expDateCard, setExpDateCard] = useState<string>();
   const [cvvCard, setCvvCard] = useState<string>();
 
   const [error, setError] = useState<boolean>(false);
@@ -211,23 +210,32 @@ export const SignupForm: FC = () => {
                 }
               />
             </Form.Group>
-            <Form.Group className="mb-2">
-              <Form.Label className="font-link">Category</Form.Label>
-              <CategoryDropdown
-                category={category}
-                onChangeCategory={(cat) => setCategory(cat)}
-              />
-            </Form.Group>
-            <Form.Group className="mb-2">
-              <Form.Label className="font-link">Street Address*</Form.Label>
-              <Form.Control
-                type="text"
-                placeholder="Street Address"
-                onChange={(e: ChangeEvent<HTMLInputElement>) =>
-                  setAddress(e.target.value)
-                }
-              />
-            </Form.Group>
+            <div className="row">
+              <div className="col-md-8">
+                <Form.Group className="mb-2">
+                  <Form.Label className="font-link">Street Address*</Form.Label>
+                  <Form.Control
+                    type="text"
+                    placeholder="Street Address"
+                    onChange={(e: ChangeEvent<HTMLInputElement>) =>
+                      setAddress(e.target.value)
+                    }
+                  />
+                </Form.Group>
+              </div>
+              <div className="col-md-4">
+                <Form.Group className="mb-2">
+                  <Form.Label className="font-link">House Number*</Form.Label>
+                  <Form.Control
+                    type="text"
+                    placeholder="House Number"
+                    onChange={(e: ChangeEvent<HTMLInputElement>) =>
+                      setHouseNumber(e.target.value)
+                    }
+                  />
+                </Form.Group>
+              </div>
+            </div>
             <div className="row">
               <div className="col-md-4">
                 <Form.Group className="mb-2">

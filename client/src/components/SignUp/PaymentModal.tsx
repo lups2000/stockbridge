@@ -1,4 +1,4 @@
-import { ChangeEvent, FC, useEffect, useState } from "react";
+import { ChangeEvent, FC, useState } from "react";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import Modal from "react-bootstrap/Modal";
@@ -6,8 +6,10 @@ import { palette } from "../../utils/colors";
 import { BodyText } from "../Text/BodyText";
 import {
   checkCVV,
+  checkPaymentExpirationDate,
   chekCreditCardNumber,
-  spaceBetweenDigits,
+  autocompleteCardNumber,
+  autocompleteExpirationDate,
 } from "../../utils/functions";
 
 interface PaymentModalProps {
@@ -17,8 +19,8 @@ interface PaymentModalProps {
   onChangeName: (name: string) => void;
   number: string | undefined;
   onChangeNumber: (number: string) => void;
-  expDate: Date | undefined;
-  onChangeDate: (date: Date) => void;
+  expDate: string | undefined;
+  onChangeDate: (date: string) => void;
   cvv: string | undefined;
   onChangeCVV: (cvv: string) => void;
 }
@@ -45,16 +47,37 @@ export const PaymentModal: FC<PaymentModalProps> = (props) => {
 
   const checkPaymentDetails = () => {
     if (name && number && expDate && cvv) {
+      if (!chekCreditCardNumber(number)) {
+        setError(true);
+        setErrorMessage("Credit Card number incorrect");
+        return;
+      }
+      if (!checkCVV(cvv)) {
+        setError(true);
+        setErrorMessage("CVV Invalid");
+        return;
+      }
+      if (!checkPaymentExpirationDate(expDate)) {
+        setError(true);
+        setErrorMessage("Expiration Date Invalid");
+        return;
+      }
+      setError(false);
     } else {
       setError(true);
       setErrorMessage("Missing Information");
     }
   };
 
-  useEffect(() => console.log(number), [number]);
-
   return (
-    <Modal show={isShowing} onHide={onClose}>
+    <Modal
+      show={isShowing}
+      onHide={() => {
+        onChangeNumber("");
+        onChangeDate("");
+        onClose();
+      }}
+    >
       <Modal.Header closeButton>
         <Modal.Title>Payment Method</Modal.Title>
       </Modal.Header>
@@ -75,10 +98,10 @@ export const PaymentModal: FC<PaymentModalProps> = (props) => {
             <Form.Label>Card number</Form.Label>
             <Form.Control
               type="text"
-              value={number}
+              value={number ?? ""}
               placeholder="1111 2222 3333 4444"
               onChange={(e: ChangeEvent<HTMLInputElement>) => {
-                onChangeNumber(spaceBetweenDigits(e) ?? "");
+                onChangeNumber(autocompleteCardNumber(e) ?? "");
               }}
               maxLength={19} // to limit the credit card number
             />
@@ -89,10 +112,12 @@ export const PaymentModal: FC<PaymentModalProps> = (props) => {
                 <Form.Label className="font-link">Expiration</Form.Label>
                 <Form.Control
                   type="text"
-                  placeholder="2023"
-                  onChange={(e: ChangeEvent<HTMLInputElement>) =>
-                    onChangeDate(new Date(e.target.value))
-                  }
+                  placeholder="01/24"
+                  maxLength={5}
+                  value={expDate ?? ""}
+                  onChange={(e: ChangeEvent<HTMLInputElement>) => {
+                    onChangeDate(autocompleteExpirationDate(e) ?? "");
+                  }}
                 />
               </Form.Group>
             </div>
@@ -102,6 +127,7 @@ export const PaymentModal: FC<PaymentModalProps> = (props) => {
                 <Form.Control
                   type="text"
                   placeholder="012"
+                  maxLength={3}
                   onChange={(e: ChangeEvent<HTMLInputElement>) =>
                     onChangeCVV(e.target.value)
                   }
