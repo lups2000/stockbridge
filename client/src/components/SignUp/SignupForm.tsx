@@ -70,7 +70,7 @@ export const SignupForm: FC = () => {
     e.preventDefault(); // Prevent the default submit and page reload
 
     if (address && city && postalCode && country) {
-      new ApiClient()
+      const response = new ApiClient()
         .post("/auth/register", {
           email,
           password,
@@ -99,6 +99,7 @@ export const SignupForm: FC = () => {
             setErrorMessage("No Server Response");
           }
         });
+        console.log(response)
     } else {
       setError(true);
       setErrorMessage("Missing Information");

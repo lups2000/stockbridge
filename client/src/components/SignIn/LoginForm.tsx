@@ -30,7 +30,7 @@ export const LoginForm: FC = () => {
           setError(false);
           setErrorMessage("");
           setLoggedIn(true);
-          setUser(email ?? ""); // now i save the email as a string, but i must save the user
+          //setUser(email ?? ""); // now i save the email as a string, but i must save the user
 
           navigate("/"); //return to the homepage
         })
@@ -44,7 +44,7 @@ export const LoginForm: FC = () => {
             setErrorMessage("No Server Response");
           }
           setLoggedIn(false);
-          setUser("");
+          setUser(undefined);
         });
     } else {
       setError(true);

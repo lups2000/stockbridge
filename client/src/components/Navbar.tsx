@@ -16,7 +16,7 @@ export function Navbar() {
 
   const handleLogoutClick = () => {
     setLoggedIn(false);
-    setUser("");
+    setUser(undefined);
     navigate("/") //come back to homepage
   };
 

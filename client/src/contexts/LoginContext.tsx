@@ -5,7 +5,7 @@ export type LoginState = {
   loggedIn: boolean;
   setLoggedIn: (status: boolean) => void;
   user: User | undefined;
-  setUser: (user: User) => void;
+  setUser: (user: User | undefined) => void;
 };
 
 export type LoginContextProviderType = {
@@ -32,7 +32,7 @@ export const LoginContextProvider = ({
         loggedIn,
         setLoggedIn: (status: boolean) => setLoggedIn(status),
         user,
-        setUser: (user: User) => setUser(user),
+        setUser: (user: User | undefined) => setUser(user),
       }}
     >
       {children}
