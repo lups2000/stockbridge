@@ -8,7 +8,7 @@ import addIcon from "../../assets/add.svg";
 import backIcon from "../../assets/back.svg";
 import { checkPassword, isValidEmail } from "../../utils/functions";
 import { PaymentModal } from "./PaymentModal";
-import { ApiClient } from "../../api/ApiClient";
+import { ApiClient } from "../../api/apiClient";
 
 /**
  * This component represents the form to manage the sign up and it makes also the axios call to the relative endpoint.
@@ -91,8 +91,10 @@ export const SignupForm: FC = () => {
         })
         .catch((error) => {
           setError(true);
-          if (error.response?.status === 401) {
+          if (error.response?.status === 409) {
             setErrorMessage("User already registered");
+          } else if (error.response?.status === 400) {
+            setErrorMessage("Error in creating user");
           } else {
             setErrorMessage("No Server Response");
           }

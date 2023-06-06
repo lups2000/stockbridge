@@ -5,7 +5,7 @@ import { BodyText } from "../Text/BodyText";
 import { LoginContext } from "../../contexts/LoginContext";
 import { useNavigate } from "react-router-dom";
 import { isValidEmail } from "../../utils/functions";
-import { ApiClient } from "../../api/ApiClient";
+import { ApiClient } from "../../api/apiClient";
 
 /**
  * This component represents the form to manage the login and it makes also the axios call to the relative endpoint.
