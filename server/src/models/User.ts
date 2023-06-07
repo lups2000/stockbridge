@@ -84,7 +84,6 @@ const userSchema = new mongoose.Schema<User>({
     },
     prioritisationTickets: {
         type: Types.Number,
-        default: 0,
     },
     phoneNumber: {
         type: Types.String,
@@ -92,7 +91,6 @@ const userSchema = new mongoose.Schema<User>({
     },
     createdAt: {
         type: Types.Date,
-        default: Date.now,
     },
     address: addressSchema,
     subscription: subscriptionSchema,

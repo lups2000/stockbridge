@@ -30,7 +30,7 @@ const Reviewbar: React.FC<ReviewbarProps> = (props) => {
               {props?.date}
             </Text>
 
-            <Ratings rating={props.rating}></Ratings>
+            {Ratings(props?.rating? props.rating : 0)}
           </div>
         </div>
         <div className="flex flex-col items-start justify-start mb-[18px] ml-[17px] py-2.5 w-auto md:w-full">

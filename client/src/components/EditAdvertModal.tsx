@@ -1,10 +1,10 @@
-import React, { FC, useRef, useState } from "react";
+import React, { FC, useState } from "react";
 import { Img } from "../components";
 import { Button, Col, Form, Modal, Row } from "react-bootstrap";
-import { PRODUCT_CATEGORY, COLORS } from "../api/collections/advert";
+import { ProductCategory, Colors, Advert } from "../api/collections/advert";
 import { palette } from "../utils/colors";
-import axios from "axios";
-import { json } from "react-router-dom";
+import axiosClient from "../api/apiClient";
+
 
 
 
@@ -15,238 +15,330 @@ type EditAdvertContentProps = React.DetailedHTMLProps<
   Partial<{
     isShowing: boolean;
     onClose: () => void;
+    advert?: Advert;
+    userID: string;
+    advertID?: string;
   }>;
 
 const EditAdvertModal: FC<EditAdvertContentProps> = (props) => {
+  const [isChecked, setIsChecked] = useState(props.advert?.type? props.advert?.type : "");
+  
+  const handleType = (event: any) => {
+    setIsChecked(event.target.checked);
+  };
+  const purchaseDate = props.advert?.purchaseDate? props.advert.purchaseDate.toString().substring(0, 10) : "";
+  const expirationDate = props.advert?.expirationDate? props.advert.expirationDate.toString().substring(0, 10) : "";
+  console.log("purchased: ", purchaseDate)
+  const [encodedImage, setEncodedImage] = useState(props.advert?.imageurl? props.advert?.imageurl : "");
+  console.log('Constructing Form for advert: ', props.advert)
   const [formData, setFormData] = useState({
-    productname: "",
-    category: "",
-    description: "",
-    imageurl: "",
-    reference: "",
-    type: "Sell",
-    price: 0,
-    quantity: 0,
-    color: "",
-    purchaseDate: "",
-    issuer: 1,
-    prioritized: false,
+    productname: props.advert?.productname ? props.advert?.productname : "",
+    description: props.advert?.description ? props.advert?.description : "",
+    prioritized: props.advert?.prioritized? props.advert?.prioritized : false,
+    color: props.advert?.color? props.advert?.color : "",
+    purchaseDate: purchaseDate,
+    expirationDate: expirationDate,
+    quantity: props.advert?.quantity? props.advert?.quantity : 0,
+    price: props.advert?.price? props.advert?.price : 0,
+    category: props.advert?.category? props.advert?.category : "",
+    store: props.advert?.store? props.advert?.store : props.userID
   });
-  const [purchaseDate, setPurchaseDate] = useState(new Date());
 
   const handleChange = (event: any) => {
-    const { name, value, type, checked } = event.target;
-    const newValue = type === "checkbox" ? checked : value;
+    event.preventDefault();
+    const { name, value } = event.target;
     setFormData({
       ...formData,
-      [name]: newValue,
+      [name]: value,
     });
   };
 
-  const [dragging, setDragging] = useState<boolean>(false);
-  const [error, setError] = useState<string>("");
-  const iconRef = useRef<HTMLInputElement>(null!);
-  const [preview, setPreview] = useState("");
-
-  const onBtnClick = () => {
-    /*Collecting node-element and performing click*/
-    iconRef?.current.click();
-  };
-  const handleDragEnter = (event: React.DragEvent<HTMLDivElement>) => {
-    event.preventDefault();
-    setDragging(true);
-  };
-
-  const handleDragLeave = (event: React.DragEvent<HTMLDivElement>) => {
-    event.preventDefault();
-    setDragging(false);
-  };
-
-  const handleDragOver = (event: React.DragEvent<HTMLDivElement>) => {
-    event.preventDefault();
-  };
-
-  const handleDrop = (event: React.DragEvent<HTMLDivElement>) => {
-    event.preventDefault();
-    setDragging(false);
-    const file = event.dataTransfer.files[0];
-    setPreview(URL.createObjectURL(file));
-  };
+  const [errors, setErrors] = useState({
+    productname: false,
+    category: false,
+    price: false,
+    quantity: false,
+  });
 
   // todo: check file format (only picture formats allowed)
   const handleFileInput = (event: React.ChangeEvent<HTMLInputElement>) => {
+    event.preventDefault();
     if (event.target.files) {
       const file = event.target.files[0];
-      console.log("File uploaded: ", file);
       if (file != undefined) {
-        setPreview(URL.createObjectURL(file));
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onloadend = () => {
+          if (reader.result) {
+            setEncodedImage(reader.result as string);
+          }
+        };
       }
     }
   };
-
-  const handleDateChange = (date: React.SetStateAction<Date>) => {
-    setPurchaseDate(date);
+  const validationErrors = {
+    productname: false,
+    category: false,
+    price: false,
+    quantity: false,
   };
-  const handleSubmitPicture = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-  };
-
   const handleSubmit = async () => {
-    const axiosClient = axios.create({
-      baseURL: `http://localhost:3001/api/v1`,
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-    });
-    
-    // using interceptors to clean redirects
-    
-    const response = await axiosClient.post("/adverts", {data: formData});
-    console.log("Response:", response.status);
+    if (!formData.productname) {
+      validationErrors.productname = true
+    }
+    if (!formData.category) {
+      validationErrors.category = true
+    }
+    if (!formData.quantity) {
+      validationErrors.quantity = true
+    }
+    if (!formData.price) {
+      validationErrors.price = true
+    }
+    if (Object.values(validationErrors).some(e => e)) {
+      console.log('Errors are happening')
+      setErrors(validationErrors);
+    } else {
+      try {
+        if (props.advert) {
+          await axiosClient
+          .put(`adverts/${props.advertID}`, {
+            productname: formData.productname,
+            description: formData.description,
+            prioritized: false,
+            color: formData.color,
+            expirationDate: new Date(formData.expirationDate),
+            purchaseDate: new Date(formData.purchaseDate),
+            quantity: formData.quantity,
+            price: formData.price,
+            category: formData.category,
+            imageurl: encodedImage,
+          })
+        } else {
+          await axiosClient
+          .post("adverts", {
+            productname: formData.productname,
+            description: formData.description,
+            prioritized: false,
+            color: formData.color,
+            expirationDate: new Date(formData.expirationDate),
+            purchaseDate: new Date(formData.purchaseDate),
+            quantity: formData.quantity,
+            price: formData.price,
+            advertStatus: "Ongoing",
+            category: formData.category,
+            date: new Date(),
+            store: formData.store,
+            imageurl: encodedImage,
+          })
+        }
+        setErrors({
+          productname: false,
+          category: false,
+          price: false,
+          quantity: false,
+        });
+        if (props.onClose)
+          props?.onClose()
+      }
+      catch (error) {
+        console.error(error);
+      }
+    }
   };
-  
   return (
     <Modal show={props.isShowing} onHide={props.onClose}>
-        <Modal.Header closeButton>
-          <Modal.Title>Advert details:</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <Form>
-           <Row>
+      <Modal.Header closeButton>
+        <Modal.Title>Advert details:</Modal.Title>
+      </Modal.Header>
+      <Modal.Body>
+        <Form>
+          <Row>
             <Col>
-              <Form.Group className="mb-3" controlId="advertType">
-              <Form.Label style={{ padding: '10px',
-            color:  palette.gray}}>Sell/ Ask:</Form.Label>
-              <Form.Check inline type="radio" name="advertType" id="radio1" label="Sell"/>
-              <Form.Check inline type="radio" name="advertType" id="radio2" label="Ask"/>
+              <Form.Group className="mb-3" controlId="type">
+                <Form.Label style={{
+                  padding: '10px',
+                  color: palette.gray
+                }}>Sell/ Ask:</Form.Label>
+                <Form.Check inline required type="radio" name="type" id="radio1" label="Sell" onChange={handleType} value={isChecked} />
+                <Form.Check inline required type="radio" name="type" id="radio2" label="Ask" onChange={handleType} value={isChecked} />
               </Form.Group>
             </Col>
             <Col>
-            <Form.Group style={{
-              textAlign:"center"
-            }} 
-            controlId="FileUpload">
-            <div className="custom-file">
-            <Form.Control
-              type="file"
-              onChange={handleFileInput}
-              style={{
-                backgroundColor: "transparent",
-                borderColor: "black",
-                borderRadius: 15,
-                alignContent: "start",
-                justifyContent: "start",
-                marginBottom: "10px"
+              <Form.Group style={{
+                textAlign: "center"
               }}
-              id="customFile"/>
-        </div>
-        {preview && (
-              <div className="flex-col items-end justify-end">
-                <Img
-                  style={{
-                    width: "160px",
-                    height: "160px",
-                    borderRadius: "60px",
-                  }}
-                  src={preview}
-                />
-              </div>
-            )}
-      </Form.Group>
+                controlId="FileUpload">
+                <div className="custom-file">
+                  <Form.Control
+                    type="file"
+                    onChange={handleFileInput}
+                    style={{
+                      backgroundColor: "transparent",
+                      borderColor: "black",
+                      borderRadius: 15,
+                      alignContent: "start",
+                      justifyContent: "start",
+                      marginBottom: "10px"
+                    }}
+                    id="customFile" />
+                </div>
+                {encodedImage && (
+                  <div className="flex-col items-end justify-end">
+                    <Img
+                      style={{
+                        width: "160px",
+                        height: "160px",
+                        borderRadius: "60px",
+                      }}
+                      src={encodedImage}
+                    />
+                  </div>
+                )}
+              </Form.Group>
             </Col>
-            </Row> 
+          </Row>
           <Row>
             <Col>
               <Form.Group>
-                <Form.Label style={{ padding: '10px',
-            color:  palette.gray, margin: "5px"}}>Product Name</Form.Label>
-                <Form.Control style={{ padding: '10px',
-            color:  palette.gray, margin: "5px"}} type="text" placeholder="Product Name"></Form.Control>
+                <Form.Label style={{
+                  padding: '10px',
+                  color: palette.gray, margin: "5px"
+                }}>Product Name</Form.Label>
+                <Form.Control style={{
+                  padding: '10px',
+                  color: palette.gray, margin: "5px"
+                }} required type="text" placeholder="Product Name" name="productname" value={formData.productname} onChange={handleChange} isInvalid={!!errors.productname}></Form.Control>
+                <Form.Control.Feedback type="invalid">
+                  {errors.productname}
+                </Form.Control.Feedback>
               </Form.Group>
-            </Col>    
+            </Col>
+            </Row>
+            <Row>
             <Col>
               <Form.Group controlId="category">
-                <Form.Label style={{ padding: '10px',
-            color:  palette.gray, margin: "5px"}}>Product Category</Form.Label>
-                <Form.Select style={{ padding: '10px',
-            color:  palette.gray, margin: "5px"}} placeholder="Product Category" value={formData.category} name="category" onChange={handleChange}>
-                {Object.keys(PRODUCT_CATEGORY).filter((key) => isNaN(Number(key))).map(c => (
-                      <option>{c}</option>
-                    ))}
-                </Form.Select>
-              </Form.Group>
-            </Col>    
-          </Row>
-          <Row>
-            <Col>
-            <Form.Group>
-                <Form.Label style={{ padding: '10px',
-            color:  palette.gray, margin: "5px"}}>Product Color</Form.Label>
-                <Form.Select style={{ padding: '10px',
-            color:  palette.gray, margin: "5px"}} placeholder="Product Category" value={formData.color} name="color" onChange={handleChange}>
-                {Object.values(COLORS).filter((key) => isNaN(Number(key))).map(c => (
-                      <option>{c}</option>
-                    ))}
+                <Form.Label style={{
+                  padding: '10px',
+                  color: palette.gray, margin: "5px"
+                }}>Product Category</Form.Label>
+                <Form.Select style={{
+                  padding: '10px',
+                  color: palette.gray, margin: "5px"
+                }} required placeholder="Product Category" value={formData.category} name="category" onChange={handleChange} isInvalid={!!errors.category}>
+                  <option> -- Select Category -- </option>
+                  {Object.values(ProductCategory).filter((key) => isNaN(Number(key))).map(c => (
+                    <option>{c}</option>
+                  ))} 
                 </Form.Select>
               </Form.Group>
             </Col>
             <Col>
-            <Form.Label style={{ padding: '10px',
-            color:  palette.gray, margin: "5px"}}>Purchase Date</Form.Label>
-                  <Form.Control
-                  style={{ padding: '10px',
-                  color:  palette.gray, margin: "5px"}}
-                    type="date"
-                    value={formData.purchaseDate}
-                    name= "purchaseDate"
-                    onChange={handleChange}
-                  />
+              <Form.Group>
+                <Form.Label style={{
+                  padding: '10px',
+                  color: palette.gray, margin: "5px"
+                }}>Product Color</Form.Label>
+                <Form.Select style={{
+                  padding: '10px',
+                  color: palette.gray, margin: "5px"
+                }} placeholder="Product Category" value={formData.color} name="color" onChange={handleChange}>
+                  {Object.values(Colors).filter((key) => isNaN(Number(key))).map(c => (
+                    <option>{c}</option>
+                  ))}
+                </Form.Select>
+              </Form.Group>
             </Col>
           </Row>
           <Row>
             <Col>
-            <Form.Group>
-            <Form.Label style={{ padding: '10px',
-            color:  palette.gray, margin: "5px"}}> Quantity (pcs)</Form.Label>
-            <Form.Control style={{ padding: '10px',
-            color:  palette.gray, margin: "5px"}} type="number" name="quantity" onChange={handleChange}></Form.Control>
-            </Form.Group>
+              <Form.Label style={{
+                padding: '10px',
+                color: palette.gray, margin: "5px"
+              }}>Purchase Date</Form.Label>
+              <Form.Control
+                style={{
+                  padding: '10px',
+                  color: palette.gray, margin: "5px"
+                }}
+                type="date"
+                value={formData.purchaseDate}
+                name="purchaseDate"
+                onChange={handleChange}
+              />
             </Col>
             <Col>
-            <Form.Group>
-            <Form.Label style={{ padding: '10px',
-            color:  palette.gray, margin: "5px"}}> Price (€)</Form.Label>
-            <Form.Control style={{ padding: '10px',
-            color:  palette.gray, margin: "5px"}} type="number" name="price" onChange={handleChange}></Form.Control>
-            </Form.Group>
+              <Form.Label style={{
+                padding: '10px',
+                color: palette.gray, margin: "5px"
+              }}>Expiration Date</Form.Label>
+              <Form.Control
+                style={{
+                  padding: '10px',
+                  color: palette.gray, margin: "5px"
+                }}
+                type="date"
+                value={formData.expirationDate}
+                name="expirationDate"
+                onChange={handleChange}
+              />
             </Col>
           </Row>
           <Row>
-          <Col>
-            <Form.Group>
-            <Form.Label style={{ padding: '10px',
-            color:  palette.gray, margin: "5px"}}> Description</Form.Label>
-            <Form.Control style={{ padding: '10px',
-            color:  palette.gray, margin: "5px"}} as="textarea" rows={3} name="description" onChange={handleChange}></Form.Control>
-            </Form.Group>
+            <Col>
+              <Form.Group>
+                <Form.Label style={{
+                  padding: '10px',
+                  color: palette.gray, margin: "5px"
+                }}> Quantity (pcs)</Form.Label>
+                <Form.Control style={{
+                  padding: '10px',
+                  color: palette.gray, margin: "5px"
+                }} type="number" name="quantity" value={formData.quantity} onChange={handleChange} required isInvalid={!!errors.quantity}></Form.Control>
+              </Form.Group>
+            </Col>
+            <Col>
+              <Form.Group>
+                <Form.Label style={{
+                  padding: '10px',
+                  color: palette.gray, margin: "5px"
+                }}> Price (€)</Form.Label>
+                <Form.Control style={{
+                  padding: '10px',
+                  color: palette.gray, margin: "5px"
+                }} type="number" name="price" value={formData.price} onChange={handleChange} required isInvalid={!!errors.price}></Form.Control>
+              </Form.Group>
             </Col>
           </Row>
-      </Form>
+          <Row>
+            <Col>
+              <Form.Group>
+                <Form.Label style={{
+                  padding: '10px',
+                  color: palette.gray, margin: "5px"
+                }}> Description</Form.Label>
+                <Form.Control style={{
+                  padding: '10px',
+                  color: palette.gray, margin: "5px"
+                }} as="textarea" rows={3} name="description" value={formData.description} onChange={handleChange}></Form.Control>
+              </Form.Group>
+            </Col>
+          </Row>
+        </Form>
       </Modal.Body>
       <Modal.Footer>
-         <Button
-            className="text-white"
-            onClick={handleSubmit}
-            style={{
-              background: palette.green,
-              borderColor: palette.green
-            }}
+        <Button
+          className="text-white"
+          onClick={handleSubmit}
+          style={{
+            background: palette.green,
+            borderColor: palette.green
+          }}
         >
           Submit
         </Button>
       </Modal.Footer>
-      </Modal>
+    </Modal>
   );
 };
 

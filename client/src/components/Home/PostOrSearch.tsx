@@ -28,6 +28,7 @@ export function PostOrSearch(props: PostOrSearchProps) {
 
   const closeModal = () => {
     setShowModal(false);
+    window.location.reload();
   }
   return (
     <div
@@ -77,8 +78,7 @@ export function PostOrSearch(props: PostOrSearchProps) {
               color: "white",
               fontWeight: 600,
             }}
-            message="POST YOUR ADVERT"
-          />
+          >POST YOUR ADVERT</BodyText>
         </Button>
         {showModal && <EditAdvertModal isShowing={showModal} onClose={closeModal}/>}
         <ColoredLine width={60} height={2} color="white" gap={5}>
@@ -89,8 +89,7 @@ export function PostOrSearch(props: PostOrSearchProps) {
               color: "white",
               fontWeight: 400,
             }}
-            message="OR"
-          />
+          >OR</Title>
         </ColoredLine>
         <SearchBar />
         <div
@@ -109,8 +108,7 @@ export function PostOrSearch(props: PostOrSearchProps) {
               textAlign: "center",
               fontWeight: 500,
             }}
-            message="Out of stock?or got too much stock?No worries!"
-          />
+          >Out of stock?or got too much stock?No worries!</Title>
         </div>
       </div>
     </div>

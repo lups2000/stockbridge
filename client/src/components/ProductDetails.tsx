@@ -1,5 +1,7 @@
+
 import React from "react";
-import { Text, Img, Button } from "../components";
+import { Advert } from "../api/collections/advert";
+import { Img, BodyText } from "../components";
 import { ProductAttribute } from "./ProductAttribute";
 
 type ProductDetailsProps = React.DetailedHTMLProps<
@@ -7,43 +9,82 @@ type ProductDetailsProps = React.DetailedHTMLProps<
   HTMLDivElement
 > &
   Partial<{
-    productname: string;
-    imageurl: string;
-    description: string;
-    color: string;
-    purchaseDate: Date;
-    quantity: number;
-    price: number;
+    advert: Advert;
   }>;
 
 const ProductDetails: React.FC<ProductDetailsProps> = (props) => {
-  const image_url = "images/" + props?.imageurl;
-
   return (
-    <div className="flex items-start justify-center pt-[5%] h-[100%] w-[100%]">
-      <Img src={image_url} className="w-[30%]" alt={props?.productname} />
+    <div style= {{
+      display: "flex",
+      flexDirection: "row",
+      alignItems: "center",
+      gap: "10%",
+      justifyContent: "center",
+      paddingTop: "1%",
+      marginLeft: "5%",
+      height: "full",
+      width: "full",
+    }}>
+      <Img
+        style={{
+          width: "250px",
+          height: "auto",
+          borderRadius: "60px",
+          borderColor: "transparent"
+        }}
+        src={props?.advert?.imageurl}
+      />
       <div className="flex flex-col gap-10 items-start ml-[10%] mr-[10%] w-[100%">
-        <Text className="font-poppins text-black_900" as="h1" variant="h1">
-          {props?.productname}
-        </Text>
-        <Text className="font-light font-poppins text-gray_600 w-[100%]">
-          {props?.description}
-        </Text>
-        <ProductAttribute name="Color" value={props?.color}></ProductAttribute>
-        <ProductAttribute
-          name="Purchased On"
-          value={props?.purchaseDate}
-        ></ProductAttribute>
-        <div className="flex flex-row gap-[20%] items-start justify-start mt-[10%] w-auto">
+        <BodyText style={{
+          fontFamily: "Poppins",
+          color: "black",
+          fontSize: "24px",
+          fontWeight: 600
+        }}>{props?.advert?.productname? props.advert.productname : "Fake Product Name"}</BodyText>
+        <BodyText style={{
+          fontFamily: "Poppins",
+          color: "gray",
+          fontSize: "16px",
+          fontWeight: 300,
+          marginLeft: "10px"
+        }}>{props?.advert?.productname? props.advert.description : "Here goes the product description!"}</BodyText>
+        
+        {
+          props?.advert?.color && 
+          <ProductAttribute margin= "10%" name="Color" value={props?.advert?.color}></ProductAttribute>
+        } 
+        {
+            props?.advert?.purchaseDate &&
+            <ProductAttribute
+            name="Purchased On"
+            value={ props.advert.purchaseDate.toString().substring(0, 10)}
+          ></ProductAttribute>
+        }
+          {
+            props?.advert?.expirationDate &&
+            <ProductAttribute
+            name="Expires On"
+            value={`${props.advert.expirationDate.toString().substring(0, 10)}`}
+          ></ProductAttribute>
+        }
+        <div style={{
+          display: "flex",
+          flexDirection: "row",
+          gap: "20%",
+          alignItems: "start",
+          justifyContent: "start",
+          marginTop: "5%",
+          width: "auto"
+        }}>
           <ProductAttribute
             name="Quantity"
-            value={props?.quantity}
+            value={props?.advert?.quantity}
             unit="pcs"
             border={true}
           ></ProductAttribute>
           <ProductAttribute
             name="Price"
-            value={props?.price}
+            value={props?.advert?.price}
             unit="$"
             border={true}
           ></ProductAttribute>

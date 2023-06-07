@@ -85,7 +85,7 @@ export const LoginForm: FC = () => {
         />
       </Form.Group>
       {error ? (
-        <BodyText style={{ color: "red" }} message={errorMessage}></BodyText>
+        <BodyText style={{ color: "red" }}>{errorMessage}</BodyText>
       ) : undefined}
       <div className="d-grid font-link" style={{ marginTop: 30 }}>
         <Button
@@ -108,7 +108,7 @@ export const LoginForm: FC = () => {
             marginTop: 10,
           }}
         >
-          <BodyText style={{ fontSize: 15 }} message="No account?" />
+          <BodyText style={{ fontSize: 15 }}>No account?</BodyText>
           <a href="/signUp">Sign up</a>
         </div>
       </div>

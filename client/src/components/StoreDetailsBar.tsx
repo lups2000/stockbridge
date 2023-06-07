@@ -1,99 +1,91 @@
-import React, { useState } from "react";
-import { Text, Ratings } from "../components";
+import React from "react";
+import { User } from "../api/collections/user";
+import { BodyText, Ratings } from "../components";
+
 
 type StoreDetailsBarProps = React.DetailedHTMLProps<
   React.HTMLAttributes<HTMLDivElement>,
   HTMLDivElement
 > &
   Partial<{
-    userID: string;
+    category: string;
+    store: User;
   }>;
 
-const StoreDetailsBar: React.FC<StoreDetailsBarProps> = (props) => {
-  const fetchUser = async () => {
-    try {
-      const response = await fetch(
-        `http://localhost:3001/api/v1/users/${props.userID}`
-      );
-      console.log("Response: ", response);
-      const data = await response.json();
-      //setUser(data);
-    } catch (error) {
-      console.error("Error fetching element:", error);
-    }
-  };
-  /* useEffect(() => {
-      fetchUser();
-      if (user == null || user == undefined) {
-        setUser({
-          category: "FLOWERS",
-          rating: 5,
-          storename: "Petals & Blooms"
-        })
-      }
-    }
-  
-, []); */
-  const user = {
-    category: "FLOWERS",
-    rating: 5,
-    storename: "Petals & Blooms",
-  };
-  console.log("user: ", user);
-  return (
-    <>
-      <div className={props.className}>
-        <Text
-          className="font-poppins gap-5 text-white_A700"
-          as="h1"
-          variant="h1"
-        >
-          STORE DETAILS
-        </Text>
-        <div className="flex flex-row gap-[15%] items-start justify-start w-full">
-          <div className="flex flex-column gap-[4%] items-start justify-start w-auto">
-            <Text
-              className="font-light font-poppins text-indigo_600"
-              style={{ color: "233FC8" }}
-              as="h2"
-              variant="h2"
-            >
-              Category:
-            </Text>
-            <Text
-              className="font-light font-poppins text-white_A700"
-              as="h2"
-              variant="h2"
-            >
-              {user.category}
-            </Text>
-          </div>
 
-          <div className="flex flex-column gap-[4%] items-start justify-start w-full">
-            <Text
-              className="font-normal font-poppins text-indigo_600"
-              as="h2"
-              variant="h2"
-            >
-              Store:
-            </Text>
-            <div className="flex-row gap-7 itemts-center justify-start w-auto">
-              <Text
-                className="font-light font-poppins text-white_A700 underline w-[100%]"
-                as="h2"
-                variant="h2"
-              >
-                {user.storename}
-              </Text>
-              <Ratings
-                className="flex font-light font-poppins text-white_A700 w-auto"
-                rating={user.rating}
-              ></Ratings>
-            </div>
-          </div>
+const StoreDetailsBar: React.FC<StoreDetailsBarProps> = (props) => {
+  const fieldContainer = (message: string, value: string, rating = false) => {
+    return (
+      <div style={{
+        display: "flex",
+        flexDirection: "row",
+        gap: "4%",
+        alignItems: "start",
+        justifyContent: "start",
+        width: "30%"
+      }}>
+        <BodyText
+          style={{
+            color: "#7881D7", 
+            fontWeight: 600,
+            fontSize: "24px",
+          }}
+        >{message}</BodyText>
+        <div style={rating? {
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "start",
+          justifyContent: "start",  
+        } : {}}>
+          <BodyText
+            style={{
+              width: "auto", 
+              fontWeight: 300,
+              fontSize: "24px",
+              fontFamily: 'Poppins',
+              color: "#ffffff",
+              textDecorationColor: rating ? "#ffffff": "",
+              borderBottom: rating ? '2px solid' : ""
+            }} 
+          >{value}</BodyText>
+          {
+            rating &&
+              Ratings(props.store? props.store.rating : 0) 
+          }
         </div>
       </div>
-    </>
+    )
+  };
+  return (
+    <div style={{
+      backgroundColor: 'rgba(239, 68, 68, 0.55)',
+      display: 'flex',
+      flexDirection: 'column',
+      gap: '7px',
+      alignItems: 'start',
+      justifyContent: 'start',
+      paddingBottom: '5px',
+      paddingTop: '10px',
+      paddingLeft: '2%',
+      paddingRight: '10%',
+      marginTop: "50px",
+      width: '100%'
+    }}>
+      <BodyText
+        style={{ fontSize: 24, color: "white" }}
+      >STORE DETAILS</BodyText>
+      <div style={{
+        display: "flex",
+        flexDirection: "row",
+        gap: "15%",
+        alignItems: "start",
+        justifyContent: "start",
+        width: "100%",
+      }}>
+        {fieldContainer("Category:", props.category ? props.category : "")}
+        {fieldContainer("Store:", props.store?.name? props.store?.name : "", true)}
+      </div>
+    </div>
   );
 };
 

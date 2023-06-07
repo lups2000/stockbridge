@@ -22,13 +22,13 @@ export interface PaymentMethod {
 export interface User {
   id: string;
   name: string;
-  email: string;
-  password: string;
-  prioritisationTickets: number;
-  phoneNumber: string;
-  createdAt: Date;
-  address: Address;
-  subscription: Subscription;
-  paymentMethod: PaymentMethod;
+  email?: string;
+  password?: string;
+  prioritisationTickets?: number;
+  phoneNumber?: string;
+  createdAt?: Date;
+  address?: Address;
+  subscription?: Subscription;
+  paymentMethod?: PaymentMethod;
   rating: number;
 }

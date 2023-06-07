@@ -1,6 +1,6 @@
 import React from "react";
 import { Offer, OfferStatus } from "../api/collections/offer";
-import { List, Text } from "../components";
+import { BodyText, List, Text } from "../components";
 import { OfferBar } from "./OfferBar";
 
 type OfferSectionProps = React.DetailedHTMLProps<
@@ -29,22 +29,35 @@ function colorMap(status: OfferStatus): string {
 
 const OfferSection: React.FC<OfferSectionProps> = (props) => {
   return (
-    <div className="flex flex-col items-center pt-[7%]">
-      <Text
-        className="font-poppins"
-        as="h4"
-        variant="h4"
-        style={{
-          color: colorMap(
-            props.status === undefined ? OfferStatus.OPEN : props.status
-          ),
-        }}
+    <div style= {{
+      display: "flex", 
+      flexDirection: "column",
+      alignItems: "center",
+      justifyContent: "center",
+      paddingTop: "7%",
+      width: "80%"
+    }}>
+      <BodyText
+      style={{
+        fontFamily: "poppins",
+        fontSize: "24px",
+        fontWeight: 400,
+        color: colorMap(
+          props.status === undefined ? OfferStatus.OPEN : props.status
+        ),
+      }}
       >
         {props.status}
-      </Text>
+      </BodyText>
       <List
-        className="font-poppins gap-[20%] grid items-center mt-[37px] w-[100%]"
-        orientation="vertical"
+       style={{
+        display: "flex",
+        flexDirection: "column",
+        width: "100%",
+        marginTop: "37px",
+        alignItems: "center",
+        fontFamily: "Poppins"
+      }}
       >
         {props?.offers?.map((props, index) => (
           <React.Fragment key={`ProductOverviewViewerReviewbar${index}`}>

@@ -1,9 +1,11 @@
+import { ObjectId } from "mongodb";
 import mongoose from "mongoose";
 import {
-  ADVERT_STATUS,
-  ADVERT_TYPE,
+  AdvertStatus,
+  AdvertType,
   Advert,
-  PRODUCT_CATEGORY,
+  ProductCategory,
+  Colors,
 } from "../entities/advertEntity";
 
 const Types = mongoose.Schema.Types;
@@ -11,7 +13,7 @@ const Types = mongoose.Schema.Types;
 const advertSchema = new mongoose.Schema<Advert>({
   productname: {
     type: Types.String,
-    required: [true, "Please add a title"],
+    required: [true, "Please add a product name"],
   },
   prioritized: {
     type: Types.Boolean,
@@ -22,48 +24,68 @@ const advertSchema = new mongoose.Schema<Advert>({
     required: [true, "Please add a quantity"],
   },
   description: {
-    type: Types.String,
-    required: [true, "Please add a description"],
+    type: String,
+    required: [false, "Please add a description"],
   },
   price: {
     type: Types.Number,
     required: [true, "Please add a price"],
   },
+  imageurl: {
+    type: Types.String,
+    required: [false, "You could enter an image url"],
+  },
   expirationDate: {
     type: Types.Date,
-    required: [true, "Please add an exipration date"],
+    required: [false, "Please add an exipration date"],
   },
-  status: {
-    default: "ONGOING",
-    enum: Object.values(ADVERT_STATUS),
-    required: [true, "Please add a status"],
+  purchaseDate: {
+    type: Types.Date,
+    required: [false, "Please add an exipration date"],
+  },
+  date: {
+    type: Types.Date,
+    required: [true, "Please add a creation date"],
+  },
+  color: {
+    type: String,
+    enum: Object.values(Colors),
+    required: [false, "You could enter a color for the product"],
+  },
+  advertStatus: {
+    type: String,
+    enum: Object.values(AdvertStatus),
+    required: [false, "You could enter the status of the advert"],
   },
   type: {
-    enum: Object.values(ADVERT_TYPE),
-    required: [true, "Please add an advert type"],
+    type: String,
+    enum: Object.values(AdvertType),
+    required: [false, "Please add an advert type"],
   },
   category: {
-    enum: Object.values(PRODUCT_CATEGORY),
-    required: [true, "Please add a product category"],
+    type: String,
+    enum: Object.values(ProductCategory),
+    required: [false, "Please add a product category"],
   },
   offers: [
     {
       type: Types.ObjectId,
       ref: "Offer",
-      required: true,
+      required: [false, "Please add an offer"],
     },
   ],
-  reviews: [
+  reviews:
+  [
     {
       type: Types.ObjectId,
       ref: "Review",
-      required: true,
+      required: [false, "Please add a review"],
     },
   ],
   store: {
     type: Types.ObjectId,
     ref: "User",
-    required: true,
+    required: [false, "Please add a store"],
   },
 });
 

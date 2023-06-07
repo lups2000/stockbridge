@@ -13,7 +13,6 @@ export const orderSchema = new mongoose.Schema<Order>({
         required: [true, "Please add a quantity"]
     },
     status: {
-        default: ORDER_STATUS.PAYMENT_PENDING,
         enum: Object.values(ORDER_STATUS),
         required: [true, "Please add an order status"] 
      },

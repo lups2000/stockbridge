@@ -1,5 +1,6 @@
 import React from "react";
-import { Text } from "../components";
+import { BodyText, Text } from "../components";
+
 type ProductAttributeProps = React.DetailedHTMLProps<
   React.HTMLAttributes<HTMLDivElement>,
   HTMLDivElement
@@ -9,27 +10,41 @@ type ProductAttributeProps = React.DetailedHTMLProps<
     value: string | number | Date;
     unit: string;
     border: boolean;
+    margin: string;
   }>;
 const ProductAttribute: React.FC<ProductAttributeProps> = (props) => {
   return (
-    <div className="flex flex-row gap-5 items-start justify-start w-auto text-black_900">
-      <Text className="font-bold font-poppins w-auto" as="h3" variant="h3">
-        {props?.name}:
-      </Text>
-
-      <div
-        style={{
-          width: "150px",
-          height: "100%",
-          borderRadius: "10px",
-          border: props?.border ? "2px solid black" : "",
-          textAlign: props?.border ? "center" : "start",
-        }}
-      >
-        <Text className="font-light font-poppins" as="h3" variant="h3">
-          {`${props?.value} ${props?.unit}`}
-        </Text>
-      </div>
+    <div style={{
+      marginTop: props.margin? props.margin : "",
+      display: "flex",
+      flexDirection: "row",
+      gap: props.border? "7%" :"3%",
+      textAlign: "center",
+      alignItems: "center",
+      justifyContent: "start",
+      width: "full",
+      color: "black"
+    }}>
+      <BodyText style={{
+        fontWeight: "bold",
+        fontFamily: "Poppins", 
+        width:"auto",
+        fontSize: "20px"
+      }}>{props.name}: </BodyText>
+        <BodyText style={{
+          
+           width: props.border ? "150px" : "auto",
+           height: props.border ? "40px" : "auto",
+           borderRadius: "10px",
+           border: props?.border ? "3px solid black" : "",
+           textAlign: "center",
+           justifyContent: "center",  
+          fontFamily : "Poppins", 
+            font: "light",
+            fontSize: "20px"
+        }}>
+          {`${props?.value} ${props?.unit? props?.unit : ""}`}
+        </BodyText>
     </div>
   );
 };

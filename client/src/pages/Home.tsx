@@ -11,9 +11,9 @@ import { Page } from "../components/Page";
 import { Filters } from "../components/Home/Filters";
 import { BodyText } from "../components/Text/BodyText";
 import sortIcon from "../assets/sort-icon.svg";
-import { Text } from "../components";
 import { Button } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
+import { FC } from "react";
 const stepDescriptions: { message: string; icon: string }[] = [
   {
     message: "Search for what you are looking for.",
@@ -28,13 +28,16 @@ const stepDescriptions: { message: string; icon: string }[] = [
     icon: howWorks3,
   },
 ];
+  interface HomeProps {
+    loggedin: boolean;
+  }
 
-export function Home() {
+export const Home: FC<HomeProps> = (props) => {
   const matches = useMediaQuery("(min-width: 768px)");
   const navigate = useNavigate();
   return (
     <Page>
-      <PostOrSearch loggedin= {true}/>
+      <PostOrSearch loggedin= {props.loggedin}/>
       <div
         style={{
           position: "relative",
@@ -56,8 +59,7 @@ export function Home() {
             paddingTop: 50,
             marginBottom: -60,
           }}
-          message="HOW IT WORKS"
-        />
+        >HOW IT WORKS</Title>
         <ColoredLine
           color={palette.subSectionsBgAccent}
           height={5}
@@ -84,8 +86,7 @@ export function Home() {
       <div style={{ height: 2000 }}>
         <Title
           style={{ fontSize: 36, textAlign: "center", paddingTop: 20 }}
-          message="Active Adverts"
-        ></Title>
+        >Active Adverts</Title>
         <div style={{ marginTop: 100 }}>
           <img
             src={sortIcon}
@@ -105,13 +106,11 @@ export function Home() {
                       color: palette.subSectionsBgAccent,
                       fontSize: 30,
                       fontWeight: 600,
-                    }}
-                    message="Selling"
-                  />
+                    }} 
+                  >Selling</BodyText>
                   <BodyText
                     style={{ color: palette.subSectionsBgLighter, fontSize: 30 }}
-                    message="Buying"
-                  />
+                  >Buying</BodyText>
                   </div>
           <div style={{
                 display: "flex",
@@ -120,9 +119,8 @@ export function Home() {
                 justifyContent: "center",
               }}>
           <Filters/>
-          <Button onClick={() => navigate("/productoverview")}>
-          <BodyText style={{ color: palette.loginTitle, fontSize: 30 }} 
-                  message="Product"/>
+          <Button onClick={() => navigate("/productoverview/647ddfb46d74b615e34256bc")}>
+          <BodyText style={{ color: palette.loginTitle, fontSize: 30 }}>Product</BodyText>
           </Button>
           
           </div>

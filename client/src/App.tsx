@@ -12,11 +12,11 @@ function App() {
   return (
     <LoginContextProvider>
       <Routes>
-        <Route path="/" element={<Home />} />
+      <Route path="/" element={<Home loggedin={true} />} />
         <Route path="/userInfo" element={<UserInfo />} />
         <Route path="/signUp" element={<SignUp />} />
         <Route path="/signIn" element={<SignIn />} />
-        <Route path="/productoverview/:id" element={<ProductOverview></ProductOverview>}></Route>
+        <Route path="/productoverview/:id" Component={ProductOverview}></Route>
       </Routes>
     </LoginContextProvider>
   );

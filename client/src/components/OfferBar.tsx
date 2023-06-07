@@ -16,8 +16,22 @@ type OfferBarProps = React.DetailedHTMLProps<
 
 const OfferBar: React.FC<OfferBarProps> = (props) => {
   return (
-    <div className="border border-gray_500 border-solid rounded-[15px] justify-start w-full">
-      <div className="flex sm:flex-col flex-row gap-[70%] p-5 ml-1 mr-[20px] w-auto w-full">
+    <div style={{
+    border: "solid", 
+    borderColor: "lightgray", 
+    borderRadius: "15px",
+    justifyContent: "start",
+    width: "100%"
+    }}>
+      <div style={{
+       display: "flex",
+      flexDirection: "row",
+      gap: "70%",
+      padding: "5px",
+      marginLeft: "1px",
+      marginRight: "20px",
+      width: "100%"
+      }}>
         <div className="flex flex-col justify-start w-full sm:w-full">
           <Text
             className="font-light font-poppins text-black_900 w-full"
@@ -26,7 +40,7 @@ const OfferBar: React.FC<OfferBarProps> = (props) => {
           >
             {props?.store?.name}
           </Text>
-          <Ratings rating={props?.store?.rating}></Ratings>
+          {Ratings(props?.store?.rating? props.store.rating : 0)}
         </div>
         <Text
           className="font-light font-poppins text-black_900"

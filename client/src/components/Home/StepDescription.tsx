@@ -30,8 +30,7 @@ export function StepDescription(props: StepDescriptionProps) {
           color: palette.subSectionsBgAccent,
           fontWeight: 700,
         }}
-        message={props.number + "."}
-      />
+      >{props.number + "."}</Title>
       <img style={{ alignSelf: "center" }} src={props.icon} alt="howWorks1" />
       <BodyText
         style={{
@@ -41,8 +40,7 @@ export function StepDescription(props: StepDescriptionProps) {
           marginRight: 10,
           fontWeight: 200
         }}
-        message={props.message}
-      />
+      >{props.message}</BodyText>
     </div>
   );
 }

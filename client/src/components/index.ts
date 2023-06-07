@@ -26,3 +26,5 @@ export { StoreDetailsBar } from "./StoreDetailsBar";
 export { List } from "./List";
 export { Footer } from "./Footer";
 export { EditAdvertModal } from "./EditAdvertModal";
+export { BodyText } from "./Text/BodyText"
+export {OfferModal} from "./OfferModal";

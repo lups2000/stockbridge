@@ -12,7 +12,7 @@ interface PageProps {
 export const Page: FC<PageProps> = (props) => {
   return (
     <div
-      style={{ minHeight: "100vh", display: "flex", flexDirection: "column" }}
+      style={{ minHeight: "100vh", display: "flex", flexDirection: "column", backgroundColor: "#fff9fc"}}
     >
       <Navbar />
       {props.children}
