@@ -2,9 +2,9 @@ import React, { useState } from "react";
 import edit from "../../assets/edit-pencil.svg";
 import { Button } from "react-bootstrap";
 import { Advert } from "../../api/collections/advert";
-import { EditAdvertModal } from "../Elements/EditAdvertModal";
-import { Img } from "../Elements/Img";
-import { BodyText } from "../Elements/Text/BodyText";
+import { EditAdvertModal } from "./EditAdvertModal";
+import { BodyText } from "../Text/BodyText";
+import { Img } from "../Img";
 
 type ProductDetailsTopBarProps = Partial<{
   owner: boolean;

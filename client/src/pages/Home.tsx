@@ -1,6 +1,5 @@
-import { ColoredLine } from "../components/Elements/ColoredLine";
 import { StepDescription } from "../components/Home/StepDescription";
-import { Title } from "../components/Elements/Text/Title";
+import { Title } from "../components/Text/Title";
 import { palette } from "../utils/colors";
 import howWorks1 from "../assets/howWorks1.svg";
 import howWorks2 from "../assets/howWorks2.svg";
@@ -9,12 +8,14 @@ import { PostOrSearch } from "../components/Home/PostOrSearch";
 import useMediaQuery from "../hooks/useMediaQuery";
 import { Page } from "../components/Page";
 import { Filters } from "../components/Store/Filters";
-import { BodyText } from "../components/Elements/Text/BodyText";
+import { BodyText } from "../components/Text/BodyText";
 import sortIcon from "../assets/sort-icon.svg";
 import { Button } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import { FC } from "react";
-import { Img } from "../components/Elements/Img";
+import { ColoredLine } from "../components/ColoredLine";
+import { Img } from "../components/Img";
+
 const stepDescriptions: { message: string; icon: string }[] = [
   {
     message: "Search for what you are looking for.",

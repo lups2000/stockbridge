@@ -2,9 +2,10 @@ import React, { useState } from "react";
 import { ProductAttribute } from "../ProductOverview/ProductAttribute";
 import { Offer } from "../../api/collections/offer";
 import { Advert } from "../../api/collections/advert";
-import { Ratings } from "../Elements/Ratings";
-import { BodyText } from "../Elements/Text/BodyText";
+import { BodyText } from "../Text/BodyText";
 import { OfferModal } from "./OfferModal";
+import { Ratings } from "../Ratings";
+require('./offerBarStyle.scss');
 
 type OfferBarProps = React.DetailedHTMLProps<
   React.HTMLAttributes<HTMLDivElement>,

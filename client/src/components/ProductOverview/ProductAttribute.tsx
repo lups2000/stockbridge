@@ -1,5 +1,5 @@
 import React from "react";
-import { BodyText } from "../Elements/Text/BodyText";
+import { BodyText } from "../Text/BodyText";
 
 type ProductAttributeProps = React.DetailedHTMLProps<
   React.HTMLAttributes<HTMLDivElement>,

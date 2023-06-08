@@ -1,14 +1,14 @@
 import { palette } from "../../utils/colors";
 import homepageImage from "../../assets/homepageImage.png";
 import { Button, Image } from "react-bootstrap";
-import { BodyText } from "../Elements/Text/BodyText";
-import { Title } from "../Elements/Text/Title";
+import { BodyText } from "../Text/BodyText";
+import { Title } from "../Text/Title";
 import { SearchBar } from "./SearchBar";
 import { useNavigate } from "react-router-dom";
 import useMediaQuery from "../../hooks/useMediaQuery";
-import { ColoredLine } from "../Elements/ColoredLine";
 import { useState } from "react";
-import { EditAdvertModal } from "../Elements/EditAdvertModal";
+import { EditAdvertModal } from "../ProductOverview/EditAdvertModal";
+import { ColoredLine } from "../ColoredLine";
 
 /**
  * Component to manage the section of the homepage where the user can click on "post advert" or decide to search for something

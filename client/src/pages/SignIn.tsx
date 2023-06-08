@@ -1,6 +1,6 @@
 import { FC } from "react";
 import { Button } from "react-bootstrap";
-import { Title } from "../components/Elements/Text/Title";
+import { Title } from "../components/Text/Title";
 import { palette } from "../utils/colors";
 //import signUpImage from "../assets/signUp.png";
 import backIcon from "../assets/back.svg";

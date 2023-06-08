@@ -1,7 +1,7 @@
 import { ChangeEvent, FC, FormEvent, useContext, useState } from "react";
 import { Button, Form } from "react-bootstrap";
 import { palette } from "../../utils/colors";
-import { BodyText } from "../Elements/Text/BodyText";
+import { BodyText } from "../Text/BodyText";
 import { LoginContext } from "../../contexts/LoginContext";
 import { useNavigate } from "react-router-dom";
 

@@ -1,8 +1,7 @@
-
 import React from "react";
 import { Advert } from "../../api/collections/advert";
-import { Img } from "../Elements/Img";
-import { BodyText } from "../Elements/Text/BodyText";
+import { Img } from "../Img";
+import { BodyText } from "../Text/BodyText";
 import { ProductAttribute } from "./ProductAttribute";
 
 type ProductDetailsProps = React.DetailedHTMLProps<

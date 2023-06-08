@@ -2,7 +2,7 @@ import React, { FC, useState } from "react";
 import { Button, Col, Form, Modal, Row } from "react-bootstrap";
 import { Advert, updateAdvert, createAdvert, ProductCategory, Colors } from "../../api/collections/advert";
 import { palette } from "../../utils/colors";
-import { Img } from "./Img";
+import { Img } from "../Img";
 
 
 

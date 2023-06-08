@@ -3,8 +3,8 @@ import { Button, Col, Form, Modal, Row } from "react-bootstrap";
 import { Advert } from "../../api/collections/advert";
 import { Offer, OfferStatus } from "../../api/collections/offer";
 import { palette } from "../../utils/colors";
-import { Img } from "../Elements/Img";
-import { Ratings } from "../Elements/Ratings";
+import { Img } from "../Img";
+import { Ratings } from "../Ratings";
 
 
 

@@ -1,5 +1,5 @@
-import { BodyText } from "../Elements/Text/BodyText";
-import { Title } from "../Elements/Text/Title";
+import { BodyText } from "../Text/BodyText";
+import { Title } from "../Text/Title";
 import { palette } from "../../utils/colors";
 
 type StepDescriptionProps = {

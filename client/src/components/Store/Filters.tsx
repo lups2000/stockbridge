@@ -1,13 +1,14 @@
 import { FC, useState } from "react";
-import { Title } from "../Elements/Text/Title";
+import { Title } from "../Text/Title";
 import { palette } from "../../utils/colors";
-import { ColoredLine } from "../Elements/ColoredLine";
 import { Dropdown, Form } from "react-bootstrap";
 import Slider from "@mui/material/Slider";
-import { BodyText } from "../Elements/Text/BodyText";
+import { BodyText } from "../Text/BodyText";
 import { useMediaQuery } from "@mui/material";
 import { ProductCategory } from "../../api/collections/advert";
-import { DatePicker } from "../Elements/DatePicker";
+import { ColoredLine } from "../ColoredLine";
+import { DatePicker } from "../DatePicker";
+
 
 /**
  * This components represents the filters section in the home page.

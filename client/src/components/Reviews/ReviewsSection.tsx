@@ -1,6 +1,5 @@
-import React from "react"
 import { Review } from "../../api/collections/review"
-import { BodyText } from "../Elements/Text/BodyText"
+import { BodyText } from "../Text/BodyText"
 import { Reviewbar } from "./Reviewbar"
 
 

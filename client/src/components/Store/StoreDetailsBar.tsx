@@ -1,7 +1,7 @@
 import React from "react";
 import { User } from "../../api/collections/user";
-import { Ratings } from "../Elements/Ratings";
-import { BodyText } from "../Elements/Text/BodyText";
+import { Ratings } from "../Ratings";
+import { BodyText } from "../Text/BodyText";
 
 
 type StoreDetailsBarProps = React.DetailedHTMLProps<
