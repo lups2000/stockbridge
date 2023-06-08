@@ -10,15 +10,12 @@ import { Page } from "../components/Page";
 import { Filters } from "../components/Store/Filters";
 import { BodyText } from "../components/Text/BodyText";
 import sortIcon from "../assets/sort-icon.svg";
-import { Button } from "react-bootstrap";
-import { useNavigate } from "react-router-dom";
 import { FC } from "react";
 import { ColoredLine } from "../components/ColoredLine";
-import { Img } from "../components/Img";
 import { useContext, useEffect } from "react";
 import { LoginContext } from "../contexts/LoginContext";
 import { ApiClient } from "../api/apiClient";
-import { error } from "console";
+import { Image } from "react-bootstrap";
 
 const stepDescriptions: { message: string; icon: string }[] = [
   {
@@ -138,12 +135,10 @@ export const Home: FC<HomeProps> = (props) => {
                 fontSize: 30,
                 fontWeight: 600,
               }}
-              message="Selling"
-            />
+            >Selling</BodyText>
             <BodyText
               style={{ color: palette.subSectionsBgLighter, fontSize: 30 }}
-              message="Buying"
-            />
+            >Buying</BodyText>
           </div>
           <Filters />
         </div>

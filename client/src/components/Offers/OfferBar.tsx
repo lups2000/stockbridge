@@ -52,7 +52,7 @@ const OfferBar: React.FC<OfferBarProps> = (props) => {
             }}
           >
             {props?.offer?.offeror ? props.offer.offeror?.name : "No Name given"}
-            {Ratings(props?.offer?.offeror ? props.offer.offeror.rating : 0)}
+            {Ratings(props?.offer?.offeror?.rating ? props.offer.offeror.rating : 0)}
           </BodyText>
         <BodyText
           style={{

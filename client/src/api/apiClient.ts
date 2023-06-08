@@ -40,8 +40,3 @@ export class ApiClient {
     return await this.request<T>({ url, method: "DELETE", ...config });
   }
 }
-
-  public async delete<T>(url: string, config?: AxiosRequestConfig): Promise<T> {
-    return await this.request<T>({ url, method: 'DELETE', ...config });
-  }
-}

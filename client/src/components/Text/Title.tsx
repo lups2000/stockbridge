@@ -14,7 +14,7 @@ export const Title: FC<TextProps> = (props) => {
   //<h1 className="font-link" style={props.style}>{props.message}</h1>;
   return (
     <h1 className="font-link" style={props.style}>
-      {props.message}
+      {props.children}
     </h1>
   );
 }

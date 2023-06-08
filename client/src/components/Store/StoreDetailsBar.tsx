@@ -52,7 +52,7 @@ const StoreDetailsBar: React.FC<StoreDetailsBarProps> = (props) => {
           >{value} 
           {
             rating &&
-              Ratings(props.store? props.store.rating: 0) 
+              Ratings(props.store?.rating? props.store.rating: 0) 
           }
           </BodyText>
           
@@ -87,7 +87,7 @@ const StoreDetailsBar: React.FC<StoreDetailsBarProps> = (props) => {
         width: "100%",
       }}>
         <React.Fragment key={"category"}>{fieldContainer("Category:", props.category ? props.category : "")}</React.Fragment>
-        <React.Fragment key={"store-name  "}>{fieldContainer("Store:", props.store? props.store.name : "No Name", true)}</React.Fragment>
+        <React.Fragment key={"store-name  "}>{fieldContainer("Store:", props.store?.name? props.store.name : "No Name", true)}</React.Fragment>
       </div>
     </div>
   );

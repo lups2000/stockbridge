@@ -179,7 +179,7 @@ const OfferModal: FC<OfferContentProps> = (props) => {
                     <Col>
                         <Row>
                             <Form.Label>{props.advert?.type === "Sell" ? "Seller" : "Buyer"}: {props.advert?.store?.name}
-                            {Ratings(props.advert?.store? props.advert.store.rating : 0)}
+                            {Ratings(props.advert?.store?.rating? props.advert.store.rating : 0)}
                             </Form.Label>
                         </Row>
                         <Row>

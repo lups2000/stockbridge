@@ -27,11 +27,12 @@ export interface User {
   email?: string;
   password?: string;
   prioritisationTickets?: number;
+  rating?: number;
   phoneNumber?: string;
   createdAt?: Date;
   address?: Address;
   subscription?: Subscription;
-  paymentMethod?: PaymentMethod;
+  paymentMethod?: PaymentMethod; 
 }
 
 export interface UserResponse {

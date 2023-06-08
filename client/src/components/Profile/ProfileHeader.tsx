@@ -50,7 +50,7 @@ export function ProfileHeader() {
                         textAlign: "center",
                         fontWeight: 500,
                     }}
-                    message=
+                >
                     <h1>
                         Out of stock? or got
                         <br />
@@ -58,7 +58,7 @@ export function ProfileHeader() {
                         <br />
                         No worries!
                     </h1>
-                />
+                </Title>
             </div>
 
             <Button
@@ -84,8 +84,7 @@ export function ProfileHeader() {
                         color: "white",
                         fontWeight: 600,
                     }}
-                    message="POST YOUR ADVERT"
-                />
+                >POST YOUR ADVERT</BodyText>
             </Button>
         </div>
     );

@@ -137,7 +137,7 @@ export const PaymentModal: FC<PaymentModalProps> = (props) => {
           </div>
         </Form>
         {error ? (
-          <BodyText style={{ color: "red" }} message={errorMessage}></BodyText>
+          <BodyText style={{ color: "red" }}>{errorMessage}</BodyText>
         ) : undefined}
       </Modal.Body>
       <Modal.Footer>
