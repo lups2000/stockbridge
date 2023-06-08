@@ -76,7 +76,7 @@ const OfferBar: React.FC<OfferBarProps> = (props) => {
           value={props?.offer?.quantity}
           unit="pcs"
         />
-        <ProductAttribute name="Price" value={props?.offer?.price} unit="$" />
+        <ProductAttribute name="Price" value={props?.offer?.price} unit="€" />
       </div>
       {showModal && <OfferModal isShowing={showModal} onClose={closeModal} advert={props.advert} offer={props.offer}/>}
     </div>

@@ -172,7 +172,7 @@ const OfferModal: FC<OfferContentProps> = (props) => {
                             <Row style={{
                                 marginTop: "10px"
                             }}>
-                                <Form.Label>Purchase Date: {props.advert?.expirationDate.toString().substring(0, 10)}</Form.Label>
+                                <Form.Label>Expiration Date: {props.advert?.expirationDate.toString().substring(0, 10)}</Form.Label>
                             </Row>
                         }
                     </Col>

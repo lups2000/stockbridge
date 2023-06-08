@@ -85,7 +85,7 @@ const ProductDetails: React.FC<ProductDetailsProps> = (props) => {
           <ProductAttribute
             name="Price"
             value={props?.advert?.price}
-            unit="$"
+            unit="€"
             border={true}
           ></ProductAttribute>
         </div>
