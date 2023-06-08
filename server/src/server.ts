@@ -45,7 +45,8 @@ app.use(helmet());
 app.use(hpp());
 
 // Enable CORS
-app.use(cors());
+//app.use(cors());
+app.use(cors({credentials: true, origin: 'http://localhost:3000'})); //I put this line of code because I could see my jwt in the browser
 
 
 // Mount routers
