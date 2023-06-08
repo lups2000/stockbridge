@@ -1,12 +1,22 @@
-import { CSSProperties } from "react";
+import { CSSProperties, FC } from "react";
 
 export type TextProps = {
   style: CSSProperties;
-  message: string;
+  message: React.ReactNode;
 };
+
 /**
  * Component to display a title.
  */
-export function Title(props: TextProps) {
-  return <h1 className="font-link" style={props.style}>{props.message}</h1>;
+export const Title: FC<TextProps> = (props) => {
+  //return 
+  //<h1 className="font-link" style={props.style}>{props.message}</h1>;
+  return (
+    <h1 className="font-link" style={props.style}>
+      {props.message}
+    </h1>
+  );
 }
+
+
+
