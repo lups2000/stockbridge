@@ -1,9 +1,8 @@
 import React, { FC, useState } from "react";
 import { Img } from "../components";
 import { Button, Col, Form, Modal, Row } from "react-bootstrap";
-import { ProductCategory, Colors, Advert } from "../api/collections/advert";
+import { ProductCategory, Colors, Advert, updateAdvert, createAdvert } from "../api/collections/advert";
 import { palette } from "../utils/colors";
-import axiosClient from "../api/apiClient";
 
 
 
@@ -105,39 +104,37 @@ const EditAdvertModal: FC<EditAdvertContentProps> = (props) => {
       setErrors(validationErrors);
     } else {
       try {
-        if (props.advert) {
-          await axiosClient
-            .put(`adverts/${props.advertID}`, {
-              productname: formData.productname,
-              description: formData.description,
-              //type: isChecked,
-              prioritized: false,
-              color: formData.color,
-              expirationDate: new Date(formData.expirationDate),
-              purchaseDate: new Date(formData.purchaseDate),
-              quantity: formData.quantity,
-              price: formData.price,
-              category: formData.category,
-              imageurl: encodedImage,
-            })
+        if (props.advertID) {
+          await updateAdvert(props.advertID, {
+            productname: formData.productname,
+            description: formData.description,
+            //type: isChecked,
+            prioritized: false,
+            color: formData.color,
+            expirationDate: new Date(formData.expirationDate),
+            purchaseDate: new Date(formData.purchaseDate),
+            quantity: formData.quantity,
+            price: formData.price,
+            category: formData.category,
+            imageurl: encodedImage,
+          } as Advert)
         } else {
-          await axiosClient
-            .post("adverts", {
-              productname: formData.productname,
-              description: formData.description,
-              prioritized: false,
-              color: formData.color,
-              expirationDate: new Date(formData.expirationDate),
-              purchaseDate: new Date(formData.purchaseDate),
-              quantity: formData.quantity,
-              price: formData.price,
-              advertStatus: "Ongoing",
-              category: formData.category,
-              date: new Date(),
-              store: formData.store,
-              imageurl: encodedImage,
-              type: isChecked,
-            })
+          await createAdvert({
+            productname: formData.productname,
+            description: formData.description,
+            prioritized: false,
+            color: formData.color,
+            expirationDate: new Date(formData.expirationDate),
+            purchaseDate: new Date(formData.purchaseDate),
+            quantity: formData.quantity,
+            price: formData.price,
+            advertStatus: "Ongoing",
+            category: formData.category,
+            date: new Date(),
+            store: formData.store,
+            imageurl: encodedImage,
+            type: isChecked,
+          } as Advert)
         }
         setErrors({
           productname: false,

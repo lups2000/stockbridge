@@ -58,7 +58,7 @@ const OfferBar: React.FC<OfferBarProps> = (props) => {
             width: "full"
           }}
         >
-          {props?.offer?.createdAt.toLocaleDateString()}
+          {props?.offer?.createdAt?.toLocaleDateString()}
         </BodyText>
       </div>
       <div style={{

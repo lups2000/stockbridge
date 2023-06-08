@@ -2,7 +2,6 @@ import { ChangeEvent, FC, FormEvent, useContext, useState } from "react";
 import { Button, Form } from "react-bootstrap";
 import { palette } from "../../utils/colors";
 import { BodyText } from "../Text/BodyText";
-import axiosClient from "../../api/apiClient";
 import { LoginContext } from "../../contexts/LoginContext";
 import { useNavigate } from "react-router-dom";
 
@@ -25,7 +24,7 @@ export const LoginForm: FC = () => {
     e.preventDefault(); // Prevent the default submit and page reload
 
     if (email && isValidEmail(email)) {
-      await axiosClient
+     /*  await axiosClient
         .post("/auth/login", { email, password })
         .then(() => {
           setError(false);
@@ -48,7 +47,7 @@ export const LoginForm: FC = () => {
           }
           setLoggedIn(false);
           setUser("");
-        });
+        }); */
     } else {
       setError(true);
       setErrorMessage("Email invalid");

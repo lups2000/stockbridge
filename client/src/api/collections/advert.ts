@@ -1,3 +1,4 @@
+import { ApiClient } from "../apiClient";
 import { Offer } from "./offer";
 import { Review } from "./review";
 import { User } from "./user";
@@ -43,7 +44,7 @@ export enum ProductCategory {
 }
 
 export interface Advert {
-  id: string;
+  id?: string;
   productname?: string;
   prioritized?: boolean;
   quantity?: number;
@@ -59,4 +60,23 @@ export interface Advert {
   reviews?: Review[];
   imageurl?: string;
   color?: string;
+}
+
+const apiClient = new ApiClient();
+
+export async function getAdvert(id: string): Promise<Advert> {
+    return await apiClient.get<Advert>(`/adverts/${id}`);
+}
+
+export async function createAdvert(advert: Advert): Promise<Advert>{
+  return await apiClient.post<Advert>(`/adverts/`, advert, {withCredentials: false});
+}
+
+export async function updateAdvert(id: string, advert: Advert): Promise<Advert>{
+   console.log('UPDATING ADVERT: ', id);
+    return await apiClient.put<Advert>(`/adverts/${id}`, advert, {withCredentials: false});
+}
+
+export async function deleteAdvert(id: string): Promise<void> {
+    return await apiClient.delete<void>(`/adverts/${id}`);
 }

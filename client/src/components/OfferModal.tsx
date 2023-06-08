@@ -1,11 +1,9 @@
-import React, { FC, useEffect, useState } from "react";
+import React, { FC, useState } from "react";
 import { Button, Col, Form, Modal, Row } from "react-bootstrap";
 import { Advert } from "../api/collections/advert";
 import { palette } from "../utils/colors";
-import axiosClient from "../api/apiClient";
 import { Offer, OfferStatus } from "../api/collections/offer";
 import { Img } from "./Img";
-import { User } from "../api/collections/user";
 import { Ratings } from "./Ratings";
 
 
@@ -113,7 +111,7 @@ const OfferModal: FC<OfferContentProps> = (props) => {
                             fontSize: "16px",
                             color: "GrayText",
                             font: "light",
-                        }}>{props.offer ? props.offer.createdAt.toDateString().substring(0, 10) : new Date().toLocaleDateString().substring(0, 10)}</Form.Label>
+                        }}>{props.offer ? props.offer.createdAt?.toDateString().substring(0, 10) : new Date().toLocaleDateString().substring(0, 10)}</Form.Label>
                     </Col>
 
                 </Row>

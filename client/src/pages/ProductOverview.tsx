@@ -1,8 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import axiosClient from "../api/apiClient";
-import { Advert, Colors } from "../api/collections/advert";
-import { Offer } from "../api/collections/offer";
+import { Advert, Colors, getAdvert } from "../api/collections/advert";
+import { getOffer, Offer } from "../api/collections/offer";
 
 import {
   OffersSection,
@@ -42,10 +41,12 @@ const ProductOverview = () => {
   useEffect(() => {
     const fetchStore = async (storeID: string) => {
       try {
-        const response = await axiosClient
-          .get(`stores/${storeID}`
-          );
-        setStore(response.data);
+        //TODO: CHANGE WITH SERVER CALL
+        const store = {
+          name: "Fake store",
+          rating: 2,
+        }
+        setStore(store);
       }
       catch (error) {
         console.error(error);
@@ -56,10 +57,8 @@ const ProductOverview = () => {
 
       for (const offerId in offerIDs) {
         try {
-          const response = await axiosClient
-            .get(`offers/${offerId}`
-            );
-          fetchedOffers.push(response.data as Offer);
+          const offer = await getOffer(offerId);
+          fetchedOffers.push(offer);
         }
         catch (error) {
           console.error(error);
@@ -68,19 +67,20 @@ const ProductOverview = () => {
       setOffers(fetchedOffers);
     }
     const fetchAdvert = async () => {
-      try {
-        const response = await axiosClient
-          .get(`adverts/${id}`
-          );
-        const fetchedAdvert = response.data;
-        fetchStore(fetchedAdvert.store);
-        fetchOffers(fetchedAdvert.offers);
-        fetchedAdvert.store = store;
-        fetchedAdvert.offers = offers;
-        setAdvert(fetchedAdvert as Advert);
-      }
-      catch (error) {
-        console.error(error);
+      if (id) {
+        try {
+          const fetchedAdvert = await getAdvert(id);
+          if (fetchedAdvert.store) {
+            setStore(fetchedAdvert.store)
+          }
+          if (fetchedAdvert.offers) {
+            setOffers(fetchedAdvert.offers)
+          }
+          setAdvert(fetchedAdvert as Advert);
+        }
+        catch (error) {
+          console.error(error);
+        }
       }
     }
     fetchAdvert();
@@ -97,7 +97,7 @@ const ProductOverview = () => {
           <ProductOverviewSection advert={advert} advertID={id} />
 
           {owner && OffersSection(advert.offers ? advert.offers : [], advert)}
-          { ReviewsSection(advert.reviews ? advert.reviews : [])}
+          {ReviewsSection(advert.reviews ? advert.reviews : [])}
         </>
       ) : (
         <p>Loading ...</p>
