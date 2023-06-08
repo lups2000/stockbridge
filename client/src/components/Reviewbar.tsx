@@ -48,7 +48,8 @@ const Reviewbar: React.FC<ReviewbarProps> = (props) => {
                 fontFamily: "Poppins",
                 color: "black",
                 width: "full",
-                textDecoration: "underline"
+                textDecoration: "underline",
+                cursor: 'pointer',
               }}
               onClick={openModal}
             >
