@@ -92,7 +92,6 @@ const ProductOverview = () => {
             category={advert.category} store={store}
           />
           <ProductOverviewSection advert={advert} advertID={id} />
-
           {owner && OffersSection(offers, advert)}
           {ReviewsSection(advert.reviews ? advert.reviews : [])}
         </>

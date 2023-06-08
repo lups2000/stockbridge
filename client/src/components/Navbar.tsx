@@ -3,8 +3,8 @@ import userLogo from "../assets/user-logo.svg";
 import { useNavigate, NavLink } from "react-router-dom";
 import logo from "../assets/logo.svg";
 import { useContext } from "react";
-import { LoginContext } from "../../contexts/LoginContext";
-import { palette } from "../../utils/colors";
+import { LoginContext } from "../contexts/LoginContext";
+import { palette } from "../utils/colors";
 
 
 /**

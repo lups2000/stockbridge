@@ -1,8 +1,8 @@
 import { FC } from "react";
 import { Dropdown } from "react-bootstrap";
-import { palette } from "../../utils/colors";
-import { ColoredLine } from "./ColoredLine";
-import { BodyText } from "./Text/BodyText";
+import { palette } from "../utils/colors";
+import { ColoredLine } from "./Elements/ColoredLine";
+import { BodyText } from "./Elements/Text/BodyText";
 
 /**
  * This component represents the footer/bottom bar of our website.

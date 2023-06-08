@@ -31,7 +31,8 @@ const OfferBar: React.FC<OfferBarProps> = (props) => {
       borderColor: "lightgray",
       borderRadius: "15px",
       justifyContent: "start",
-      width: "100%"
+      width: "100%",
+      cursor: "pointer"
     }} onClick={openModal}>
       <div style={{
         display: "flex",
