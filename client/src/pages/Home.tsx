@@ -14,6 +14,7 @@ import sortIcon from "../assets/sort-icon.svg";
 import { Button } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import { FC } from "react";
+import { Img } from "../components";
 const stepDescriptions: { message: string; icon: string }[] = [
   {
     message: "Search for what you are looking for.",
@@ -88,7 +89,7 @@ export const Home: FC<HomeProps> = (props) => {
           style={{ fontSize: 36, textAlign: "center", paddingTop: 20 }}
         >Active Adverts</Title>
         <div style={{ marginTop: 100 }}>
-          <Image
+          <Img
             src={sortIcon}
             style={{ position: "absolute", right: 0 }}
           />
