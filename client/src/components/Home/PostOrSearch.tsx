@@ -4,7 +4,6 @@ import { Button, Image } from "react-bootstrap";
 import { BodyText } from "../Text/BodyText";
 import { Title } from "../Text/Title";
 import { SearchBar } from "./SearchBar";
-import { useNavigate } from "react-router-dom";
 import useMediaQuery from "../../hooks/useMediaQuery";
 import { useState } from "react";
 import { EditAdvertModal } from "../ProductOverview/EditAdvertModal";
