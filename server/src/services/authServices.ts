@@ -14,10 +14,15 @@ const serviceName = "authServices";
 export const registerUser = async (user: User) => {
   logger.debug(`${serviceName}: Creating user ${user}`);
   let createdUser;
+
+  if(await userModel.findOne({email: user.email})){
+    throw new AppError("User already exists", "User already exists", 409);
+  }
+
   try {
     createdUser = await userModel.create(user);
   } catch (err) {
-    throw new AppError("User already exists", "User already exists", 401);
+    throw new AppError("Error in creating user", "Error in creating user", 400);
   }
   return sendTokenResponse(createdUser);
 };

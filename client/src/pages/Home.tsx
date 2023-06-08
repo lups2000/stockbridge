@@ -12,6 +12,10 @@ import { Filters } from "../components/Home/Filters";
 import { BodyText } from "../components/Text/BodyText";
 import sortIcon from "../assets/sort-icon.svg";
 import { Image } from "react-bootstrap";
+import { useContext, useEffect } from "react";
+import { LoginContext } from "../contexts/LoginContext";
+import { ApiClient } from "../api/apiClient";
+import { error } from "console";
 
 const stepDescriptions: { message: string; icon: string }[] = [
   {
@@ -30,6 +34,35 @@ const stepDescriptions: { message: string; icon: string }[] = [
 
 export function Home() {
   const matches = useMediaQuery("(min-width: 768px)");
+
+  const { setLoggedIn, setUser } = useContext(LoginContext);
+
+  useEffect(() => {
+    new ApiClient()
+      .get("auth/verify", { withCredentials: true })
+      .then(() => {
+        const currentLoginStatus = localStorage.getItem("loginStatus");
+        const currentUser = localStorage.getItem("currentUser");
+        if (currentLoginStatus && currentUser) {
+          setLoggedIn(true);
+          setUser(JSON.parse(currentUser));
+        }
+      })
+      .catch((error) => {
+        setLoggedIn(false);
+        setUser(undefined);
+      });
+
+    /*
+    const currentLoginStatus = localStorage.getItem("loginStatus");
+    const currentUser = localStorage.getItem("currentUser");
+    if (currentLoginStatus && currentUser) {
+      setLoggedIn(true);
+      setUser(JSON.parse(currentUser));
+    }*/
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   return (
     <Page>
       <PostOrSearch />
@@ -71,6 +104,7 @@ export function Home() {
           {stepDescriptions.map((step, index) => {
             return (
               <StepDescription
+                key={index}
                 number={index + 1}
                 message={step.message}
                 icon={step.icon}
@@ -85,10 +119,7 @@ export function Home() {
           message="Active Adverts"
         ></Title>
         <div style={{ marginTop: 100 }}>
-          <Image
-            src={sortIcon}
-            style={{ position: "absolute", right: 0 }}
-          />
+          <Image src={sortIcon} style={{ position: "absolute", right: 0 }} />
           <div
             style={{
               display: "flex",
