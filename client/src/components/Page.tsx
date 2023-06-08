@@ -1,6 +1,6 @@
 import React, { FC } from "react";
-import { Navbar } from "./Navbar";
-import { Footer } from "./Footer";
+import { Navbar } from "react-bootstrap";
+import { Footer } from "./Elements/Footer";
 
 interface PageProps {
   children: React.ReactNode;

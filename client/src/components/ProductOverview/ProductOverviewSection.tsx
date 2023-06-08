@@ -3,9 +3,11 @@ import React, { useState } from "react";
 
 import { ProductDetailsTopBar } from "./ProductDetailsTopBar";
 import { ProductDetails } from "./ProductDetails";
-import { Advert } from "../api/collections/advert";
+
 import { Button } from "react-bootstrap";
-import { OfferModal } from "./OfferModal";
+import { Advert } from "../../api/collections/advert";
+import { OfferModal } from "../Offers/OfferModal";
+
 
 type ProductOverviewSectionProps = React.DetailedHTMLProps<
   React.HTMLAttributes<HTMLDivElement>,

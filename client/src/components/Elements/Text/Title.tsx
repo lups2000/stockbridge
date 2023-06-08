@@ -1,4 +1,4 @@
-import { CSSProperties, JSXElementConstructor, ReactElement, ReactFragment, ReactPortal } from "react";
+import { CSSProperties } from "react";
 
 export type TextProps = {
   style: CSSProperties;

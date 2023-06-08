@@ -1,10 +1,8 @@
 import React, { useState } from "react";
-import { Button } from "react-bootstrap";
-import { Review } from "../api/collections/review";
-
-import { BodyText, Text } from "../components";
-import { Ratings } from "./Ratings";
-import { StoreDetailsModal } from "./StoreDetailsModal";
+import { Review } from "../../api/collections/review";
+import { Ratings } from "../Elements/Ratings";
+import { StoreDetailsModal } from "../Store/StoreDetailsModal";
+import { BodyText } from "../Elements/Text/BodyText";
 
 type ReviewbarProps = React.DetailedHTMLProps<
   React.HTMLAttributes<HTMLDivElement>,

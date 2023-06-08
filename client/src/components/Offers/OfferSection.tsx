@@ -1,7 +1,7 @@
 import React from "react";
-import { Advert } from "../api/collections/advert";
-import { Offer, OfferStatus } from "../api/collections/offer";
-import { BodyText} from "../components";
+import { Advert } from "../../api/collections/advert";
+import { OfferStatus, Offer } from "../../api/collections/offer";
+import { BodyText } from "../Elements/Text/BodyText";
 import { OfferBar } from "./OfferBar";
 
 type OfferSectionProps = React.DetailedHTMLProps<

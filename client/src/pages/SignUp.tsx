@@ -1,9 +1,9 @@
 import { FC, useState } from "react";
 import { Button, Form } from "react-bootstrap";
-import { Title } from "../components/Text/Title";
+import { Title } from "../components/Elements/Text/Title";
 import { palette } from "../utils/colors";
 //import signUpImage from "../assets/signUp.png";
-import { BodyText } from "../components/Text/BodyText";
+import { BodyText } from "../components/Elements/Text/BodyText";
 import { useNavigate } from "react-router-dom";
 import backIcon from "../assets/back.svg";
 import useMediaQuery from "../hooks/useMediaQuery";

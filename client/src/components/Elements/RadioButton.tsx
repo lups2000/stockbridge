@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { Text } from "../components";
 
 type RadioButtonProps = React.DetailedHTMLProps<
   React.HTMLAttributes<HTMLDivElement>,

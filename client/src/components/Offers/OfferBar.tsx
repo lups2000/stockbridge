@@ -1,9 +1,10 @@
 import React, { useState } from "react";
-import { BodyText, OfferModal, Text } from "../components";
-import { Ratings } from "./Ratings";
-import { ProductAttribute } from "./ProductAttribute";
-import { Offer } from "../api/collections/offer";
-import { Advert } from "../api/collections/advert";
+import { ProductAttribute } from "../ProductOverview/ProductAttribute";
+import { Offer } from "../../api/collections/offer";
+import { Advert } from "../../api/collections/advert";
+import { Ratings } from "../Elements/Ratings";
+import { BodyText } from "../Elements/Text/BodyText";
+import { OfferModal } from "./OfferModal";
 
 type OfferBarProps = React.DetailedHTMLProps<
   React.HTMLAttributes<HTMLDivElement>,
@@ -18,6 +19,7 @@ const OfferBar: React.FC<OfferBarProps> = (props) => {
   const [showModal, setShowModal] = useState(false);
   const closeModal = () => {
     setShowModal(false);
+    //change to set Advert
     window.location.reload();
   }
   const openModal = () => {

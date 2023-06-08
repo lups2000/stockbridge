@@ -1,17 +1,15 @@
-import React, { FC, useEffect, useState } from "react";
+import React, { FC, useState } from "react";
 import { Button, Col, Form, Modal, Row } from "react-bootstrap";
-import { Advert } from "../api/collections/advert";
-import { palette } from "../utils/colors";
-
-import { Offer, OfferStatus } from "../api/collections/offer";
-import { Img } from "./Img";
-import { User } from "../api/collections/user";
-import { Ratings } from "./Ratings";
+import { Advert } from "../../api/collections/advert";
+import { Offer, OfferStatus } from "../../api/collections/offer";
+import { palette } from "../../utils/colors";
+import { Img } from "../Elements/Img";
+import { Ratings } from "../Elements/Ratings";
 
 
 
 
-type StoreDetailsProps = React.DetailedHTMLProps<
+type OfferContentProps = React.DetailedHTMLProps<
     React.HTMLAttributes<HTMLDivElement>,
     HTMLDivElement
 > &
@@ -19,8 +17,8 @@ type StoreDetailsProps = React.DetailedHTMLProps<
         isShowing: boolean;
         onClose: () => void;
         offer?: Offer;
-        advert?: Advert;
-        userID?: string;
+        advert: Advert;
+        userID: string;
     }>;
 function colorMap(status: OfferStatus): string {
         switch (status) {
@@ -36,7 +34,7 @@ function colorMap(status: OfferStatus): string {
             return "#4285F4";
         }
       }
-const StoreDetailsModal: FC<StoreDetailsProps> = (props) => {
+const OfferModal: FC<OfferContentProps> = (props) => {
 
     const [formData, setFormData] = useState({
         quantity: props.offer?.quantity ? props.offer?.quantity : 0,
@@ -174,7 +172,7 @@ const StoreDetailsModal: FC<StoreDetailsProps> = (props) => {
                             <Row style={{
                                 marginTop: "10px"
                             }}>
-                                <Form.Label>Purchase Date: {props.advert?.expirationDate.toString().substring(0, 10)}</Form.Label>
+                                <Form.Label>Expiration Date: {props.advert?.expirationDate.toString().substring(0, 10)}</Form.Label>
                             </Row>
                         }
                     </Col>
@@ -256,4 +254,4 @@ const StoreDetailsModal: FC<StoreDetailsProps> = (props) => {
     );
 };
 
-export { StoreDetailsModal };
+export { OfferModal };

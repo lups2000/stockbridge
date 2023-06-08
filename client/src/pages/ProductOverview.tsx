@@ -2,15 +2,12 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { Advert, Colors, getAdvert } from "../api/collections/advert";
 import { getOffer, Offer } from "../api/collections/offer";
-
-import {
-  OffersSection,
-  ReviewsSection,
-  StoreDetailsBar,
-} from "../components";
-
-import { ProductOverviewSection } from "../components";
+import { User } from "../api/collections/user";
+import { OffersSection } from "../components/Offers/OffersSection";
 import { Page } from "../components/Page";
+import { ProductOverviewSection,  } from "../components/ProductOverview/ProductOverviewSection";
+import { ReviewsSection } from "../components/Reviews/ReviewsSection";
+import { StoreDetailsBar } from "../components/Store/StoreDetailsBar";
 
 const ProductOverview = () => {
   const { id } = useParams();
@@ -37,7 +34,7 @@ const ProductOverview = () => {
     color: Colors.Blue,
   } as Advert);
   const [offers, setOffers] = useState([] as Offer[]);
-  const [store, setStore] = useState({});
+  const [store, setStore] = useState({} as User);
   useEffect(() => {
     const fetchStore = async (storeID: string) => {
       try {
@@ -46,7 +43,7 @@ const ProductOverview = () => {
           name: "Fake store",
           rating: 2,
         }
-        setStore(store);
+        setStore(store as User);
       }
       catch (error) {
         console.error(error);
@@ -92,11 +89,11 @@ const ProductOverview = () => {
       {advert != null ? (
         <>
           <StoreDetailsBar
-            category={advert.category} store={advert.store}
+            category={advert.category} store={store}
           />
           <ProductOverviewSection advert={advert} advertID={id} />
 
-          {owner && OffersSection(advert.offers ? advert.offers : [], advert)}
+          {owner && OffersSection(offers, advert)}
           {ReviewsSection(advert.reviews ? advert.reviews : [])}
         </>
       ) : (

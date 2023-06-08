@@ -1,6 +1,6 @@
-import { BodyText } from ".";
-import { Advert } from "../api/collections/advert";
-import { Offer, OfferStatus } from "../api/collections/offer";
+import { Advert } from "../../api/collections/advert";
+import { Offer, OfferStatus } from "../../api/collections/offer";
+import { BodyText } from "../Elements/Text/BodyText";
 import { OfferSection } from "./OfferSection";
 
 const OffersSection = (offers: Offer[], advert: Advert) => {

@@ -1,8 +1,8 @@
 import React from "react"
-import { Advert } from "../api/collections/advert"
-import { Review } from "../api/collections/review"
+import { Review } from "../../api/collections/review"
+import { BodyText } from "../Elements/Text/BodyText"
 import { Reviewbar } from "./Reviewbar"
-import { BodyText } from "./Text/BodyText"
+
 
 
 const ReviewsSection = (reviews: Review[]) => {

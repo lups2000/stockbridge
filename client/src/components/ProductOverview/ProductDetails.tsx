@@ -1,7 +1,8 @@
 
 import React from "react";
-import { Advert } from "../api/collections/advert";
-import { Img, BodyText } from "../components";
+import { Advert } from "../../api/collections/advert";
+import { Img } from "../Elements/Img";
+import { BodyText } from "../Elements/Text/BodyText";
 import { ProductAttribute } from "./ProductAttribute";
 
 type ProductDetailsProps = React.DetailedHTMLProps<
@@ -19,11 +20,11 @@ const ProductDetails: React.FC<ProductDetailsProps> = (props) => {
       flexDirection: "row",
       alignItems: "center",
       gap: "10%",
-      justifyContent: "center",
+      justifyContent: "start",
+      marginLeft: "10%",
       paddingTop: "1%",
-      marginLeft: "5%",
       height: "full",
-      width: "full",
+      width: "100%",
     }}>
       <Img
         style={{

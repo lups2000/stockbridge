@@ -1,10 +1,11 @@
 import { Button, Nav, Navbar as NavbarBS } from "react-bootstrap";
 import userLogo from "../assets/user-logo.svg";
 import { useNavigate, NavLink } from "react-router-dom";
-import { palette } from "../utils/colors";
 import logo from "../assets/logo.svg";
 import { useContext } from "react";
-import { LoginContext } from "../contexts/LoginContext";
+import { LoginContext } from "../../contexts/LoginContext";
+import { palette } from "../../utils/colors";
+
 
 /**
  * This component represents the navbar of our website.
