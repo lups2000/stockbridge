@@ -2,7 +2,7 @@ import React, { FC, useEffect, useState } from "react";
 import { Button, Col, Form, Modal, Row } from "react-bootstrap";
 import { Advert } from "../api/collections/advert";
 import { palette } from "../utils/colors";
-import axiosClient from "../api/apiClient";
+
 import { Offer, OfferStatus } from "../api/collections/offer";
 import { Img } from "./Img";
 import { User } from "../api/collections/user";
@@ -11,7 +11,7 @@ import { Ratings } from "./Ratings";
 
 
 
-type OfferContentProps = React.DetailedHTMLProps<
+type StoreDetailsProps = React.DetailedHTMLProps<
     React.HTMLAttributes<HTMLDivElement>,
     HTMLDivElement
 > &
@@ -19,8 +19,8 @@ type OfferContentProps = React.DetailedHTMLProps<
         isShowing: boolean;
         onClose: () => void;
         offer?: Offer;
-        advert: Advert;
-        userID: string;
+        advert?: Advert;
+        userID?: string;
     }>;
 function colorMap(status: OfferStatus): string {
         switch (status) {
@@ -36,7 +36,7 @@ function colorMap(status: OfferStatus): string {
             return "#4285F4";
         }
       }
-const OfferModal: FC<OfferContentProps> = (props) => {
+const StoreDetailsModal: FC<StoreDetailsProps> = (props) => {
 
     const [formData, setFormData] = useState({
         quantity: props.offer?.quantity ? props.offer?.quantity : 0,
@@ -256,4 +256,4 @@ const OfferModal: FC<OfferContentProps> = (props) => {
     );
 };
 
-export { OfferModal };
+export { StoreDetailsModal };

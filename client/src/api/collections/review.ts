@@ -1,3 +1,4 @@
+import { Advert } from "./advert";
 import { User } from "./user";
 
 export interface Review {
@@ -6,5 +7,5 @@ export interface Review {
     description: string;
     createdAt: Date,
     reviewer: User;
-    reviewee: User;
+    reviewedAdvert: Advert;
 }

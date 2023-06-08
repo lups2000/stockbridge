@@ -21,27 +21,26 @@ type EditAdvertContentProps = React.DetailedHTMLProps<
   }>;
 
 const EditAdvertModal: FC<EditAdvertContentProps> = (props) => {
-  const [isChecked, setIsChecked] = useState(props.advert?.type? props.advert?.type : "");
-  
+  const [isChecked, setIsChecked] = useState(props.advert?.type ? props.advert?.type : "");
+
   const handleType = (event: any) => {
-    setIsChecked(event.target.checked);
+    setIsChecked(event.target.value);
   };
-  const purchaseDate = props.advert?.purchaseDate? props.advert.purchaseDate.toString().substring(0, 10) : "";
-  const expirationDate = props.advert?.expirationDate? props.advert.expirationDate.toString().substring(0, 10) : "";
-  console.log("purchased: ", purchaseDate)
-  const [encodedImage, setEncodedImage] = useState(props.advert?.imageurl? props.advert?.imageurl : "");
+  const purchaseDate = props.advert?.purchaseDate ? props.advert.purchaseDate.toString().substring(0, 10) : "";
+  const expirationDate = props.advert?.expirationDate ? props.advert.expirationDate.toString().substring(0, 10) : "";
+  const [encodedImage, setEncodedImage] = useState(props.advert?.imageurl ? props.advert?.imageurl : "");
   console.log('Constructing Form for advert: ', props.advert)
   const [formData, setFormData] = useState({
     productname: props.advert?.productname ? props.advert?.productname : "",
     description: props.advert?.description ? props.advert?.description : "",
-    prioritized: props.advert?.prioritized? props.advert?.prioritized : false,
-    color: props.advert?.color? props.advert?.color : "",
+    prioritized: props.advert?.prioritized ? props.advert?.prioritized : false,
+    color: props.advert?.color ? props.advert?.color : "",
     purchaseDate: purchaseDate,
     expirationDate: expirationDate,
-    quantity: props.advert?.quantity? props.advert?.quantity : 0,
-    price: props.advert?.price? props.advert?.price : 0,
-    category: props.advert?.category? props.advert?.category : "",
-    store: props.advert?.store? props.advert?.store : props.userID
+    quantity: props.advert?.quantity ? props.advert?.quantity : 0,
+    price: props.advert?.price ? props.advert?.price : 0,
+    category: props.advert?.category ? props.advert?.category : "",
+    store: props.advert?.store ? props.advert?.store : props.userID
   });
 
   const handleChange = (event: any) => {
@@ -58,6 +57,7 @@ const EditAdvertModal: FC<EditAdvertContentProps> = (props) => {
     category: false,
     price: false,
     quantity: false,
+    type: false,
   });
 
   // todo: check file format (only picture formats allowed)
@@ -81,6 +81,7 @@ const EditAdvertModal: FC<EditAdvertContentProps> = (props) => {
     category: false,
     price: false,
     quantity: false,
+    type: false
   };
   const handleSubmit = async () => {
     if (!formData.productname) {
@@ -95,6 +96,10 @@ const EditAdvertModal: FC<EditAdvertContentProps> = (props) => {
     if (!formData.price) {
       validationErrors.price = true
     }
+    if (!isChecked) {
+      validationErrors.type = true
+    } 
+    
     if (Object.values(validationErrors).some(e => e)) {
       console.log('Errors are happening')
       setErrors(validationErrors);
@@ -102,41 +107,44 @@ const EditAdvertModal: FC<EditAdvertContentProps> = (props) => {
       try {
         if (props.advert) {
           await axiosClient
-          .put(`adverts/${props.advertID}`, {
-            productname: formData.productname,
-            description: formData.description,
-            prioritized: false,
-            color: formData.color,
-            expirationDate: new Date(formData.expirationDate),
-            purchaseDate: new Date(formData.purchaseDate),
-            quantity: formData.quantity,
-            price: formData.price,
-            category: formData.category,
-            imageurl: encodedImage,
-          })
+            .put(`adverts/${props.advertID}`, {
+              productname: formData.productname,
+              description: formData.description,
+              //type: isChecked,
+              prioritized: false,
+              color: formData.color,
+              expirationDate: new Date(formData.expirationDate),
+              purchaseDate: new Date(formData.purchaseDate),
+              quantity: formData.quantity,
+              price: formData.price,
+              category: formData.category,
+              imageurl: encodedImage,
+            })
         } else {
           await axiosClient
-          .post("adverts", {
-            productname: formData.productname,
-            description: formData.description,
-            prioritized: false,
-            color: formData.color,
-            expirationDate: new Date(formData.expirationDate),
-            purchaseDate: new Date(formData.purchaseDate),
-            quantity: formData.quantity,
-            price: formData.price,
-            advertStatus: "Ongoing",
-            category: formData.category,
-            date: new Date(),
-            store: formData.store,
-            imageurl: encodedImage,
-          })
+            .post("adverts", {
+              productname: formData.productname,
+              description: formData.description,
+              prioritized: false,
+              color: formData.color,
+              expirationDate: new Date(formData.expirationDate),
+              purchaseDate: new Date(formData.purchaseDate),
+              quantity: formData.quantity,
+              price: formData.price,
+              advertStatus: "Ongoing",
+              category: formData.category,
+              date: new Date(),
+              store: formData.store,
+              imageurl: encodedImage,
+              type: isChecked,
+            })
         }
         setErrors({
           productname: false,
           category: false,
           price: false,
           quantity: false,
+          type: false
         });
         if (props.onClose)
           props?.onClose()
@@ -155,13 +163,13 @@ const EditAdvertModal: FC<EditAdvertContentProps> = (props) => {
         <Form>
           <Row>
             <Col>
-              <Form.Group className="mb-3" controlId="type">
+              <Form.Group className="mb-3">
                 <Form.Label style={{
                   padding: '10px',
                   color: palette.gray
                 }}>Sell/ Ask:</Form.Label>
-                <Form.Check inline required type="radio" name="type" id="radio1" label="Sell" onChange={handleType} value={isChecked} />
-                <Form.Check inline required type="radio" name="type" id="radio2" label="Ask" onChange={handleType} value={isChecked} />
+                <Form.Check inline required type="radio" name="type" id="Sell" label="Sell" onChange={props.advert? undefined : handleType} value={"Sell"} checked={isChecked === "Sell"} />
+                <Form.Check inline required type="radio" name="type" id="Ask" label="Ask" onChange={props.advert? undefined : handleType} value={"Ask"} checked={isChecked === "Ask"}/>
               </Form.Group>
             </Col>
             <Col>
@@ -214,8 +222,8 @@ const EditAdvertModal: FC<EditAdvertContentProps> = (props) => {
                 </Form.Control.Feedback>
               </Form.Group>
             </Col>
-            </Row>
-            <Row>
+          </Row>
+          <Row>
             <Col>
               <Form.Group controlId="category">
                 <Form.Label style={{
@@ -229,7 +237,7 @@ const EditAdvertModal: FC<EditAdvertContentProps> = (props) => {
                   <option> -- Select Category -- </option>
                   {Object.values(ProductCategory).filter((key) => isNaN(Number(key))).map(c => (
                     <option>{c}</option>
-                  ))} 
+                  ))}
                 </Form.Select>
               </Form.Group>
             </Col>

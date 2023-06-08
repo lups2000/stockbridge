@@ -23,9 +23,9 @@ const reviewSchema = new mongoose.Schema<Review>({
         ref: 'User',
         required: true
     },
-    reviewee: {
+    reviewedAdvert: {
         type: Types.ObjectId,
-        ref: 'User',
+        ref: 'Advert',
         required: true
     }
 })

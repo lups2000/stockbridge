@@ -92,6 +92,11 @@ const userSchema = new mongoose.Schema<User>({
     createdAt: {
         type: Types.Date,
     },
+    rating: {
+        type: Types.Number,
+        min: 0,
+        max: 5
+    },
     address: addressSchema,
     subscription: subscriptionSchema,
     paymentMethod: paymentMethodSchema,

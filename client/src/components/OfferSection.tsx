@@ -1,6 +1,7 @@
 import React from "react";
+import { Advert } from "../api/collections/advert";
 import { Offer, OfferStatus } from "../api/collections/offer";
-import { BodyText, List, Text } from "../components";
+import { BodyText} from "../components";
 import { OfferBar } from "./OfferBar";
 
 type OfferSectionProps = React.DetailedHTMLProps<
@@ -10,6 +11,7 @@ type OfferSectionProps = React.DetailedHTMLProps<
   Partial<{
     status: OfferStatus;
     offers: Offer[];
+    advert: Advert;
   }>;
 
 function colorMap(status: OfferStatus): string {
@@ -35,13 +37,14 @@ const OfferSection: React.FC<OfferSectionProps> = (props) => {
       alignItems: "center",
       justifyContent: "center",
       paddingTop: "7%",
-      width: "80%"
+      width: "100%",
+      padding: "30px"
     }}>
       <BodyText
       style={{
         fontFamily: "poppins",
         fontSize: "24px",
-        fontWeight: 400,
+        fontWeight: 600,
         color: colorMap(
           props.status === undefined ? OfferStatus.OPEN : props.status
         ),
@@ -49,22 +52,22 @@ const OfferSection: React.FC<OfferSectionProps> = (props) => {
       >
         {props.status}
       </BodyText>
-      <List
+      <div
        style={{
         display: "flex",
         flexDirection: "column",
+        gap: "40px",
         width: "100%",
         marginTop: "37px",
         alignItems: "center",
         fontFamily: "Poppins"
       }}
       >
-        {props?.offers?.map((props, index) => (
-          <React.Fragment key={`ProductOverviewViewerReviewbar${index}`}>
-            <OfferBar {...props} />
-          </React.Fragment>
-        ))}
-      </List>
+        {props?.offers && (props.offers.length > 0 ? props.offers.map((offer, index) => (
+          <React.Fragment key={`offer-${index}`}> <OfferBar offer={offer} advert={props.advert}/>
+        </React.Fragment>)) : <BodyText style={{}}>No offers yet ...</BodyText>
+          )}
+      </div>
     </div>
   );
 };

@@ -2,7 +2,6 @@ import { type Response } from 'express';
 import asyncHandler from "express-async-handler"
 import {findReviewById, createReview, updateReview, delReview, findAllReviews} from "../services/reviewServices";
 import { AuthenticatedRequest } from "../middlewares/authMiddleware";
-import {AppError} from "../utils/errorHandler";
 
 
 /**

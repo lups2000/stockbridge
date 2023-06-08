@@ -1,56 +1,76 @@
-import React from "react";
-import { Text } from "../components";
+import React, { useState } from "react";
+import { BodyText, OfferModal, Text } from "../components";
 import { Ratings } from "./Ratings";
 import { ProductAttribute } from "./ProductAttribute";
-import { User } from "../api/collections/user";
 import { Offer } from "../api/collections/offer";
+import { Advert } from "../api/collections/advert";
 
 type OfferBarProps = React.DetailedHTMLProps<
   React.HTMLAttributes<HTMLDivElement>,
   HTMLDivElement
 > &
   Partial<{
-    store: User;
     offer: Offer;
+    advert: Advert;
   }>;
 
 const OfferBar: React.FC<OfferBarProps> = (props) => {
+  const [showModal, setShowModal] = useState(false);
+  const closeModal = () => {
+    setShowModal(false);
+    window.location.reload();
+  }
+  const openModal = () => {
+    setShowModal(true);
+  };
   return (
     <div style={{
-    border: "solid", 
-    borderColor: "lightgray", 
-    borderRadius: "15px",
-    justifyContent: "start",
-    width: "100%"
-    }}>
-      <div style={{
-       display: "flex",
-      flexDirection: "row",
-      gap: "70%",
-      padding: "5px",
-      marginLeft: "1px",
-      marginRight: "20px",
+      border: "solid",
+      borderColor: "lightgray",
+      borderRadius: "15px",
+      justifyContent: "start",
       width: "100%"
+    }} onClick={openModal}>
+      <div style={{
+        display: "flex",
+        flexDirection: "row",
+        width: "100%",
+        paddingLeft: "30px",
+        paddingTop: "30px",
+        gap: "80%"
       }}>
-        <div className="flex flex-col justify-start w-full sm:w-full">
-          <Text
-            className="font-light font-poppins text-black_900 w-full"
-            as="h3"
-            variant="h3"
+          <BodyText
+            style={{
+              font: "light",
+              fontFamily: "Poppins",
+              color: "black",
+              width: "full"
+            }}
           >
-            {props?.store?.name}
-          </Text>
-          {Ratings(props?.store?.rating? props.store.rating : 0)}
-        </div>
-        <Text
-          className="font-light font-poppins text-black_900"
-          as="h3"
-          variant="h3"
+            {props?.offer?.offeror ? props.offer.offeror?.name : "No Name given"}
+            {Ratings(props?.offer?.offeror ? props.offer.offeror.rating : 0)}
+          </BodyText>
+        <BodyText
+          style={{
+            font: "light",
+            fontFamily: "Poppins",
+            color: "black",
+            width: "full"
+          }}
         >
           {props?.offer?.createdAt.toLocaleDateString()}
-        </Text>
+        </BodyText>
       </div>
-      <div className="flex flex-row gap-[10%] items-center justify-center p-5 w-auto w-auto">
+      <div style={{
+        width: "auto",
+        display: "flex",
+        flexDirection: "row",
+        gap: "5%",
+        alignItems: "center",
+        justifyContent: "center",
+        padding: "10px",
+        marginLeft: "20%"
+      }}>
         <ProductAttribute
           name="Quantity"
           value={props?.offer?.quantity}
@@ -58,6 +78,7 @@ const OfferBar: React.FC<OfferBarProps> = (props) => {
         />
         <ProductAttribute name="Price" value={props?.offer?.price} unit="$" />
       </div>
+      {showModal && <OfferModal isShowing={showModal} onClose={closeModal} advert={props.advert} offer={props.offer}/>}
     </div>
   );
 };

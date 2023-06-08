@@ -86,6 +86,17 @@ export const putUser = asyncHandler(async (req: AuthenticatedRequest, res: Respo
     const user = await updateUser(id, req.body);
     res.status(200).json(user);
 });
+/**
+ * This method updates a user by id   *
+ * @param req - The request object
+ * @param res - The response object
+ * @returns updated user object.
+ */
+ export const putStore = asyncHandler(async (req: AuthenticatedRequest, res: Response) => {
+    const {id} = req.params;
+    const user = await updateUser(id, req.body);
+    res.status(200).json(user);
+});
 
 /**
  * This method deletes a user by id   *

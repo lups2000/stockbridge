@@ -22,7 +22,7 @@ const ProductAttribute: React.FC<ProductAttributeProps> = (props) => {
       textAlign: "center",
       alignItems: "center",
       justifyContent: "start",
-      width: "full",
+      width: "100%",
       color: "black"
     }}>
       <BodyText style={{

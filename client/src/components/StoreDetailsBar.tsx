@@ -44,14 +44,17 @@ const StoreDetailsBar: React.FC<StoreDetailsBarProps> = (props) => {
               fontSize: "24px",
               fontFamily: 'Poppins',
               color: "#ffffff",
+              display: "flex",
+              flexDirection: "column",
               textDecorationColor: rating ? "#ffffff": "",
-              borderBottom: rating ? '2px solid' : ""
             }} 
-          >{value}</BodyText>
+          >{value} 
           {
             rating &&
-              Ratings(props.store? props.store.rating : 0) 
+              Ratings(props.store? props.store.rating: 0) 
           }
+          </BodyText>
+          
         </div>
       </div>
     )
@@ -82,8 +85,8 @@ const StoreDetailsBar: React.FC<StoreDetailsBarProps> = (props) => {
         justifyContent: "start",
         width: "100%",
       }}>
-        {fieldContainer("Category:", props.category ? props.category : "")}
-        {fieldContainer("Store:", props.store?.name? props.store?.name : "", true)}
+        <React.Fragment key={"category"}>{fieldContainer("Category:", props.category ? props.category : "")}</React.Fragment>
+        <React.Fragment key={"store-name  "}>{fieldContainer("Store:", props.store? props.store.name : "No Name", true)}</React.Fragment>
       </div>
     </div>
   );

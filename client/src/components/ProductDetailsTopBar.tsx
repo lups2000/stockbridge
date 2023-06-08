@@ -23,14 +23,13 @@ const ProductDetailsTopBar: React.FC<ProductDetailsTopBarProps> = (props) => {
     <div style={{
       display: "flex",
       flexDirection: "row",
-      gap: "75%",
       width: "100%"
     }}  >
       <BodyText style={{
         fontFamily: "poppins",
         color: "black",
         width: "100%",
-        fontSize: "24px",
+        fontSize: "36px",
         fontWeight: 600,
         paddingLeft: "10px"
       }}>PRODUCT DETAILS</BodyText>

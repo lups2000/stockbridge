@@ -3,6 +3,7 @@ import { CSSProperties, JSXElementConstructor, ReactElement, ReactFragment, Reac
 export type TextProps = {
   style: CSSProperties;
   children: React.ReactNode;
+  onClick?: () => void; 
 };
 /**
  * Component to display a title.
