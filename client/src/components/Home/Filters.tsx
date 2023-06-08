@@ -6,7 +6,7 @@ import { Dropdown, Form } from "react-bootstrap";
 import { DatePicker } from "../DatePicker";
 import Slider from "@mui/material/Slider";
 import { BodyText } from "../Text/BodyText";
-import { useMediaQuery } from "@mui/material";
+import useMediaQuery from "./../../hooks/useMediaQuery";
 
 /**
  * This components represents the filters section in the home page.

@@ -49,7 +49,7 @@ export function Navbar() {
             color: palette.subSectionsBgAccent,
             fontSize: 20,
           }}
-          onClick={() => navigate("/signIn")}
+          onClick={() => navigate("/SignIn")}
         >
           Sign In
         </Button>
