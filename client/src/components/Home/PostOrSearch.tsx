@@ -14,12 +14,8 @@ import { ColoredLine } from "../ColoredLine";
  * Component to manage the section of the homepage where the user can click on "post advert" or decide to search for something
  */
 
-interface PostOrSearchProps {
-  loggedin: boolean;
-}
 
-export function PostOrSearch(props: PostOrSearchProps) {
-  const navigate = useNavigate();
+export function PostOrSearch() {
   const matches = useMediaQuery("(min-width: 1200px)");
   const [showModal, setShowModal] = useState(false);
   const openModal = () => {
@@ -67,7 +63,7 @@ export function PostOrSearch(props: PostOrSearchProps) {
             marginTop: "15%",
           }}
           onClick={() =>
-            props.loggedin ? openModal() : navigate("/signin")
+            openModal()
           }
         >
           <BodyText

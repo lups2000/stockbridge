@@ -7,7 +7,7 @@ import howWorks3 from "../assets/howWorks3.svg";
 import { PostOrSearch } from "../components/Home/PostOrSearch";
 import useMediaQuery from "../hooks/useMediaQuery";
 import { Page } from "../components/Page";
-import { Filters } from "../components/Store/Filters";
+import { Filters } from "../components/Home/Filters";
 import { BodyText } from "../components/Text/BodyText";
 import sortIcon from "../assets/sort-icon.svg";
 import { FC } from "react";
@@ -31,11 +31,8 @@ const stepDescriptions: { message: string; icon: string }[] = [
     icon: howWorks3,
   },
 ];
-  interface HomeProps {
-    loggedin: boolean;
-  }
 
-export const Home: FC<HomeProps> = (props) => {
+export const Home: FC = () => {
   const matches = useMediaQuery("(min-width: 768px)");
 
   const { setLoggedIn, setUser } = useContext(LoginContext);
@@ -68,7 +65,7 @@ export const Home: FC<HomeProps> = (props) => {
 
   return (
     <Page>
-      <PostOrSearch loggedin= {props.loggedin}/>
+      <PostOrSearch/>
       <div
         style={{
           position: "relative",
