@@ -1,12 +1,13 @@
 import { FC, useState } from "react";
 import { Title } from "../Text/Title";
 import { palette } from "../../utils/colors";
-import { ColoredLine } from "../ColoredLine";
 import { Dropdown, Form } from "react-bootstrap";
-import { DatePicker } from "../DatePicker";
 import Slider from "@mui/material/Slider";
 import { BodyText } from "../Text/BodyText";
-import useMediaQuery from "./../../hooks/useMediaQuery";
+import useMediaQuery from "../../hooks/useMediaQuery";
+import { ProductCategory } from "../../api/collections/advert";
+import { ColoredLine } from "../ColoredLine";
+import { DatePicker } from "../DatePicker";
 
 /**
  * This components represents the filters section in the home page.
@@ -31,8 +32,7 @@ export const Filters: FC = () => {
     >
       <Title
         style={{ textAlign: "center", fontSize: 30, marginTop: 30 }}
-        message="Filters"
-      ></Title>
+      >Filters</Title>
       <ColoredLine height={2} width={100} color="black" />
       <Dropdown style={{ marginTop: 30 }}>
         <Dropdown.Toggle
@@ -48,13 +48,16 @@ export const Filters: FC = () => {
           Categories
         </Dropdown.Toggle>
         <Dropdown.Menu>
-          <Dropdown.Item href="#/action-1">Flowers</Dropdown.Item>
-          <Dropdown.Item href="#/action-2">Plants</Dropdown.Item>
-          <Dropdown.Item href="#/action-3">Something else</Dropdown.Item>
+          {Object.values(ProductCategory).filter((key) => isNaN(Number(key))).map(
+            c => <Dropdown.Item href={`${c}`}>{c}</Dropdown.Item>
+          )}
+          
+         {/*  <Dropdown.Item href="#/action-2">Plants</Dropdown.Item>
+          <Dropdown.Item href="#/action-3">Something else</Dropdown.Item> */}
         </Dropdown.Menu>
       </Dropdown>
       <div style={{ width: 200, marginTop: 20 }}>
-        <BodyText style={{ textAlign: "center" }} message="Price:" />
+        <BodyText style={{ textAlign: "center" }}>Price:</BodyText>
         <Slider
           style={{ color: "black", marginTop: -20 }}
           size="small"
@@ -66,7 +69,7 @@ export const Filters: FC = () => {
         />
       </div>
       <div style={{ width: 200 }}>
-        <BodyText style={{ textAlign: "center" }} message="Quantity:" />
+        <BodyText style={{ textAlign: "center" }}>Quantity:</BodyText>
         <Slider
           style={{ color: "black", marginTop: -20 }}
           size="small"
@@ -85,9 +88,7 @@ export const Filters: FC = () => {
           <div>
             <Form.Group>
               <BodyText
-                style={{ textAlign: "center",marginBottom: 10 }}
-                message="Postal Code:"
-              />
+                style={{ textAlign: "center",marginBottom: 10 }}>Postal Code:</BodyText>
               <Form.Control
                 style={{ border: "none" }}
                 type="text"

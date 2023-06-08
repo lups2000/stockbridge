@@ -1,12 +1,9 @@
 import { palette } from "../../utils/colors";
 import profilePageImage from ".//../../assets/profilePageImage.png";
-import { Button } from "react-bootstrap";
+import { Button, Image } from "react-bootstrap";
 import { BodyText } from "../Text/BodyText";
 import { Title } from "../Text/Title";
 import useMediaQuery from "./../../hooks/useMediaQuery";
-import { Image } from "react-bootstrap";
-
-
 
 export function ProfileHeader() {
     const matches = useMediaQuery("(min-width: 1200px)");
@@ -50,7 +47,7 @@ export function ProfileHeader() {
                         textAlign: "center",
                         fontWeight: 500,
                     }}
-                    message=
+                >
                     <h1>
                         Out of stock? or got
                         <br />
@@ -58,7 +55,7 @@ export function ProfileHeader() {
                         <br />
                         No worries!
                     </h1>
-                />
+                </Title>
             </div>
 
             <Button
@@ -73,9 +70,7 @@ export function ProfileHeader() {
                     float: "right",
                     right: "5%",
                     top: "70%"
-
                 }}
-
             >
                 <BodyText
                     style={{
@@ -84,8 +79,7 @@ export function ProfileHeader() {
                         color: "white",
                         fontWeight: 600,
                     }}
-                    message="POST YOUR ADVERT"
-                />
+                >POST YOUR ADVERT</BodyText>
             </Button>
         </div>
     );

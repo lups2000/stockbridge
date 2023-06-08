@@ -1,6 +1,5 @@
 import mongoose from "mongoose";
 import { Review } from "../entities/reviewEntity";
-import userModel from "./User";
 
 const Types = mongoose.Schema.Types;
 
@@ -17,7 +16,6 @@ const reviewSchema = new mongoose.Schema<Review>({
     },
     createdAt: {
         type: Types.Date,
-        default: Date.now(),
         required: [false, "Please add a creation date"]
     },
     reviewer: {
@@ -25,9 +23,9 @@ const reviewSchema = new mongoose.Schema<Review>({
         ref: 'User',
         required: true
     },
-    reviewee: {
+    reviewedAdvert: {
         type: Types.ObjectId,
-        ref: 'User',
+        ref: 'Advert',
         required: true
     }
 })

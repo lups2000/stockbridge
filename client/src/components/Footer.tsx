@@ -1,8 +1,8 @@
 import { FC } from "react";
-import { palette } from "../utils/colors";
 import { Dropdown } from "react-bootstrap";
-import { BodyText } from "./Text/BodyText";
+import { palette } from "../utils/colors";
 import { ColoredLine } from "./ColoredLine";
+import { BodyText } from "./Text/BodyText";
 
 /**
  * This component represents the footer/bottom bar of our website.
@@ -26,47 +26,40 @@ export const Footer: FC = () => {
       <div>
         <BodyText
           style={{ fontSize: 15, fontWeight: 600 }}
-          message="LEGAL"
-        ></BodyText>
+        >LEGAL</BodyText>
         <ColoredLine color="black" width={20} height={2} marginTop={-10} />
         <a href="#ciao">
           <BodyText
             style={{ fontSize: 15, fontWeight: 400, marginTop: 20 }}
-            message="Terms"
-          ></BodyText>
+          >Terms</BodyText>
         </a>
         <a href="#ciao">
           <BodyText
             style={{ fontSize: 15, fontWeight: 400 }}
-            message="Privacy"
-          ></BodyText>
+          >Privacy</BodyText>
         </a>
       </div>
       <div>
         <BodyText
           style={{ fontSize: 15, fontWeight: 600 }}
-          message="Social"
-        ></BodyText>
+        >Social</BodyText>
         <ColoredLine color="black" width={20} height={2} marginTop={-10} />
         <a href="#ciao">
           <BodyText
             style={{ fontSize: 15, fontWeight: 400, marginTop: 20 }}
-            message="Instagram"
-          ></BodyText>
+          >Instagram</BodyText>
         </a>
         <a href="#ciao">
           <BodyText
             style={{ fontSize: 15, fontWeight: 400 }}
-            message="Facebook"
-          ></BodyText>
+          >Facebook</BodyText>
         </a>
       </div>
       <Dropdown>
         <Dropdown.Header>
           <BodyText
             style={{ fontSize: 15, fontWeight: 600 }}
-            message="LANGUAGE"
-          ></BodyText>
+          >LANGUAGE</BodyText>
         </Dropdown.Header>
         <ColoredLine color="black" width={20} height={2} marginTop={-10} />
         <Dropdown.Toggle

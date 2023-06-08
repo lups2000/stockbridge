@@ -3,6 +3,7 @@ import asyncHandler from "express-async-handler"
 import {findUserById, createUser, updateUser, delUser, findAllUsers} from "../services/userServices";
 import { AuthenticatedRequest } from "../middlewares/authMiddleware";
 import {AppError} from "../utils/errorHandler";
+import { User } from '../entities/userEntity';
 
 
 /**
@@ -27,6 +28,23 @@ export const getUser = asyncHandler(async (req: AuthenticatedRequest, res: Respo
     verifyIfAuthorized(id, req);
     const user = await findUserById(id);
     res.status(200).json(user);
+});
+
+/**
+ * This method returns a user by id   *
+ * @param req - The request object
+ * @param res - The response object
+ * @returns the public information of a user object.
+ */
+export const getStoreData = asyncHandler(async (req: AuthenticatedRequest, res: Response) => {
+    const {id} = req.params;
+    let user = await findUserById(id) as User;
+    res.status(200).json({
+        id: user.id,
+        name: user.name,
+        address: user.address,
+        rating: user.rating
+    });
 });
 
 /**
@@ -67,6 +85,7 @@ export const putUser = asyncHandler(async (req: AuthenticatedRequest, res: Respo
     const user = await updateUser(id, req.body);
     res.status(200).json(user);
 });
+
 
 /**
  * This method deletes a user by id   *

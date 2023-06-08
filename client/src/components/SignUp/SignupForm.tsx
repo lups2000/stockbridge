@@ -136,8 +136,8 @@ export const SignupForm: FC = () => {
               fontWeight: 600,
               fontSize: 36,
             }}
-            message="Sign up "
-          />
+    
+          >Sign up </Title>
           <Form
             className="container-fluid"
             style={{ paddingLeft: 40, paddingRight: 40, marginTop: 30 }}
@@ -183,8 +183,7 @@ export const SignupForm: FC = () => {
             {error ? (
               <BodyText
                 style={{ color: "red" }}
-                message={errorMessage}
-              ></BodyText>
+              >{errorMessage}</BodyText>
             ) : undefined}
             <div className="d-grid font-link" style={{ marginTop: 30 }}>
               <Button
@@ -207,7 +206,7 @@ export const SignupForm: FC = () => {
                   marginTop: 10,
                 }}
               >
-                <BodyText style={{ fontSize: 15 }} message="Have an account?" />
+                <BodyText style={{ fontSize: 15 }}>Have an account?</BodyText>
                 <a href="/signIn">Sign in</a>
               </div>
             </div>
@@ -223,8 +222,7 @@ export const SignupForm: FC = () => {
               fontWeight: 600,
               fontSize: 36,
             }}
-            message="One more step..."
-          />
+          >One more step...</Title>
           <Form
             className="container-fluid"
             style={{ paddingLeft: 40, paddingRight: 40, marginTop: 30 }}
@@ -314,14 +312,12 @@ export const SignupForm: FC = () => {
               <img src={addIcon} alt="addIcon" />
               <BodyText
                 style={{ fontSize: 15, marginTop: 15, marginLeft: 8 }}
-                message="Add a payment method"
-              />
+              >Add a payment method</BodyText>
             </div>
             {error ? (
               <BodyText
                 style={{ color: "red" }}
-                message={errorMessage}
-              ></BodyText>
+              >{errorMessage}</BodyText>
             ) : undefined}
             <div className="d-grid font-link" style={{ marginTop: 15 }}>
               <Button
@@ -344,7 +340,7 @@ export const SignupForm: FC = () => {
                   marginTop: 10,
                 }}
               >
-                <BodyText style={{ fontSize: 15 }} message="Have an account?" />
+                <BodyText style={{ fontSize: 15 }}>Have an account?</BodyText>
                 <a href="/signIn">Sign in</a>
               </div>
             </div>

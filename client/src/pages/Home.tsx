@@ -1,4 +1,3 @@
-import { ColoredLine } from "../components/ColoredLine";
 import { StepDescription } from "../components/Home/StepDescription";
 import { Title } from "../components/Text/Title";
 import { palette } from "../utils/colors";
@@ -11,11 +10,12 @@ import { Page } from "../components/Page";
 import { Filters } from "../components/Home/Filters";
 import { BodyText } from "../components/Text/BodyText";
 import sortIcon from "../assets/sort-icon.svg";
-import { Image } from "react-bootstrap";
+import { FC } from "react";
+import { ColoredLine } from "../components/ColoredLine";
 import { useContext, useEffect } from "react";
 import { LoginContext } from "../contexts/LoginContext";
 import { ApiClient } from "../api/apiClient";
-import { error } from "console";
+import { Image } from "react-bootstrap";
 
 const stepDescriptions: { message: string; icon: string }[] = [
   {
@@ -32,7 +32,7 @@ const stepDescriptions: { message: string; icon: string }[] = [
   },
 ];
 
-export function Home() {
+export const Home: FC = () => {
   const matches = useMediaQuery("(min-width: 768px)");
 
   const { setLoggedIn, setUser } = useContext(LoginContext);
@@ -65,7 +65,7 @@ export function Home() {
 
   return (
     <Page>
-      <PostOrSearch />
+      <PostOrSearch/>
       <div
         style={{
           position: "relative",
@@ -87,8 +87,7 @@ export function Home() {
             paddingTop: 50,
             marginBottom: -60,
           }}
-          message="HOW IT WORKS"
-        />
+        >HOW IT WORKS</Title>
         <ColoredLine
           color={palette.subSectionsBgAccent}
           height={5}
@@ -116,8 +115,7 @@ export function Home() {
       <div style={{ height: 2000 }}>
         <Title
           style={{ fontSize: 36, textAlign: "center", paddingTop: 20 }}
-          message="Active Adverts"
-        ></Title>
+        >Active Adverts</Title>
         <div style={{ marginTop: 100 }}>
           <Image src={sortIcon} style={{ position: "absolute", right: 0 }} />
           <div
@@ -134,12 +132,10 @@ export function Home() {
                 fontSize: 30,
                 fontWeight: 600,
               }}
-              message="Selling"
-            />
+            >Selling</BodyText>
             <BodyText
               style={{ color: palette.subSectionsBgLighter, fontSize: 30 }}
-              message="Buying"
-            />
+            >Buying</BodyText>
           </div>
           <Filters />
         </div>

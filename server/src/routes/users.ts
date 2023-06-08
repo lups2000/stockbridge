@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import { protect } from "../middlewares/authMiddleware";
-import { postUser, getUsers, getUser, putUser, deleteUser } from "../controllers/userController";
+import { postUser, getUsers, getUser, putUser, deleteUser, getStoreData } from "../controllers/userController";
 
 
 

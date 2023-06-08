@@ -1,3 +1,4 @@
+import { Advert } from "./advertEntity";
 import { User } from "./userEntity";
 
 
@@ -7,5 +8,5 @@ export interface Review {
     description: string;
     createdAt: Date,
     reviewer: User;
-    reviewee: User;
+    reviewedAdvert: Advert;
 }

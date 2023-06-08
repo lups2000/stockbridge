@@ -30,6 +30,7 @@ export interface User {
     address: Address;
     subscription: Subscription;
     paymentMethod: PaymentMethod;
+    rating: number;
 
     getSignedJwtToken(): string;
 

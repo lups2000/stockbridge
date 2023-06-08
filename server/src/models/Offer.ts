@@ -13,7 +13,6 @@ export const offerSchema = new mongoose.Schema<Offer>({
         required: [true, "Please add a quantity"]
     },
     status: {
-        default: OfferStatus.PENDING,
         enum: Object.values(OfferStatus),
         required: [true, "Please add a status"],
     },
@@ -22,7 +21,6 @@ export const offerSchema = new mongoose.Schema<Offer>({
     },
     createdAt: {
         type: Types.Date,
-        default: Date.now(),
         required: [false, "Please add a date"],
     },
     offeror: {
