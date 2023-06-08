@@ -4,6 +4,9 @@ import { Dropdown } from "react-bootstrap";
 import { BodyText } from "./Text/BodyText";
 import { ColoredLine } from "./ColoredLine";
 
+/**
+ * This component represents the footer/bottom bar of our website.
+ */
 export const Footer: FC = () => {
   return (
     <div

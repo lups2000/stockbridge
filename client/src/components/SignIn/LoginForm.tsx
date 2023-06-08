@@ -5,6 +5,9 @@ import { BodyText } from "../Text/BodyText";
 import { LoginContext } from "../../contexts/LoginContext";
 import { useNavigate } from "react-router-dom";
 
+/**
+ * This component represents the form to manage the login and it makes also the axios call to the relative endpoint.
+ */
 export const LoginForm: FC = () => {
   const [email, setEmail] = useState<string>();
   const [password, setPassword] = useState<string>();

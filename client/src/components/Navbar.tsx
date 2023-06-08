@@ -6,6 +6,9 @@ import logo from "../assets/logo.svg";
 import { useContext } from "react";
 import { LoginContext } from "../contexts/LoginContext";
 
+/**
+ * This component represents the navbar of our website.
+ */
 export function Navbar() {
   const navigate = useNavigate();
 

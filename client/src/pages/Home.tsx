@@ -88,9 +88,8 @@ export const Home: FC<HomeProps> = (props) => {
           style={{ fontSize: 36, textAlign: "center", paddingTop: 20 }}
         >Active Adverts</Title>
         <div style={{ marginTop: 100 }}>
-          <img
+          <Image
             src={sortIcon}
-            alt="sortIcon"
             style={{ position: "absolute", right: 0 }}
           />
             <div
