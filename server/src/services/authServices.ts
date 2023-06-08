@@ -1,11 +1,10 @@
 import userModel from "../models/User";
-import type {User} from "../entities/userEntity";
+import type { User } from "../entities/userEntity";
 import logger from "../config/logger";
 import environment from "../utils/environment";
-import {AppError} from "../utils/errorHandler";
+import { AppError } from "../utils/errorHandler";
 
-
-const serviceName = 'authServices';
+const serviceName = "authServices";
 
 /**
  * Register a new user
@@ -13,10 +12,15 @@ const serviceName = 'authServices';
  * @returns Promise containing the created user
  */
 export const registerUser = async (user: User) => {
-    logger.debug(`${serviceName}: Creating user ${user}`)
-    const createdUser = await userModel.create(user);
-    return sendTokenResponse(createdUser);
-}
+  logger.debug(`${serviceName}: Creating user ${user}`);
+  let createdUser;
+  try {
+    createdUser = await userModel.create(user);
+  } catch (err) {
+    throw new AppError("User already exists", "User already exists", 401);
+  }
+  return sendTokenResponse(createdUser);
+};
 
 /**
  * Login a user
@@ -25,40 +29,40 @@ export const registerUser = async (user: User) => {
  * @returns Promise containing the user and the token
  */
 export const loginUser = async (email: string, password: string) => {
-    // Check for user
-    const user = await userModel.findOne({ email }).select('+password');
+  // Check for user
+  const user = await userModel.findOne({ email }).select("+password");
 
-    if (!user) {
-        throw new AppError('Invalid credentials', 'Invalid credentials', 401);
-    }
+  if (!user) {
+    throw new AppError("Invalid credentials", "Invalid credentials", 401);
+  }
 
-    // Check if password matches
-    const isMatch = await user.matchPassword(password);
+  // Check if password matches
+  const isMatch = await user.matchPassword(password);
 
-    if (!isMatch) {
-        throw new AppError('Invalid credentials', 'Invalid credentials', 401);
-    }
+  if (!isMatch) {
+    throw new AppError("Invalid credentials", "Invalid credentials", 401);
+  }
 
-    return sendTokenResponse(user);
-}
+  return sendTokenResponse(user);
+};
 
 export const logoutUser = async (email: string, password: string) => {
-    // Check for user
-    const user = await userModel.findOne({ email }).select('+password');
+  // Check for user
+  const user = await userModel.findOne({ email }).select("+password");
 
-    if (!user) {
-        throw new AppError('Invalid credentials', 'Invalid credentials', 401);
-    }
+  if (!user) {
+    throw new AppError("Invalid credentials", "Invalid credentials", 401);
+  }
 
-    // Check if password matches
-    const isMatch = await user.matchPassword(password);
+  // Check if password matches
+  const isMatch = await user.matchPassword(password);
 
-    if (!isMatch) {
-        throw new AppError('Invalid credentials', 'Invalid credentials', 401);
-    }
+  if (!isMatch) {
+    throw new AppError("Invalid credentials", "Invalid credentials", 401);
+  }
 
-    return sendTokenResponse(user);
-}
+  return sendTokenResponse(user);
+};
 
 /**
  * Get token from model, create cookie and send response
@@ -66,21 +70,21 @@ export const logoutUser = async (email: string, password: string) => {
  * @returns Promise containing the user and the token (with options)
  */
 const sendTokenResponse = (user: User) => {
-    // Create token
-    const token = user.getSignedJwtToken();
+  // Create token
+  const token = user.getSignedJwtToken();
 
-    const options = {
-        expires: new Date(
-            // Expire in 30 days (in milliseconds)
-            Date.now() + environment.JWT_COOKIE_EXPIRE * 24 * 60 * 60 * 1000,
-        ),
-        httpOnly: true,
-        secure: false
-    };
+  const options = {
+    expires: new Date(
+      // Expire in 30 days (in milliseconds)
+      Date.now() + environment.JWT_COOKIE_EXPIRE * 24 * 60 * 60 * 1000
+    ),
+    httpOnly: true,
+    secure: false,
+  };
 
-    if (process.env.NODE_ENV === 'production') {
-        options.secure = true;
-    }
+  if (process.env.NODE_ENV === "production") {
+    options.secure = true;
+  }
 
-    return { user, token, options };
+  return { user, token, options };
 };

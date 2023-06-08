@@ -7,7 +7,7 @@ interface PageProps {
 }
 
 /**
- * This component provides a navbar, a bottom bar and a blank page where you can insert content.
+ * This component provides a navbar, a footer and a blank page where you can insert content.
  */
 export const Page: FC<PageProps> = (props) => {
   return (

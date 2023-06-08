@@ -1,5 +1,5 @@
 import { createContext, useState } from "react";
-import { User } from "../api/collections/user";
+//import { User } from "../api/collections/user";
 
 export type LoginState = {
   loggedIn: boolean;
@@ -12,6 +12,7 @@ export type LoginContextProviderType = {
   children: React.ReactNode;
 };
 
+//create the context with its "features"
 export const LoginContext = createContext<LoginState>({
   loggedIn: false,
   setLoggedIn: () => null,
@@ -19,6 +20,7 @@ export const LoginContext = createContext<LoginState>({
   setUser: () => null,
 });
 
+//create the context provider
 export const LoginContextProvider = ({
   children,
 }: LoginContextProviderType) => {

@@ -1,6 +1,7 @@
 import { BodyText } from "../Text/BodyText";
 import { Title } from "../Text/Title";
 import { palette } from "../../utils/colors";
+import { Image } from "react-bootstrap";
 
 type StepDescriptionProps = {
   number: number;
