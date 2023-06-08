@@ -40,14 +40,13 @@ export function PostOrSearch(props: PostOrSearchProps) {
     >
       <Image
         style={{
-          maxWidth: "100%",
+          width: "100%",
           height: 700,
           zIndex: -1,
           position: "absolute",
           objectFit: "cover",
         }}
         src={homepageImage}
-        fluid
       />
       <div
         style={{

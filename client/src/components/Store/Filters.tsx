@@ -4,11 +4,7 @@ import { palette } from "../../utils/colors";
 import { Dropdown, Form } from "react-bootstrap";
 import Slider from "@mui/material/Slider";
 import { BodyText } from "../Text/BodyText";
-import { useMediaQuery } from "@mui/material";
-import { ProductCategory } from "../../api/collections/advert";
-import { ColoredLine } from "../ColoredLine";
-import { DatePicker } from "../DatePicker";
-
+import useMediaQuery from "./../../hooks/useMediaQuery";
 
 /**
  * This components represents the filters section in the home page.

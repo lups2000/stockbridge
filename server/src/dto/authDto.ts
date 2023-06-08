@@ -25,7 +25,7 @@ export const createLoginResponseDto = (message: string, jwtToken: string): Login
     return loginResponseDto;
 }
 
-export class RegisterResponseDto {
+export class AuthResponseDto {
     @IsString()
     @IsNotEmpty()
     message: string;
@@ -44,10 +44,10 @@ export class RegisterResponseDto {
  * @param message
  * @param user
  * @param jwtToken
- * @returns {RegisterResponseDto}
+ * @returns {AuthResponseDto}
  */
-export const createRegisterResponseDto = (message: string, user: User, jwtToken: string): RegisterResponseDto => {
-    const registerResponseDto = new RegisterResponseDto();
+export const createAuthResponseDto = (message: string, user: User, jwtToken: string): AuthResponseDto => {
+    const registerResponseDto = new AuthResponseDto();
     registerResponseDto.message = message;
     registerResponseDto.user = user;
     registerResponseDto.jwtToken = jwtToken;

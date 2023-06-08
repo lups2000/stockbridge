@@ -7,5 +7,9 @@ export const palette = {
   subSectionsBgAccent: "rgb(247,108,108,1.0)",
   green: "#4ecba9",
   gray: "#6c757d",
-  loginTitle: "#472FC9"
+  loginTitle: "#472FC9",
+
+  placeholderTextBootstrap: "#808080",
+  borderBoostrap: "#cccccc",
+
 };

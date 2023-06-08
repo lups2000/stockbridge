@@ -18,7 +18,7 @@ export const SignIn: FC = () => {
           width: matches ? 600 : "100vw",
           position: "absolute",
           left: 0,
-          height: "100%",
+          minHeight: "100vh",
           backgroundColor: palette.pageBG,
         }}
       >
@@ -49,9 +49,9 @@ export const SignIn: FC = () => {
       <div
         style={{
           width: "calc(100% - 600px)",
-          position: "absolute",
+          position: "fixed",
           right: 0,
-          height: "100%",
+          height: "100vh",
           paddingLeft: 50,
           backgroundColor: "red",
           display: matches ? undefined : "none",

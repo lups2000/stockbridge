@@ -5,7 +5,7 @@ import logo from "../assets/logo.svg";
 import { useContext } from "react";
 import { LoginContext } from "../contexts/LoginContext";
 import { palette } from "../utils/colors";
-
+import { ApiClient } from "../api/apiClient";
 
 /**
  * This component represents the navbar of our website.
@@ -16,9 +16,18 @@ export function Navbar() {
   const { loggedIn, setLoggedIn, setUser } = useContext(LoginContext);
 
   const handleLogoutClick = () => {
-    setLoggedIn(false);
-    setUser("");
-    navigate("/") //come back to homepage
+    new ApiClient()
+      .post("/auth/logout", {}, { withCredentials: true })
+      .then(() => {
+        setLoggedIn(false);
+        setUser(undefined);
+        localStorage.removeItem("loginStatus") // IDK, maybe it's not the best idea, i must check
+        localStorage.removeItem("currentUser")
+        navigate("/"); //come back to homepage
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
 
   return (
@@ -40,7 +49,7 @@ export function Navbar() {
             color: palette.subSectionsBgAccent,
             fontSize: 20,
           }}
-          onClick={() => navigate("/signIn")}
+          onClick={() => navigate("/SignIn")}
         >
           Sign In
         </Button>

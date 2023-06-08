@@ -15,6 +15,10 @@ import { useNavigate } from "react-router-dom";
 import { FC } from "react";
 import { ColoredLine } from "../components/ColoredLine";
 import { Img } from "../components/Img";
+import { useContext, useEffect } from "react";
+import { LoginContext } from "../contexts/LoginContext";
+import { ApiClient } from "../api/apiClient";
+import { error } from "console";
 
 const stepDescriptions: { message: string; icon: string }[] = [
   {
@@ -36,7 +40,35 @@ const stepDescriptions: { message: string; icon: string }[] = [
 
 export const Home: FC<HomeProps> = (props) => {
   const matches = useMediaQuery("(min-width: 768px)");
-  const navigate = useNavigate();
+
+  const { setLoggedIn, setUser } = useContext(LoginContext);
+
+  useEffect(() => {
+    new ApiClient()
+      .get("auth/verify", { withCredentials: true })
+      .then(() => {
+        const currentLoginStatus = localStorage.getItem("loginStatus");
+        const currentUser = localStorage.getItem("currentUser");
+        if (currentLoginStatus && currentUser) {
+          setLoggedIn(true);
+          setUser(JSON.parse(currentUser));
+        }
+      })
+      .catch((error) => {
+        setLoggedIn(false);
+        setUser(undefined);
+      });
+
+    /*
+    const currentLoginStatus = localStorage.getItem("loginStatus");
+    const currentUser = localStorage.getItem("currentUser");
+    if (currentLoginStatus && currentUser) {
+      setLoggedIn(true);
+      setUser(JSON.parse(currentUser));
+    }*/
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   return (
     <Page>
       <PostOrSearch loggedin= {props.loggedin}/>
@@ -77,6 +109,7 @@ export const Home: FC<HomeProps> = (props) => {
           {stepDescriptions.map((step, index) => {
             return (
               <StepDescription
+                key={index}
                 number={index + 1}
                 message={step.message}
                 icon={step.icon}
@@ -90,42 +123,29 @@ export const Home: FC<HomeProps> = (props) => {
           style={{ fontSize: 36, textAlign: "center", paddingTop: 20 }}
         >Active Adverts</Title>
         <div style={{ marginTop: 100 }}>
-          <Img
-            src={sortIcon}
-            style={{ position: "absolute", right: 0 }}
-          />
-            <div
+          <Image src={sortIcon} style={{ position: "absolute", right: 0 }} />
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "row",
+              gap: 20,
+              justifyContent: "center",
+            }}
+          >
+            <BodyText
               style={{
-                display: "flex",
-                flexDirection: "row",
-                gap: 20,
-                justifyContent: "center",
+                color: palette.subSectionsBgAccent,
+                fontSize: 30,
+                fontWeight: 600,
               }}
-            >
-                  <BodyText
-                    style={{
-                      color: palette.subSectionsBgAccent,
-                      fontSize: 30,
-                      fontWeight: 600,
-                    }} 
-                  >Selling</BodyText>
-                  <BodyText
-                    style={{ color: palette.subSectionsBgLighter, fontSize: 30 }}
-                  >Buying</BodyText>
-                  </div>
-          <div style={{
-                display: "flex",
-                flexDirection: "row",
-                gap: 20,
-                justifyContent: "center",
-              }}>
-          <Filters/>
-          <Button onClick={() => navigate("/productoverview/647ddfb46d74b615e34256bc")}>
-          <BodyText style={{ color: palette.loginTitle, fontSize: 30 }}>Product</BodyText>
-          </Button>
-          
+              message="Selling"
+            />
+            <BodyText
+              style={{ color: palette.subSectionsBgLighter, fontSize: 30 }}
+              message="Buying"
+            />
           </div>
-
+          <Filters />
         </div>
       </div>
     </Page>

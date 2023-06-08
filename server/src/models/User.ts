@@ -47,25 +47,25 @@ const subscriptionSchema = new mongoose.Schema<Subscription>({
 const paymentMethodSchema = new mongoose.Schema<PaymentMethod>({
     name: {
         type: Types.String,
-        required: [true, 'Please add a name'],
+        //required: [true, 'Please add a name'],
     },
     cardNumber: {
         type: Types.String,
-        required: [true, 'Please add a card number'],
+        //required: [true, 'Please add a card number'],
     },
     expirationDate: {
         type: Types.Date,
-        required: [true, 'Please add an expiration date'],
+        //required: [true, 'Please add an expiration date'],
     },
     cvv: {
         type: Types.String,
-        required: [true, 'Please add a cvv'],
+        //required: [true, 'Please add a cvv'],
     },
 });
 const userSchema = new mongoose.Schema<User>({
     name: {
         type: Types.String,
-        required: [true, 'Please add a name'],
+        //required: [true, 'Please add a name'],
     },
     email: {
         type: Types.String,
