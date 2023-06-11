@@ -5,8 +5,21 @@ export function checkEmail(email: string) {
   return /^\w+([.-]?\w+)*@\w+(.-]?\w+)*(\.\w{2,3})+$/.test(email);
 }
 
-export function checkPassword(password1: string, password2: string) {
-  return password1 === password2 && password1.length >= 6;
+/**
+ * Checks if the given password and confirmation are identical with min lenght = 6 characters.
+ * @param password1 
+ * @param password2 
+ * @returns A tuple containing if the password is acceptable and the corresponding error message.
+ */
+export function checkPassword(password1: string, password2: string): [boolean,string] {
+  if (password1.length < 6){
+    return [false, "Password should contain at least 6 characters"];
+  }
+  if (password1 !== password2)
+  {
+    return [false, "Passwords don't match"];
+  }
+  return [true, ""];
 }
 
 export function autocompleteCardNumber(event: ChangeEvent<HTMLInputElement>) {
