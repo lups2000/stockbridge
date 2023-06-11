@@ -1,8 +1,8 @@
-import { FC } from "react";
-import { Dropdown } from "react-bootstrap";
-import { palette } from "../utils/colors";
-import { ColoredLine } from "./ColoredLine";
-import { BodyText } from "./Text/BodyText";
+import { FC } from 'react';
+import { Dropdown } from 'react-bootstrap';
+import { palette } from '../utils/colors';
+import { ColoredLine } from './ColoredLine';
+import { BodyText } from './Text/BodyText';
 
 /**
  * This component represents the footer/bottom bar of our website.
@@ -13,60 +13,54 @@ export const Footer: FC = () => {
       style={{
         height: 300,
         backgroundColor: palette.subSectionsBgLighter,
-        display: "flex",
-        flexDirection: "row",
-        alignItems: "stretch",
-        justifyContent: "center",
+        display: 'flex',
+        flexDirection: 'row',
+        alignItems: 'stretch',
+        justifyContent: 'center',
         gap: 100,
         paddingTop: 100,
-        marginTop: "auto",
+        marginTop: 'auto',
       }}
     >
       <div>© StockBridge 2023</div>
       <div>
-        <BodyText
-          style={{ fontSize: 15, fontWeight: 600 }}
-        >LEGAL</BodyText>
+        <BodyText style={{ fontSize: 15, fontWeight: 600 }}>LEGAL</BodyText>
         <ColoredLine color="black" width={20} height={2} marginTop={-10} />
         <a href="#ciao">
-          <BodyText
-            style={{ fontSize: 15, fontWeight: 400, marginTop: 20 }}
-          >Terms</BodyText>
+          <BodyText style={{ fontSize: 15, fontWeight: 400, marginTop: 20 }}>
+            Terms
+          </BodyText>
         </a>
         <a href="#ciao">
-          <BodyText
-            style={{ fontSize: 15, fontWeight: 400 }}
-          >Privacy</BodyText>
+          <BodyText style={{ fontSize: 15, fontWeight: 400 }}>Privacy</BodyText>
         </a>
       </div>
       <div>
-        <BodyText
-          style={{ fontSize: 15, fontWeight: 600 }}
-        >Social</BodyText>
+        <BodyText style={{ fontSize: 15, fontWeight: 600 }}>Social</BodyText>
         <ColoredLine color="black" width={20} height={2} marginTop={-10} />
         <a href="#ciao">
-          <BodyText
-            style={{ fontSize: 15, fontWeight: 400, marginTop: 20 }}
-          >Instagram</BodyText>
+          <BodyText style={{ fontSize: 15, fontWeight: 400, marginTop: 20 }}>
+            Instagram
+          </BodyText>
         </a>
         <a href="#ciao">
-          <BodyText
-            style={{ fontSize: 15, fontWeight: 400 }}
-          >Facebook</BodyText>
+          <BodyText style={{ fontSize: 15, fontWeight: 400 }}>
+            Facebook
+          </BodyText>
         </a>
       </div>
       <Dropdown>
         <Dropdown.Header>
-          <BodyText
-            style={{ fontSize: 15, fontWeight: 600 }}
-          >LANGUAGE</BodyText>
+          <BodyText style={{ fontSize: 15, fontWeight: 600 }}>
+            LANGUAGE
+          </BodyText>
         </Dropdown.Header>
         <ColoredLine color="black" width={20} height={2} marginTop={-10} />
         <Dropdown.Toggle
           style={{
-            backgroundColor: "white",
-            border: "none",
-            color: "black",
+            backgroundColor: 'white',
+            border: 'none',
+            color: 'black',
             marginTop: 20,
           }}
           id="dropdown-basic"

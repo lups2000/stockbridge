@@ -1,8 +1,8 @@
-import React, { useEffect } from "react";
-import { Form, FloatingLabel } from "react-bootstrap";
-import { Title } from "../../Text/Title";
-import { AccountInformationFormProps } from "./StoreDetailsForm";
-import { checkEmail, checkPhoneNumber } from "../../../utils/functions";
+import React, { useEffect } from 'react';
+import { Form, FloatingLabel } from 'react-bootstrap';
+import { Title } from '../../Text/Title';
+import { AccountInformationFormProps } from './StoreDetailsForm';
+import { checkEmail, checkPhoneNumber } from '../../../utils/functions';
 
 const AccountInformationForm = (props: AccountInformationFormProps) => {
   useEffect(() => {

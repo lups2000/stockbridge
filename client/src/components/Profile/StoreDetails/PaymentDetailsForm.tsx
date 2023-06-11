@@ -1,16 +1,21 @@
-import React, { useEffect } from "react";
-import { Form, Row, Col } from "react-bootstrap";
-import { Title } from "../../Text/Title";
-import { PaymentDetailsFormProps } from "./StoreDetailsForm";
+import React, { useEffect } from 'react';
+import { Form, Row, Col } from 'react-bootstrap';
+import { Title } from '../../Text/Title';
+import { PaymentDetailsFormProps } from './StoreDetailsForm';
 import {
   checkCVV,
   checkPaymentExpirationDate,
   chekCreditCardNumber,
-} from "../../../utils/functions";
+} from '../../../utils/functions';
 
 const PaymentDetailsForm = (props: PaymentDetailsFormProps) => {
   useEffect(() => {
-    if (props.cardNumber.value && props.cardHolder.value && props.ccv && props.expiration.value) {
+    if (
+      props.cardNumber.value &&
+      props.cardHolder.value &&
+      props.ccv &&
+      props.expiration.value
+    ) {
       if (
         checkCVV(props.ccv.value) &&
         checkPaymentExpirationDate(props.expiration.value) &&

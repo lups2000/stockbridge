@@ -17,7 +17,8 @@
     "client"
   ],
   "devDependencies": {
-    "concurrently": "^8.0.1"
+    "concurrently": "^8.0.1",
+    "prettier": "^2.8.8"
   },
   "dependencies": {
     "@emotion/react": "^11.11.0",

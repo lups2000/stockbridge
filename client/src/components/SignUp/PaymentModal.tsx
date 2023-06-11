@@ -1,16 +1,16 @@
-import { ChangeEvent, FC, useState } from "react";
-import Button from "react-bootstrap/Button";
-import Form from "react-bootstrap/Form";
-import Modal from "react-bootstrap/Modal";
-import { palette } from "../../utils/colors";
-import { BodyText } from "../Text/BodyText";
+import { ChangeEvent, FC, useState } from 'react';
+import Button from 'react-bootstrap/Button';
+import Form from 'react-bootstrap/Form';
+import Modal from 'react-bootstrap/Modal';
+import { palette } from '../../utils/colors';
+import { BodyText } from '../Text/BodyText';
 import {
   checkCVV,
   checkPaymentExpirationDate,
   chekCreditCardNumber,
   autocompleteCardNumber,
   autocompleteExpirationDate,
-} from "../../utils/functions";
+} from '../../utils/functions';
 
 interface PaymentModalProps {
   isShowing: boolean;
@@ -43,29 +43,29 @@ export const PaymentModal: FC<PaymentModalProps> = (props) => {
   } = props;
 
   const [error, setError] = useState<boolean>(false);
-  const [errorMessage, setErrorMessage] = useState<string>("");
+  const [errorMessage, setErrorMessage] = useState<string>('');
 
   const checkPaymentDetails = () => {
     if (name && number && expDate && cvv) {
       if (!chekCreditCardNumber(number)) {
         setError(true);
-        setErrorMessage("Credit Card number incorrect");
+        setErrorMessage('Credit Card number incorrect');
         return;
       }
       if (!checkCVV(cvv)) {
         setError(true);
-        setErrorMessage("CVV Invalid");
+        setErrorMessage('CVV Invalid');
         return;
       }
       if (!checkPaymentExpirationDate(expDate)) {
         setError(true);
-        setErrorMessage("Expiration Date Invalid");
+        setErrorMessage('Expiration Date Invalid');
         return;
       }
       setError(false);
     } else {
       setError(true);
-      setErrorMessage("Missing Information");
+      setErrorMessage('Missing Information');
     }
   };
 
@@ -73,8 +73,8 @@ export const PaymentModal: FC<PaymentModalProps> = (props) => {
     <Modal
       show={isShowing}
       onHide={() => {
-        onChangeNumber("");
-        onChangeDate("");
+        onChangeNumber('');
+        onChangeDate('');
         onClose();
       }}
     >
@@ -98,10 +98,10 @@ export const PaymentModal: FC<PaymentModalProps> = (props) => {
             <Form.Label>Card number</Form.Label>
             <Form.Control
               type="text"
-              value={number ?? ""}
+              value={number ?? ''}
               placeholder="1111 2222 3333 4444"
               onChange={(e: ChangeEvent<HTMLInputElement>) => {
-                onChangeNumber(autocompleteCardNumber(e) ?? "");
+                onChangeNumber(autocompleteCardNumber(e) ?? '');
               }}
               maxLength={19} // to limit the credit card number
             />
@@ -114,9 +114,9 @@ export const PaymentModal: FC<PaymentModalProps> = (props) => {
                   type="text"
                   placeholder="01/24"
                   maxLength={5}
-                  value={expDate ?? ""}
+                  value={expDate ?? ''}
                   onChange={(e: ChangeEvent<HTMLInputElement>) => {
-                    onChangeDate(autocompleteExpirationDate(e) ?? "");
+                    onChangeDate(autocompleteExpirationDate(e) ?? '');
                   }}
                 />
               </Form.Group>
@@ -137,14 +137,14 @@ export const PaymentModal: FC<PaymentModalProps> = (props) => {
           </div>
         </Form>
         {error ? (
-          <BodyText style={{ color: "red" }}>{errorMessage}</BodyText>
+          <BodyText style={{ color: 'red' }}>{errorMessage}</BodyText>
         ) : undefined}
       </Modal.Body>
       <Modal.Footer>
         <Button
           style={{
             backgroundColor: palette.subSectionsBgAccent,
-            border: "none",
+            border: 'none',
           }}
           onClick={() => checkPaymentDetails()}
         >

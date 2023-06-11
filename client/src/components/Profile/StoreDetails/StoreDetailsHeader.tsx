@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useState } from "react";
+import React, { ChangeEvent, useState } from 'react';
 import {
   Container,
   Row,
@@ -7,11 +7,11 @@ import {
   Form,
   Modal,
   Button,
-} from "react-bootstrap";
-import { Title } from "../../Text/Title";
-import { BodyText } from "../../Text/BodyText";
-import { StoreDetailsProps } from "./StoreDetailsForm";
-import defaultUserImage from "../../../assets/defaultUser.png";
+} from 'react-bootstrap';
+import { Title } from '../../Text/Title';
+import { BodyText } from '../../Text/BodyText';
+import { StoreDetailsProps } from './StoreDetailsForm';
+import defaultUserImage from '../../../assets/defaultUser.png';
 
 const StoreDetailsHeader: React.FC<StoreDetailsProps> = (props) => {
   const [showModal, setShowModal] = useState(false);
@@ -44,14 +44,14 @@ const StoreDetailsHeader: React.FC<StoreDetailsProps> = (props) => {
   };
 
   const options: Intl.DateTimeFormatOptions = {
-    month: "long",
-    day: "numeric",
-    year: "numeric",
+    month: 'long',
+    day: 'numeric',
+    year: 'numeric',
   };
 
   const formattedJoinDate: string = props.joined.toLocaleDateString(
     undefined,
-    options
+    options,
   );
 
   return (
@@ -65,13 +65,13 @@ const StoreDetailsHeader: React.FC<StoreDetailsProps> = (props) => {
               (e.currentTarget.src = defaultUserImage)
             }
             roundedCircle
-            className={"p-2"}
+            className={'p-2'}
             style={{
-              width: "75%",
+              width: '75%',
               height: undefined,
-              objectFit: "cover",
-              aspectRatio: "1/1",
-              cursor: "pointer",
+              objectFit: 'cover',
+              aspectRatio: '1/1',
+              cursor: 'pointer',
             }}
             onClick={handleImageClick}
             fluid
@@ -85,14 +85,14 @@ const StoreDetailsHeader: React.FC<StoreDetailsProps> = (props) => {
               onChange={props.name.onChange}
               className="mb-2"
               style={{
-                border: "none",
-                boxShadow: "none",
-                background: "none",
+                border: 'none',
+                boxShadow: 'none',
+                background: 'none',
                 padding: 0,
                 margin: 0,
-                fontWeight: "normal",
-                fontSize: "inherit",
-                outline: "none",
+                fontWeight: 'normal',
+                fontSize: 'inherit',
+                outline: 'none',
               }}
             />
           </Title>

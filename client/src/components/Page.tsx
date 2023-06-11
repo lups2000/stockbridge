@@ -1,7 +1,6 @@
-import React, { FC } from "react";
-import { Footer } from "./Footer";
-import { Navbar } from "./Navbar";
-
+import React, { FC } from 'react';
+import { Footer } from './Footer';
+import { Navbar } from './Navbar';
 
 interface PageProps {
   children: React.ReactNode;
@@ -13,7 +12,7 @@ interface PageProps {
 export const Page: FC<PageProps> = (props) => {
   return (
     <div
-      style={{ minHeight: "100vh", display: "flex", flexDirection: "column"}}
+      style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}
     >
       <Navbar />
       {props.children}

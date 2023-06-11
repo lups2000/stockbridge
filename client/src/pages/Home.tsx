@@ -1,48 +1,48 @@
-import { StepDescription } from "../components/Home/StepDescription";
-import { Title } from "../components/Text/Title";
-import { palette } from "../utils/colors";
-import howWorks1 from "../assets/howWorks1.svg";
-import howWorks2 from "../assets/howWorks2.svg";
-import howWorks3 from "../assets/howWorks3.svg";
-import { PostOrSearch } from "../components/Home/PostOrSearch";
-import useMediaQuery from "../hooks/useMediaQuery";
-import { Page } from "../components/Page";
-import { Filters } from "../components/Home/Filters";
-import { BodyText } from "../components/Text/BodyText";
-import sortIcon from "../assets/sort-icon.svg";
-import { FC } from "react";
-import { ColoredLine } from "../components/ColoredLine";
-import { useContext, useEffect } from "react";
-import { LoginContext } from "../contexts/LoginContext";
-import { ApiClient } from "../api/apiClient";
-import { Image } from "react-bootstrap";
+import { StepDescription } from '../components/Home/StepDescription';
+import { Title } from '../components/Text/Title';
+import { palette } from '../utils/colors';
+import howWorks1 from '../assets/howWorks1.svg';
+import howWorks2 from '../assets/howWorks2.svg';
+import howWorks3 from '../assets/howWorks3.svg';
+import { PostOrSearch } from '../components/Home/PostOrSearch';
+import useMediaQuery from '../hooks/useMediaQuery';
+import { Page } from '../components/Page';
+import { Filters } from '../components/Home/Filters';
+import { BodyText } from '../components/Text/BodyText';
+import sortIcon from '../assets/sort-icon.svg';
+import { FC } from 'react';
+import { ColoredLine } from '../components/ColoredLine';
+import { useContext, useEffect } from 'react';
+import { LoginContext } from '../contexts/LoginContext';
+import { ApiClient } from '../api/apiClient';
+import { Image } from 'react-bootstrap';
 
 const stepDescriptions: { message: string; icon: string }[] = [
   {
-    message: "Search for what you are looking for.",
+    message: 'Search for what you are looking for.',
     icon: howWorks1,
   },
   {
-    message: "Find the item you are looking for in the search results.",
+    message: 'Find the item you are looking for in the search results.',
     icon: howWorks2,
   },
   {
-    message: "Make an offer to the seller.",
+    message: 'Make an offer to the seller.',
     icon: howWorks3,
   },
 ];
 
 export function Home() {
-  const matches = useMediaQuery("(min-width: 768px)");
+  const matches = useMediaQuery('(min-width: 768px)');
 
   const { setLoggedIn, setUser } = useContext(LoginContext);
 
   useEffect(() => {
     new ApiClient()
-      .get("auth/verify", { withCredentials: true })
+      .get('auth/verify', { withCredentials: true })
       .then(() => {
-        const currentLoginStatus = localStorage.getItem("loginStatus");
-        const currentUser = localStorage.getItem("currentUser");
+        const currentLoginStatus = localStorage.getItem('loginStatus');
+        const currentUser = localStorage.getItem('currentUser');
         if (currentLoginStatus && currentUser) {
           setLoggedIn(true);
           setUser(JSON.parse(currentUser));
@@ -65,29 +65,31 @@ export function Home() {
 
   return (
     <Page>
-      <PostOrSearch/>
+      <PostOrSearch />
       <div
         style={{
-          position: "relative",
-          width: "100%",
+          position: 'relative',
+          width: '100%',
           backgroundColor: palette.subSectionsBgLighter,
-          alignItems: "center",
-          display: "flex",
-          flexDirection: "column",
+          alignItems: 'center',
+          display: 'flex',
+          flexDirection: 'column',
           gap: 70,
           paddingBottom: 50,
         }}
       >
         <Title
           style={{
-            textAlign: "center",
+            textAlign: 'center',
             fontSize: 28,
-            color: "black",
+            color: 'black',
             fontWeight: 500,
             paddingTop: 50,
             marginBottom: -60,
           }}
-        >HOW IT WORKS</Title>
+        >
+          HOW IT WORKS
+        </Title>
         <ColoredLine
           color={palette.subSectionsBgAccent}
           height={5}
@@ -95,8 +97,8 @@ export function Home() {
         />
         <div
           style={{
-            display: "flex",
-            flexDirection: matches ? "row" : "column",
+            display: 'flex',
+            flexDirection: matches ? 'row' : 'column',
             gap: matches ? 70 : 20,
           }}
         >
@@ -113,17 +115,17 @@ export function Home() {
         </div>
       </div>
       <div style={{ height: 2000 }}>
-        <Title
-          style={{ fontSize: 36, textAlign: "center", paddingTop: 20 }}
-        >Active Adverts</Title>
+        <Title style={{ fontSize: 36, textAlign: 'center', paddingTop: 20 }}>
+          Active Adverts
+        </Title>
         <div style={{ marginTop: 100 }}>
-          <Image src={sortIcon} style={{ position: "absolute", right: 0 }} />
+          <Image src={sortIcon} style={{ position: 'absolute', right: 0 }} />
           <div
             style={{
-              display: "flex",
-              flexDirection: "row",
+              display: 'flex',
+              flexDirection: 'row',
               gap: 20,
-              justifyContent: "center",
+              justifyContent: 'center',
             }}
           >
             <BodyText
@@ -132,10 +134,14 @@ export function Home() {
                 fontSize: 30,
                 fontWeight: 600,
               }}
-            >Selling</BodyText>
+            >
+              Selling
+            </BodyText>
             <BodyText
               style={{ color: palette.subSectionsBgLighter, fontSize: 30 }}
-            >Buying</BodyText>
+            >
+              Buying
+            </BodyText>
           </div>
           <Filters />
         </div>

@@ -1,12 +1,12 @@
-import { BodyText } from "../Text/BodyText";
-import { Title } from "../Text/Title";
-import { palette } from "../../utils/colors";
-import { Image } from "react-bootstrap";
+import { BodyText } from '../Text/BodyText';
+import { Title } from '../Text/Title';
+import { palette } from '../../utils/colors';
+import { Image } from 'react-bootstrap';
 
 type StepDescriptionProps = {
   number: number;
   message: string;
-  icon: string
+  icon: string;
 };
 
 /**
@@ -18,30 +18,34 @@ export function StepDescription(props: StepDescriptionProps) {
       style={{
         width: 200,
         height: 200,
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
         gap: 20,
       }}
     >
       <Title
         style={{
-          textAlign: "center",
+          textAlign: 'center',
           fontSize: 24,
           color: palette.subSectionsBgAccent,
           fontWeight: 700,
         }}
-      >{props.number + "."}</Title>
-      <Image style={{ alignSelf: "center" }} src={props.icon} />
+      >
+        {props.number + '.'}
+      </Title>
+      <Image style={{ alignSelf: 'center' }} src={props.icon} />
       <BodyText
         style={{
-          textAlign: "center",
+          textAlign: 'center',
           fontSize: 15,
-          color: "black",
+          color: 'black',
           marginRight: 10,
-          fontWeight: 200
+          fontWeight: 200,
         }}
-      >{props.message}</BodyText>
+      >
+        {props.message}
+      </BodyText>
     </div>
   );
 }

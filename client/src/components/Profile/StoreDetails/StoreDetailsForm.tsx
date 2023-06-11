@@ -1,22 +1,22 @@
-import React, { useContext, useState } from "react";
-import { Form, Button, Row, Col } from "react-bootstrap";
-import { palette } from "../../../utils/colors";
-import AccountInformationForm from "./AccountInformationForm";
-import ShipmentDetailsForm from "./ShipmentDetailsForm";
-import PaymentDetailsForm from "./PaymentDetailsForm";
-import StoreDetailsHeader from "./StoreDetailsHeader";
+import React, { useContext, useState } from 'react';
+import { Form, Button, Row, Col } from 'react-bootstrap';
+import { palette } from '../../../utils/colors';
+import AccountInformationForm from './AccountInformationForm';
+import ShipmentDetailsForm from './ShipmentDetailsForm';
+import PaymentDetailsForm from './PaymentDetailsForm';
+import StoreDetailsHeader from './StoreDetailsHeader';
 import {
   Address,
   PaymentMethod,
   updateUser,
   User,
-} from "../../../api/collections/user";
-import { LoginContext } from "../../../contexts/LoginContext";
+} from '../../../api/collections/user';
+import { LoginContext } from '../../../contexts/LoginContext';
 import {
   autocompleteCardNumber,
   autocompleteExpirationDate,
   expDatePaymentToDate,
-} from "../../../utils/functions";
+} from '../../../utils/functions';
 
 export interface InputProps {
   value: string;
@@ -63,14 +63,14 @@ const StoreDetailsForm: React.FC = () => {
   const [error, setError] = useState<boolean>(false);
 
   const [name, setName] = useState<string>(user?.name as string);
-  const [image, setImage] = useState<string>("");
+  const [image, setImage] = useState<string>('');
 
   const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setName(e.target.value);
   };
 
   const [email, setEmail] = useState(user?.email as string);
-  const [password, setPassword] = useState("");
+  const [password, setPassword] = useState('');
   const [phone, setPhone] = useState(user?.phoneNumber as string);
 
   const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -85,13 +85,13 @@ const StoreDetailsForm: React.FC = () => {
     setPhone(e.target.value);
   };
 
-  const [streetName, setStreetName] = useState(user?.address!.street || "");
+  const [streetName, setStreetName] = useState(user?.address!.street || '');
   const [houseNumber, setHouseNumber] = useState(
-    user?.address!.houseNumber || ""
+    user?.address!.houseNumber || '',
   );
-  const [city, setCity] = useState(user?.address!.city || "");
-  const [postalCode, setPostalCode] = useState(user?.address!.postalCode || "");
-  const [country, setCountry] = useState(user?.address!.country || "");
+  const [city, setCity] = useState(user?.address!.city || '');
+  const [postalCode, setPostalCode] = useState(user?.address!.postalCode || '');
+  const [country, setCountry] = useState(user?.address!.country || '');
 
   const handleStreetNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setStreetName(e.target.value);
@@ -113,19 +113,19 @@ const StoreDetailsForm: React.FC = () => {
     setCountry(e.target.value);
   };
 
-  const [cardHolder, setCardHolder] = useState(user?.paymentMethod!.name || "");
+  const [cardHolder, setCardHolder] = useState(user?.paymentMethod!.name || '');
   const [cardNumber, setCardNumber] = useState(
-    user?.paymentMethod!.cardNumber || ""
+    user?.paymentMethod!.cardNumber || '',
   );
-  const [cvv, setCvv] = useState(user?.paymentMethod!.cvv || "");
-  const [expiration, setExpiration] = useState("");
+  const [cvv, setCvv] = useState(user?.paymentMethod!.cvv || '');
+  const [expiration, setExpiration] = useState('');
 
   const handleCardHolderChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setCardHolder(e.target.value);
   };
 
   const handleCardNumberChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setCardNumber(autocompleteCardNumber(e) ?? "");
+    setCardNumber(autocompleteCardNumber(e) ?? '');
   };
 
   const handleCcvChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -133,7 +133,7 @@ const StoreDetailsForm: React.FC = () => {
   };
 
   const handleExpirationChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setExpiration(autocompleteExpirationDate(e) ?? "");
+    setExpiration(autocompleteExpirationDate(e) ?? '');
   };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -166,7 +166,7 @@ const StoreDetailsForm: React.FC = () => {
           address,
         }),
         ...(Object.values(paymentMethod).some(
-          (value) => value !== undefined
+          (value) => value !== undefined,
         ) && {
           paymentMethod,
         }),
@@ -178,7 +178,7 @@ const StoreDetailsForm: React.FC = () => {
 
   return (
     <>
-      <Form onSubmit={handleSubmit} className={"m-2"}>
+      <Form onSubmit={handleSubmit} className={'m-2'}>
         <StoreDetailsHeader
           name={{ value: name, onChange: handleNameChange }}
           image={{ value: image, setValue: setImage }}
@@ -242,14 +242,14 @@ const StoreDetailsForm: React.FC = () => {
           }}
           onChangeError={(error) => setError(error)}
         />
-        <Row className={"mb-2 justify-content-end "}>
+        <Row className={'mb-2 justify-content-end '}>
           <Col xs={1}>
             <Button
               type="submit"
-              className={"mb-2"}
+              className={'mb-2'}
               style={{
-                width: "100%",
-                border: "none",
+                width: '100%',
+                border: 'none',
                 backgroundColor: palette.subSectionsBgAccent,
                 borderRadius: 30,
               }}

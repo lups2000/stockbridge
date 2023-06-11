@@ -1,12 +1,12 @@
-import { ChangeEvent, FC, FormEvent, useContext, useState } from "react";
-import { Button, Form } from "react-bootstrap";
-import { palette } from "../../utils/colors";
-import { BodyText } from "../Text/BodyText";
-import { LoginContext } from "../../contexts/LoginContext";
-import { useNavigate } from "react-router-dom";
-import { checkEmail } from "../../utils/functions";
-import { ApiClient } from "../../api/apiClient";
-import { UserResponse } from "../../api/collections/user";
+import { ChangeEvent, FC, FormEvent, useContext, useState } from 'react';
+import { Button, Form } from 'react-bootstrap';
+import { palette } from '../../utils/colors';
+import { BodyText } from '../Text/BodyText';
+import { LoginContext } from '../../contexts/LoginContext';
+import { useNavigate } from 'react-router-dom';
+import { checkEmail } from '../../utils/functions';
+import { ApiClient } from '../../api/apiClient';
+import { UserResponse } from '../../api/collections/user';
 
 /**
  * This component represents the form to manage the login and it makes also the axios call to the relative endpoint.
@@ -16,7 +16,7 @@ export const LoginForm: FC = () => {
   const [password, setPassword] = useState<string>();
 
   const [error, setError] = useState<boolean>(false);
-  const [errorMessage, setErrorMessage] = useState<string>("");
+  const [errorMessage, setErrorMessage] = useState<string>('');
 
   const { setLoggedIn, setUser } = useContext(LoginContext);
 
@@ -28,40 +28,40 @@ export const LoginForm: FC = () => {
     if (email && password && checkEmail(email)) {
       new ApiClient()
         .post<UserResponse>(
-          "/auth/login",
+          '/auth/login',
           {
             email,
             password,
           },
-          { withCredentials: true }
+          { withCredentials: true },
         )
         .then((response) => {
           setError(false);
-          setErrorMessage("");
+          setErrorMessage('');
           setLoggedIn(true);
 
           setUser(response.user);
 
-          localStorage.setItem("loginStatus", JSON.stringify(true)); //IDK maybe it's not the best idea, i must check
-          localStorage.setItem("currentUser", JSON.stringify(response.user));
+          localStorage.setItem('loginStatus', JSON.stringify(true)); //IDK maybe it's not the best idea, i must check
+          localStorage.setItem('currentUser', JSON.stringify(response.user));
 
-          navigate("/"); //return to the homepage
+          navigate('/'); //return to the homepage
         })
         .catch((error) => {
           setError(true);
           if (error.response?.status === 400) {
-            setErrorMessage("Missing Username or Password");
+            setErrorMessage('Missing Username or Password');
           } else if (error.response?.status === 401) {
-            setErrorMessage("Invalid Credentials");
+            setErrorMessage('Invalid Credentials');
           } else {
-            setErrorMessage("No Server Response");
+            setErrorMessage('No Server Response');
           }
           setLoggedIn(false);
           setUser(undefined);
         });
     } else {
       setError(true);
-      setErrorMessage("Email format invalid");
+      setErrorMessage('Email format invalid');
     }
   };
 
@@ -95,13 +95,13 @@ export const LoginForm: FC = () => {
         />
       </Form.Group>
       {error ? (
-        <BodyText style={{ color: "red" }}>{errorMessage}</BodyText>
+        <BodyText style={{ color: 'red' }}>{errorMessage}</BodyText>
       ) : undefined}
       <div className="d-grid font-link" style={{ marginTop: 30 }}>
         <Button
           type="submit"
           style={{
-            color: "white",
+            color: 'white',
             backgroundColor: palette.subSectionsBgAccent,
             borderColor: palette.subSectionsBgAccent,
             fontSize: 20,
@@ -112,8 +112,8 @@ export const LoginForm: FC = () => {
         </Button>
         <div
           style={{
-            display: "flex",
-            flexDirection: "row",
+            display: 'flex',
+            flexDirection: 'row',
             gap: 4,
             marginTop: 10,
           }}
