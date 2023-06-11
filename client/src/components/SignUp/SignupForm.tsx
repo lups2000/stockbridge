@@ -1,14 +1,18 @@
-import { ChangeEvent, FC, FormEvent, useState } from "react";
-import { Title } from "../Text/Title";
-import { palette } from "../../utils/colors";
-import { Button, Form } from "react-bootstrap";
-import { BodyText } from "../Text/BodyText";
-import { useNavigate } from "react-router-dom";
-import addIcon from "../../assets/add.svg";
-import backIcon from "../../assets/back.svg";
-import { checkPassword, checkEmail, expDatePaymentToDate } from "../../utils/functions";
-import { PaymentModal } from "./PaymentModal";
-import { ApiClient } from "../../api/apiClient";
+import { ChangeEvent, FC, FormEvent, useState } from 'react';
+import { Title } from '../Text/Title';
+import { palette } from '../../utils/colors';
+import { Button, Form } from 'react-bootstrap';
+import { BodyText } from '../Text/BodyText';
+import { useNavigate } from 'react-router-dom';
+import addIcon from '../../assets/add.svg';
+import backIcon from '../../assets/back.svg';
+import {
+  checkPassword,
+  checkEmail,
+  expDatePaymentToDate,
+} from '../../utils/functions';
+import { PaymentModal } from './PaymentModal';
+import { ApiClient } from '../../api/apiClient';
 
 /**
  * This component represents the form to manage the sign up and it makes also the axios call to the relative endpoint.
@@ -26,7 +30,7 @@ export const SignupForm: FC = () => {
   const [repeatPassword, setRepeatPassword] = useState<string>();
 
   //second form info
-  const [shopName, setShopName] = useState<string>("");
+  const [shopName, setShopName] = useState<string>('');
   const [address, setAddress] = useState<string>();
   const [houseNumber, setHouseNumber] = useState<string>();
   const [city, setCity] = useState<string>();
@@ -40,7 +44,7 @@ export const SignupForm: FC = () => {
   const [cvvCard, setCvvCard] = useState<string>();
 
   const [error, setError] = useState<boolean>(false);
-  const [errorMessage, setErrorMessage] = useState<string>("");
+  const [errorMessage, setErrorMessage] = useState<string>('');
 
   const [isModalShowing, setIsModalShowing] = useState(false);
 
@@ -49,19 +53,19 @@ export const SignupForm: FC = () => {
     if (email && password && repeatPassword) {
       if (!checkEmail(email)) {
         setError(true);
-        setErrorMessage("Email format invalid");
+        setErrorMessage('Email format invalid');
         return;
       }
       if (!checkPassword(password, repeatPassword)) {
         setError(true);
-        setErrorMessage("Passwords do not match");
+        setErrorMessage('Passwords do not match');
         return;
       }
       setIsFirstPartCompleted(true);
       setError(false);
     } else {
       setError(true);
-      setErrorMessage("Missing Information");
+      setErrorMessage('Missing Information');
     }
   };
 
@@ -71,7 +75,7 @@ export const SignupForm: FC = () => {
 
     if (address && city && postalCode && country) {
       const response = new ApiClient()
-        .post("/auth/register", {
+        .post('/auth/register', {
           email,
           password,
           name: shopName,
@@ -85,24 +89,24 @@ export const SignupForm: FC = () => {
           paymentMethod: {
             name: cardName,
             cardNumber,
-            expirationDate: expDatePaymentToDate(expDateCard ?? ""),
+            expirationDate: expDatePaymentToDate(expDateCard ?? ''),
             cvv: cvvCard,
           },
         })
         .catch((error) => {
           setError(true);
           if (error.response?.status === 409) {
-            setErrorMessage("User already registered");
+            setErrorMessage('User already registered');
           } else if (error.response?.status === 400) {
-            setErrorMessage("Error in creating user");
+            setErrorMessage('Error in creating user');
           } else {
-            setErrorMessage("No Server Response");
+            setErrorMessage('No Server Response');
           }
         });
-        console.log(response)
+      console.log(response);
     } else {
       setError(true);
-      setErrorMessage("Missing Information");
+      setErrorMessage('Missing Information');
     }
   };
 
@@ -110,15 +114,15 @@ export const SignupForm: FC = () => {
     <div>
       <Button
         style={{
-          position: "absolute",
+          position: 'absolute',
           left: 20,
           top: 20,
           backgroundColor: palette.pageBG,
-          border: "none",
+          border: 'none',
         }}
         onClick={() => {
           if (!isFirstPartCompleted) {
-            navigate("/");
+            navigate('/');
           } else {
             setIsFirstPartCompleted(false);
           }
@@ -136,8 +140,9 @@ export const SignupForm: FC = () => {
               fontWeight: 600,
               fontSize: 36,
             }}
-    
-          >Sign up </Title>
+          >
+            Sign up{' '}
+          </Title>
           <Form
             className="container-fluid"
             style={{ paddingLeft: 40, paddingRight: 40, marginTop: 30 }}
@@ -181,14 +186,12 @@ export const SignupForm: FC = () => {
               />
             </Form.Group>
             {error ? (
-              <BodyText
-                style={{ color: "red" }}
-              >{errorMessage}</BodyText>
+              <BodyText style={{ color: 'red' }}>{errorMessage}</BodyText>
             ) : undefined}
             <div className="d-grid font-link" style={{ marginTop: 30 }}>
               <Button
                 style={{
-                  color: "white",
+                  color: 'white',
                   backgroundColor: palette.subSectionsBgAccent,
                   borderColor: palette.subSectionsBgAccent,
                   fontSize: 20,
@@ -200,8 +203,8 @@ export const SignupForm: FC = () => {
               </Button>
               <div
                 style={{
-                  display: "flex",
-                  flexDirection: "row",
+                  display: 'flex',
+                  flexDirection: 'row',
                   gap: 4,
                   marginTop: 10,
                 }}
@@ -222,7 +225,9 @@ export const SignupForm: FC = () => {
               fontWeight: 600,
               fontSize: 36,
             }}
-          >One more step...</Title>
+          >
+            One more step...
+          </Title>
           <Form
             className="container-fluid"
             style={{ paddingLeft: 40, paddingRight: 40, marginTop: 30 }}
@@ -303,27 +308,25 @@ export const SignupForm: FC = () => {
             <div
               style={{
                 marginTop: 10,
-                display: "flex",
-                flexDirection: "row",
-                cursor: "pointer",
+                display: 'flex',
+                flexDirection: 'row',
+                cursor: 'pointer',
               }}
               onClick={() => setIsModalShowing(true)}
             >
               <img src={addIcon} alt="addIcon" />
-              <BodyText
-                style={{ fontSize: 15, marginTop: 15, marginLeft: 8 }}
-              >Add a payment method</BodyText>
+              <BodyText style={{ fontSize: 15, marginTop: 15, marginLeft: 8 }}>
+                Add a payment method
+              </BodyText>
             </div>
             {error ? (
-              <BodyText
-                style={{ color: "red" }}
-              >{errorMessage}</BodyText>
+              <BodyText style={{ color: 'red' }}>{errorMessage}</BodyText>
             ) : undefined}
             <div className="d-grid font-link" style={{ marginTop: 15 }}>
               <Button
                 type="submit"
                 style={{
-                  color: "white",
+                  color: 'white',
                   backgroundColor: palette.subSectionsBgAccent,
                   borderColor: palette.subSectionsBgAccent,
                   fontSize: 20,
@@ -334,8 +337,8 @@ export const SignupForm: FC = () => {
               </Button>
               <div
                 style={{
-                  display: "flex",
-                  flexDirection: "row",
+                  display: 'flex',
+                  flexDirection: 'row',
                   gap: 4,
                   marginTop: 10,
                 }}

@@ -1,12 +1,14 @@
-import React, { FC, useState } from "react";
-import { Button, Col, Form, Modal, Row } from "react-bootstrap";
-import { Advert, updateAdvert, createAdvert, ProductCategory, Colors } from "../../api/collections/advert";
-import { palette } from "../../utils/colors";
-import { Img } from "../Img";
-
-
-
-
+import React, { FC, useState } from 'react';
+import { Button, Col, Form, Modal, Row } from 'react-bootstrap';
+import {
+  Advert,
+  updateAdvert,
+  createAdvert,
+  ProductCategory,
+  Colors,
+} from '../../api/collections/advert';
+import { palette } from '../../utils/colors';
+import { Img } from '../Img';
 
 type EditAdvertContentProps = React.DetailedHTMLProps<
   React.HTMLAttributes<HTMLDivElement>,
@@ -21,26 +23,34 @@ type EditAdvertContentProps = React.DetailedHTMLProps<
   }>;
 
 const EditAdvertModal: FC<EditAdvertContentProps> = (props) => {
-  const [isChecked, setIsChecked] = useState(props.advert?.type ? props.advert?.type : "");
+  const [isChecked, setIsChecked] = useState(
+    props.advert?.type ? props.advert?.type : '',
+  );
 
   const handleType = (event: any) => {
     setIsChecked(event.target.value);
   };
-  const purchaseDate = props.advert?.purchaseDate ? props.advert.purchaseDate.toString().substring(0, 10) : "";
-  const expirationDate = props.advert?.expirationDate ? props.advert.expirationDate.toString().substring(0, 10) : "";
-  const [encodedImage, setEncodedImage] = useState(props.advert?.imageurl ? props.advert?.imageurl : "");
-  console.log('Constructing Form for advert: ', props.advert)
+  const purchaseDate = props.advert?.purchaseDate
+    ? props.advert.purchaseDate.toString().substring(0, 10)
+    : '';
+  const expirationDate = props.advert?.expirationDate
+    ? props.advert.expirationDate.toString().substring(0, 10)
+    : '';
+  const [encodedImage, setEncodedImage] = useState(
+    props.advert?.imageurl ? props.advert?.imageurl : '',
+  );
+  console.log('Constructing Form for advert: ', props.advert);
   const [formData, setFormData] = useState({
-    productname: props.advert?.productname ? props.advert?.productname : "",
-    description: props.advert?.description ? props.advert?.description : "",
+    productname: props.advert?.productname ? props.advert?.productname : '',
+    description: props.advert?.description ? props.advert?.description : '',
     prioritized: props.advert?.prioritized ? props.advert?.prioritized : false,
-    color: props.advert?.color ? props.advert?.color : "",
+    color: props.advert?.color ? props.advert?.color : '',
     purchaseDate: purchaseDate,
     expirationDate: expirationDate,
     quantity: props.advert?.quantity ? props.advert?.quantity : 0,
     price: props.advert?.price ? props.advert?.price : 0,
-    category: props.advert?.category ? props.advert?.category : "",
-    store: props.advert?.store ? props.advert?.store : props.userID
+    category: props.advert?.category ? props.advert?.category : '',
+    store: props.advert?.store ? props.advert?.store : props.userID,
   });
 
   const handleChange = (event: any) => {
@@ -81,27 +91,27 @@ const EditAdvertModal: FC<EditAdvertContentProps> = (props) => {
     category: false,
     price: false,
     quantity: false,
-    type: false
+    type: false,
   };
   const handleSubmit = async () => {
     if (!formData.productname) {
-      validationErrors.productname = true
+      validationErrors.productname = true;
     }
     if (!formData.category) {
-      validationErrors.category = true
+      validationErrors.category = true;
     }
     if (!formData.quantity) {
-      validationErrors.quantity = true
+      validationErrors.quantity = true;
     }
     if (!formData.price) {
-      validationErrors.price = true
+      validationErrors.price = true;
     }
     if (!isChecked) {
-      validationErrors.type = true
-    } 
-    
-    if (Object.values(validationErrors).some(e => e)) {
-      console.log('Errors are happening')
+      validationErrors.type = true;
+    }
+
+    if (Object.values(validationErrors).some((e) => e)) {
+      console.log('Errors are happening');
       setErrors(validationErrors);
     } else {
       try {
@@ -118,7 +128,7 @@ const EditAdvertModal: FC<EditAdvertContentProps> = (props) => {
             price: formData.price,
             category: formData.category,
             imageurl: encodedImage,
-          } as Advert)
+          } as Advert);
         } else {
           await createAdvert({
             productname: formData.productname,
@@ -129,25 +139,23 @@ const EditAdvertModal: FC<EditAdvertContentProps> = (props) => {
             purchaseDate: new Date(formData.purchaseDate),
             quantity: formData.quantity,
             price: formData.price,
-            advertStatus: "Ongoing",
+            advertStatus: 'Ongoing',
             category: formData.category,
             date: new Date(),
             store: formData.store,
             imageurl: encodedImage,
             type: isChecked,
-          } as Advert)
+          } as Advert);
         }
         setErrors({
           productname: false,
           category: false,
           price: false,
           quantity: false,
-          type: false
+          type: false,
         });
-        if (props.onClose)
-          props?.onClose()
-      }
-      catch (error) {
+        if (props.onClose) props?.onClose();
+      } catch (error) {
         console.error(error);
       }
     }
@@ -162,40 +170,67 @@ const EditAdvertModal: FC<EditAdvertContentProps> = (props) => {
           <Row>
             <Col>
               <Form.Group className="mb-3">
-                <Form.Label style={{
-                  padding: '10px',
-                  color: palette.gray
-                }}>Sell/ Ask:</Form.Label>
-                <Form.Check inline required type="radio" name="type" id="Sell" label="Sell" onChange={props.advert? undefined : handleType} value={"Sell"} checked={isChecked === "Sell"} />
-                <Form.Check inline required type="radio" name="type" id="Ask" label="Ask" onChange={props.advert? undefined : handleType} value={"Ask"} checked={isChecked === "Ask"}/>
+                <Form.Label
+                  style={{
+                    padding: '10px',
+                    color: palette.gray,
+                  }}
+                >
+                  Sell/ Ask:
+                </Form.Label>
+                <Form.Check
+                  inline
+                  required
+                  type="radio"
+                  name="type"
+                  id="Sell"
+                  label="Sell"
+                  onChange={props.advert ? undefined : handleType}
+                  value={'Sell'}
+                  checked={isChecked === 'Sell'}
+                />
+                <Form.Check
+                  inline
+                  required
+                  type="radio"
+                  name="type"
+                  id="Ask"
+                  label="Ask"
+                  onChange={props.advert ? undefined : handleType}
+                  value={'Ask'}
+                  checked={isChecked === 'Ask'}
+                />
               </Form.Group>
             </Col>
             <Col>
-              <Form.Group style={{
-                textAlign: "center"
-              }}
-                controlId="FileUpload">
+              <Form.Group
+                style={{
+                  textAlign: 'center',
+                }}
+                controlId="FileUpload"
+              >
                 <div className="custom-file">
                   <Form.Control
                     type="file"
                     onChange={handleFileInput}
                     style={{
-                      backgroundColor: "transparent",
-                      borderColor: "black",
+                      backgroundColor: 'transparent',
+                      borderColor: 'black',
                       borderRadius: 15,
-                      alignContent: "start",
-                      justifyContent: "start",
-                      marginBottom: "10px"
+                      alignContent: 'start',
+                      justifyContent: 'start',
+                      marginBottom: '10px',
                     }}
-                    id="customFile" />
+                    id="customFile"
+                  />
                 </div>
                 {encodedImage && (
                   <div className="flex-col items-end justify-end">
                     <Img
                       style={{
-                        width: "160px",
-                        height: "160px",
-                        borderRadius: "60px",
+                        width: '160px',
+                        height: '160px',
+                        borderRadius: '60px',
                       }}
                       src={encodedImage}
                     />
@@ -207,14 +242,29 @@ const EditAdvertModal: FC<EditAdvertContentProps> = (props) => {
           <Row>
             <Col>
               <Form.Group>
-                <Form.Label style={{
-                  padding: '10px',
-                  color: palette.gray, margin: "5px"
-                }}>Product Name</Form.Label>
-                <Form.Control style={{
-                  padding: '10px',
-                  color: palette.gray, margin: "5px"
-                }} required type="text" placeholder="Product Name" name="productname" value={formData.productname} onChange={handleChange} isInvalid={!!errors.productname}></Form.Control>
+                <Form.Label
+                  style={{
+                    padding: '10px',
+                    color: palette.gray,
+                    margin: '5px',
+                  }}
+                >
+                  Product Name
+                </Form.Label>
+                <Form.Control
+                  style={{
+                    padding: '10px',
+                    color: palette.gray,
+                    margin: '5px',
+                  }}
+                  required
+                  type="text"
+                  placeholder="Product Name"
+                  name="productname"
+                  value={formData.productname}
+                  onChange={handleChange}
+                  isInvalid={!!errors.productname}
+                ></Form.Control>
                 <Form.Control.Feedback type="invalid">
                   {errors.productname}
                 </Form.Control.Feedback>
@@ -224,48 +274,84 @@ const EditAdvertModal: FC<EditAdvertContentProps> = (props) => {
           <Row>
             <Col>
               <Form.Group controlId="category">
-                <Form.Label style={{
-                  padding: '10px',
-                  color: palette.gray, margin: "5px"
-                }}>Product Category</Form.Label>
-                <Form.Select style={{
-                  padding: '10px',
-                  color: palette.gray, margin: "5px"
-                }} required placeholder="Product Category" value={formData.category} name="category" onChange={handleChange} isInvalid={!!errors.category}>
+                <Form.Label
+                  style={{
+                    padding: '10px',
+                    color: palette.gray,
+                    margin: '5px',
+                  }}
+                >
+                  Product Category
+                </Form.Label>
+                <Form.Select
+                  style={{
+                    padding: '10px',
+                    color: palette.gray,
+                    margin: '5px',
+                  }}
+                  required
+                  placeholder="Product Category"
+                  value={formData.category}
+                  name="category"
+                  onChange={handleChange}
+                  isInvalid={!!errors.category}
+                >
                   <option> -- Select Category -- </option>
-                  {Object.values(ProductCategory).filter((key) => isNaN(Number(key))).map(c => (
-                    <option>{c}</option>
-                  ))}
+                  {Object.values(ProductCategory)
+                    .filter((key) => isNaN(Number(key)))
+                    .map((c) => (
+                      <option>{c}</option>
+                    ))}
                 </Form.Select>
               </Form.Group>
             </Col>
             <Col>
               <Form.Group>
-                <Form.Label style={{
-                  padding: '10px',
-                  color: palette.gray, margin: "5px"
-                }}>Product Color</Form.Label>
-                <Form.Select style={{
-                  padding: '10px',
-                  color: palette.gray, margin: "5px"
-                }} placeholder="Product Category" value={formData.color} name="color" onChange={handleChange}>
-                  {Object.values(Colors).filter((key) => isNaN(Number(key))).map(c => (
-                    <option>{c}</option>
-                  ))}
+                <Form.Label
+                  style={{
+                    padding: '10px',
+                    color: palette.gray,
+                    margin: '5px',
+                  }}
+                >
+                  Product Color
+                </Form.Label>
+                <Form.Select
+                  style={{
+                    padding: '10px',
+                    color: palette.gray,
+                    margin: '5px',
+                  }}
+                  placeholder="Product Category"
+                  value={formData.color}
+                  name="color"
+                  onChange={handleChange}
+                >
+                  {Object.values(Colors)
+                    .filter((key) => isNaN(Number(key)))
+                    .map((c) => (
+                      <option>{c}</option>
+                    ))}
                 </Form.Select>
               </Form.Group>
             </Col>
           </Row>
           <Row>
             <Col>
-              <Form.Label style={{
-                padding: '10px',
-                color: palette.gray, margin: "5px"
-              }}>Purchase Date</Form.Label>
+              <Form.Label
+                style={{
+                  padding: '10px',
+                  color: palette.gray,
+                  margin: '5px',
+                }}
+              >
+                Purchase Date
+              </Form.Label>
               <Form.Control
                 style={{
                   padding: '10px',
-                  color: palette.gray, margin: "5px"
+                  color: palette.gray,
+                  margin: '5px',
                 }}
                 type="date"
                 value={formData.purchaseDate}
@@ -274,14 +360,20 @@ const EditAdvertModal: FC<EditAdvertContentProps> = (props) => {
               />
             </Col>
             <Col>
-              <Form.Label style={{
-                padding: '10px',
-                color: palette.gray, margin: "5px"
-              }}>Expiration Date</Form.Label>
+              <Form.Label
+                style={{
+                  padding: '10px',
+                  color: palette.gray,
+                  margin: '5px',
+                }}
+              >
+                Expiration Date
+              </Form.Label>
               <Form.Control
                 style={{
                   padding: '10px',
-                  color: palette.gray, margin: "5px"
+                  color: palette.gray,
+                  margin: '5px',
                 }}
                 type="date"
                 value={formData.expirationDate}
@@ -293,40 +385,84 @@ const EditAdvertModal: FC<EditAdvertContentProps> = (props) => {
           <Row>
             <Col>
               <Form.Group>
-                <Form.Label style={{
-                  padding: '10px',
-                  color: palette.gray, margin: "5px"
-                }}> Quantity (pcs)</Form.Label>
-                <Form.Control style={{
-                  padding: '10px',
-                  color: palette.gray, margin: "5px"
-                }} type="number" name="quantity" value={formData.quantity} onChange={handleChange} required isInvalid={!!errors.quantity}></Form.Control>
+                <Form.Label
+                  style={{
+                    padding: '10px',
+                    color: palette.gray,
+                    margin: '5px',
+                  }}
+                >
+                  {' '}
+                  Quantity (pcs)
+                </Form.Label>
+                <Form.Control
+                  style={{
+                    padding: '10px',
+                    color: palette.gray,
+                    margin: '5px',
+                  }}
+                  type="number"
+                  name="quantity"
+                  value={formData.quantity}
+                  onChange={handleChange}
+                  required
+                  isInvalid={!!errors.quantity}
+                ></Form.Control>
               </Form.Group>
             </Col>
             <Col>
               <Form.Group>
-                <Form.Label style={{
-                  padding: '10px',
-                  color: palette.gray, margin: "5px"
-                }}> Price (€)</Form.Label>
-                <Form.Control style={{
-                  padding: '10px',
-                  color: palette.gray, margin: "5px"
-                }} type="number" name="price" value={formData.price} onChange={handleChange} required isInvalid={!!errors.price}></Form.Control>
+                <Form.Label
+                  style={{
+                    padding: '10px',
+                    color: palette.gray,
+                    margin: '5px',
+                  }}
+                >
+                  {' '}
+                  Price (€)
+                </Form.Label>
+                <Form.Control
+                  style={{
+                    padding: '10px',
+                    color: palette.gray,
+                    margin: '5px',
+                  }}
+                  type="number"
+                  name="price"
+                  value={formData.price}
+                  onChange={handleChange}
+                  required
+                  isInvalid={!!errors.price}
+                ></Form.Control>
               </Form.Group>
             </Col>
           </Row>
           <Row>
             <Col>
               <Form.Group>
-                <Form.Label style={{
-                  padding: '10px',
-                  color: palette.gray, margin: "5px"
-                }}> Description</Form.Label>
-                <Form.Control style={{
-                  padding: '10px',
-                  color: palette.gray, margin: "5px"
-                }} as="textarea" rows={3} name="description" value={formData.description} onChange={handleChange}></Form.Control>
+                <Form.Label
+                  style={{
+                    padding: '10px',
+                    color: palette.gray,
+                    margin: '5px',
+                  }}
+                >
+                  {' '}
+                  Description
+                </Form.Label>
+                <Form.Control
+                  style={{
+                    padding: '10px',
+                    color: palette.gray,
+                    margin: '5px',
+                  }}
+                  as="textarea"
+                  rows={3}
+                  name="description"
+                  value={formData.description}
+                  onChange={handleChange}
+                ></Form.Control>
               </Form.Group>
             </Col>
           </Row>
@@ -338,7 +474,7 @@ const EditAdvertModal: FC<EditAdvertContentProps> = (props) => {
           onClick={handleSubmit}
           style={{
             background: palette.green,
-            borderColor: palette.green
+            borderColor: palette.green,
           }}
         >
           Submit

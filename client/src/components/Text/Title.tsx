@@ -1,4 +1,4 @@
-import { CSSProperties, FC } from "react";
+import { CSSProperties, FC } from 'react';
 
 export type TextProps = {
   style: CSSProperties;
@@ -17,4 +17,4 @@ export const Title: FC<TextProps> = (props) => {
       {props.children}
     </h1>
   );
-}
+};

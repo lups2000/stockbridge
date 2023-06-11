@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState } from 'react';
 
 type RadioButtonProps = React.DetailedHTMLProps<
   React.HTMLAttributes<HTMLDivElement>,
@@ -8,7 +8,7 @@ type RadioButtonProps = React.DetailedHTMLProps<
     options: string[];
   }>;
 const RadioButton: React.FC<RadioButtonProps> = (props) => {
-  const [selectedOption, setSelectedOption] = useState("");
+  const [selectedOption, setSelectedOption] = useState('');
 
   const handleOptionChange = (event: {
     target: { value: React.SetStateAction<string> };

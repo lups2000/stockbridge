@@ -1,5 +1,5 @@
-import { createContext, useState } from "react";
-import { User } from "../api/collections/user";
+import { createContext, useState } from 'react';
+import { User } from '../api/collections/user';
 
 export type LoginState = {
   loggedIn: boolean;

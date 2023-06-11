@@ -1,7 +1,7 @@
-import React from "react";
-import { Form, Row, Col } from "react-bootstrap";
-import { Title } from "../../Text/Title";
-import { ShipmentDetailsFormProps } from "./StoreDetailsForm";
+import React from 'react';
+import { Form, Row, Col } from 'react-bootstrap';
+import { Title } from '../../Text/Title';
+import { ShipmentDetailsFormProps } from './StoreDetailsForm';
 
 const ShipmentDetailsForm = (props: ShipmentDetailsFormProps) => {
   return (
@@ -10,7 +10,7 @@ const ShipmentDetailsForm = (props: ShipmentDetailsFormProps) => {
         <h2>Shipment Details</h2>
       </Title>
       {/*<Form onSubmit={handleSubmit} className={"m-2"}>*/}
-      <Row className={"mb-2"}>
+      <Row className={'mb-2'}>
         <Col>
           <Form.Floating>
             <Form.Control
@@ -36,7 +36,7 @@ const ShipmentDetailsForm = (props: ShipmentDetailsFormProps) => {
           </Form.Floating>
         </Col>
       </Row>
-      <Row className={"mb-2"}>
+      <Row className={'mb-2'}>
         <Col>
           <Form.Floating>
             <Form.Control

@@ -1,5 +1,5 @@
 // in this file we put the main functions we need
-import { ChangeEvent } from "react";
+import { ChangeEvent } from 'react';
 
 export function checkEmail(email: string) {
   return /^\w+([.-]?\w+)*@\w+(.-]?\w+)*(\.\w{2,3})+$/.test(email);
@@ -12,8 +12,8 @@ export function checkPassword(password1: string, password2: string) {
 export function autocompleteCardNumber(event: ChangeEvent<HTMLInputElement>) {
   if (event.target.value) {
     return event.target.value
-      .replace(/[^0-9]/gi, "")
-      .replace(/(.{4})/g, "$1 ")
+      .replace(/[^0-9]/gi, '')
+      .replace(/(.{4})/g, '$1 ')
       .trim();
   }
   return undefined;
@@ -28,12 +28,12 @@ export function checkCVV(cvv: string) {
 }
 
 export function autocompleteExpirationDate(
-  event: ChangeEvent<HTMLInputElement>
+  event: ChangeEvent<HTMLInputElement>,
 ) {
   if (event.target.value) {
     return event.target.value
-      .replace(/[^0-9]/gi, "")
-      .replace(/(\d{2})(\d)/, "$1/$2")
+      .replace(/[^0-9]/gi, '')
+      .replace(/(\d{2})(\d)/, '$1/$2')
       .trim();
   }
   return undefined;
@@ -43,11 +43,11 @@ export function checkPaymentExpirationDate(date: string) {
   const regex = /^\d{2}\/\d{2}$/;
 
   const today = new Date();
-  const [inputMonth, inputYear] = date.split("/");
+  const [inputMonth, inputYear] = date.split('/');
   // Create a new Date object by passing the parsed components
   if (parseInt(inputMonth) > 0 && parseInt(inputMonth) < 13) {
     const newDate = new Date();
-    newDate.setFullYear(parseInt("20" + inputYear), parseInt(inputMonth) - 1);
+    newDate.setFullYear(parseInt('20' + inputYear), parseInt(inputMonth) - 1);
     if (regex.test(date) && today.getTime() < newDate.getTime()) {
       return true;
     }
@@ -58,7 +58,7 @@ export function checkPaymentExpirationDate(date: string) {
 
 export function expDatePaymentToDate(date: string) {
   //date format: 02/10
-  const [monthString, yearString] = date.split("/");
+  const [monthString, yearString] = date.split('/');
   const month = parseInt(monthString, 10);
   const year = parseInt(yearString, 10);
 

@@ -1,4 +1,4 @@
-import { ApiClient } from "../apiClient";
+import { ApiClient } from '../apiClient';
 
 export interface Address {
   street?: string;
@@ -59,12 +59,12 @@ export async function deleteUser(id: string): Promise<void> {
 
 export async function login(
   email: string,
-  password: string
+  password: string,
 ): Promise<UserResponse> {
   return await apiClient.post<UserResponse>(
     `/auth/login`,
     { email, password },
-    { withCredentials: true }
+    { withCredentials: true },
   );
 }
 

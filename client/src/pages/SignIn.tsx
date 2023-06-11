@@ -1,24 +1,24 @@
-import { FC } from "react";
-import { Button } from "react-bootstrap";
-import { Title } from "../components/Text/Title";
-import { palette } from "../utils/colors";
+import { FC } from 'react';
+import { Button } from 'react-bootstrap';
+import { Title } from '../components/Text/Title';
+import { palette } from '../utils/colors';
 //import signUpImage from "../assets/signUp.png";
-import backIcon from "../assets/back.svg";
-import { useNavigate } from "react-router-dom";
-import useMediaQuery from "../hooks/useMediaQuery";
-import { LoginForm } from "../components/SignIn/LoginForm";
+import backIcon from '../assets/back.svg';
+import { useNavigate } from 'react-router-dom';
+import useMediaQuery from '../hooks/useMediaQuery';
+import { LoginForm } from '../components/SignIn/LoginForm';
 
 export const SignIn: FC = () => {
   const navigate = useNavigate();
-  const matches = useMediaQuery("(min-width: 768px)");
+  const matches = useMediaQuery('(min-width: 768px)');
   return (
     <>
       <div
         style={{
-          width: matches ? 600 : "100vw",
-          position: "absolute",
+          width: matches ? 600 : '100vw',
+          position: 'absolute',
           left: 0,
-          minHeight: "100vh",
+          minHeight: '100vh',
           backgroundColor: palette.pageBG,
         }}
       >
@@ -30,16 +30,18 @@ export const SignIn: FC = () => {
               fontWeight: 600,
               fontSize: 36,
             }}
-          >Sign in </Title>
+          >
+            Sign in{' '}
+          </Title>
           <Button
             style={{
-              position: "absolute",
+              position: 'absolute',
               left: 20,
               top: 20,
               backgroundColor: palette.pageBG,
-              border: "none",
+              border: 'none',
             }}
-            onClick={() => navigate("/")}
+            onClick={() => navigate('/')}
           >
             <img src={backIcon} alt="delete" />
           </Button>
@@ -48,13 +50,13 @@ export const SignIn: FC = () => {
       </div>
       <div
         style={{
-          width: "calc(100% - 600px)",
-          position: "fixed",
+          width: 'calc(100% - 600px)',
+          position: 'fixed',
           right: 0,
-          height: "100vh",
+          height: '100vh',
           paddingLeft: 50,
-          backgroundColor: "red",
-          display: matches ? undefined : "none",
+          backgroundColor: 'red',
+          display: matches ? undefined : 'none',
         }}
       >
         {/*<img TODO

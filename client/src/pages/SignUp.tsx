@@ -1,19 +1,19 @@
-import { FC } from "react";
-import { palette } from "../utils/colors";
+import { FC } from 'react';
+import { palette } from '../utils/colors';
 //import signUpImage from "../assets/signUp.png";
-import useMediaQuery from "../hooks/useMediaQuery";
-import { SignupForm } from "../components/SignUp/SignupForm";
+import useMediaQuery from '../hooks/useMediaQuery';
+import { SignupForm } from '../components/SignUp/SignupForm';
 export const SignUp: FC = () => {
-  const matches = useMediaQuery("(min-width: 768px)");
+  const matches = useMediaQuery('(min-width: 768px)');
 
   return (
     <>
       <div
         style={{
-          width: matches ? 600 : "100vw",
-          position: "absolute",
+          width: matches ? 600 : '100vw',
+          position: 'absolute',
           left: 0,
-          minHeight: "100vh",
+          minHeight: '100vh',
           backgroundColor: palette.pageBG,
         }}
       >
@@ -23,13 +23,13 @@ export const SignUp: FC = () => {
       </div>
       <div
         style={{
-          width: "calc(100% - 600px)",
-          position: "fixed",
+          width: 'calc(100% - 600px)',
+          position: 'fixed',
           right: 0,
-          height: "100vh",
+          height: '100vh',
           paddingLeft: 50,
-          backgroundColor: "red",
-          display: matches ? undefined : "none",
+          backgroundColor: 'red',
+          display: matches ? undefined : 'none',
         }}
       >
         {/*<img TODO

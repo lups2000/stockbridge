@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 
 export type ImgProps = React.DetailedHTMLProps<
   React.ImgHTMLAttributes<HTMLImageElement>,
@@ -12,8 +12,8 @@ export type ImgProps = React.DetailedHTMLProps<
 
 const Img: React.FC<React.PropsWithChildren<ImgProps>> = ({
   className,
-  src = "defaultNoData.png",
-  alt = "",
+  src = 'defaultNoData.png',
+  alt = '',
   ...restProps
 }) => {
   return (
@@ -22,7 +22,7 @@ const Img: React.FC<React.PropsWithChildren<ImgProps>> = ({
       src={src}
       alt={alt}
       {...restProps}
-      loading={"lazy"}
+      loading={'lazy'}
     />
   );
 };
