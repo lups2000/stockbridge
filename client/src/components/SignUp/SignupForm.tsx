@@ -56,9 +56,10 @@ export const SignupForm: FC = () => {
         setErrorMessage('Email format invalid');
         return;
       }
-      if (!checkPassword(password, repeatPassword)) {
+      let passwordCheckResult = checkPassword(password, repeatPassword);
+      if (!passwordCheckResult[0]) {
         setError(true);
-        setErrorMessage('Passwords do not match');
+        setErrorMessage(passwordCheckResult[1]);
         return;
       }
       setIsFirstPartCompleted(true);
