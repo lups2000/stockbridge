@@ -32,7 +32,7 @@ const stepDescriptions: { message: string; icon: string }[] = [
   },
 ];
 
-export const Home: FC = () => {
+export function Home() {
   const matches = useMediaQuery("(min-width: 768px)");
 
   const { setLoggedIn, setUser } = useContext(LoginContext);

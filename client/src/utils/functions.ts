@@ -1,12 +1,12 @@
 // in this file we put the main functions we need
 import { ChangeEvent } from "react";
 
-export function isValidEmail(email: string) {
+export function checkEmail(email: string) {
   return /^\w+([.-]?\w+)*@\w+(.-]?\w+)*(\.\w{2,3})+$/.test(email);
 }
 
 export function checkPassword(password1: string, password2: string) {
-  return password1 === password2;
+  return password1 === password2 && password1.length >= 6;
 }
 
 export function autocompleteCardNumber(event: ChangeEvent<HTMLInputElement>) {
@@ -54,4 +54,29 @@ export function checkPaymentExpirationDate(date: string) {
     return false;
   }
   return false;
+}
+
+export function expDatePaymentToDate(date: string) {
+  //date format: 02/10
+  const [monthString, yearString] = date.split("/");
+  const month = parseInt(monthString, 10);
+  const year = parseInt(yearString, 10);
+
+  if (isNaN(month) || isNaN(year)) {
+    return undefined;
+  }
+
+  const transformedDate = new Date(year + 2000, month);
+
+  // Check if the transformedDate is a valid date
+  if (isNaN(transformedDate.getTime())) {
+    return undefined;
+  }
+
+  return transformedDate;
+}
+
+export function checkPhoneNumber(phoneNumber: string) {
+  const regex = /^\+?[1-9]\d{1,3}-?[1-9]\d{1,14}$/;
+  return regex.test(phoneNumber);
 }

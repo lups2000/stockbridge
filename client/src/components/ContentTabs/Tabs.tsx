@@ -17,10 +17,10 @@ const Tabs: React.FC<Props> = ({ children }) => {
                 overflow: 'hidden',
             }}>
                 {children.map((item, index) => (
-                    <ContentTabTitle 
-                    key={index} 
-                    title={item.props.title} 
-                    index={index} 
+                    <ContentTabTitle
+                    key={index}
+                    title={item.props.title}
+                    index={index}
                     selectedTab={selectedTab}
                     setSelectedTab={setSelectedTab} />
                 ))}

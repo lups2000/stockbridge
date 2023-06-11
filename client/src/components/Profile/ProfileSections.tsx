@@ -1,5 +1,6 @@
-import useMediaQuery from "../../hooks/useMediaQuery";
+import useMediaQuery from "./../../hooks/useMediaQuery";
 import { FC } from "react";
+import { LeftTab } from "./LeftTab";
 import questionIcon from "./../../assets/question-circle.svg";
 import premiumIcon from "./../../assets/bookmark-star.svg";
 import storeIcon from "./../../assets/shop.svg";
@@ -14,33 +15,39 @@ export type ProfileSectionsProps = {
 }[];
 
 
-const leftTabs: { text: string; icon: any, isSelected: boolean }[] = [
+const leftTabs: { key: string; text: string; icon: any, isSelected: boolean }[] = [
     {
+        key: "My Adverts",
         text: "My Adverts",
         icon: advertIcon,
         isSelected: false
     },
     {
+        key: "Selling",
         text: "Selling",
         icon: sellingIcon,
         isSelected: true
     },
     {
+        key: "Buying",
         text: "Buying",
         icon: buyingIcon,
         isSelected: false
     },
     {
+        key: "Store Details",
         text: "Store Details",
         icon: storeIcon,
         isSelected: false
     },
     {
+        key: "Premium",
         text: "Premium",
         icon: premiumIcon,
         isSelected: false
     },
     {
+        key: "Help and FAQ",
         text: "Help and FAQ",
         icon: questionIcon,
         isSelected: false
@@ -67,6 +74,7 @@ export const ProfileSections: FC = () => {
             }}
         >
 
+
             <div className="sections-container"
                 style={{
                     marginTop: "40%",
@@ -75,17 +83,18 @@ export const ProfileSections: FC = () => {
                     gap: 0,
                 }}
             >
-                {/* {leftTabs.map((section, _) => {
+                {leftTabs.map((section, _) => {
                     return (
                         <LeftTab
+                            key={section.key}
                             message={section.text}
                             icon={section.icon}
                             isSelected={section.isSelected}
                         />
                     );
-                })} */}
+                })}
             </div>
 
-        </div>
+     </div>
     );
 }

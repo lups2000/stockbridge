@@ -6,7 +6,7 @@ import { BodyText } from "../Text/BodyText";
 import { useNavigate } from "react-router-dom";
 import addIcon from "../../assets/add.svg";
 import backIcon from "../../assets/back.svg";
-import { checkPassword, isValidEmail } from "../../utils/functions";
+import { checkPassword, checkEmail, expDatePaymentToDate } from "../../utils/functions";
 import { PaymentModal } from "./PaymentModal";
 import { ApiClient } from "../../api/apiClient";
 
@@ -47,7 +47,7 @@ export const SignupForm: FC = () => {
   //when the user clicks for the first time on "sign up"
   const handleFirstClick = () => {
     if (email && password && repeatPassword) {
-      if (!isValidEmail(email)) {
+      if (!checkEmail(email)) {
         setError(true);
         setErrorMessage("Email format invalid");
         return;
@@ -85,7 +85,7 @@ export const SignupForm: FC = () => {
           paymentMethod: {
             name: cardName,
             cardNumber,
-            expirationDate: expDateCard,
+            expirationDate: expDatePaymentToDate(expDateCard ?? ""),
             cvv: cvvCard,
           },
         })

@@ -22,7 +22,7 @@ export interface PaymentMethod {
 }
 
 export interface User {
-  id?: string;
+  _id?: string;
   name?: string;
   email?: string;
   password?: string;
@@ -32,7 +32,7 @@ export interface User {
   createdAt?: Date;
   address?: Address;
   subscription?: Subscription;
-  paymentMethod?: PaymentMethod; 
+  paymentMethod?: PaymentMethod;
 }
 
 export interface UserResponse {

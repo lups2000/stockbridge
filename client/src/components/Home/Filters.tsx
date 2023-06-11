@@ -30,9 +30,9 @@ export const Filters: FC = () => {
         flexDirection: "column",
       }}
     >
-      <Title
-        style={{ textAlign: "center", fontSize: 30, marginTop: 30 }}
-      >Filters</Title>
+      <Title style={{ textAlign: "center", fontSize: 30, marginTop: 30 }}>
+        Filters
+      </Title>
       <ColoredLine height={2} width={100} color="black" />
       <Dropdown style={{ marginTop: 30 }}>
         <Dropdown.Toggle
@@ -48,11 +48,13 @@ export const Filters: FC = () => {
           Categories
         </Dropdown.Toggle>
         <Dropdown.Menu>
-          {Object.values(ProductCategory).filter((key) => isNaN(Number(key))).map(
-            c => <Dropdown.Item href={`${c}`}>{c}</Dropdown.Item>
-          )}
-          
-         {/*  <Dropdown.Item href="#/action-2">Plants</Dropdown.Item>
+          {Object.values(ProductCategory)
+            .filter((key) => isNaN(Number(key)))
+            .map((c) => (
+              <Dropdown.Item href={`${c}`}>{c}</Dropdown.Item>
+            ))}
+
+          {/*  <Dropdown.Item href="#/action-2">Plants</Dropdown.Item>
           <Dropdown.Item href="#/action-3">Something else</Dropdown.Item> */}
         </Dropdown.Menu>
       </Dropdown>
@@ -83,12 +85,13 @@ export const Filters: FC = () => {
       <div style={{ marginTop: 20 }}>
         <DatePicker />
       </div>
-      <div style={{ marginTop: 30 , width: 100}}>
+      <div style={{ marginTop: 30, width: 100 }}>
         <div className="row">
           <div>
             <Form.Group>
-              <BodyText
-                style={{ textAlign: "center",marginBottom: 10 }}>Postal Code:</BodyText>
+              <BodyText style={{ textAlign: "center", marginBottom: 10 }}>
+                Postal Code:
+              </BodyText>
               <Form.Control
                 style={{ border: "none" }}
                 type="text"
