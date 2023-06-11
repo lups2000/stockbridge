@@ -66,7 +66,7 @@ export function PostOrSearch() {
           }
         >
           <BodyText
-            style={{  
+            style={{
               margin: "auto",
               fontSize: 15,
               color: "white",

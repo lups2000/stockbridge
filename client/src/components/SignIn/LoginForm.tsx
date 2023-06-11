@@ -4,9 +4,9 @@ import { palette } from "../../utils/colors";
 import { BodyText } from "../Text/BodyText";
 import { LoginContext } from "../../contexts/LoginContext";
 import { useNavigate } from "react-router-dom";
-import { isValidEmail } from "../../utils/functions";
+import { checkEmail } from "../../utils/functions";
 import { ApiClient } from "../../api/apiClient";
-import { UserResponse, login } from "../../api/collections/user";
+import { UserResponse } from "../../api/collections/user";
 
 /**
  * This component represents the form to manage the login and it makes also the axios call to the relative endpoint.
@@ -25,34 +25,7 @@ export const LoginForm: FC = () => {
   const handleOnSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault(); // Prevent the default submit and page reload
 
-    if (email && password && isValidEmail(email)) {
-      /*
-      try {
-        const response: UserResponse = await login(email, password);
-
-        setError(false);
-        setErrorMessage("");
-        setLoggedIn(true);
-
-        setUser(response.user);
-
-        localStorage.setItem("loginStatus", JSON.stringify(true)); //IDK maybe it's not the best idea, i must check
-        localStorage.setItem("currentUser", JSON.stringify(response.user));
-
-        navigate("/"); //return to the homepage
-      } catch (error: any) {
-        setError(true);
-        if (error.response?.status === 400) {
-          setErrorMessage("Missing Username or Password");
-        } else if (error.response?.status === 401) {
-          setErrorMessage("Invalid Credentials");
-        } else {
-          setErrorMessage("No Server Response");
-        }
-        setLoggedIn(false);
-        setUser(undefined);
-      }*/
-
+    if (email && password && checkEmail(email)) {
       new ApiClient()
         .post<UserResponse>(
           "/auth/login",

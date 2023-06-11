@@ -50,7 +50,6 @@ app.use(hpp());
 //app.use(cors());
 app.use(cors({credentials: true, origin: 'http://localhost:3000'})); //I put this line of code because I could see my jwt in the browser
 
-// increase file size limit
 
 // Mount routers
 app.use("/api/v1/users", userRouter);
