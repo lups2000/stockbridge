@@ -13,16 +13,13 @@ import { ApiClient } from '../api/apiClient';
 export function Navbar() {
   const navigate = useNavigate();
 
-  const { loggedIn, setLoggedIn, setUser } = useContext(LoginContext);
+  const { loggedIn, setLoggedIn } = useContext(LoginContext);
 
   const handleLogoutClick = () => {
     new ApiClient()
       .post('/auth/logout', {}, { withCredentials: true })
       .then(() => {
         setLoggedIn(false);
-        setUser(undefined);
-        localStorage.removeItem('loginStatus'); // IDK, maybe it's not the best idea, i must check
-        localStorage.removeItem('currentUser');
         navigate('/'); //come back to homepage
       })
       .catch((error) => {

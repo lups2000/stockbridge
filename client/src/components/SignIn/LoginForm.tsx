@@ -2,11 +2,11 @@ import { ChangeEvent, FC, FormEvent, useContext, useState } from 'react';
 import { Button, Form } from 'react-bootstrap';
 import { palette } from '../../utils/colors';
 import { BodyText } from '../Text/BodyText';
-import { LoginContext } from '../../contexts/LoginContext';
 import { useNavigate } from 'react-router-dom';
 import { checkEmail } from '../../utils/functions';
 import { ApiClient } from '../../api/apiClient';
 import { UserResponse } from '../../api/collections/user';
+import { LoginContext } from '../../contexts/LoginContext';
 
 /**
  * This component represents the form to manage the login and it makes also the axios call to the relative endpoint.
@@ -18,15 +18,15 @@ export const LoginForm: FC = () => {
   const [error, setError] = useState<boolean>(false);
   const [errorMessage, setErrorMessage] = useState<string>('');
 
-  const { setLoggedIn, setUser } = useContext(LoginContext);
-
   const navigate = useNavigate();
+
+  const { setLoggedIn, setUser } = useContext(LoginContext);
 
   const handleOnSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault(); // Prevent the default submit and page reload
 
     if (email && password && checkEmail(email)) {
-      new ApiClient()
+      await new ApiClient()
         .post<UserResponse>(
           '/auth/login',
           {
@@ -39,12 +39,8 @@ export const LoginForm: FC = () => {
           setError(false);
           setErrorMessage('');
           setLoggedIn(true);
-
-          setUser(response.user);
-
-          localStorage.setItem('loginStatus', JSON.stringify(true)); //IDK maybe it's not the best idea, i must check
-          localStorage.setItem('currentUser', JSON.stringify(response.user));
-
+          setUser(response.user)
+          
           navigate('/'); //return to the homepage
         })
         .catch((error) => {
@@ -56,8 +52,6 @@ export const LoginForm: FC = () => {
           } else {
             setErrorMessage('No Server Response');
           }
-          setLoggedIn(false);
-          setUser(undefined);
         });
     } else {
       setError(true);
