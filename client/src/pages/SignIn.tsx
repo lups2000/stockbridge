@@ -1,12 +1,12 @@
 import { FC } from 'react';
-import { Button } from 'react-bootstrap';
+import { Button, Image } from 'react-bootstrap';
 import { Title } from '../components/Text/Title';
 import { palette } from '../utils/colors';
-//import signUpImage from "../assets/signUp.png";
 import backIcon from '../assets/back.svg';
 import { useNavigate } from 'react-router-dom';
 import useMediaQuery from '../hooks/useMediaQuery';
 import { LoginForm } from '../components/SignIn/LoginForm';
+import loginImage from '../assets/loginImage.png';
 
 export const SignIn: FC = () => {
   const navigate = useNavigate();
@@ -15,7 +15,7 @@ export const SignIn: FC = () => {
     <>
       <div
         style={{
-          width: matches ? 600 : '100vw',
+          width: matches ? 385 : '100vw',
           position: 'absolute',
           left: 0,
           minHeight: '100vh',
@@ -50,24 +50,24 @@ export const SignIn: FC = () => {
       </div>
       <div
         style={{
-          width: 'calc(100% - 600px)',
+          width: 'calc(100% - 385px)',
           position: 'fixed',
           right: 0,
           height: '100vh',
-          paddingLeft: 50,
-          backgroundColor: 'red',
           display: matches ? undefined : 'none',
         }}
       >
-        {/*<img TODO
+        <Image
+          draggable={false}
+          fluid
           style={{
-            maxWidth: "100%",
-            objectFit: "cover",
-            height: "100%",
+            width: '100%',
+            minHeight: '100vh',
+            objectFit: 'cover',
           }}
-          src={signUpImage}
+          src={loginImage}
           alt="signUp"
-        />*/}
+        />
       </div>
     </>
   );
