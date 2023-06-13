@@ -10,7 +10,6 @@ import { Page } from '../components/Page';
 import { Filters } from '../components/Home/Filters';
 import { BodyText } from '../components/Text/BodyText';
 import sortIcon from '../assets/sort-icon.svg';
-import { FC } from 'react';
 import { ColoredLine } from '../components/ColoredLine';
 import { useContext, useEffect } from 'react';
 import { LoginContext } from '../contexts/LoginContext';

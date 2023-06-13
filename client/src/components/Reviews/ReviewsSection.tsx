@@ -3,7 +3,7 @@ import { BodyText } from '../Text/BodyText';
 import { Reviewbar } from './Reviewbar';
 
 const ReviewsSection = (reviews: Review[]) => {
-  if (reviews.length == 0) {
+  if (reviews.length === 0) {
     reviews = [
       {
         id: '',

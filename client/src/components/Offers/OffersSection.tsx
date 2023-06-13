@@ -5,7 +5,7 @@ import { OfferSection } from './OfferSection';
 
 const OffersSection = (offers: Offer[], advert: Advert) => {
   //TODO: REMOVE MOCKDATA
-  if (offers.length == 0) {
+  if (offers.length === 0) {
     offers = [
       {
         id: '',

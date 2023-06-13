@@ -75,7 +75,7 @@ const EditAdvertModal: FC<EditAdvertContentProps> = (props) => {
     event.preventDefault();
     if (event.target.files) {
       const file = event.target.files[0];
-      if (file != undefined) {
+      if (file !== undefined) {
         const reader = new FileReader();
         reader.readAsDataURL(file);
         reader.onloadend = () => {
