@@ -66,8 +66,9 @@ export const PaymentModal: FC<PaymentModalProps> = (props) => {
         return;
       }
       setError(undefined);
+      onClose();
     } else {
-      setError(ErrorType.INCOMPLETE)
+      setError(ErrorType.INCOMPLETE);
     }
   };
 
@@ -77,6 +78,8 @@ export const PaymentModal: FC<PaymentModalProps> = (props) => {
       onHide={() => {
         onChangeNumber('');
         onChangeDate('');
+        onChangeName('');
+        onChangeCVV('');
         onClose();
       }}
     >
@@ -89,6 +92,7 @@ export const PaymentModal: FC<PaymentModalProps> = (props) => {
             <Form.Label>Name on card</Form.Label>
             <Form.Control
               type="text"
+              value={name}
               placeholder="Name Surname"
               autoFocus
               onChange={(e: ChangeEvent<HTMLInputElement>) =>
@@ -128,6 +132,7 @@ export const PaymentModal: FC<PaymentModalProps> = (props) => {
                 <Form.Label className="font-link">CVV</Form.Label>
                 <Form.Control
                   type="text"
+                  value={cvv}
                   placeholder="012"
                   maxLength={3}
                   onChange={(e: ChangeEvent<HTMLInputElement>) =>

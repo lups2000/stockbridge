@@ -1,4 +1,4 @@
-import { ChangeEvent, FC, FormEvent, useState } from 'react';
+import { ChangeEvent, FC, FormEvent, useContext, useState } from 'react';
 import { Title } from '../Text/Title';
 import { palette } from '../../utils/colors';
 import { Button, Form } from 'react-bootstrap';
@@ -14,11 +14,13 @@ import {
 } from '../../utils/functions';
 import { PaymentModal } from './PaymentModal';
 import { ApiClient } from '../../api/apiClient';
+import { LoginContext } from '../../contexts/LoginContext';
+import { UserResponse } from '../../api/collections/user';
 
 enum ErrorType {
   EMAIL = 'Email format invalid',
   PASSWORD_LENGTH = 'Password should contain at least 6 characters',
-  PASSWORD_MATCH = 'Passwords don\'t match',
+  PASSWORD_MATCH = "Passwords don't match",
   INCOMPLETE = 'Missing Information',
   ALREADY_REG = 'User already registered',
   NO_SERVER = 'No Server response',
@@ -57,6 +59,8 @@ export const SignupForm: FC = () => {
 
   const [isModalShowing, setIsModalShowing] = useState(false);
 
+  const { setLoggedIn, setUser } = useContext(LoginContext);
+
   //when the user clicks for the first time on "sign up"
   const handleFirstClick = () => {
     if (email && password && repeatPassword) {
@@ -68,7 +72,7 @@ export const SignupForm: FC = () => {
         setError(ErrorType.PASSWORD_LENGTH);
         return;
       }
-      if (!checkPasswordMatch(password,repeatPassword)) {
+      if (!checkPasswordMatch(password, repeatPassword)) {
         setError(ErrorType.PASSWORD_MATCH);
         return;
       }
@@ -84,24 +88,35 @@ export const SignupForm: FC = () => {
     e.preventDefault(); // Prevent the default submit and page reload
 
     if (address && city && postalCode && country) {
-      const response = new ApiClient()
-        .post('/auth/register', {
-          email,
-          password,
-          name: shopName,
-          address: {
-            street: address,
-            houseNumber,
-            city,
-            postalCode,
-            country,
+      new ApiClient()
+        .post<UserResponse>(
+          '/auth/register',
+          {
+            email,
+            password,
+            name: shopName,
+            address: {
+              street: address,
+              houseNumber,
+              city,
+              postalCode,
+              country,
+            },
+            paymentMethod: {
+              name: cardName,
+              cardNumber,
+              expirationDate: expDatePaymentToDate(expDateCard ?? ''),
+              cvv: cvvCard,
+            },
           },
-          paymentMethod: {
-            name: cardName,
-            cardNumber,
-            expirationDate: expDatePaymentToDate(expDateCard ?? ''),
-            cvv: cvvCard,
-          },
+          { withCredentials: true },
+        )
+        .then((response) => {
+          setError(undefined);
+          setLoggedIn(true);
+          setUser(response.user);
+
+          navigate('/'); //return to the homepage
         })
         .catch((error) => {
           if (error.response?.status === 409) {
@@ -112,7 +127,6 @@ export const SignupForm: FC = () => {
             setError(ErrorType.NO_SERVER);
           }
         });
-      console.log(response);
     } else {
       setError(ErrorType.INCOMPLETE);
     }
