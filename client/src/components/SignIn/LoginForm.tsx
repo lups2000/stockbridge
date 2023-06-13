@@ -8,6 +8,13 @@ import { ApiClient } from '../../api/apiClient';
 import { UserResponse } from '../../api/collections/user';
 import { LoginContext } from '../../contexts/LoginContext';
 
+enum ErrorType {
+  EMAIL = 'Email format invalid',
+  INCOMPLETE = 'Missing Information',
+  INVALID = 'Invalid Credentials',
+  NO_SERVER = 'No Server response',
+}
+
 /**
  * This component represents the form to manage the login and it makes also the axios call to the relative endpoint.
  */
@@ -15,8 +22,7 @@ export const LoginForm: FC = () => {
   const [email, setEmail] = useState<string>();
   const [password, setPassword] = useState<string>();
 
-  const [error, setError] = useState<boolean>(false);
-  const [errorMessage, setErrorMessage] = useState<string>('');
+  const [error, setError] = useState<ErrorType | undefined>(undefined);
 
   const navigate = useNavigate();
 
@@ -25,37 +31,36 @@ export const LoginForm: FC = () => {
   const handleOnSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault(); // Prevent the default submit and page reload
 
-    if (email && password && checkEmail(email)) {
-      await new ApiClient()
-        .post<UserResponse>(
-          '/auth/login',
-          {
-            email,
-            password,
-          },
-          { withCredentials: true },
-        )
-        .then((response) => {
-          setError(false);
-          setErrorMessage('');
-          setLoggedIn(true);
-          setUser(response.user)
-          
-          navigate('/'); //return to the homepage
-        })
-        .catch((error) => {
-          setError(true);
-          if (error.response?.status === 400) {
-            setErrorMessage('Missing Username or Password');
-          } else if (error.response?.status === 401) {
-            setErrorMessage('Invalid Credentials');
-          } else {
-            setErrorMessage('No Server Response');
-          }
-        });
+    if (email && password) {
+      if (checkEmail(email)) {
+        await new ApiClient()
+          .post<UserResponse>(
+            '/auth/login',
+            {
+              email,
+              password,
+            },
+            { withCredentials: true },
+          )
+          .then((response) => {
+            setError(undefined);
+            setLoggedIn(true);
+            setUser(response.user);
+
+            navigate('/'); //return to the homepage
+          })
+          .catch((error) => {
+            if (error.response?.status === 401) {
+              setError(ErrorType.INVALID);
+            } else {
+              setError(ErrorType.NO_SERVER);
+            }
+          });
+      } else {
+        setError(ErrorType.EMAIL);
+      }
     } else {
-      setError(true);
-      setErrorMessage('Email format invalid');
+      setError(ErrorType.INCOMPLETE);
     }
   };
 
@@ -89,7 +94,7 @@ export const LoginForm: FC = () => {
         />
       </Form.Group>
       {error ? (
-        <BodyText style={{ color: 'red' }}>{errorMessage}</BodyText>
+        <BodyText style={{ color: 'red' }}>{error}</BodyText>
       ) : undefined}
       <div className="d-grid font-link" style={{ marginTop: 30 }}>
         <Button

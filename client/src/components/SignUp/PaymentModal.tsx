@@ -25,6 +25,13 @@ interface PaymentModalProps {
   onChangeCVV: (cvv: string) => void;
 }
 
+enum ErrorType {
+  CARD_NUMBER = 'Credit Card number invalid',
+  CVV = 'CVV invalid',
+  EXP_DATE = 'Expiration Date Invalid',
+  INCOMPLETE = 'Missing Information',
+}
+
 /**
  * This component represents the modal where the user can insert his payment method.
  */
@@ -42,30 +49,25 @@ export const PaymentModal: FC<PaymentModalProps> = (props) => {
     onChangeNumber,
   } = props;
 
-  const [error, setError] = useState<boolean>(false);
-  const [errorMessage, setErrorMessage] = useState<string>('');
+  const [error, setError] = useState<ErrorType | undefined>(undefined);
 
   const checkPaymentDetails = () => {
     if (name && number && expDate && cvv) {
       if (!chekCreditCardNumber(number)) {
-        setError(true);
-        setErrorMessage('Credit Card number incorrect');
+        setError(ErrorType.CARD_NUMBER);
         return;
       }
       if (!checkCVV(cvv)) {
-        setError(true);
-        setErrorMessage('CVV Invalid');
+        setError(ErrorType.CVV);
         return;
       }
       if (!checkPaymentExpirationDate(expDate)) {
-        setError(true);
-        setErrorMessage('Expiration Date Invalid');
+        setError(ErrorType.EXP_DATE);
         return;
       }
-      setError(false);
+      setError(undefined);
     } else {
-      setError(true);
-      setErrorMessage('Missing Information');
+      setError(ErrorType.INCOMPLETE)
     }
   };
 
@@ -137,7 +139,7 @@ export const PaymentModal: FC<PaymentModalProps> = (props) => {
           </div>
         </Form>
         {error ? (
-          <BodyText style={{ color: 'red' }}>{errorMessage}</BodyText>
+          <BodyText style={{ color: 'red' }}>{error}</BodyText>
         ) : undefined}
       </Modal.Body>
       <Modal.Footer>

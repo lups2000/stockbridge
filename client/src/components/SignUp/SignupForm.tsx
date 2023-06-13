@@ -7,16 +7,26 @@ import { useNavigate } from 'react-router-dom';
 import addIcon from '../../assets/add.svg';
 import backIcon from '../../assets/back.svg';
 import {
-  checkPassword,
   checkEmail,
   expDatePaymentToDate,
+  checkPasswordLength,
+  checkPasswordMatch,
 } from '../../utils/functions';
 import { PaymentModal } from './PaymentModal';
 import { ApiClient } from '../../api/apiClient';
 
+enum ErrorType {
+  EMAIL = 'Email format invalid',
+  PASSWORD_LENGTH = 'Password should contain at least 6 characters',
+  PASSWORD_MATCH = 'Passwords don\'t match',
+  INCOMPLETE = 'Missing Information',
+  ALREADY_REG = 'User already registered',
+  NO_SERVER = 'No Server response',
+  CREATING = 'Error while creating the user',
+}
+
 /**
  * This component represents the form to manage the sign up and it makes also the axios call to the relative endpoint.
- * I know it's huge but it does a lot of stuff.
  */
 export const SignupForm: FC = () => {
   const navigate = useNavigate();
@@ -43,8 +53,7 @@ export const SignupForm: FC = () => {
   const [expDateCard, setExpDateCard] = useState<string>();
   const [cvvCard, setCvvCard] = useState<string>();
 
-  const [error, setError] = useState<boolean>(false);
-  const [errorMessage, setErrorMessage] = useState<string>('');
+  const [error, setError] = useState<ErrorType | undefined>(undefined);
 
   const [isModalShowing, setIsModalShowing] = useState(false);
 
@@ -52,21 +61,21 @@ export const SignupForm: FC = () => {
   const handleFirstClick = () => {
     if (email && password && repeatPassword) {
       if (!checkEmail(email)) {
-        setError(true);
-        setErrorMessage('Email format invalid');
+        setError(ErrorType.EMAIL);
         return;
       }
-      let passwordCheckResult = checkPassword(password, repeatPassword);
-      if (!passwordCheckResult[0]) {
-        setError(true);
-        setErrorMessage(passwordCheckResult[1]);
+      if (!checkPasswordLength(password)) {
+        setError(ErrorType.PASSWORD_LENGTH);
+        return;
+      }
+      if (!checkPasswordMatch(password,repeatPassword)) {
+        setError(ErrorType.PASSWORD_MATCH);
         return;
       }
       setIsFirstPartCompleted(true);
-      setError(false);
+      setError(undefined);
     } else {
-      setError(true);
-      setErrorMessage('Missing Information');
+      setError(ErrorType.INCOMPLETE);
     }
   };
 
@@ -95,19 +104,17 @@ export const SignupForm: FC = () => {
           },
         })
         .catch((error) => {
-          setError(true);
           if (error.response?.status === 409) {
-            setErrorMessage('User already registered');
+            setError(ErrorType.ALREADY_REG);
           } else if (error.response?.status === 400) {
-            setErrorMessage('Error in creating user');
+            setError(ErrorType.CREATING);
           } else {
-            setErrorMessage('No Server Response');
+            setError(ErrorType.NO_SERVER);
           }
         });
       console.log(response);
     } else {
-      setError(true);
-      setErrorMessage('Missing Information');
+      setError(ErrorType.INCOMPLETE);
     }
   };
 
@@ -187,7 +194,7 @@ export const SignupForm: FC = () => {
               />
             </Form.Group>
             {error ? (
-              <BodyText style={{ color: 'red' }}>{errorMessage}</BodyText>
+              <BodyText style={{ color: 'red' }}>{error}</BodyText>
             ) : undefined}
             <div className="d-grid font-link" style={{ marginTop: 30 }}>
               <Button
@@ -321,7 +328,7 @@ export const SignupForm: FC = () => {
               </BodyText>
             </div>
             {error ? (
-              <BodyText style={{ color: 'red' }}>{errorMessage}</BodyText>
+              <BodyText style={{ color: 'red' }}>{error}</BodyText>
             ) : undefined}
             <div className="d-grid font-link" style={{ marginTop: 15 }}>
               <Button
