@@ -28,7 +28,6 @@ export const SignUp: FC = () => {
           position: 'fixed',
           right: 0,
           height: '100vh',
-          backgroundColor: 'red',
           display: matches ? undefined : 'none',
         }}
       >
