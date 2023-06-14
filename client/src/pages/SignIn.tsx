@@ -15,7 +15,7 @@ export const SignIn: FC = () => {
     <>
       <div
         style={{
-          width: matches ? 385 : '100vw',
+          width: matches ? 600 : '100vw',
           position: 'absolute',
           left: 0,
           minHeight: '100vh',
@@ -50,7 +50,7 @@ export const SignIn: FC = () => {
       </div>
       <div
         style={{
-          width: 'calc(100% - 385px)',
+          width: 'calc(100% - 600px)',
           position: 'fixed',
           right: 0,
           height: '100vh',
