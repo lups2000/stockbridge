@@ -2,11 +2,18 @@ import { ChangeEvent, FC, FormEvent, useContext, useState } from 'react';
 import { Button, Form } from 'react-bootstrap';
 import { palette } from '../../utils/colors';
 import { BodyText } from '../Text/BodyText';
-import { LoginContext } from '../../contexts/LoginContext';
 import { useNavigate } from 'react-router-dom';
 import { checkEmail } from '../../utils/functions';
 import { ApiClient } from '../../api/apiClient';
 import { UserResponse } from '../../api/collections/user';
+import { LoginContext } from '../../contexts/LoginContext';
+
+enum ErrorType {
+  EMAIL = 'Email format invalid',
+  INCOMPLETE = 'Missing Information',
+  INVALID = 'Invalid Credentials',
+  NO_SERVER = 'No Server response',
+}
 
 /**
  * This component represents the form to manage the login and it makes also the axios call to the relative endpoint.
@@ -15,53 +22,45 @@ export const LoginForm: FC = () => {
   const [email, setEmail] = useState<string>();
   const [password, setPassword] = useState<string>();
 
-  const [error, setError] = useState<boolean>(false);
-  const [errorMessage, setErrorMessage] = useState<string>('');
-
-  const { setLoggedIn, setUser } = useContext(LoginContext);
+  const [error, setError] = useState<ErrorType | undefined>(undefined);
 
   const navigate = useNavigate();
+
+  const { setLoggedIn, setUser } = useContext(LoginContext);
 
   const handleOnSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault(); // Prevent the default submit and page reload
 
-    if (email && password && checkEmail(email)) {
-      new ApiClient()
-        .post<UserResponse>(
-          '/auth/login',
-          {
-            email,
-            password,
-          },
-          { withCredentials: true },
-        )
-        .then((response) => {
-          setError(false);
-          setErrorMessage('');
-          setLoggedIn(true);
+    if (email && password) {
+      if (checkEmail(email)) {
+        await new ApiClient()
+          .post<UserResponse>(
+            '/auth/login',
+            {
+              email,
+              password,
+            },
+            { withCredentials: true },
+          )
+          .then((response) => {
+            setError(undefined);
+            setLoggedIn(true);
+            setUser(response.user);
 
-          setUser(response.user);
-
-          localStorage.setItem('loginStatus', JSON.stringify(true)); //IDK maybe it's not the best idea, i must check
-          localStorage.setItem('currentUser', JSON.stringify(response.user));
-
-          navigate('/'); //return to the homepage
-        })
-        .catch((error) => {
-          setError(true);
-          if (error.response?.status === 400) {
-            setErrorMessage('Missing Username or Password');
-          } else if (error.response?.status === 401) {
-            setErrorMessage('Invalid Credentials');
-          } else {
-            setErrorMessage('No Server Response');
-          }
-          setLoggedIn(false);
-          setUser(undefined);
-        });
+            navigate('/'); //return to the homepage
+          })
+          .catch((error) => {
+            if (error.response?.status === 401) {
+              setError(ErrorType.INVALID);
+            } else {
+              setError(ErrorType.NO_SERVER);
+            }
+          });
+      } else {
+        setError(ErrorType.EMAIL);
+      }
     } else {
-      setError(true);
-      setErrorMessage('Email format invalid');
+      setError(ErrorType.INCOMPLETE);
     }
   };
 
@@ -95,7 +94,7 @@ export const LoginForm: FC = () => {
         />
       </Form.Group>
       {error ? (
-        <BodyText style={{ color: 'red' }}>{errorMessage}</BodyText>
+        <BodyText style={{ color: 'red' }}>{error}</BodyText>
       ) : undefined}
       <div className="d-grid font-link" style={{ marginTop: 30 }}>
         <Button

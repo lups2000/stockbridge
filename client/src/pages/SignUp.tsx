@@ -1,8 +1,9 @@
 import { FC } from 'react';
 import { palette } from '../utils/colors';
-//import signUpImage from "../assets/signUp.png";
+import loginImage from '../assets/loginImage.png';
 import useMediaQuery from '../hooks/useMediaQuery';
 import { SignupForm } from '../components/SignUp/SignupForm';
+import { Image } from 'react-bootstrap';
 export const SignUp: FC = () => {
   const matches = useMediaQuery('(min-width: 768px)');
 
@@ -27,20 +28,20 @@ export const SignUp: FC = () => {
           position: 'fixed',
           right: 0,
           height: '100vh',
-          paddingLeft: 50,
-          backgroundColor: 'red',
           display: matches ? undefined : 'none',
         }}
       >
-        {/*<img TODO
+        <Image
+          draggable={false}
+          fluid
           style={{
-            maxWidth: "100%",
-            objectFit: "cover",
-            height: "100%",
+            width: '100%',
+            minHeight: '100vh',
+            objectFit: 'cover',
           }}
-          src={signUpImage}
+          src={loginImage}
           alt="signUp"
-        />*/}
+        />
       </div>
     </>
   );

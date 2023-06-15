@@ -1,4 +1,4 @@
-import { ChangeEvent, FC, FormEvent, useState } from 'react';
+import { ChangeEvent, FC, FormEvent, useContext, useState } from 'react';
 import { Title } from '../Text/Title';
 import { palette } from '../../utils/colors';
 import { Button, Form } from 'react-bootstrap';
@@ -7,16 +7,28 @@ import { useNavigate } from 'react-router-dom';
 import addIcon from '../../assets/add.svg';
 import backIcon from '../../assets/back.svg';
 import {
-  checkPassword,
   checkEmail,
   expDatePaymentToDate,
+  checkPasswordLength,
+  checkPasswordMatch,
 } from '../../utils/functions';
 import { PaymentModal } from './PaymentModal';
 import { ApiClient } from '../../api/apiClient';
+import { LoginContext } from '../../contexts/LoginContext';
+import { UserResponse } from '../../api/collections/user';
+
+enum ErrorType {
+  EMAIL = 'Email format invalid',
+  PASSWORD_LENGTH = 'Password should contain at least 6 characters',
+  PASSWORD_MATCH = "Passwords don't match",
+  INCOMPLETE = 'Missing Information',
+  ALREADY_REG = 'User already registered',
+  NO_SERVER = 'No Server response',
+  CREATING = 'Error while creating the user',
+}
 
 /**
  * This component represents the form to manage the sign up and it makes also the axios call to the relative endpoint.
- * I know it's huge but it does a lot of stuff.
  */
 export const SignupForm: FC = () => {
   const navigate = useNavigate();
@@ -43,30 +55,31 @@ export const SignupForm: FC = () => {
   const [expDateCard, setExpDateCard] = useState<string>();
   const [cvvCard, setCvvCard] = useState<string>();
 
-  const [error, setError] = useState<boolean>(false);
-  const [errorMessage, setErrorMessage] = useState<string>('');
+  const [error, setError] = useState<ErrorType | undefined>(undefined);
 
   const [isModalShowing, setIsModalShowing] = useState(false);
+
+  const { setLoggedIn, setUser } = useContext(LoginContext);
 
   //when the user clicks for the first time on "sign up"
   const handleFirstClick = () => {
     if (email && password && repeatPassword) {
       if (!checkEmail(email)) {
-        setError(true);
-        setErrorMessage('Email format invalid');
+        setError(ErrorType.EMAIL);
         return;
       }
-      let passwordCheckResult = checkPassword(password, repeatPassword);
-      if (!passwordCheckResult[0]) {
-        setError(true);
-        setErrorMessage(passwordCheckResult[1]);
+      if (!checkPasswordLength(password)) {
+        setError(ErrorType.PASSWORD_LENGTH);
+        return;
+      }
+      if (!checkPasswordMatch(password, repeatPassword)) {
+        setError(ErrorType.PASSWORD_MATCH);
         return;
       }
       setIsFirstPartCompleted(true);
-      setError(false);
+      setError(undefined);
     } else {
-      setError(true);
-      setErrorMessage('Missing Information');
+      setError(ErrorType.INCOMPLETE);
     }
   };
 
@@ -75,39 +88,47 @@ export const SignupForm: FC = () => {
     e.preventDefault(); // Prevent the default submit and page reload
 
     if (address && city && postalCode && country) {
-      const response = new ApiClient()
-        .post('/auth/register', {
-          email,
-          password,
-          name: shopName,
-          address: {
-            street: address,
-            houseNumber,
-            city,
-            postalCode,
-            country,
+      new ApiClient()
+        .post<UserResponse>(
+          '/auth/register',
+          {
+            email,
+            password,
+            name: shopName,
+            address: {
+              street: address,
+              houseNumber,
+              city,
+              postalCode,
+              country,
+            },
+            paymentMethod: {
+              name: cardName,
+              cardNumber,
+              expirationDate: expDatePaymentToDate(expDateCard ?? ''),
+              cvv: cvvCard,
+            },
           },
-          paymentMethod: {
-            name: cardName,
-            cardNumber,
-            expirationDate: expDatePaymentToDate(expDateCard ?? ''),
-            cvv: cvvCard,
-          },
+          { withCredentials: true },
+        )
+        .then((response) => {
+          setError(undefined);
+          setLoggedIn(true);
+          setUser(response.user);
+
+          navigate('/'); //return to the homepage
         })
         .catch((error) => {
-          setError(true);
           if (error.response?.status === 409) {
-            setErrorMessage('User already registered');
+            setError(ErrorType.ALREADY_REG);
           } else if (error.response?.status === 400) {
-            setErrorMessage('Error in creating user');
+            setError(ErrorType.CREATING);
           } else {
-            setErrorMessage('No Server Response');
+            setError(ErrorType.NO_SERVER);
           }
         });
-      console.log(response);
     } else {
-      setError(true);
-      setErrorMessage('Missing Information');
+      setError(ErrorType.INCOMPLETE);
     }
   };
 
@@ -187,7 +208,7 @@ export const SignupForm: FC = () => {
               />
             </Form.Group>
             {error ? (
-              <BodyText style={{ color: 'red' }}>{errorMessage}</BodyText>
+              <BodyText style={{ color: 'red' }}>{error}</BodyText>
             ) : undefined}
             <div className="d-grid font-link" style={{ marginTop: 30 }}>
               <Button
@@ -321,7 +342,7 @@ export const SignupForm: FC = () => {
               </BodyText>
             </div>
             {error ? (
-              <BodyText style={{ color: 'red' }}>{errorMessage}</BodyText>
+              <BodyText style={{ color: 'red' }}>{error}</BodyText>
             ) : undefined}
             <div className="d-grid font-link" style={{ marginTop: 15 }}>
               <Button
