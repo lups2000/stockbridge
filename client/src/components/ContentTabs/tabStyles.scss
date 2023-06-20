@@ -1,59 +1,55 @@
 .tabSection {
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
-    overflow: hidden;
-    background-color: #333333;
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background-color: #333333;
 }
 
 .profile-section-tab-button {
-    display: flex;
-    background: transparent;
-    border: none;
-    color: white;
-    font-size: 25px;
-    padding: 15px;
-    width: 100%;
-    padding-left: 10%;
+  display: flex;
+  background: transparent;
+  border: none;
+  color: white;
+  font-size: 25px;
+  padding: 15px;
+  width: 100%;
+  padding-left: 10%;
 }
 
-
 .profile-section-tab {
-    color: white;
-    font-size: 25px;
-    float: left;
+  color: white;
+  font-size: 25px;
+  float: left;
 }
 
 .profile-section-tab-button:hover {
-    background-color: rgb(255, 190, 199) !important;
+  background-color: rgb(255, 190, 199) !important;
 }
 
 .profile-section-tab-icon {
-    align-self: center;
-    margin-top: -6px;
-    margin-right: 15px;
+  align-self: center;
+  margin-top: -6px;
+  margin-right: 15px;
 }
 
-svg
-{
-    align-self: center;
-    margin-top: -6px;
-    margin-right: 15px;
+svg {
+  align-self: center;
+  margin-top: -6px;
+  margin-right: 15px;
 }
-
 
 /** Styling for the tabs in the content of the profile section. */
 .content-tab-title {
-    button {
-        background-color: transparent;
-        border: none;
-        color: #f99697;
-        font-size: 30px;
-        padding: 15px 20px;
-    }
+  button {
+    background-color: transparent;
+    border: none;
+    color: #f99697;
+    font-size: 30px;
+    padding: 15px 20px;
+  }
 
-    button:hover {
-        text-decoration: underline;
-    }
-
+  button:hover {
+    text-decoration: underline;
+  }
 }
