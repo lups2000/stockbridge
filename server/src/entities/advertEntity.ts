@@ -53,8 +53,8 @@ export interface Advert {
   purchaseDate: Date;
   quantity: number;
   price: number;
-  date: Date;
-  advertStatus: string;
+  createdAt: Date;
+  status: string;
   type: string;
   category: string;
   offers?: Offer[];

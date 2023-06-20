@@ -106,7 +106,6 @@ export const getOrdersOfOffer = asyncHandler(
   },
 );
 
-
 /**
  * Checks if a user can edit or delete an order with a given id.
  * @param req The request containing the to be checked ids.
@@ -115,9 +114,12 @@ async function _checkUserCanEditOrDeleteOrder(req: AuthenticatedRequest) {
   let userId = new ObjectId(req.user?.id);
   const { id } = req.params;
 
-  // The user editing or deleting must be the offeror or offeree. 
+  // The user editing or deleting must be the offeror or offeree.
   let offerOfOrder = (await findOrderById(id)).offer;
-  if (offerOfOrder.offeree.equals(userId) || offerOfOrder.offeror.equals(userId)) {
+  if (
+    offerOfOrder.offeree.equals(userId) ||
+    offerOfOrder.offeror.equals(userId)
+  ) {
     throw new AppError(
       'Not authorized to edit this route',
       'Not authorized to edit this route',
@@ -133,7 +135,11 @@ async function _checkUserCanEditOrDeleteOrder(req: AuthenticatedRequest) {
  * @returns the filtered list.
  */
 function _findAndCheckRelatedOrders(userId: string, orders: Order[]): any {
-  let relatedOrders = orders.filter(x => (x.offer.offeror && x.offer.offeror.equals(userId)) || ( x.offer.offeree && x.offer.offeree.equals(userId)));
+  let relatedOrders = orders.filter(
+    (x) =>
+      (x.offer.offeror && x.offer.offeror.equals(userId)) ||
+      (x.offer.offeree && x.offer.offeree.equals(userId)),
+  );
 
   // If no offers are retrieved with this request, throw an exception to inform the user.
   if (!relatedOrders?.length) {

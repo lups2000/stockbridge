@@ -7,7 +7,7 @@ export enum ORDER_STATUS {
 }
 
 export interface Order {
-  id: string;
+  _id: string;
   totalPrice: number;
   quantity: number;
   status: ORDER_STATUS;

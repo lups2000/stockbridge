@@ -19,15 +19,13 @@ export const Filters: FC = () => {
   return (
     <div
       style={{
-        position: 'absolute',
         left: 0,
-        paddingBottom: 150,
-        width: 350,
+        padding: '50px',
         borderRadius: 15,
         backgroundColor: palette.subSectionsBgLighter,
-        alignItems: 'center',
-        display: matches ? 'flex' : 'none',
-        flexDirection: 'column',
+
+        //display: matches ? 'flex' : 'none',
+        //flexDirection: 'column',
       }}
     >
       <Title style={{ textAlign: 'center', fontSize: 30, marginTop: 30 }}>

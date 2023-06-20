@@ -6,7 +6,6 @@ import {
   getUser,
   putUser,
   deleteUser,
-  getStoreData,
 } from '../controllers/userController';
 
 export const userRouter = Router();

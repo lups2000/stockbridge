@@ -4,15 +4,13 @@ import { OfferStatus, Offer } from '../../api/collections/offer';
 import { BodyText } from '../Text/BodyText';
 import { OfferBar } from './OfferBar';
 
-type OfferSectionProps = React.DetailedHTMLProps<
-  React.HTMLAttributes<HTMLDivElement>,
-  HTMLDivElement
-> &
-  Partial<{
-    status: OfferStatus;
-    offers: Offer[];
-    advert: Advert;
-  }>;
+type OfferSectionProps = {
+  status: OfferStatus;
+  offers: Offer[];
+  advert: Advert;
+  storeName: string;
+  rating: number;
+};
 
 function colorMap(status: OfferStatus): string {
   switch (status) {
@@ -37,8 +35,6 @@ const OfferSection: React.FC<OfferSectionProps> = (props) => {
         flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'center',
-        paddingTop: '7%',
-        width: '100%',
         padding: '30px',
       }}
     >
@@ -60,7 +56,6 @@ const OfferSection: React.FC<OfferSectionProps> = (props) => {
           flexDirection: 'column',
           gap: '40px',
           width: '100%',
-          marginTop: '37px',
           alignItems: 'center',
           fontFamily: 'Poppins',
         }}
@@ -69,7 +64,7 @@ const OfferSection: React.FC<OfferSectionProps> = (props) => {
           (props.offers.length > 0 ? (
             props.offers.map((offer, index) => (
               <React.Fragment key={`offer-${index}`}>
-                {' '}
+                {/* change this to correct variables */}
                 <OfferBar offer={offer} advert={props.advert} />
               </React.Fragment>
             ))

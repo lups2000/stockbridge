@@ -1,8 +1,8 @@
 import { Router } from 'express';
-import { getStoreData } from '../controllers/userController';
+import { getStore } from '../controllers/storeController';
 
 export const storeRouter = Router();
 
-storeRouter.route('/:id').get(getStoreData);
+storeRouter.route('/:id').get(getStore);
 
 export default storeRouter;

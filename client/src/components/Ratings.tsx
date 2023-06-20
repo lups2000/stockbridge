@@ -1,15 +1,16 @@
-const Ratings = (rating: number) => {
-  const stars = [1, 2, 3, 4, 5];
+import { useState } from 'react';
+
+const Ratings = (rating: number, onClick?: (rating: number) => void) => {
   return (
-    <div
-      style={{
-        display: 'flex',
-        flexDirection: 'row',
-        width: '60%',
-      }}
-    >
-      {stars.map((star) => (
-        <div style={{ color: star <= rating ? 'red' : 'gray' }}>&#9733;</div>
+    <div className="rating-stars">
+      {[1, 2, 3, 4, 5].map((star) => (
+        <span
+          key={star}
+          onClick={onClick ? () => onClick(star) : () => {}}
+          style={{ cursor: 'pointer', color: star <= rating ? 'red' : 'gray' }}
+        >
+          &#9733;
+        </span>
       ))}
     </div>
   );
