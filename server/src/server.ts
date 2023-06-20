@@ -21,6 +21,8 @@ import logger from './config/logger';
 import { reviewRouter } from './routes/reviews';
 import bodyParser from 'body-parser';
 import storeRouter from './routes/stores';
+import { offerRouter } from './routes/offers';
+import { orderRouter } from './routes/orders';
 connectDB();
 
 const app: Express = express();
@@ -56,6 +58,8 @@ app.use('/api/v1/auth', authRouter);
 app.use('/api/v1/adverts', advertRouter);
 app.use('/api/v1/reviews', reviewRouter);
 app.use('/api/v1/stores', storeRouter);
+app.use('/api/v1/offers', offerRouter);
+app.use('/api/v1/orders', orderRouter);
 app.use(errorHandler);
 
 const PORT = environment.PORT || 3001;

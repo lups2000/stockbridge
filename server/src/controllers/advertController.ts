@@ -6,15 +6,17 @@ import {
   updateAdvert,
   delAdvert,
   findAllAdverts,
+  getAdvertsByCategory,
 } from '../services/advertServices';
 import { AuthenticatedRequest } from '../middlewares/authMiddleware';
 import { AppError } from '../utils/errorHandler';
+import { ProductCategory } from '../entities/advertEntity';
 
 /**
- * This method returns a advert by id   *
+ * This method returns an advert by id   *
  * @param req - The request object
  * @param res - The response object
- * @returns a advert object.
+ * @returns an advert object.
  */
 export const getAdvert = asyncHandler(
   async (req: AuthenticatedRequest, res: Response) => {
@@ -52,7 +54,7 @@ export const postAdvert = asyncHandler(
 );
 
 /**
- * This method updates a advert by id   *
+ * This method updates an advert by id   *
  * @param req - The request object
  * @param res - The response object
  * @returns updated advert object.
@@ -71,7 +73,7 @@ export const putAdvert = asyncHandler(
 );
 
 /**
- * This method deletes a advert by id   *
+ * This method deletes an advert by id   *
  * @param req - The request object
  * @param res - The response object
  * @returns deleted advert object.
@@ -86,5 +88,19 @@ export const deleteAdvert = asyncHandler(
 
     const advert = await delAdvert(id);
     res.status(204).json(advert);
+  },
+);
+
+/**
+ * This method gets all adverts of a specific category   *
+ * @param req - The request object
+ * @param res - The response object
+ * @returns deleted advert object.
+ */
+export const getAllAdvertsByCategory = asyncHandler(
+  async (req: AuthenticatedRequest, res: Response) => {
+    const { category } = req.params;
+    const adverts = await getAdvertsByCategory(category as ProductCategory);
+    res.status(200).json(adverts);
   },
 );
