@@ -13,6 +13,7 @@ export const offerSchema = new mongoose.Schema<Offer>({
     required: [true, 'Please add a quantity'],
   },
   status: {
+    type: Types.String,
     enum: Object.values(OfferStatus),
     required: [false, 'Please add a status'],
   },

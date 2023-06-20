@@ -576,7 +576,6 @@ paths:
       security:
         - bearerAuth: []
 
-
   /orders:
     post:
       tags:
@@ -694,10 +693,6 @@ paths:
       security:
         - bearerAuth: []
 
-
-
-
-
 components:
   schemas:
     User:
@@ -802,26 +797,26 @@ components:
     ProductCategory:
       type: string
       enum:
-        - "Apparel and Accessories"
-        - "Electronics and Gadgets"
-        - "Home and Kitchen"
-        - "Furniture and Decor"
-        - "Health and Beauty"
-        - "Sports and Fitness"
-        - "Books and Media"
-        - "Toys and Games"
-        - "Automotive Parts"
-        - "Food and Beverages"
-        - "Office Supplies"
-        - "Tools and Hardware"
-        - "Pet Supplies"
+        - 'Apparel and Accessories'
+        - 'Electronics and Gadgets'
+        - 'Home and Kitchen'
+        - 'Furniture and Decor'
+        - 'Health and Beauty'
+        - 'Sports and Fitness'
+        - 'Books and Media'
+        - 'Toys and Games'
+        - 'Automotive Parts'
+        - 'Food and Beverages'
+        - 'Office Supplies'
+        - 'Tools and Hardware'
+        - 'Pet Supplies'
         - "Baby and Kids' Products"
-        - "Jewelry and Accessories"
-        - "Gardening Supplies"
-        - "Art and Craft Supplies"
-        - "Musical Instruments"
-        - "Travel and Luggage"
-        - "Flowers and Bouquets"
+        - 'Jewelry and Accessories'
+        - 'Gardening Supplies'
+        - 'Art and Craft Supplies'
+        - 'Musical Instruments'
+        - 'Travel and Luggage'
+        - 'Flowers and Bouquets'
     Advert:
       type: object
       properties:
@@ -1031,7 +1026,7 @@ components:
             items:
               $ref: '#/components/schemas/User'
   securitySchemes:
-    bearerAuth:            # arbitrary name for the security scheme
+    bearerAuth: # arbitrary name for the security scheme
       type: http
       scheme: bearer
       bearerFormat: JWT

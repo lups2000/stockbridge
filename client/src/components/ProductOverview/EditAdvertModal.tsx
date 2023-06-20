@@ -1,5 +1,5 @@
-import React, { FC, useState } from 'react';
-import { Button, Col, Form, Modal, Row } from 'react-bootstrap';
+import React, { FC, useContext, useRef, useState } from 'react';
+import { Button, Col, Form, Modal, Row, Image } from 'react-bootstrap';
 import {
   Advert,
   updateAdvert,
@@ -8,74 +8,96 @@ import {
   Colors,
 } from '../../api/collections/advert';
 import { palette } from '../../utils/colors';
-import { Img } from '../Img';
+import defaultPostAdvertImage from '../../assets/advertPostAdvert.svg';
+import trashIcon from '../../assets/trash-bin.svg';
+import { LoginContext } from '../../contexts/LoginContext';
+import useMediaQuery from '../../hooks/useMediaQuery';
+import {
+  checkExpirationDateAvert,
+  checkPurchaseDateAdvert,
+} from '../../utils/functions';
+import { BodyText } from '../Text/BodyText';
+import { useNavigate } from 'react-router-dom';
 
-type EditAdvertContentProps = React.DetailedHTMLProps<
-  React.HTMLAttributes<HTMLDivElement>,
-  HTMLDivElement
-> &
-  Partial<{
-    isShowing: boolean;
-    onClose: () => void;
-    advert?: Advert;
-    userID: string;
-    advertID?: string;
-  }>;
+type EditAdvertContentProps = {
+  isShowing: boolean;
+  onClose: () => void;
+  advert?: Advert;
+};
 
-const EditAdvertModal: FC<EditAdvertContentProps> = (props) => {
-  const [isChecked, setIsChecked] = useState(
-    props.advert?.type ? props.advert?.type : '',
+export const EditAdvertModal: FC<EditAdvertContentProps> = (props) => {
+  const { user, loggedIn } = useContext(LoginContext);
+
+  const matches = useMediaQuery('(min-width: 992px)');
+
+  const fileInputRef = useRef<HTMLInputElement>(null); // to handle the upload of the image
+
+  const [encodedImage, setEncodedImage] = useState(
+    props.advert?.imageurl ?? '',
+  );
+
+  const [advertType, setAdvertType] = useState(
+    props.advert?.type ? props.advert?.type : 'Sell',
   );
 
   const handleType = (event: any) => {
-    setIsChecked(event.target.value);
+    setAdvertType(event.target.value);
   };
-  const purchaseDate = props.advert?.purchaseDate
-    ? props.advert.purchaseDate.toString().substring(0, 10)
-    : '';
-  const expirationDate = props.advert?.expirationDate
-    ? props.advert.expirationDate.toString().substring(0, 10)
-    : '';
-  const [encodedImage, setEncodedImage] = useState(
-    props.advert?.imageurl ? props.advert?.imageurl : '',
-  );
-  console.log('Constructing Form for advert: ', props.advert);
+
   const [formData, setFormData] = useState({
-    productname: props.advert?.productname ? props.advert?.productname : '',
-    description: props.advert?.description ? props.advert?.description : '',
-    prioritized: props.advert?.prioritized ? props.advert?.prioritized : false,
-    color: props.advert?.color ? props.advert?.color : '',
-    purchaseDate: purchaseDate,
-    expirationDate: expirationDate,
-    quantity: props.advert?.quantity ? props.advert?.quantity : 0,
-    price: props.advert?.price ? props.advert?.price : 0,
-    category: props.advert?.category ? props.advert?.category : '',
-    store: props.advert?.store ? props.advert?.store : props.userID,
+    productname: props.advert?.productname ?? undefined,
+    description: props.advert?.description ?? undefined,
+    prioritized: props.advert?.prioritized ?? false,
+    color: props.advert?.color ?? undefined,
+    purchaseDate: props.advert?.purchaseDate
+      ? props.advert?.purchaseDate.toString().substring(0, 10)
+      : undefined,
+    expirationDate: props.advert?.expirationDate
+      ? props.advert.expirationDate.toString().substring(0, 10)
+      : undefined,
+    Quantity: props.advert?.quantity ?? undefined,
+    Price: props.advert?.price ?? undefined,
+    category: props.advert?.category ?? '',
+    store: props.advert?.store ?? user?._id,
+  });
+  const [errors, setErrors] = useState({
+    productname: '',
+    category: '',
+    Price: '',
+    Quantity: '',
   });
 
   const handleChange = (event: any) => {
+    // we put type any because we are handling various events, such as HTML input, HTML select ecc
     event.preventDefault();
-    const { name, value } = event.target;
+    const { name, value, type } = event.target;
     setFormData({
       ...formData,
-      [name]: value,
+      [name]: type == 'number' ? parseInt(value) : value,
+    });
+    setErrors({
+      ...errors,
+      [name]: value
+        ? type == 'number'
+          ? parseInt(value) > 0
+            ? ''
+            : `${name} must be higher than 0`
+          : ''
+        : `${name} is missing`,
     });
   };
 
-  const [errors, setErrors] = useState({
-    productname: false,
-    category: false,
-    price: false,
-    quantity: false,
-    type: false,
-  });
+  const handleImageClick = () => {
+    if (fileInputRef.current != null) {
+      fileInputRef.current.click();
+    }
+  };
 
-  // todo: check file format (only picture formats allowed)
-  const handleFileInput = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleUploadImage = (event: React.ChangeEvent<HTMLInputElement>) => {
     event.preventDefault();
     if (event.target.files) {
       const file = event.target.files[0];
-      if (file != undefined) {
+      if (file !== undefined) {
         const reader = new FileReader();
         reader.readAsDataURL(file);
         reader.onloadend = () => {
@@ -86,46 +108,33 @@ const EditAdvertModal: FC<EditAdvertContentProps> = (props) => {
       }
     }
   };
-  const validationErrors = {
-    productname: false,
-    category: false,
-    price: false,
-    quantity: false,
-    type: false,
-  };
-  const handleSubmit = async () => {
-    if (!formData.productname) {
-      validationErrors.productname = true;
-    }
-    if (!formData.category) {
-      validationErrors.category = true;
-    }
-    if (!formData.quantity) {
-      validationErrors.quantity = true;
-    }
-    if (!formData.price) {
-      validationErrors.price = true;
-    }
-    if (!isChecked) {
-      validationErrors.type = true;
-    }
 
-    if (Object.values(validationErrors).some((e) => e)) {
-      console.log('Errors are happening');
-      setErrors(validationErrors);
-    } else {
+  const isValid = () => {
+    return (
+      formData.productname &&
+      formData.category &&
+      formData.Price &&
+      formData.Quantity
+    );
+  };
+
+  const navigate = useNavigate();
+
+  const handleSubmit = async () => {
+    if (!loggedIn) {
+      navigate('/signIn');
+    }
+    if (isValid()) {
       try {
-        if (props.advertID) {
-          await updateAdvert(props.advertID, {
+        if (props.advert?._id) {
+          await updateAdvert(props.advert._id, {
             productname: formData.productname,
             description: formData.description,
-            //type: isChecked,
-            prioritized: false,
-            color: formData.color,
-            expirationDate: new Date(formData.expirationDate),
-            purchaseDate: new Date(formData.purchaseDate),
-            quantity: formData.quantity,
-            price: formData.price,
+            color: formData.color ? formData.color : undefined,
+            expirationDate: new Date(formData.expirationDate ?? ''),
+            purchaseDate: new Date(formData.purchaseDate ?? ''),
+            quantity: formData.Quantity,
+            price: formData.Price,
             category: formData.category,
             imageurl: encodedImage,
           } as Advert);
@@ -134,50 +143,62 @@ const EditAdvertModal: FC<EditAdvertContentProps> = (props) => {
             productname: formData.productname,
             description: formData.description,
             prioritized: false,
-            color: formData.color,
-            expirationDate: new Date(formData.expirationDate),
-            purchaseDate: new Date(formData.purchaseDate),
-            quantity: formData.quantity,
-            price: formData.price,
-            advertStatus: 'Ongoing',
+            color: formData.color ? formData.color : undefined,
+            expirationDate: new Date(formData.expirationDate ?? ''),
+            purchaseDate: new Date(formData.purchaseDate ?? ''),
+            quantity: formData.Quantity,
+            price: formData.Price,
+            status: 'Ongoing',
             category: formData.category,
-            date: new Date(),
-            store: formData.store,
+            createdAt: new Date(),
+            store: user?._id,
             imageurl: encodedImage,
-            type: isChecked,
-          } as Advert);
+            type: advertType,
+          });
         }
-        setErrors({
-          productname: false,
-          category: false,
-          price: false,
-          quantity: false,
-          type: false,
-        });
-        if (props.onClose) props?.onClose();
       } catch (error) {
         console.error(error);
+      } finally {
+        if (props.onClose) props?.onClose();
       }
+    } else {
+      setErrors({
+        productname: formData.productname ? '' : 'Product Name is missing',
+        category: formData.category ? '' : 'Category is missing',
+        Price: formData.Price
+          ? formData.Price > 0
+            ? ''
+            : 'Price must be greater than 0'
+          : 'Price is missing',
+        Quantity: formData.Quantity
+          ? formData.Quantity > 0
+            ? ''
+            : 'Quantity must be greater than 0'
+          : 'Quantity is missing',
+      });
     }
   };
+
   return (
-    <Modal show={props.isShowing} onHide={props.onClose}>
+    <Modal size="lg" show={props.isShowing} onHide={props.onClose}>
       <Modal.Header closeButton>
-        <Modal.Title>Advert details:</Modal.Title>
+        <Modal.Title>Advert Details</Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <Form>
           <Row>
-            <Col>
+            <Col style={{ marginTop: 30 }}>
               <Form.Group className="mb-3">
                 <Form.Label
                   style={{
-                    padding: '10px',
-                    color: palette.gray,
+                    paddingLeft: 10,
+                    paddingRight: 20,
+                    fontWeight: '600',
                   }}
                 >
-                  Sell/ Ask:
+                  Type:
                 </Form.Label>
+
                 <Form.Check
                   inline
                   required
@@ -187,7 +208,7 @@ const EditAdvertModal: FC<EditAdvertContentProps> = (props) => {
                   label="Sell"
                   onChange={props.advert ? undefined : handleType}
                   value={'Sell'}
-                  checked={isChecked === 'Sell'}
+                  checked={advertType === 'Sell'}
                 />
                 <Form.Check
                   inline
@@ -196,66 +217,90 @@ const EditAdvertModal: FC<EditAdvertContentProps> = (props) => {
                   name="type"
                   id="Ask"
                   label="Ask"
-                  onChange={props.advert ? undefined : handleType}
+                  onChange={props.advert ? () => {} : handleType}
                   value={'Ask'}
-                  checked={isChecked === 'Ask'}
+                  checked={advertType === 'Ask'}
                 />
               </Form.Group>
             </Col>
-            <Col>
-              <Form.Group
+            <Col
+              style={{
+                backgroundColor: encodedImage ? undefined : 'lightgray',
+                width: matches ? 200 : 160,
+                height: matches ? 200 : 160,
+                position: 'absolute',
+                right: matches ? 100 : 50,
+                borderRadius: '50%',
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                flexDirection: 'column',
+                gap: 5,
+              }}
+            >
+              <Form.Control
+                type="file"
+                ref={fileInputRef}
+                accept="image/*"
+                onChange={handleUploadImage}
                 style={{
-                  textAlign: 'center',
+                  display: 'none',
                 }}
-                controlId="FileUpload"
-              >
-                <div className="custom-file">
-                  <Form.Control
-                    type="file"
-                    onChange={handleFileInput}
-                    style={{
-                      backgroundColor: 'transparent',
-                      borderColor: 'black',
-                      borderRadius: 15,
-                      alignContent: 'start',
-                      justifyContent: 'start',
-                      marginBottom: '10px',
-                    }}
-                    id="customFile"
-                  />
-                </div>
-                {encodedImage && (
-                  <div className="flex-col items-end justify-end">
-                    <Img
-                      style={{
-                        width: '160px',
-                        height: '160px',
-                        borderRadius: '60px',
-                      }}
-                      src={encodedImage}
-                    />
-                  </div>
-                )}
-              </Form.Group>
+                id="customFile"
+              />
+
+              <Image
+                src={encodedImage}
+                alt="Advert Image"
+                onError={(e: React.SyntheticEvent<HTMLImageElement>) =>
+                  (e.currentTarget.src = defaultPostAdvertImage)
+                }
+                style={{
+                  width: encodedImage ? '100%' : '30%',
+                  objectFit: 'cover',
+                  cursor: 'pointer',
+                }}
+                onClick={handleImageClick}
+                fluid
+              />
+              {!encodedImage ? (
+                <BodyText
+                  style={{ fontSize: 15, cursor: 'pointer' }}
+                  onClick={handleImageClick}
+                >
+                  Add photo
+                </BodyText>
+              ) : (
+                <Image
+                  src={trashIcon}
+                  alt="delete icon"
+                  style={{
+                    width: 25,
+                    objectFit: 'cover',
+                    cursor: 'pointer',
+                  }}
+                  onClick={() => setEncodedImage('')}
+                  fluid
+                />
+              )}
             </Col>
           </Row>
-          <Row>
-            <Col>
+          <Row style={{ marginTop: 50 }}>
+            <Col md={6}>
               <Form.Group>
                 <Form.Label
                   style={{
-                    padding: '10px',
-                    color: palette.gray,
-                    margin: '5px',
+                    paddingLeft: 10,
+                    fontWeight: '600',
                   }}
                 >
                   Product Name
                 </Form.Label>
                 <Form.Control
                   style={{
-                    padding: '10px',
+                    padding: 10,
                     color: palette.gray,
-                    margin: '5px',
+                    margin: 5,
                   }}
                   required
                   type="text"
@@ -265,8 +310,11 @@ const EditAdvertModal: FC<EditAdvertContentProps> = (props) => {
                   onChange={handleChange}
                   isInvalid={!!errors.productname}
                 ></Form.Control>
-                <Form.Control.Feedback type="invalid">
-                  {errors.productname}
+                <Form.Control.Feedback
+                  style={{ paddingLeft: 10 }}
+                  type="invalid"
+                >
+                  Product name is missing
                 </Form.Control.Feedback>
               </Form.Group>
             </Col>
@@ -276,18 +324,17 @@ const EditAdvertModal: FC<EditAdvertContentProps> = (props) => {
               <Form.Group controlId="category">
                 <Form.Label
                   style={{
-                    padding: '10px',
-                    color: palette.gray,
-                    margin: '5px',
+                    paddingLeft: 10,
+                    fontWeight: '600',
                   }}
                 >
                   Product Category
                 </Form.Label>
                 <Form.Select
                   style={{
-                    padding: '10px',
+                    padding: 10,
                     color: palette.gray,
-                    margin: '5px',
+                    margin: 5,
                   }}
                   required
                   placeholder="Product Category"
@@ -299,38 +346,44 @@ const EditAdvertModal: FC<EditAdvertContentProps> = (props) => {
                   <option> -- Select Category -- </option>
                   {Object.values(ProductCategory)
                     .filter((key) => isNaN(Number(key)))
-                    .map((c) => (
-                      <option>{c}</option>
+                    .map((c, index) => (
+                      <option key={index}>{c}</option>
                     ))}
                 </Form.Select>
+                <Form.Control.Feedback
+                  style={{ paddingLeft: 10 }}
+                  type="invalid"
+                >
+                  {errors.category}
+                </Form.Control.Feedback>
               </Form.Group>
             </Col>
             <Col>
               <Form.Group>
                 <Form.Label
                   style={{
-                    padding: '10px',
-                    color: palette.gray,
-                    margin: '5px',
+                    paddingLeft: 10,
+                    fontWeight: '600',
                   }}
                 >
                   Product Color
                 </Form.Label>
                 <Form.Select
                   style={{
-                    padding: '10px',
+                    padding: 10,
                     color: palette.gray,
-                    margin: '5px',
+                    margin: 5,
                   }}
-                  placeholder="Product Category"
+                  placeholder="Color"
                   value={formData.color}
                   name="color"
                   onChange={handleChange}
                 >
+                  <option> -- Select Color -- </option>
                   {Object.values(Colors)
                     .filter((key) => isNaN(Number(key)))
-                    .map((c) => (
-                      <option>{c}</option>
+                    .map((c, index) => (
+                      <option key={index}>{c}</option>
                     ))}
                 </Form.Select>
               </Form.Group>
@@ -340,101 +393,120 @@ const EditAdvertModal: FC<EditAdvertContentProps> = (props) => {
             <Col>
               <Form.Label
                 style={{
-                  padding: '10px',
-                  color: palette.gray,
-                  margin: '5px',
+                  paddingLeft: 10,
+                  fontWeight: '600',
                 }}
               >
                 Purchase Date
               </Form.Label>
               <Form.Control
                 style={{
-                  padding: '10px',
+                  padding: 10,
                   color: palette.gray,
-                  margin: '5px',
+                  margin: 5,
                 }}
                 type="date"
-                value={formData.purchaseDate}
+                max={new Date().toISOString().substring(0, 10)}
+                value={formData.purchaseDate?.toString() ?? ''}
                 name="purchaseDate"
-                onChange={handleChange}
+                onChange={(e) => {
+                  if (checkPurchaseDateAdvert(e.target.value)) {
+                    handleChange(e);
+                  }
+                }}
               />
             </Col>
             <Col>
               <Form.Label
                 style={{
-                  padding: '10px',
-                  color: palette.gray,
-                  margin: '5px',
+                  paddingLeft: 10,
+                  fontWeight: '600',
                 }}
               >
                 Expiration Date
               </Form.Label>
               <Form.Control
                 style={{
-                  padding: '10px',
+                  padding: 10,
                   color: palette.gray,
-                  margin: '5px',
+                  margin: 5,
                 }}
                 type="date"
-                value={formData.expirationDate}
+                min={new Date().toISOString().substring(0, 10)}
+                value={formData.expirationDate?.toString() ?? ''}
                 name="expirationDate"
-                onChange={handleChange}
+                onChange={(e) => {
+                  if (checkExpirationDateAvert(e.target.value)) {
+                    handleChange(e);
+                  }
+                }}
               />
             </Col>
           </Row>
           <Row>
             <Col>
-              <Form.Group>
+              <Form.Group controlId="quantity">
                 <Form.Label
                   style={{
-                    padding: '10px',
-                    color: palette.gray,
-                    margin: '5px',
+                    paddingLeft: 10,
+                    fontWeight: '600',
                   }}
                 >
-                  {' '}
                   Quantity (pcs)
                 </Form.Label>
                 <Form.Control
                   style={{
-                    padding: '10px',
+                    padding: 10,
                     color: palette.gray,
-                    margin: '5px',
+                    margin: 5,
                   }}
                   type="number"
-                  name="quantity"
-                  value={formData.quantity}
+                  name="Quantity"
+                  min={1}
+                  step={1}
+                  value={Number(formData.Quantity ?? '')}
                   onChange={handleChange}
                   required
-                  isInvalid={!!errors.quantity}
+                  isInvalid={!!errors.Quantity}
                 ></Form.Control>
+                <Form.Control.Feedback
+                  style={{ paddingLeft: 10 }}
+                  type="invalid"
+                >
+                  {errors.Quantity}
+                </Form.Control.Feedback>
               </Form.Group>
             </Col>
             <Col>
-              <Form.Group>
+              <Form.Group controlId="price">
                 <Form.Label
                   style={{
-                    padding: '10px',
-                    color: palette.gray,
-                    margin: '5px',
+                    paddingLeft: 10,
+                    fontWeight: '600',
                   }}
                 >
-                  {' '}
                   Price (€)
                 </Form.Label>
                 <Form.Control
                   style={{
-                    padding: '10px',
+                    padding: 10,
                     color: palette.gray,
-                    margin: '5px',
+                    margin: 5,
                   }}
                   type="number"
-                  name="price"
-                  value={formData.price}
+                  name="Price"
+                  min={1}
+                  value={formData.Price ?? ''}
                   onChange={handleChange}
                   required
-                  isInvalid={!!errors.price}
+                  isInvalid={!!errors.Price}
                 ></Form.Control>
+                <Form.Control.Feedback
+                  style={{ paddingLeft: 10 }}
+                  type="invalid"
+                >
+                  {errors.Price}
+                </Form.Control.Feedback>
               </Form.Group>
             </Col>
           </Row>
@@ -443,22 +515,21 @@ const EditAdvertModal: FC<EditAdvertContentProps> = (props) => {
               <Form.Group>
                 <Form.Label
                   style={{
-                    padding: '10px',
-                    color: palette.gray,
-                    margin: '5px',
+                    paddingLeft: 10,
+                    fontWeight: '600',
                   }}
                 >
-                  {' '}
                   Description
                 </Form.Label>
                 <Form.Control
                   style={{
-                    padding: '10px',
+                    padding: 10,
                     color: palette.gray,
                     margin: '5px',
+                    overflow: 'hidden',
                   }}
                   as="textarea"
-                  rows={3}
+                  rows={2}
                   name="description"
                   value={formData.description}
                   onChange={handleChange}
@@ -471,11 +542,11 @@ const EditAdvertModal: FC<EditAdvertContentProps> = (props) => {
       <Modal.Footer>
         <Button
           className="text-white"
-          onClick={handleSubmit}
           style={{
-            background: palette.green,
-            borderColor: palette.green,
+            background: palette.subSectionsBgAccent,
+            borderColor: palette.subSectionsBgAccent,
           }}
+          onClick={handleSubmit}
         >
           Submit
         </Button>
@@ -483,5 +554,3 @@ const EditAdvertModal: FC<EditAdvertContentProps> = (props) => {
     </Modal>
   );
 };
-
-export { EditAdvertModal };

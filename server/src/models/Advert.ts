@@ -42,7 +42,7 @@ const advertSchema = new mongoose.Schema<Advert>({
     type: Types.Date,
     required: [false, 'Please add an exipration date'],
   },
-  date: {
+  createdAt: {
     type: Types.Date,
     required: [true, 'Please add a creation date'],
   },
@@ -51,9 +51,10 @@ const advertSchema = new mongoose.Schema<Advert>({
     enum: Object.values(Colors),
     required: [false, 'You could enter a color for the product'],
   },
-  advertStatus: {
+  status: {
     type: String,
     enum: Object.values(AdvertStatus),
+    // TODO: change to true
     required: [false, 'You could enter the status of the advert'],
   },
   type: {
@@ -83,7 +84,7 @@ const advertSchema = new mongoose.Schema<Advert>({
   store: {
     type: Types.ObjectId,
     ref: 'User',
-    required: [false, 'Please add a store'],
+    required: [true, 'Please add a store'],
   },
 });
 

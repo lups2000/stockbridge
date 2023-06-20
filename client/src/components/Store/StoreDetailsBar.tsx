@@ -3,14 +3,10 @@ import { User } from '../../api/collections/user';
 import { Ratings } from '../Ratings';
 import { BodyText } from '../Text/BodyText';
 
-type StoreDetailsBarProps = React.DetailedHTMLProps<
-  React.HTMLAttributes<HTMLDivElement>,
-  HTMLDivElement
-> &
-  Partial<{
-    category: string;
-    store: User;
-  }>;
+type StoreDetailsBarProps = {
+  category?: string;
+  store?: User;
+};
 
 const StoreDetailsBar: React.FC<StoreDetailsBarProps> = (props) => {
   const fieldContainer = (message: string, value: string, rating = false) => {

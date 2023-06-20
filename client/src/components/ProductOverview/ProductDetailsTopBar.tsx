@@ -1,25 +1,34 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import edit from '../../assets/edit-pencil.svg';
-import { Button } from 'react-bootstrap';
+import review from '../../assets/carbon_review.svg';
+import { Button, Image } from 'react-bootstrap';
 import { Advert } from '../../api/collections/advert';
 import { EditAdvertModal } from './EditAdvertModal';
 import { BodyText } from '../Text/BodyText';
-import { Img } from '../Img';
+import { EditReviewModal } from './EditReviewModal';
 
-type ProductDetailsTopBarProps = Partial<{
+type ProductDetailsTopBarProps = {
   owner: boolean;
   advert?: Advert;
-  advertID: string;
-}>;
+};
 
 const ProductDetailsTopBar: React.FC<ProductDetailsTopBarProps> = (props) => {
-  const [showModal, setShowModal] = useState(false);
+  const [showAdvertModal, setShowAdvertModal] = useState(false);
+  const [showReviewModal, setShowReviewModal] = useState(false);
   const closeModal = () => {
-    setShowModal(false);
+    if (props.owner) {
+      setShowAdvertModal(false);
+    } else {
+      setShowReviewModal(false);
+    }
     window.location.reload();
   };
   const openModal = () => {
-    setShowModal(true);
+    if (props.owner) {
+      setShowAdvertModal(true);
+    } else {
+      setShowReviewModal(true);
+    }
   };
   return (
     <div
@@ -41,25 +50,29 @@ const ProductDetailsTopBar: React.FC<ProductDetailsTopBarProps> = (props) => {
       >
         PRODUCT DETAILS
       </BodyText>
-      {!props.owner && (
-        <Button
-          style={{
-            width: 'full',
-            marginRight: '20px',
-            backgroundColor: 'transparent',
-            borderColor: 'transparent',
-          }}
-          onClick={openModal}
-        >
-          <Img src={edit}></Img>
-        </Button>
-      )}
-      {showModal && (
+      <Button
+        style={{
+          width: 'full',
+          marginRight: '20px',
+          backgroundColor: 'transparent',
+          borderColor: 'transparent',
+        }}
+        onClick={openModal}
+      >
+        <Image src={props.owner ? edit : review}></Image>
+      </Button>
+      {showAdvertModal && (
         <EditAdvertModal
-          isShowing={showModal}
+          isShowing={showAdvertModal}
           onClose={closeModal}
           advert={props.advert}
-          advertID={props.advertID}
+        />
+      )}
+      {showReviewModal && (
+        <EditReviewModal
+          isShowing={showReviewModal}
+          onClose={closeModal}
+          advertID={props.advert?._id}
         />
       )}
     </div>

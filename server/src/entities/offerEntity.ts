@@ -3,9 +3,10 @@ import { Advert } from './advertEntity';
 import { User } from './userEntity';
 
 export enum OfferStatus {
-  PENDING,
-  ACCEPTED,
-  DENIED,
+  OPEN = 'Open',
+  ACCEPTED = 'Accepted',
+  REJECTED = 'REJECTED',
+  CANCELED = 'Canceled',
 }
 
 export interface Offer {

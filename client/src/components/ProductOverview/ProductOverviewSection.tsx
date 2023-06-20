@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 
 import { ProductDetailsTopBar } from './ProductDetailsTopBar';
 import { ProductDetails } from './ProductDetails';
@@ -6,21 +6,16 @@ import { ProductDetails } from './ProductDetails';
 import { Button } from 'react-bootstrap';
 import { Advert } from '../../api/collections/advert';
 import { OfferModal } from '../Offers/OfferModal';
+import { User } from '../../api/collections/user';
+import { LoginContext } from '../../contexts/LoginContext';
 
-type ProductOverviewSectionProps = React.DetailedHTMLProps<
-  React.HTMLAttributes<HTMLDivElement>,
-  HTMLDivElement
-> &
-  Partial<{
-    advert: Advert;
-    userid: string;
-    advertID: string;
-  }>;
+type ProductOverviewSectionProps = { advert: Advert; store: User };
 
 const ProductOverviewSection: React.FC<ProductOverviewSectionProps> = (
   props,
 ) => {
-  const owner = props.userid === props.advert?.store;
+  const { user, loggedIn } = useContext(LoginContext);
+  const owner = user?._id === props.advert?.store;
   const button_text = !owner
     ? props.advert?.type === 'Sell'
       ? 'Buy'
@@ -44,14 +39,14 @@ const ProductOverviewSection: React.FC<ProductOverviewSectionProps> = (
         flexDirection: 'column',
         alignItems: 'start',
         gap: '30px',
-        width: 'full',
+        width: 'auto',
         marginTop: '10%',
+        marginBottom: '5%',
       }}
     >
       <ProductDetailsTopBar
         owner={owner}
         advert={props.advert}
-        advertID={props.advertID}
       ></ProductDetailsTopBar>
       <div
         style={{
@@ -63,12 +58,14 @@ const ProductOverviewSection: React.FC<ProductOverviewSectionProps> = (
           padding: '40px',
         }}
       >
-        <ProductDetails advert={props.advert}></ProductDetails>
+        {props.advert && ProductDetails(props.advert)}
         {showModal && (
           <OfferModal
             isShowing={showModal}
             onClose={closeModal}
             advert={props.advert}
+            storeName={props.store.name}
+            rating={props.store.rating}
           />
         )}
         <Button

@@ -1,13 +1,13 @@
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { Advert, Colors, getAdvert } from '../api/collections/advert';
-import { getOffer, Offer } from '../api/collections/offer';
-import { User } from '../api/collections/user';
+import { getStore, User } from '../api/collections/user';
 import { OffersSection } from '../components/Offers/OffersSection';
 import { Page } from '../components/Page';
 import { ProductOverviewSection } from '../components/ProductOverview/ProductOverviewSection';
 import { ReviewsSection } from '../components/Reviews/ReviewsSection';
 import { StoreDetailsBar } from '../components/Store/StoreDetailsBar';
+import { LoginContext } from '../contexts/LoginContext';
 
 const ProductOverview = () => {
   const { id } = useParams();
@@ -24,72 +24,57 @@ const ProductOverview = () => {
     type: '',
     category: '',
     offers: [],
-    store: {
-      id: '',
-      name: '',
-      rating: 0,
-    },
+    store: '',
     reviews: [],
     imageurl: '',
     color: Colors.Blue,
+    createdAt: new Date(),
   } as Advert);
-  const [offers, setOffers] = useState([] as Offer[]);
   const [store, setStore] = useState({} as User);
+
   useEffect(() => {
-    const fetchStore = async (storeID: string) => {
+    const fetchData = async () => {
       try {
-        //TODO: CHANGE WITH SERVER CALL
-        const store = {
-          name: 'Fake store',
-          rating: 2,
-        };
-        setStore(store as User);
+        if (id) {
+          const fetchedAdvert = await getAdvert(id);
+          if (fetchedAdvert.store) {
+            const fetchedStore = await getStore(fetchedAdvert.store);
+            setStore(fetchedStore);
+          }
+          setAdvert(fetchedAdvert as Advert);
+          console.log(fetchedAdvert);
+        }
       } catch (error) {
         console.error(error);
       }
     };
-    const fetchOffers = async (offerIDs: string[]) => {
-      let fetchedOffers: Offer[] = [];
-
-      for (const offerId in offerIDs) {
-        try {
-          const offer = await getOffer(offerId);
-          fetchedOffers.push(offer);
-        } catch (error) {
-          console.error(error);
-        }
-      }
-      setOffers(fetchedOffers);
-    };
-    const fetchAdvert = async () => {
-      if (id) {
-        try {
-          const fetchedAdvert = await getAdvert(id);
-          if (fetchedAdvert.store) {
-            setStore(fetchedAdvert.store);
-          }
-          if (fetchedAdvert.offers) {
-            setOffers(fetchedAdvert.offers);
-          }
-          setAdvert(fetchedAdvert as Advert);
-        } catch (error) {
-          console.error(error);
-        }
-      }
-    };
-    fetchAdvert();
+    fetchData();
   }, []);
-  const owner = true;
-  /*  userID === advert?.issuer?.id && advert?.offers?.length > 0; */
+
+  const { user, loggedIn } = useContext(LoginContext);
+  const owner = store._id === user?._id;
   return (
     <Page>
-      {advert != null ? (
-        <>
+      {advert ? (
+        <div
+          style={{
+            width: '100%',
+            maxWidth: '100vw', // Set the maximum width to the viewport width
+          }}
+        >
           <StoreDetailsBar category={advert.category} store={store} />
-          <ProductOverviewSection advert={advert} advertID={id} />
-          {owner && OffersSection(offers, advert)}
-          {ReviewsSection(advert.reviews ? advert.reviews : [])}
-        </>
+          <ProductOverviewSection advert={advert} store={store} />
+          {owner && advert.offers && advert.offers.length > 0 && (
+            <OffersSection
+              advert={advert}
+              storeName={store.name || ''}
+              rating={store.rating || 0}
+            />
+          )}
+          {advert.reviews && advert.reviews.length > 0 && advert._id && (
+            <ReviewsSection advertID={advert._id} />
+          )}
+        </div>
       ) : (
         <p>Loading ...</p>
       )}

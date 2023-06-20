@@ -14,8 +14,8 @@ import { AuthenticatedRequest } from '../middlewares/authMiddleware';
 import { ObjectId } from 'mongodb';
 import { AppError } from '../utils/errorHandler';
 import { Offer } from '../entities/offerEntity';
+import logger from '../config/logger';
 import { findAdvertById } from '../services/advertServices';
-
 
 /**
  * This method returns a offer by id   *
@@ -60,12 +60,12 @@ export const getOffers = asyncHandler(
  */
 export const postOffer = asyncHandler(
   async (req: AuthenticatedRequest, res: Response) => {
-    const {offeror, offeree, advert} = req.body;
+    const { offeror, offeree, advert } = req.body;
     const relatedAdvert = await findAdvertById(advert);
     // Type conversion for comparaison
-    let offerorId = new ObjectId(offeror) , userId = new ObjectId(relatedAdvert.store.id);
-    if (offeror == offeree  || offerorId.equals(userId))
-    {
+    let offerorId = new ObjectId(offeror),
+      userId = new ObjectId(relatedAdvert.store.id);
+    if (offeror == offeree || offerorId.equals(userId)) {
       throw new AppError(
         'Not allowed to create offers for own adverts',
         'Not allowed to create offers for own adverts',
@@ -122,7 +122,6 @@ export const getOffersByAdvert = asyncHandler(
     const userId = new ObjectId(req.user?.id);
     let offers = await findAllOffersByAdvert(advert);
     offers = _findAndCheckRelatedOffers(userId, offers);
-
     res.status(200).json(offers);
   },
 );
@@ -182,7 +181,7 @@ async function _checkUserCanEditOrDeleteOffer(req: AuthenticatedRequest) {
   let userId = new ObjectId(req.user?.id);
   const { id } = req.params;
 
-  // The user editing or deleting must be the offeror. 
+  // The user editing or deleting must be the offeror.
   if ((await findOfferById(id)).offeror.equals(userId)) {
     throw new AppError(
       'Not authorized to edit this route',
@@ -199,7 +198,11 @@ async function _checkUserCanEditOrDeleteOffer(req: AuthenticatedRequest) {
  * @returns the filtered list.
  */
 function _findAndCheckRelatedOffers(userId: ObjectId, offers: Offer[]): any {
-  let relatedOffers = offers.filter(x => (x.offeror && x.offeror.equals(userId)) || (x.offeree && x.offeree.equals(userId)));
+  let relatedOffers = offers.filter(
+    (x) =>
+      (x.offeror && x.offeror.equals(userId)) ||
+      (x.offeree && x.offeree.equals(userId)),
+  );
 
   // If no offers are retrieved with this request, throw an exception to inform the user.
   if (!relatedOffers?.length) {

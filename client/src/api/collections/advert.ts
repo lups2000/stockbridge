@@ -1,7 +1,4 @@
 import { ApiClient } from '../apiClient';
-import { Offer } from './offer';
-import { Review } from './review';
-import { User } from './user';
 
 export enum AdvertType {
   Sell,
@@ -44,7 +41,7 @@ export enum ProductCategory {
 }
 
 export interface Advert {
-  id?: string;
+  _id?: string;
   productname?: string;
   prioritized?: boolean;
   quantity?: number;
@@ -55,22 +52,25 @@ export interface Advert {
   status?: string;
   type?: string;
   category?: string;
-  offers?: Offer[];
-  store?: User;
-  reviews?: Review[];
+  offers?: string[];
+  store?: string;
+  reviews?: string[];
   imageurl?: string;
   color?: string;
+  createdAt?: Date;
 }
 
 const apiClient = new ApiClient();
 
 export async function getAdvert(id: string): Promise<Advert> {
-  return await apiClient.get<Advert>(`/adverts/${id}`);
+  return await apiClient.get<Advert>(`/adverts/${id}`, {
+    withCredentials: true,
+  });
 }
 
 export async function createAdvert(advert: Advert): Promise<Advert> {
   return await apiClient.post<Advert>(`/adverts/`, advert, {
-    withCredentials: false,
+    withCredentials: true,
   });
 }
 
@@ -78,12 +78,19 @@ export async function updateAdvert(
   id: string,
   advert: Advert,
 ): Promise<Advert> {
-  console.log('UPDATING ADVERT: ', id);
   return await apiClient.put<Advert>(`/adverts/${id}`, advert, {
-    withCredentials: false,
+    withCredentials: true,
   });
 }
 
 export async function deleteAdvert(id: string): Promise<void> {
-  return await apiClient.delete<void>(`/adverts/${id}`);
+  return await apiClient.delete<void>(`/adverts/${id}`, {
+    withCredentials: true,
+  });
+}
+
+export async function getAllAdverts(): Promise<Advert[]> {
+  return await apiClient.get<Advert[]>('/adverts/', {
+    withCredentials: true,
+  });
 }

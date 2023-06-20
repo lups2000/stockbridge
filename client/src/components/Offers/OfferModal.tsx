@@ -1,22 +1,19 @@
-import React, { FC, useState } from 'react';
-import { Button, Col, Form, Modal, Row } from 'react-bootstrap';
-import { Advert } from '../../api/collections/advert';
-import { Offer, OfferStatus } from '../../api/collections/offer';
+import { FC, useContext, useState } from 'react';
+import { Button, Col, Form, Modal, Row, Image } from 'react-bootstrap';
+import { Advert, updateAdvert } from '../../api/collections/advert';
+import { createOffer, Offer, OfferStatus } from '../../api/collections/offer';
+import { LoginContext } from '../../contexts/LoginContext';
 import { palette } from '../../utils/colors';
-import { Img } from '../Img';
 import { Ratings } from '../Ratings';
 
-type OfferContentProps = React.DetailedHTMLProps<
-  React.HTMLAttributes<HTMLDivElement>,
-  HTMLDivElement
-> &
-  Partial<{
-    isShowing: boolean;
-    onClose: () => void;
-    offer?: Offer;
-    advert: Advert;
-    userID: string;
-  }>;
+type OfferContentProps = {
+  isShowing: boolean;
+  onClose: () => void;
+  offer?: Offer;
+  advert?: Advert;
+  storeName?: String;
+  rating?: number;
+};
 function colorMap(status: OfferStatus): string {
   switch (status) {
     case OfferStatus.OPEN:
@@ -32,10 +29,17 @@ function colorMap(status: OfferStatus): string {
   }
 }
 const OfferModal: FC<OfferContentProps> = (props) => {
+  const { user, loggedIn } = useContext(LoginContext);
+
   const [formData, setFormData] = useState({
-    quantity: props.offer?.quantity ? props.offer?.quantity : 0,
-    price: props.offer?.price ? props.offer?.price : 0,
-  });
+    Quantity: props.offer?.quantity ? props.offer?.quantity : 0,
+    Price: props.offer?.price ? props.offer?.price : 0,
+    createdAt: new Date(),
+    status: OfferStatus.OPEN,
+    offeror: user?._id,
+    offeree: props.advert?.store,
+    advert: props.advert?._id,
+  } as Offer);
 
   const handleChange = (event: any) => {
     event.preventDefault();
@@ -46,46 +50,45 @@ const OfferModal: FC<OfferContentProps> = (props) => {
     });
   };
 
-  const [errors, setErrors] = useState({
-    price: false,
-    quantity: false,
-  });
-
-  const validationErrors = {
-    price: false,
-    quantity: false,
+  const [validated, setValidated] = useState(false);
+  const [errors, setErrors] = useState(
+    {} as {
+      Price: string;
+      Quantity: string;
+    },
+  );
+  const isValid = () => {
+    return formData.price && formData.quantity;
   };
   const handleSubmit = async () => {
-    if (!formData.quantity) {
-      validationErrors.quantity = true;
-    }
-    if (!formData.price) {
-      validationErrors.price = true;
-    }
-    if (Object.values(validationErrors).some((e) => e)) {
-      console.log('Errors are happening');
-      console.log(validationErrors);
-      setErrors(validationErrors);
-    } else {
+    if (isValid()) {
       try {
-        /* await axiosClient
-                    .post("offers", {
-                        quantity: formData.quantity,
-                        price: formData.price,
-                        status: OfferStatus.OPEN,
-                        createdAt: new Date(),
-                        offeror: props.userID,
-                        offeree: props.store?.id,
-                    })
-                */
-        setErrors({
-          price: false,
-          quantity: false,
-        });
+        const createdOffer = await createOffer(formData as Offer);
+        if (props.advert?._id) {
+          console.log('Updating advert: ', props.advert._id);
+          updateAdvert(props.advert._id, {
+            offers: [createdOffer._id!],
+          });
+        }
         if (props.onClose) props?.onClose();
       } catch (error) {
         console.error(error);
       }
+    } else {
+      setErrors({
+        Price: formData.price
+          ? formData.price > 0
+            ? ''
+            : 'Price must be greater than 0'
+          : 'Price is missing',
+        Quantity: formData.quantity
+          ? formData.quantity > 0
+            ? formData.quantity < props.advert?.quantity!
+              ? ''
+              : 'Quantity must be less or equal to available Quantity'
+            : 'Quantity must be greater than 0'
+          : 'Quantity is missing',
+      });
     }
   };
   const status = props.offer ? props.offer.status : OfferStatus.OPEN;
@@ -108,8 +111,8 @@ const OfferModal: FC<OfferContentProps> = (props) => {
               }}
             >
               {props.offer
-                ? props.offer.createdAt?.toDateString().substring(0, 10)
-                : new Date().toLocaleDateString().substring(0, 10)}
+                ? props.offer.createdAt?.toString().substring(0, 10)
+                : new Date().toString().substring(0, 10)}
             </Form.Label>
           </Col>
         </Row>
@@ -126,7 +129,7 @@ const OfferModal: FC<OfferContentProps> = (props) => {
                   fontWeight: 800,
                 }}
               >
-                Status:{' '}
+                Status:
               </Form.Label>
               <Form.Label
                 style={{
@@ -151,17 +154,23 @@ const OfferModal: FC<OfferContentProps> = (props) => {
             alignItems: 'center',
           }}
         >
-          <Col>
-            <Img
-              style={{
-                width: '160px',
-                height: '160px',
-                borderRadius: '60px',
-              }}
-              src={props.advert?.imageurl}
-            />
-          </Col>
-          <Col>
+          {props.advert?.imageurl && (
+            <Col>
+              <Image
+                style={{
+                  width: '160px',
+                  height: '160px',
+                  borderRadius: '60px',
+                }}
+                src={props.advert?.imageurl}
+              />
+            </Col>
+          )}
+          <Col
+            style={{
+              marginLeft: props.advert?.imageurl ? '' : '100px',
+            }}
+          >
             <Row>
               <Form.Label>{props.advert?.productname}</Form.Label>
             </Row>
@@ -201,10 +210,8 @@ const OfferModal: FC<OfferContentProps> = (props) => {
             <Row>
               <Form.Label>
                 {props.advert?.type === 'Sell' ? 'Seller' : 'Buyer'}:{' '}
-                {props.advert?.store?.name}
-                {Ratings(
-                  props.advert?.store?.rating ? props.advert.store.rating : 0,
-                )}
+                {props.storeName}
+                {Ratings(props.rating ? props.rating : 0)}
               </Form.Label>
             </Row>
             <Row>
@@ -223,7 +230,6 @@ const OfferModal: FC<OfferContentProps> = (props) => {
                     width: props.offer ? '60px' : '110px',
                   }}
                 >
-                  {' '}
                   Price {props.offer ? '' : '(€)'}
                 </Form.Label>
                 {props.offer ? (
@@ -237,18 +243,23 @@ const OfferModal: FC<OfferContentProps> = (props) => {
                     {props.offer.price} €
                   </Form.Label>
                 ) : (
-                  <Form.Control
-                    style={{
-                      width: '30%',
-                      color: palette.gray,
-                    }}
-                    type="number"
-                    name="price"
-                    value={formData.price}
-                    onChange={handleChange}
-                    required
-                    isInvalid={!!errors.price}
-                  ></Form.Control>
+                  <>
+                    <Form.Control
+                      style={{
+                        width: '30%',
+                        color: palette.gray,
+                      }}
+                      type="number"
+                      name="price"
+                      value={formData.price}
+                      onChange={handleChange}
+                      required
+                      isInvalid={!!errors.Price}
+                    />
+                    <Form.Control.Feedback type="invalid">
+                      {errors.Price}
+                    </Form.Control.Feedback>
+                  </>
                 )}
               </Form.Group>
             </Row>
@@ -268,7 +279,6 @@ const OfferModal: FC<OfferContentProps> = (props) => {
                     width: props.offer ? '60px' : '110px',
                   }}
                 >
-                  {' '}
                   Quantity {props.offer ? '' : '(pcs)'}
                 </Form.Label>
                 {props.offer ? (
@@ -282,18 +292,23 @@ const OfferModal: FC<OfferContentProps> = (props) => {
                     {props.offer.quantity} pcs
                   </Form.Label>
                 ) : (
-                  <Form.Control
-                    style={{
-                      width: '30%',
-                      color: palette.gray,
-                    }}
-                    type="number"
-                    name="quantity"
-                    value={formData.quantity}
-                    onChange={handleChange}
-                    required
-                    isInvalid={!!errors.quantity}
-                  ></Form.Control>
+                  <>
+                    <Form.Control
+                      style={{
+                        width: '30%',
+                        color: palette.gray,
+                      }}
+                      type="number"
+                      name="quantity"
+                      value={formData.quantity}
+                      onChange={handleChange}
+                      required
+                      isInvalid={!!errors.Quantity}
+                    />
+                    <Form.Control.Feedback type="invalid">
+                      {errors.Quantity}
+                    </Form.Control.Feedback>
+                  </>
                 )}
               </Form.Group>
             </Row>

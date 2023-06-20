@@ -1,22 +1,18 @@
-import React, { FC, useState } from 'react';
-import { Button, Col, Form, Modal, Row } from 'react-bootstrap';
+import { FC, useState } from 'react';
+import { Button, Col, Form, Modal, Row, Image } from 'react-bootstrap';
 import { Advert } from '../../api/collections/advert';
 import { Offer, OfferStatus } from '../../api/collections/offer';
 import { palette } from '../../utils/colors';
-import { Img } from '../Img';
 import { Ratings } from '../Ratings';
 
-type StoreDetailsProps = React.DetailedHTMLProps<
-  React.HTMLAttributes<HTMLDivElement>,
-  HTMLDivElement
-> &
-  Partial<{
-    isShowing: boolean;
-    onClose: () => void;
-    offer?: Offer;
-    advert?: Advert;
-    userID?: string;
-  }>;
+type StoreDetailsProps = {
+  isShowing: boolean;
+  onClose: () => void;
+  offer?: Offer;
+  storeName?: String;
+  rating?: number;
+  advert?: Advert;
+};
 function colorMap(status: OfferStatus): string {
   switch (status) {
     case OfferStatus.OPEN:
@@ -68,16 +64,6 @@ const StoreDetailsModal: FC<StoreDetailsProps> = (props) => {
       setErrors(validationErrors);
     } else {
       try {
-        /* await axiosClient
-                    .post("offers", {
-                        quantity: formData.quantity,
-                        price: formData.price,
-                        status: OfferStatus.OPEN,
-                        createdAt: new Date(),
-                        offeror: props.userID,
-                        offeree: props.store?.id,
-                    })
-                */
         setErrors({
           price: false,
           quantity: false,
@@ -109,7 +95,7 @@ const StoreDetailsModal: FC<StoreDetailsProps> = (props) => {
             >
               {props.offer
                 ? props.offer.createdAt?.toDateString().substring(0, 10)
-                : new Date().toLocaleDateString().substring(0, 10)}
+                : new Date().toDateString().substring(0, 10)}
             </Form.Label>
           </Col>
         </Row>
@@ -126,7 +112,7 @@ const StoreDetailsModal: FC<StoreDetailsProps> = (props) => {
                   fontWeight: 800,
                 }}
               >
-                Status:{' '}
+                Status:
               </Form.Label>
               <Form.Label
                 style={{
@@ -152,7 +138,7 @@ const StoreDetailsModal: FC<StoreDetailsProps> = (props) => {
           }}
         >
           <Col>
-            <Img
+            <Image
               style={{
                 width: '160px',
                 height: '160px',
@@ -201,10 +187,8 @@ const StoreDetailsModal: FC<StoreDetailsProps> = (props) => {
             <Row>
               <Form.Label>
                 {props.advert?.type === 'Sell' ? 'Seller' : 'Buyer'}:{' '}
-                {props.advert?.store?.name}
-                {Ratings(
-                  props.advert?.store?.rating ? props.advert.store.rating : 0,
-                )}
+                {props.storeName}
+                {Ratings(props.rating ? props.rating : 0)}
               </Form.Label>
             </Row>
             <Row>

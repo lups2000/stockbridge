@@ -1,42 +1,39 @@
-import React from 'react';
 import { Advert } from '../../api/collections/advert';
-import { Img } from '../Img';
 import { BodyText } from '../Text/BodyText';
 import { ProductAttribute } from './ProductAttribute';
+import { Image } from 'react-bootstrap';
 
-type ProductDetailsProps = React.DetailedHTMLProps<
-  React.HTMLAttributes<HTMLDivElement>,
-  HTMLDivElement
-> &
-  Partial<{
-    advert: Advert;
-  }>;
-
-const ProductDetails: React.FC<ProductDetailsProps> = (props) => {
+const ProductDetails = (advert: Advert) => {
   return (
     <div
       style={{
         display: 'flex',
         flexDirection: 'row',
         alignItems: 'center',
-        gap: '10%',
         justifyContent: 'start',
-        marginLeft: '10%',
-        paddingTop: '1%',
-        height: 'full',
-        width: '100%',
+        width: 'auto',
       }}
     >
-      <Img
+      {advert.imageurl && (
+        <Image
+          style={{
+            width: '30%',
+            borderRadius: '60px',
+            borderColor: 'transparent',
+          }}
+          src={advert?.imageurl}
+        />
+      )}
+
+      <div
         style={{
-          width: '250px',
-          height: 'auto',
-          borderRadius: '60px',
-          borderColor: 'transparent',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'start',
+          marginLeft: '10%',
+          marginRight: '10%',
         }}
-        src={props?.advert?.imageurl}
-      />
-      <div className="flex flex-col gap-10 items-start ml-[10%] mr-[10%] w-[100%">
+      >
         <BodyText
           style={{
             fontFamily: 'Poppins',
@@ -45,9 +42,7 @@ const ProductDetails: React.FC<ProductDetailsProps> = (props) => {
             fontWeight: 600,
           }}
         >
-          {props?.advert?.productname
-            ? props.advert.productname
-            : 'Fake Product Name'}
+          {advert.productname ? advert.productname : 'Fake Product Name'}
         </BodyText>
         <BodyText
           style={{
@@ -56,30 +51,28 @@ const ProductDetails: React.FC<ProductDetailsProps> = (props) => {
             fontSize: '16px',
             fontWeight: 300,
             marginLeft: '10px',
+            wordBreak: 'break-all',
           }}
         >
-          {props?.advert?.productname
-            ? props.advert.description
-            : 'Here goes the product description!'}
+          {advert?.description ? advert.description : ''}
         </BodyText>
-
-        {props?.advert?.color && (
+        {advert?.color && (
           <ProductAttribute
-            margin="10%"
+            margin=""
             name="Color"
-            value={props?.advert?.color}
+            value={advert?.color}
           ></ProductAttribute>
         )}
-        {props?.advert?.purchaseDate && (
+        {advert?.purchaseDate && (
           <ProductAttribute
             name="Purchased On"
-            value={props.advert.purchaseDate.toString().substring(0, 10)}
+            value={advert.purchaseDate.toString().substring(0, 10)}
           ></ProductAttribute>
         )}
-        {props?.advert?.expirationDate && (
+        {advert?.expirationDate && (
           <ProductAttribute
             name="Expires On"
-            value={`${props.advert.expirationDate.toString().substring(0, 10)}`}
+            value={`${advert.expirationDate.toString().substring(0, 10)}`}
           ></ProductAttribute>
         )}
         <div
@@ -95,13 +88,13 @@ const ProductDetails: React.FC<ProductDetailsProps> = (props) => {
         >
           <ProductAttribute
             name="Quantity"
-            value={props?.advert?.quantity}
+            value={advert?.quantity}
             unit="pcs"
             border={true}
           ></ProductAttribute>
           <ProductAttribute
             name="Price"
-            value={props?.advert?.price}
+            value={advert?.price}
             unit="€"
             border={true}
           ></ProductAttribute>

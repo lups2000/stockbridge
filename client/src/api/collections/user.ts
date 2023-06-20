@@ -79,3 +79,7 @@ export async function verify(): Promise<User> {
 export async function logout(): Promise<string> {
   return await apiClient.post<string>(`/auth/logout`);
 }
+
+export async function getStore(id: String): Promise<User> {
+  return await apiClient.get<User>(`/stores/${id}`);
+}

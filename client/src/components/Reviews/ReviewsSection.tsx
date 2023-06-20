@@ -1,59 +1,47 @@
-import { Review } from '../../api/collections/review';
-import { BodyText } from '../Text/BodyText';
+import { FC, useEffect, useState } from 'react';
+import { getReviewsByAdvert, Review } from '../../api/collections/review';
+import { getStore, User } from '../../api/collections/user';
+import { ReviewOfferSection } from '../ProductOverview/ReviewOfferSection';
 import { Reviewbar } from './Reviewbar';
 
-const ReviewsSection = (reviews: Review[]) => {
-  if (reviews.length == 0) {
-    reviews = [
-      {
-        id: '',
-        rating: 4,
-        description: 'New review 2',
-        createdAt: new Date('07.06.2023'),
-        reviewer: {
-          _id: '6470e8a153c3e3e95e30176b',
-          name: 'Reviewer Name',
-          rating: 3,
-        },
-        reviewedAdvert: {
-          id: '647ddfb46d74b615e34256bc',
-        },
-      },
-    ];
-  }
+type ReviewsSectionProps = {
+  advertID: string;
+};
+const ReviewsSection: FC<ReviewsSectionProps> = (props) => {
+  const [reviews, setReviews] = useState(
+    [] as { review: Review; store: User }[],
+  );
+  console.log(props.advertID);
+  useEffect(() => {
+    const fetchData = async () => {
+      let advertReviews = await getReviewsByAdvert(props.advertID);
+      let fetchedReviews: { review: Review; store: User }[] = [];
+      advertReviews = advertReviews.filter(
+        (r) => r.reviewedAdvert === props.advertID,
+      );
+      for (const review of advertReviews) {
+        const store = await getStore(review.reviewer);
+        fetchedReviews.push({ review: review, store: store });
+      }
+      setReviews(fetchedReviews);
+    };
+    fetchData();
+  }, []);
   return (
-    <div
-      style={{
-        alignItems: 'center',
-        justifyContent: 'center',
-        padding: '60px',
-        width: 'full',
-      }}
-    >
-      <BodyText
-        style={{
-          fontFamily: 'poppins',
-          color: 'black',
-          width: '100%',
-          fontSize: '36px',
-          fontWeight: 600,
-          paddingLeft: '10px',
-        }}
-      >
-        REVIEWS
-      </BodyText>
+    <ReviewOfferSection section="REVIEWS">
       <div
         style={{
-          alignItems: 'center',
-          justifyContent: 'center',
-          width: '100%',
+          display: 'flex',
+          flexDirection: 'column',
+          gap: '30px',
+          padding: '30px',
         }}
       >
-        {reviews.map((review) => (
-          <Reviewbar review={review} />
+        {reviews.map((r, i) => (
+          <Reviewbar review={r.review} store={r.store} />
         ))}
       </div>
-    </div>
+    </ReviewOfferSection>
   );
 };
 
