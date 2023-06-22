@@ -6,15 +6,13 @@ import {
   Container,
   Form,
   NavDropdown,
-  Dropdown,
 } from 'react-bootstrap';
-import userLogo from '../assets/user-logo.svg';
 import { useNavigate } from 'react-router-dom';
 import logo from '../assets/logo.svg';
 import { useContext } from 'react';
 import { LoginContext } from '../contexts/LoginContext';
 import { palette } from '../utils/colors';
-import { ApiClient } from '../api/apiClient';
+import { UserIconDropdown } from './UserIconDropdown';
 
 /**
  * This component represents the navbarBS of our website.
@@ -22,19 +20,7 @@ import { ApiClient } from '../api/apiClient';
 export function Navbar() {
   const navigate = useNavigate();
 
-  const { loggedIn, setLoggedIn } = useContext(LoginContext);
-
-  const handleLogoutClick = () => {
-    new ApiClient()
-      .post('/auth/logout', {}, { withCredentials: true })
-      .then(() => {
-        setLoggedIn(false);
-        navigate('/'); //come back to homepage
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  };
+  const { loggedIn } = useContext(LoginContext);
 
   return (
     <>
@@ -62,7 +48,6 @@ export function Navbar() {
             <Nav className="justify-content-end flex-grow-1 pe-3">
               <NavDropdown
                 title="Categories"
-                //id={`offcanvasNavbarDropdown-expand-${expand}`}
               >
                 <NavDropdown.Item href="#action3">Action</NavDropdown.Item>
                 <NavDropdown.Item href="#action4">
@@ -74,7 +59,7 @@ export function Navbar() {
                 </NavDropdown.Item>
               </NavDropdown>
             </Nav>
-            <Form className="d-flex" style={{ marginRight: 50 }}>
+            <Form className="d-flex">
               <Form.Control
                 type="search"
                 placeholder="Search for an advert"
@@ -84,9 +69,9 @@ export function Navbar() {
               <Button
                 className="font-link"
                 style={{
-                  backgroundColor: palette.pageBG,
-                  borderColor: 'red',
-                  color: palette.subSectionsBgAccent,
+                  backgroundColor: palette.subSectionsBgAccent,
+                  border: 'none',
+                  color: 'white',
                 }}
               >
                 Search
@@ -97,91 +82,23 @@ export function Navbar() {
                 <Button
                   className="font-link"
                   style={{
-                    backgroundColor: palette.pageBG,
-                    borderColor: 'red',
-                    color: palette.subSectionsBgAccent,
+                    backgroundColor: palette.subSectionsBgAccent,
+                    border: 'none',
+                    color: 'white',
                   }}
                   onClick={() => navigate('/SignIn')}
                 >
                   Sign In
                 </Button>
               ) : (
-                <div>
-                  <Button
-                    className="font-link"
-                    style={{
-                      backgroundColor: palette.pageBG,
-                      border: 'none',
-                      color: palette.subSectionsBgAccent,
-                      fontSize: 20,
-                    }}
-                    onClick={() => handleLogoutClick()}
-                  >
-                    Logout
-                  </Button>
-                  <Button
-                    style={{
-                      backgroundColor: palette.pageBG,
-                      border: 'none',
-                    }}
-                    onClick={() => navigate('/userInfo')}
-                  >
-                    <img src={userLogo} alt="user info" />
-                  </Button>
+                <div style={{ marginLeft: 50 }}>
+                  <UserIconDropdown />
                 </div>
               )}
             </div>
           </NavbarBS.Collapse>
         </Container>
       </NavbarBS>
-      {/*<NavbarBSBS
-      sticky="top"
-      style={{ backgroundColor: palette.pageBG, height: 80 }}
-    >
-      <Nav className="me-auto">
-        <Nav.Link to="/" as={NavLink}>
-          <Image src={logo} alt="logo" width={250} height={250} />
-        </Nav.Link>
-      </Nav>
-      {!loggedIn ? (
-        <Button
-          className="font-link"
-          style={{
-            backgroundColor: palette.pageBG,
-            border: 'none',
-            color: palette.subSectionsBgAccent,
-            fontSize: 20,
-          }}
-          onClick={() => navigate('/SignIn')}
-        >
-          Sign In
-        </Button>
-      ) : (
-        <div>
-          <Button
-            className="font-link"
-            style={{
-              backgroundColor: palette.pageBG,
-              border: 'none',
-              color: palette.subSectionsBgAccent,
-              fontSize: 20,
-            }}
-            onClick={() => handleLogoutClick()}
-          >
-            Logout
-          </Button>
-          <Button
-            style={{
-              backgroundColor: palette.pageBG,
-              border: 'none',
-            }}
-            onClick={() => navigate('/userInfo')}
-          >
-            <img src={userLogo} alt="user info" />
-          </Button>
-        </div>
-      )}
-          </NavbarBSBS>*/}
     </>
   );
 }
