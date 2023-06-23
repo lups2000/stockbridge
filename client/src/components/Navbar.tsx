@@ -52,42 +52,46 @@ export function Navbar() {
                 CONTACT US
               </Nav.Link>
             </Nav>
-            <CategoriesDropdown />
-            <Form className="d-flex">
+            <div style={{ marginRight: 20 }}>
+              <CategoriesDropdown />
+            </div>
+            <Form className="d-flex" style={{height: 40}}>
               <Form.Control
                 type="search"
                 placeholder="Search for an advert"
                 className="me-2"
                 aria-label="Search"
+                style={{ borderRadius: 8, padding: 8 }}
               />
               <Button
                 className="font-link"
                 style={{
                   backgroundColor: palette.subSectionsBgAccent,
-                  border: 'none',
                   color: 'white',
+                  borderColor: palette.subSectionsBgAccent,
+                  borderRadius: 8,
                 }}
               >
                 Search
               </Button>
             </Form>
-            <div>
+            <div style={{ marginLeft: 40 }}>
               {!loggedIn ? (
                 <Button
                   className="font-link"
                   style={{
                     backgroundColor: palette.subSectionsBgAccent,
-                    border: 'none',
                     color: 'white',
+                    borderColor: palette.subSectionsBgAccent,
+                    borderRadius: 8,
+                    height: 40
                   }}
                   onClick={() => navigate('/SignIn')}
                 >
                   Sign In
                 </Button>
               ) : (
-                <div style={{ marginLeft: 50 }}>
-                  <UserIconDropdown />
-                </div>
+                <UserIconDropdown />
               )}
             </div>
           </NavbarBS.Collapse>

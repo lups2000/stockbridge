@@ -94,8 +94,20 @@ export const UserIconDropdown: FC = () => {
       });
   };
 
+  const handleDropdownMouseEnter = () => {
+    setDropdownOpen(true);
+  };
+
+  const handleDropdownMouseLeave = () => {
+    setDropdownOpen(false);
+  };
+
   return (
-    <div style={{ position: 'relative' }}>
+    <div
+      style={{ position: 'relative' }}
+      onMouseEnter={handleDropdownMouseEnter}
+      onMouseLeave={handleDropdownMouseLeave}
+    >
       <Image
         src={userLogo}
         alt="user info"
@@ -110,11 +122,9 @@ export const UserIconDropdown: FC = () => {
             position: 'absolute',
             top: '100%',
             right: 0,
-            marginTop: 5,
             backgroundColor: 'white',
             border: '1px solid gray',
             borderRadius: 10,
-            //padding: '10px',
             overflow: 'auto',
             width: 150,
             zIndex: 2,

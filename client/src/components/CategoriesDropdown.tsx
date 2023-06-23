@@ -13,7 +13,7 @@ export const CategoriesDropdown: FC = () => {
   const DropdownList = productCategories.map((el, index) => (
     <div
       key={index}
-      //onClick={() => handleItemClick(el)}
+      // onClick={() => handleItemClick(el)}
       style={{
         cursor: 'pointer',
         textAlign: 'center',
@@ -33,20 +33,32 @@ export const CategoriesDropdown: FC = () => {
     </div>
   ));
 
+  const handleDropdownMouseEnter = () => {
+    setDropdownOpen(true);
+  };
+
+  const handleDropdownMouseLeave = () => {
+    setDropdownOpen(false);
+  };
+
   return (
     <>
-      <div style={{ position: 'relative' }}>
+      <div
+        style={{ position: 'relative' }}
+        onMouseEnter={handleDropdownMouseEnter}
+        onMouseLeave={handleDropdownMouseLeave}
+      >
         <div
           style={{
             border: '2px solid black',
             borderRadius: 8,
-            padding: 8,
+            padding: 5,
             cursor: 'pointer',
           }}
           onClick={toggleDropDown}
         >
           <Image src={categoriesIcon} alt="user info" width={25} height={25} />
-          <span>CATEGORIES</span>
+          <span style={{ marginLeft: 5 }}>CATEGORIES</span>
         </div>
         {isDropdownOpen && (
           <div
@@ -54,42 +66,19 @@ export const CategoriesDropdown: FC = () => {
               position: 'absolute',
               top: '100%',
               right: 0,
-              marginTop: 5,
               backgroundColor: 'white',
               border: '1px solid gray',
               borderRadius: 10,
-              //padding: '10px',
               overflow: 'auto',
-              width: 150,
               zIndex: 2,
+              maxHeight: 300,
+              minWidth: 300,
             }}
           >
             {DropdownList}
           </div>
         )}
       </div>
-      {/*<Nav className="justify-content-end flex-grow-1 pe-3">
-      <NavDropdown
-        title={
-          <span style={{ padding: 10, fontWeight: '500' }}>
-            <Image
-              alt="cat"
-              src={categoriesIcon}
-              width={25}
-              height={25}
-              className="d-inline-block align-top"
-              style={{ marginRight: 10 }}
-            />
-            CATEGORIES
-          </span>
-        }
-        style={{ border: '2px solid black', borderRadius: 8 }}
-      >
-        {productCategories.map((category, index) => {
-          return <NavDropdown.Item key={index}>{category}</NavDropdown.Item>;
-        })}
-      </NavDropdown>
-    </Nav>*/}
     </>
   );
 };
