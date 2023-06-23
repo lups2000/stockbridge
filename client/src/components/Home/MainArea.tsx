@@ -1,16 +1,12 @@
 import { palette } from '../../utils/colors';
 import homepageImage from '../../assets/homepageImage.png';
 import { Button, Image } from 'react-bootstrap';
-import { BodyText } from '../Text/BodyText';
 import { Title } from '../Text/Title';
-import { SearchBar } from './SearchBar';
-import useMediaQuery from '../../hooks/useMediaQuery';
 import { useState } from 'react';
 import { EditAdvertModal } from '../ProductOverview/EditAdvertModal';
-import { ColoredLine } from '../ColoredLine';
+
 
 export function MainArea() {
-  const matches = useMediaQuery('(min-width: 1200px)');
   const [showModal, setShowModal] = useState(false);
 
   const openModal = () => {
