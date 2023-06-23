@@ -7,7 +7,7 @@ import howWorks2 from '../../assets/howWorks2.svg';
 import howWorks3 from '../../assets/howWorks3.svg';
 import useMediaQuery from '../../hooks/useMediaQuery';
 
-const stepDescriptions: { message: string; icon: string }[] = [
+const stepDescriptionsBuyer: { message: string; icon: string }[] = [
   {
     message: 'Search for what you are looking for.',
     icon: howWorks1,
@@ -22,8 +22,23 @@ const stepDescriptions: { message: string; icon: string }[] = [
   },
 ];
 
+const stepDescriptionsSeller: { message: string; icon: string }[] = [
+  {
+    message: 'Post your advertisement.',
+    icon: howWorks1,
+  },
+  {
+    message: 'Wait for offers from customers.',
+    icon: howWorks2,
+  },
+  {
+    message: 'Accept an offer and finalize the deal.',
+    icon: howWorks3,
+  },
+];
+
 const Instructions = () => {
-  const matches = useMediaQuery('(min-width: 768px)');
+  const matches = useMediaQuery('(min-width: 1000px)');
 
   return (
     <div
@@ -54,20 +69,72 @@ const Instructions = () => {
       <div
         style={{
           display: 'flex',
-          flexDirection: matches ? 'row' : 'column',
-          gap: matches ? 70 : 20,
+          flexDirection: matches ? 'column' : 'row',
+          gap: matches ? 20 : 100,
         }}
       >
-        {stepDescriptions.map((step, index) => {
-          return (
-            <StepDescription
-              key={index}
-              number={index + 1}
-              message={step.message}
-              icon={step.icon}
-            />
-          );
-        })}
+        <div
+          style={{
+            display: 'flex',
+            flexDirection: matches ? 'row' : 'column',
+            gap: matches ? 70 : 20,
+          }}
+        >
+          <div
+            style={{
+              width: 200,
+              height: 200,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              fontSize: 25,
+              fontWeight: 500,
+            }}
+          >
+            Buyer
+          </div>
+          {stepDescriptionsBuyer.map((step, index) => {
+            return (
+              <StepDescription
+                key={index}
+                number={index + 1}
+                message={step.message}
+                icon={step.icon}
+              />
+            );
+          })}
+        </div>
+        <div
+          style={{
+            display: 'flex',
+            flexDirection: matches ? 'row' : 'column',
+            gap: matches ? 70 : 20,
+          }}
+        >
+          <div
+            style={{
+              width: 200,
+              height: 200,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              fontSize: 25,
+              fontWeight: 500,
+            }}
+          >
+            Seller
+          </div>
+          {stepDescriptionsSeller.map((step, index) => {
+            return (
+              <StepDescription
+                key={index}
+                number={index + 1}
+                message={step.message}
+                icon={step.icon}
+              />
+            );
+          })}
+        </div>
       </div>
     </div>
   );
