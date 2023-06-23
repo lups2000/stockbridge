@@ -9,10 +9,10 @@ import { useState } from 'react';
 import { EditAdvertModal } from '../ProductOverview/EditAdvertModal';
 import { ColoredLine } from '../ColoredLine';
 
-
 export function MainArea() {
   const matches = useMediaQuery('(min-width: 1200px)');
   const [showModal, setShowModal] = useState(false);
+
   const openModal = () => {
     setShowModal(true);
   };
@@ -21,19 +21,21 @@ export function MainArea() {
     setShowModal(false);
     window.location.reload();
   };
+
   return (
     <>
       <div
         style={{
           width: '100%',
-          height: 700,
+          height: 500,
           backgroundColor: palette.imageBg,
+          position: 'relative',
         }}
       >
         <Image
           style={{
             width: '100%',
-            height: 700,
+            height: 500,
             zIndex: -1,
             position: 'absolute',
             objectFit: 'cover',
@@ -44,65 +46,63 @@ export function MainArea() {
           style={{
             display: 'flex',
             flexDirection: 'column',
-            gap: 50,
-            alignItems: 'flex-start',
-            marginLeft: '10%',
+            alignItems: 'center',
+            justifyContent: 'center',
+            textAlign: 'center',
+            height: '100%',
+            position: 'relative',
+            zIndex: 1,
           }}
         >
-          <Button
+          <Title
             style={{
-              backgroundColor: palette.subSectionsBgAccent,
-              borderColor: palette.subSectionsBgAccent,
-              borderRadius: 30,
-              width: '20%',
-              maxWidth: 260,
-              marginTop: '15%',
+              fontSize: 35,
+              color: 'white',
+              fontWeight: 500,
             }}
-            onClick={() => openModal()}
           >
-            <BodyText
-              style={{
-                margin: 'auto',
-                fontSize: 15,
-                color: 'white',
-                fontWeight: 600,
-              }}
-            >
-              POST YOUR ADVERT
-            </BodyText>
-          </Button>
-          <ColoredLine width={60} height={2} color="white" gap={5}>
-            <Title
-              style={{
-                marginTop: 10,
-                fontSize: 20,
-                color: 'white',
-                fontWeight: 400,
-              }}
-            >
-              OR
-            </Title>
-          </ColoredLine>
-          <SearchBar />
+            High demand? Surplus stock? We've got you covered!
+          </Title>
           <div
             style={{
-              position: 'absolute',
-              right: 0,
-              marginTop: '15%',
-              width: '20%',
-              marginRight: '5%',
+              display: 'flex',
+              justifyContent: 'center',
+              marginTop: 80,
+              gap: 100,
+              paddingLeft: 20,
+              paddingRight: 20,
             }}
           >
-            <Title
+            <Button
               style={{
-                fontSize: matches ? 36 : 30,
+                backgroundColor: palette.subSectionsBgAccent,
+                borderColor: palette.subSectionsBgAccent,
+                borderRadius: 15,
+                fontSize: 15,
                 color: 'white',
-                textAlign: 'center',
-                fontWeight: 500,
+                fontWeight: 700,
+                paddingLeft: 50,
+                paddingRight: 50,
               }}
+              onClick={() => openModal()}
             >
-              Out of stock?or got too much stock?No worries!
-            </Title>
+              BROWSE ADVERTS
+            </Button>
+            <Button
+              style={{
+                backgroundColor: palette.subSectionsBgAccent,
+                borderColor: palette.subSectionsBgAccent,
+                borderRadius: 15,
+                fontSize: 15,
+                color: 'white',
+                fontWeight: 700,
+                paddingLeft: 50,
+                paddingRight: 50,
+              }}
+              onClick={() => openModal()}
+            >
+              POST YOUR ADVERT
+            </Button>
           </div>
         </div>
       </div>
