@@ -94,9 +94,10 @@ const Instructions = () => {
           gap: matches ? 20 : 100,
         }}
       >
-        {stepDescription.map((obj) => {
+        {stepDescription.map((obj, idx) => {
           return (
             <div
+              key={idx}
               style={{
                 display: 'flex',
                 flexDirection: matches ? 'row' : 'column',
