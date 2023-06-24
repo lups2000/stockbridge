@@ -29,7 +29,7 @@ export const TopAdverts: FC = () => {
         Top Adverts
       </BodyText>
       <div>
-        <Carousel responsive={responsive} infinite={true} showDots centerMode>
+        <Carousel responsive={responsive} infinite={true} centerMode>
           <AdvertCard />
           <AdvertCard />
           <AdvertCard />
