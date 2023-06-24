@@ -2,6 +2,7 @@ import React, { FC, useState } from 'react';
 import { Image } from 'react-bootstrap';
 import categoriesIcon from '../assets/categories.svg';
 import { ProductCategory } from '../api/collections/advert';
+import { palette } from '../utils/colors';
 
 export const CategoriesDropdown: FC = () => {
   const productCategories: string[] = Object.values(ProductCategory);
@@ -50,7 +51,8 @@ export const CategoriesDropdown: FC = () => {
       >
         <div
           style={{
-            border: '2px solid black',
+            border: '1px solid',
+            borderColor: palette.borderBoostrap,
             borderRadius: 8,
             padding: 5,
             cursor: 'pointer',
