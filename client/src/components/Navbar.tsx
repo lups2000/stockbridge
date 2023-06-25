@@ -13,6 +13,7 @@ import { LoginContext } from '../contexts/LoginContext';
 import { palette } from '../utils/colors';
 import { UserIconDropdown } from './UserIconDropdown';
 import { CategoriesDropdown } from './CategoriesDropdown';
+import useMediaQuery from '../hooks/useMediaQuery';
 
 /**
  * This component represents the navbarBS of our website.
@@ -21,6 +22,9 @@ export function Navbar() {
   const navigate = useNavigate();
 
   const { loggedIn } = useContext(LoginContext);
+
+  const matches = useMediaQuery('(min-width: 992px)'); // to detect if the navbar is expanded or not(only way I've found)
+  //if matches is true is expanded
 
   return (
     <>
@@ -52,10 +56,16 @@ export function Navbar() {
                 CONTACT US
               </Nav.Link>
             </Nav>
-            <div style={{ marginRight: 20 }}>
+            <div
+              style={{
+                position: "relative",
+                marginRight: matches ? 20 : 0,
+                marginBottom: matches ? 0 : 28,
+              }}
+            >
               <CategoriesDropdown />
             </div>
-            <Form className="d-flex" style={{height: 40}}>
+            <Form className="d-flex" style={{ height: 40 }}>
               <Form.Control
                 type="search"
                 placeholder="Search for an advert"
@@ -75,7 +85,13 @@ export function Navbar() {
                 Search
               </Button>
             </Form>
-            <div style={{ marginLeft: 40 }}>
+            <div
+              style={{
+                marginLeft: matches ? 20 : 0,
+                marginTop: matches ? 0 : 20,
+                marginBottom: matches ? 0 : 10
+              }}
+            >
               {!loggedIn ? (
                 <Button
                   className="font-link"
@@ -84,7 +100,7 @@ export function Navbar() {
                     color: 'white',
                     borderColor: palette.subSectionsBgAccent,
                     borderRadius: 8,
-                    height: 40
+                    height: 40,
                   }}
                   onClick={() => navigate('/SignIn')}
                 >

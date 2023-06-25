@@ -8,6 +8,7 @@ import orderIcon from '../assets/orderBox.svg';
 import advertIcon from '../assets/advert.svg';
 import { ApiClient } from '../api/apiClient';
 import { LoginContext } from '../contexts/LoginContext';
+import useMediaQuery from '../hooks/useMediaQuery';
 
 interface DropdownItem {
   title: string;
@@ -15,6 +16,7 @@ interface DropdownItem {
 }
 
 export const UserIconDropdown: FC = () => {
+  const matches = useMediaQuery('(min-width: 992px)');
   const { setLoggedIn } = useContext(LoginContext);
 
   const [isDropdownOpen, setDropdownOpen] = useState(false);
@@ -76,7 +78,9 @@ export const UserIconDropdown: FC = () => {
         alt="icon"
         width={16}
         height={16}
-        style={{ marginRight: 8 }}
+        style={{
+          marginRight: 8,
+        }}
       />
       <span>{el.title}</span>
     </div>
@@ -104,16 +108,20 @@ export const UserIconDropdown: FC = () => {
 
   return (
     <div
-      style={{ position: 'relative' }}
+      style={{ position: 'relative', height: 40 }}
       onMouseEnter={handleDropdownMouseEnter}
       onMouseLeave={handleDropdownMouseLeave}
     >
       <Image
         src={userLogo}
         alt="user info"
-        width={45}
-        height={45}
-        style={{ cursor: 'pointer' }}
+        width={40}
+        height={40}
+        style={{
+          cursor: 'pointer',
+          position: matches ? undefined : 'absolute',
+          right: matches ? undefined : 0,
+        }}
         onClick={toggleDropDown}
       />
       {isDropdownOpen && (
