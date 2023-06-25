@@ -7,6 +7,7 @@ export type LoginState = {
   user: User | undefined;
   setLoggedIn: (status: boolean) => void;
   setUser: (user: User | undefined) => void;
+  isLoading: boolean;
 };
 
 export type LoginContextProviderType = {
@@ -19,6 +20,7 @@ export const LoginContext = createContext<LoginState>({
   user: undefined,
   setLoggedIn: () => null,
   setUser: () => null,
+  isLoading: false,
 });
 
 //create the context provider
@@ -27,6 +29,7 @@ export const LoginContextProvider = ({
 }: LoginContextProviderType) => {
   const [loggedIn, setLoggedIn] = useState<boolean>(false);
   const [user, setUser] = useState<User>();
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   useEffect(() => {
     const checkAuthentication = async () => {
@@ -35,13 +38,15 @@ export const LoginContextProvider = ({
         .then((response) => {
           setLoggedIn(true);
           setUser(response); //the response of is a user
+          setIsLoading(false);
         })
         .catch(() => {
           setLoggedIn(false);
+          setIsLoading(false);
           setUser(undefined);
         });
     };
-
+    setIsLoading(true);
     checkAuthentication();
   }, []);
 
@@ -52,6 +57,7 @@ export const LoginContextProvider = ({
         user,
         setLoggedIn: (status: boolean) => setLoggedIn(status),
         setUser: (user: User | undefined) => setUser(user),
+        isLoading,
       }}
     >
       {children}

@@ -43,9 +43,24 @@ const subscriptionSchema = new mongoose.Schema<Subscription>({
     type: Types.Date,
     required: [true, 'Please add an end date'],
   },
-  renew: {
-    type: Types.Boolean,
-    required: [true, 'Please add a renew'],
+  status: {
+    type: Types.String,
+    enum: [
+      'active',
+      'past_due',
+      'unpaid',
+      'canceled',
+      'incomplete',
+      'incomplete_expired',
+    ],
+  },
+  type: {
+    type: Types.String,
+    enum: [
+      'Basic Subscription',
+      'Advanced Subscription',
+      'Premium Subscription',
+    ],
   },
 });
 
@@ -89,6 +104,7 @@ const userSchema = new mongoose.Schema<User>({
   },
   prioritisationTickets: {
     type: Types.Number,
+    default: 0,
   },
   phoneNumber: {
     type: Types.String,
@@ -96,11 +112,18 @@ const userSchema = new mongoose.Schema<User>({
   },
   createdAt: {
     type: Types.Date,
+    default: Date.now,
   },
   rating: {
     type: Types.Number,
     min: 0,
     max: 5,
+    default: 0,
+  },
+  stripeCustomerId: {
+    type: Types.String,
+    required: false,
+    unique: true,
   },
   address: addressSchema,
   subscription: subscriptionSchema,
@@ -117,10 +140,7 @@ userSchema.pre('save', async function (next) {
   }
 
   const salt = await bcrypt.genSalt(10);
-  const hash = await bcrypt.hash(
-    this.password,
-    salt,
-  );
+  const hash = await bcrypt.hash(this.password, salt);
   this.password = hash;
 });
 

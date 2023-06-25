@@ -3,6 +3,7 @@ import type { User } from '../entities/userEntity';
 import logger from '../config/logger';
 import environment from '../utils/environment';
 import { AppError } from '../utils/errorHandler';
+import { createStripeCustomer } from './stripeService';
 
 const serviceName = 'authServices';
 
@@ -21,6 +22,9 @@ export const registerUser = async (user: User) => {
 
   try {
     createdUser = await userModel.create(user);
+    const stripeCustomer = await createStripeCustomer(createdUser);
+    createdUser.stripeCustomerId = stripeCustomer.id;
+    createdUser = await createdUser.save();
   } catch (err) {
     throw new AppError('Error in creating user', 'Error in creating user', 400);
   }
