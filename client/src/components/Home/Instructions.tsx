@@ -26,7 +26,7 @@ const stepDescription: StepDescriptionInterface[] = [
     userType: 'Buyer',
     steps: [
       {
-        message: 'Post your advertisement.',
+        message: 'Search for what you are looking for.',
         icon: howWorks1,
       },
       {
