@@ -29,7 +29,7 @@ export const LoginContextProvider = ({
 }: LoginContextProviderType) => {
   const [loggedIn, setLoggedIn] = useState<boolean>(false);
   const [user, setUser] = useState<User>();
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
 
   useEffect(() => {
     const checkAuthentication = async () => {
@@ -46,7 +46,7 @@ export const LoginContextProvider = ({
           setUser(undefined);
         });
     };
-    setIsLoading(true);
+    //setIsLoading(true);
     checkAuthentication();
   }, []);
 

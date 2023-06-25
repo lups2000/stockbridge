@@ -21,7 +21,7 @@ import useMediaQuery from '../hooks/useMediaQuery';
 export function Navbar() {
   const navigate = useNavigate();
 
-  const { loggedIn } = useContext(LoginContext);
+  const { loggedIn, isLoading } = useContext(LoginContext);
 
   const matches = useMediaQuery('(min-width: 992px)'); // to detect if the navbar is expanded or not(only way I've found)
   //if matches is true is expanded
@@ -58,7 +58,7 @@ export function Navbar() {
             </Nav>
             <div
               style={{
-                position: "relative",
+                position: 'relative',
                 marginRight: matches ? 20 : 0,
                 marginBottom: matches ? 0 : 28,
               }}
@@ -89,10 +89,13 @@ export function Navbar() {
               style={{
                 marginLeft: matches ? 20 : 0,
                 marginTop: matches ? 0 : 20,
-                marginBottom: matches ? 0 : 10
+                marginBottom: matches ? 0 : 10,
               }}
             >
-              {!loggedIn ? (
+              {isLoading ? (
+                //only a placeholder
+                <div style={{ width: 45, height: 45 }} />
+              ) : !loggedIn ? (
                 <Button
                   className="font-link"
                   style={{
