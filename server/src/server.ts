@@ -23,12 +23,25 @@ import bodyParser from 'body-parser';
 import storeRouter from './routes/stores';
 import { offerRouter } from './routes/offers';
 import { orderRouter } from './routes/orders';
+import stripe, { stripeRouter } from './routes/stripe';
 connectDB();
 
 const app: Express = express();
 
 // Body parser
-app.use(bodyParser.json({ limit: '10mb' }));
+// app.use(bodyParser.json({ limit: '10mb' }));
+// app.use(bodyParser.urlencoded({ limit: '10mb', extended: true }));
+
+let parseJSON = bodyParser.json({ limit: '10mb' });
+// let parseUrlencoded = bodyParser.urlencoded({ limit: '10mb', extended: true });
+app.use((req, res, next) => {
+  if (req.originalUrl === '/api/v1/stripe/webhook') {
+    next();
+  } else {
+    parseJSON(req, res, next);
+    // parseUrlencoded(req, res, next);
+  }
+});
 app.use(bodyParser.urlencoded({ limit: '10mb', extended: true }));
 
 // Cookie parser
@@ -60,6 +73,7 @@ app.use('/api/v1/reviews', reviewRouter);
 app.use('/api/v1/stores', storeRouter);
 app.use('/api/v1/offers', offerRouter);
 app.use('/api/v1/orders', orderRouter);
+app.use('/api/v1/stripe', stripeRouter);
 app.use(errorHandler);
 
 const PORT = environment.PORT || 3001;

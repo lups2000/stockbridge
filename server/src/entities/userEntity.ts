@@ -1,3 +1,18 @@
+export enum SubscriptionStatus {
+  ACTIVE = 'active',
+  PAST_DUE = 'past_due',
+  UNPAID = 'unpaid',
+  CANCELED = 'canceled',
+  INCOMPLETE = 'incomplete',
+  INCOMPLETE_EXPIRED = 'incomplete_expired',
+}
+
+export enum SubscriptionType {
+  BASIC_SUBSCRIPTION = 'Basic Subscription',
+  ADVANCED_SUBSCRIPTION = 'Advanced Subscription',
+  PREMIUM_SUBSCRIPTION = 'Premium Subscription',
+}
+
 export interface Address {
   street: string;
   houseNumber: string;
@@ -9,7 +24,8 @@ export interface Address {
 export interface Subscription {
   from: Date;
   to: Date;
-  renew: boolean;
+  status: SubscriptionStatus;
+  type: SubscriptionType;
 }
 
 export interface PaymentMethod {
@@ -31,6 +47,7 @@ export interface User {
   subscription: Subscription;
   paymentMethod: PaymentMethod;
   rating: number;
+  stripeCustomerId: string;
 
   getSignedJwtToken(): string;
 
