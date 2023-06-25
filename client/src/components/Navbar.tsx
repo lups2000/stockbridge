@@ -48,7 +48,7 @@ export function Navbar() {
               <Nav.Link href="/about" style={{ fontWeight: '500' }}>
                 ABOUT US
               </Nav.Link>
-              <Nav.Link href="/about" style={{ fontWeight: '500' }}>
+              <Nav.Link href="/contactUs" style={{ fontWeight: '500' }}>
                 CONTACT US
               </Nav.Link>
             </Nav>
