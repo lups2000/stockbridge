@@ -1,4 +1,4 @@
-import { ChangeEvent, FC, FormEvent, useContext, useState } from 'react';
+import React, { ChangeEvent, FC, FormEvent, useContext, useState } from 'react';
 import { Title } from '../Text/Title';
 import { palette } from '../../utils/colors';
 import { Button, Form } from 'react-bootstrap';
@@ -12,10 +12,10 @@ import {
   checkPasswordLength,
   checkPasswordMatch,
 } from '../../utils/functions';
-import { PaymentModal } from './PaymentModal';
 import { ApiClient } from '../../api/apiClient';
 import { LoginContext } from '../../contexts/LoginContext';
-import { UserResponse } from '../../api/collections/user';
+import { User, UserResponse } from '../../api/collections/user';
+import PaymentElement, { PaymentType } from '../Payment/PaymentElement';
 
 enum ErrorType {
   EMAIL = 'Email format invalid',
@@ -59,7 +59,7 @@ export const SignupForm: FC = () => {
 
   const [isModalShowing, setIsModalShowing] = useState(false);
 
-  const { setLoggedIn, setUser } = useContext(LoginContext);
+  const { user, setUser, setLoggedIn } = useContext(LoginContext);
 
   //when the user clicks for the first time on "sign up"
   const handleFirstClick = () => {
@@ -76,8 +76,27 @@ export const SignupForm: FC = () => {
         setError(ErrorType.PASSWORD_MATCH);
         return;
       }
-      setIsFirstPartCompleted(true);
-      setError(undefined);
+      new ApiClient() //TODO: Change this to user collections
+        .post<UserResponse>(
+          '/auth/register',
+          {
+            email,
+            password,
+          },
+          { withCredentials: true },
+        )
+        .then((res) => {
+          setUser(res.user);
+          setIsFirstPartCompleted(true);
+          setError(undefined);
+        })
+        .catch((err) => {
+          if (err.response.status === 409) {
+            setError(ErrorType.ALREADY_REG);
+          } else {
+            setError(ErrorType.NO_SERVER);
+          }
+        });
     } else {
       setError(ErrorType.INCOMPLETE);
     }
@@ -88,12 +107,10 @@ export const SignupForm: FC = () => {
     e.preventDefault(); // Prevent the default submit and page reload
 
     if (address && city && postalCode && country) {
-      new ApiClient()
-        .post<UserResponse>(
-          '/auth/register',
+      new ApiClient() //TODO: Change this to user collections
+        .put<User>(
+          `/users/${user?._id}`,
           {
-            email,
-            password,
             name: shopName,
             address: {
               street: address,
@@ -114,7 +131,7 @@ export const SignupForm: FC = () => {
         .then((response) => {
           setError(undefined);
           setLoggedIn(true);
-          setUser(response.user);
+          setUser(response);
 
           navigate('/'); //return to the homepage
         })
@@ -373,17 +390,22 @@ export const SignupForm: FC = () => {
         </>
       )}
       {isModalShowing ? (
-        <PaymentModal
-          name={cardName}
-          number={cardNumber}
-          expDate={expDateCard}
-          cvv={cvvCard}
-          onChangeName={(name) => setCardName(name)}
-          onChangeNumber={(number) => setCardNumber(number)}
-          onChangeDate={(date) => setExpDateCard(date)}
-          onChangeCVV={(cvv) => setCvvCard(cvv)}
-          isShowing={isModalShowing}
-          onClose={() => setIsModalShowing(false)}
+        // <CustomPaymentModal
+        //   name={cardName}
+        //   number={cardNumber}
+        //   expDate={expDateCard}
+        //   cvv={cvvCard}
+        //   onChangeName={(name) => setCardName(name)}
+        //   onChangeNumber={(number) => setCardNumber(number)}
+        //   onChangeDate={(date) => setExpDateCard(date)}
+        //   onChangeCVV={(cvv) => setCvvCard(cvv)}
+        //   isShowing={isModalShowing}
+        //   onClose={() => setIsModalShowing(false)}
+        // />
+        <PaymentElement
+          show={isModalShowing}
+          onHide={() => setIsModalShowing(false)}
+          type={PaymentType.SETUP_INTENT}
         />
       ) : undefined}
     </div>

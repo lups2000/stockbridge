@@ -10,7 +10,8 @@
     "server": "yarn workspace server start",
     "server:dev": "yarn workspace server dev",
     "client": "yarn workspace client start",
-    "build": "concurrently \"yarn workspace server build\" \"yarn workspace client build\""
+    "build": "concurrently \"yarn workspace server build\" \"yarn workspace client build\"",
+    "stripe": "stripe listen --forward-to localhost:3001/api/v1/stripe/webhook"
   },
   "workspaces": [
     "server",
