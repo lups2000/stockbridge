@@ -27,7 +27,7 @@ export const getAdvert = asyncHandler(
 );
 
 /**
- * This method returns all adverts   *
+ * This method returns all adverts   //TODO: Add parameter validation
  * @param req - The request object
  * @param res - The response object
  * @returns an array of advert objects.
