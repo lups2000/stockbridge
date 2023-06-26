@@ -9,8 +9,6 @@ import {
   getAdvertsByCategory,
 } from '../services/advertServices';
 import { AuthenticatedRequest } from '../middlewares/authMiddleware';
-import logger from '../config/logger';
-import { AppError } from '../utils/errorHandler';
 import { ProductCategory } from '../entities/advertEntity';
 
 /**
@@ -36,8 +34,39 @@ export const getAdvert = asyncHandler(
  */
 export const getAdverts = asyncHandler(
   async (req: AuthenticatedRequest, res: Response) => {
-    const adverts = await findAllAdverts();
-    res.status(200).json(adverts);
+    const reqQuery = { ...req.query };
+
+    ['search', 'sort', 'page', 'limit'].forEach(
+      (param) => delete reqQuery[param],
+    );
+
+    let queryStr = JSON.stringify(reqQuery);
+
+    queryStr = queryStr.replace(
+      /\b(gt|gte|lt|lte|in)\b/g,
+      (match) => `$${match}`,
+    );
+
+    let sortBy: string[] = [];
+    let page = 1;
+    let limit = 25;
+    let search;
+    if (req.query.sort) {
+      sortBy = (req.query.sort as string).split(',');
+    }
+    if (req.query.page) {
+      page = parseInt(req.query.page as string);
+    }
+    if (req.query.limit) {
+      limit = parseInt(req.query.limit as string);
+    }
+    if (req.query.search) {
+      search = req.query.search as string;
+    }
+
+    const results = await findAllAdverts(page, limit, search, sortBy, queryStr);
+
+    res.status(200).json(results);
   },
 );
 

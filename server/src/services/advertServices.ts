@@ -61,9 +61,93 @@ export const delAdvert = async (id: string) => {
  * Find all adverts // TODO: This is a test function, remove it later // Why remove? copy paste mistake?
  * @returns Promise containing all adverts
  */
-export const findAllAdverts = async () => {
-  logger.debug(`${serviceName}: Finding all adverts`);
-  return advertModel.find();
+
+export const findAllAdverts = async (
+  page: number,
+  limit: number,
+  search?: string,
+  sortBy?: string[],
+  queryStr?: string,
+) => {
+  logger.debug(`${serviceName}: Finding all adverts with pagination`);
+  logger.debug(`${serviceName}: Query string: ${queryStr}`);
+  logger.debug(`${serviceName}: Sort string: ${sortBy}`);
+  logger.debug(`${serviceName}: Page: ${page}`);
+  logger.debug(`${serviceName}: Limit: ${limit}`);
+  logger.debug(`${serviceName}: Search: ${search}`);
+
+  let queryFilter = queryStr ? JSON.parse(queryStr) : {};
+
+  if (queryFilter?.category && queryFilter?.category.$in) {
+    queryFilter = {
+      ...queryFilter,
+      category: { $in: queryFilter.category.$in.split(',') },
+    };
+  }
+
+  if (search) {
+    queryFilter = {
+      ...queryFilter,
+      $text: { $search: search },
+    };
+  }
+
+  logger.debug(`${serviceName}: Query filter: ${JSON.stringify(queryFilter)}`);
+
+  let query = advertModel.find(queryFilter);
+
+  if (sortBy && sortBy?.length > 0) {
+    let sortParams: [string, -1 | 1][] = [['prioritized', -1]];
+
+    for (const sortParam of sortBy) {
+      let data: [string, -1 | 1];
+      if (sortParam.startsWith('-')) {
+        const key = sortParam.slice(1);
+        data = [key, -1];
+      } else {
+        data = [sortParam, 1];
+      }
+      sortParams.push(data);
+    }
+    sortParams = [...sortParams, ['createdAt', -1], ['_id', -1]];
+    query = query.sort(sortParams);
+  } else {
+    logger.debug(`${serviceName}: No sort params, using default`);
+    query = query.sort({
+      prioritized: -1,
+      createdAt: -1,
+      _id: -1,
+    });
+  }
+
+  const startIndex = (page - 1) * limit;
+  const endIndex = page * limit;
+  const total = await advertModel.countDocuments();
+
+  query = query.skip(startIndex).limit(limit);
+
+  const results = await query;
+
+  const pagination: {
+    next?: { page: number; limit: number };
+    prev?: { page: number; limit: number };
+  } = {};
+
+  if (endIndex < total) {
+    pagination.next = {
+      page: page + 1,
+      limit,
+    };
+  }
+
+  if (startIndex > 0) {
+    pagination.prev = {
+      page: page - 1,
+      limit,
+    };
+  }
+
+  return { results, pagination };
 };
 
 /**

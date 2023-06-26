@@ -23,7 +23,7 @@ const advertSchema = new mongoose.Schema<Advert>({
     required: [true, 'Please add a quantity'],
   },
   description: {
-    type: String,
+    type: Types.String,
     required: [false, 'Please add a description'],
   },
   price: {
@@ -47,23 +47,23 @@ const advertSchema = new mongoose.Schema<Advert>({
     required: [true, 'Please add a creation date'],
   },
   color: {
-    type: String,
+    type: Types.String,
     enum: Object.values(Colors),
     required: [false, 'You could enter a color for the product'],
   },
   status: {
-    type: String,
+    type: Types.String,
     enum: Object.values(AdvertStatus),
     // TODO: change to true
     required: [false, 'You could enter the status of the advert'],
   },
   type: {
-    type: String,
+    type: Types.String,
     enum: Object.values(AdvertType),
     required: [false, 'Please add an advert type'],
   },
   category: {
-    type: String,
+    type: Types.String,
     enum: Object.values(ProductCategory),
     required: [false, 'Please add a product category'],
   },
@@ -86,6 +86,12 @@ const advertSchema = new mongoose.Schema<Advert>({
     ref: 'User',
     required: [true, 'Please add a store'],
   },
+});
+
+advertSchema.index({
+  productname: 'text',
+  description: 'text',
+  category: 'text',
 });
 
 const advertModel = mongoose.model('Advert', advertSchema, 'adverts');
