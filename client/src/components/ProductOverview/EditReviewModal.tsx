@@ -1,6 +1,10 @@
 import React, { FC, useContext, useState } from 'react';
 import { Button, Form, Modal } from 'react-bootstrap';
-import { updateAdvert } from '../../api/collections/advert';
+import {
+  Advert,
+  PopulatedAdvert,
+  updateAdvert,
+} from '../../api/collections/advert';
 import { Review, createReview } from '../../api/collections/review';
 import { LoginContext } from '../../contexts/LoginContext';
 import { palette } from '../../utils/colors';
@@ -9,7 +13,7 @@ import { Ratings } from '../Ratings';
 type EditReviewContentProps = {
   isShowing: boolean;
   onClose: () => void;
-  advertID?: string;
+  advert?: PopulatedAdvert;
 };
 
 const EditReviewModal: FC<EditReviewContentProps> = (props) => {
@@ -60,15 +64,16 @@ const EditReviewModal: FC<EditReviewContentProps> = (props) => {
       setErrors(validationErrors);
     } else {
       try {
-        if (props.advertID) {
+        if (props.advert) {
           const createdReview = await createReview({
             description: description,
             rating: rating,
-            reviewer: user?._id,
-            reviewedAdvert: props.advertID,
+            reviewer: user,
+            reviewedAdvert: props.advert,
             createdAt: new Date(),
           } as Review);
-          await updateAdvert(props.advertID, {
+          // Don't mind thins line please it will be removed at my next PR
+          await updateAdvert(props.advert._id!, {
             reviews: [createdReview._id],
           });
         }

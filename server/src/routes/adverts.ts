@@ -11,7 +11,7 @@ import { protect } from '../middlewares/authMiddleware';
 
 export const advertRouter = Router();
 
-advertRouter.route('/').post(protect, postAdvert).get(protect,getAdverts);
+advertRouter.route('/').post(protect, postAdvert).get(protect, getAdverts);
 
 advertRouter
   .route('/:id')
@@ -19,4 +19,6 @@ advertRouter
   .put(protect, putAdvert)
   .delete(protect, deleteAdvert);
 
-advertRouter.route('/getAdvertsByCategory/:cat').get(protect,getAllAdvertsByCategory);
+advertRouter
+  .route('/getAdvertsByCategory/:category')
+  .get(protect, getAllAdvertsByCategory);

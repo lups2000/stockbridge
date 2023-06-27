@@ -8,11 +8,12 @@ const serviceName = 'offerServices';
 /**
  * Finds an offer by id.
  * @param id
+ * @param populate determines if the result should be populated
  * @returns Promise containing the offer
  */
-export const findOfferById = async (id: string) => {
+export const findOfferById = async (id: string, populate = true) => {
   logger.debug(`${serviceName}: Finding offer with id: ${id}`);
-  const offer = await offerModel.findById(id);
+  const offer = await populateResult(offerModel.findById(id), populate);
 
   if (!offer) {
     logger.error(`${serviceName}: Offer not found with id of ${id}`);
@@ -41,7 +42,7 @@ export const createOffer = async (offer: Offer) => {
  */
 export const updateOffer = async (id: string, offer: Offer) => {
   logger.debug(`${serviceName}: Updating offer with id: ${id} with ${offer}`);
-  return offerModel.findByIdAndUpdate(id, offer, {
+  return await offerModel.findByIdAndUpdate(id, offer, {
     new: true,
     runValidators: true,
   });
@@ -54,46 +55,71 @@ export const updateOffer = async (id: string, offer: Offer) => {
  */
 export const delOffer = async (id: string) => {
   logger.debug(`${serviceName}: Deleting offer with id: ${id}`);
-  return offerModel.findByIdAndDelete(id);
+  return await offerModel.findByIdAndDelete(id);
 };
 
 /**
  * Finds all offers -- Used only for debugging.
+ * @param populate determines if the result should be populated
  * @returns Promise containing all offers
  */
-export const findAllOffers = async () => {
+export const findAllOffers = async (populate = true) => {
   logger.debug(`${serviceName}: Finding all offers`);
-  return offerModel.find();
+  return await populateResult(offerModel.find(), populate);
 };
 
 /**
  * Returns all suggested offers of a user.
  * @param offeror : Id of the offeror
+ * @param populate determines if the result should be populated
  * @returns Promise containing the deleted advert.
  */
-export const findAllOffersByOfferor = async (offeror: string) => {
+export const findAllOffersByOfferor = async (
+  offeror: string,
+  populate = true,
+) => {
   logger.debug(`${serviceName}: Requesting all offers of offeror: ${offeror}`);
-  return offerModel.find({ offeror: offeror });
+  return await populateResult(offerModel.find({ offeror: offeror }), populate);
 };
 
 /**
  * Returns all received offers of a user.
  * @param offeree : Id of the offeree
+ * @param populate determines if the result should be populated
  * @returns Promise containing the deleted advert.
  */
-export const findAllOffersByOfferee = async (offeree: string) => {
+export const findAllOffersByOfferee = async (
+  offeree: string,
+  populate = true,
+) => {
   logger.debug(`${serviceName}: Requesting all offers of offeree: ${offeree}`);
-  return offerModel.find({ offeree: offeree });
+  return await populateResult(offerModel.find({ offeree: offeree }), populate);
 };
 
 /**
  * Returns all offers related to an advert.
  * @param advert : Id of the advert
+ * @param populate determines if the result should be populated
  * @returns Promise containing the deleted advert.
  */
-export const findAllOffersByAdvert = async (advert: string) => {
+export const findAllOffersByAdvert = async (
+  advert: string,
+  populate = true,
+) => {
   logger.debug(
     `${serviceName}: Requesting all offers related to advert: ${advert}`,
   );
-  return offerModel.find({ advert: advert });
+  return await populateResult(offerModel.find({ advert: advert }), populate);
 };
+
+/**
+ * Populates the referenced elements in a document
+ * @param queryResult The document to be populated
+ * @param populate Determines if the result should be populated
+ * @returns
+ */
+function populateResult(queryResult: any, populate: boolean) {
+  return populate
+    ? queryResult.populate(['offeror', 'offeree', 'advert'])
+    : queryResult;
+}

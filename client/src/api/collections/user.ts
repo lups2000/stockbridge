@@ -46,6 +46,19 @@ export interface User {
   rating?: number;
   phoneNumber?: string;
   createdAt?: Date;
+  address?: string;
+  subscription?: string;
+  paymentMethod?: PaymentMethod;
+}
+export interface PopulatedUser {
+  _id?: string;
+  name?: string;
+  email?: string;
+  password?: string;
+  prioritisationTickets?: number;
+  rating?: number;
+  phoneNumber?: string;
+  createdAt?: Date;
   address?: Address;
   subscription?: Subscription;
   paymentMethod?: PaymentMethod;
@@ -53,18 +66,21 @@ export interface User {
 
 export interface UserResponse {
   message: string;
-  user: User;
+  user: PopulatedUser;
   jwtToken: string;
 }
 
 const apiClient = new ApiClient();
 
-export async function getUser(id: string): Promise<User> {
-  return await apiClient.get<User>(`/users/${id}`);
+export async function getUser(id: string): Promise<PopulatedUser> {
+  return await apiClient.get<PopulatedUser>(`/users/${id}`);
 }
 
-export async function updateUser(id: string, user: User): Promise<User> {
-  return await apiClient.put<User>(`/users/${id}`, user, {
+export async function updateUser(
+  id: string,
+  user: PopulatedUser,
+): Promise<PopulatedUser> {
+  return await apiClient.put<PopulatedUser>(`/users/${id}`, user, {
     withCredentials: true,
   });
 }
@@ -96,6 +112,6 @@ export async function logout(): Promise<string> {
   return await apiClient.post<string>(`/auth/logout`);
 }
 
-export async function getStore(id: String): Promise<User> {
-  return await apiClient.get<User>(`/stores/${id}`);
+export async function getStore(id: String): Promise<PopulatedUser> {
+  return await apiClient.get<PopulatedUser>(`/stores/${id}`);
 }

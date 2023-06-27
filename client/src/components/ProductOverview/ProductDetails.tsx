@@ -1,9 +1,10 @@
-import { Advert } from '../../api/collections/advert';
+import { Advert, PopulatedAdvert } from '../../api/collections/advert';
 import { BodyText } from '../Text/BodyText';
 import { ProductAttribute } from './ProductAttribute';
 import { Image } from 'react-bootstrap';
 
-const ProductDetails = (advert: Advert) => {
+const ProductDetails = (advert: PopulatedAdvert) => {
+  console.log(advert);
   return (
     <div
       style={{

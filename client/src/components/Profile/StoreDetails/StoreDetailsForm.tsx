@@ -8,6 +8,7 @@ import StoreDetailsHeader from './StoreDetailsHeader';
 import {
   Address,
   PaymentMethod,
+  PopulatedUser,
   updateUser,
   User,
 } from '../../../api/collections/user';
@@ -157,7 +158,7 @@ const StoreDetailsForm: React.FC = () => {
           ? expDatePaymentToDate(expiration)
           : undefined,
       };
-      const updatedUser: User = {
+      const updatedUser: PopulatedUser = {
         name: name || undefined,
         email: email || undefined,
         password: password || undefined,
