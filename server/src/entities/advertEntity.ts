@@ -1,6 +1,6 @@
 import { Offer } from './offerEntity';
 import { Review } from './reviewEntity';
-import { User } from './userEntity';
+import { User, Location } from './userEntity';
 
 export enum AdvertType {
   Sell,
@@ -60,4 +60,5 @@ export interface Advert {
   offers?: Offer[];
   reviews?: Review[];
   store: User;
+  location: Location;
 }

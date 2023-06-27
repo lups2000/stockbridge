@@ -35,6 +35,11 @@ export interface PaymentMethod {
   cvv: string;
 }
 
+export interface Location {
+  type: string;
+  coordinates: number[];
+}
+
 export interface User {
   id: string;
   name: string;
@@ -48,6 +53,7 @@ export interface User {
   paymentMethod: PaymentMethod;
   rating: number;
   stripeCustomerId: string;
+  location: Location;
 
   getSignedJwtToken(): string;
 

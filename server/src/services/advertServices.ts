@@ -67,6 +67,8 @@ export const findAllAdverts = async (
   limit: number,
   search?: string,
   sortBy?: string[],
+  radius?: number,
+  center?: number[],
   queryStr?: string,
 ) => {
   logger.debug(`${serviceName}: Finding all adverts with pagination`);
@@ -89,6 +91,17 @@ export const findAllAdverts = async (
     queryFilter = {
       ...queryFilter,
       $text: { $search: search },
+    };
+  }
+
+  if (radius) {
+    queryFilter = {
+      ...queryFilter,
+      location: {
+        $geoWithin: {
+          $centerSphere: [center, radius / 6371],
+        },
+      },
     };
   }
 

@@ -36,7 +36,7 @@ export const getAdverts = asyncHandler(
   async (req: AuthenticatedRequest, res: Response) => {
     const reqQuery = { ...req.query };
 
-    ['search', 'sort', 'page', 'limit'].forEach(
+    ['search', 'sort', 'page', 'limit', 'radius'].forEach(
       (param) => delete reqQuery[param],
     );
 
@@ -51,6 +51,7 @@ export const getAdverts = asyncHandler(
     let page = 1;
     let limit = 25;
     let search;
+    let radius = 0;
     if (req.query.sort) {
       sortBy = (req.query.sort as string).split(',');
     }
@@ -63,8 +64,19 @@ export const getAdverts = asyncHandler(
     if (req.query.search) {
       search = req.query.search as string;
     }
+    if (req.query.radius) {
+      radius = parseInt(req.query.radius as string);
+    }
 
-    const results = await findAllAdverts(page, limit, search, sortBy, queryStr);
+    const results = await findAllAdverts(
+      page,
+      limit,
+      search,
+      sortBy,
+      radius === 0 ? undefined : radius,
+      radius === 0 ? undefined : req.user?.location?.coordinates,
+      queryStr,
+    );
 
     res.status(200).json(results);
   },

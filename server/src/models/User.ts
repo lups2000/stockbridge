@@ -1,13 +1,14 @@
 import mongoose from 'mongoose';
 import type {
-  User,
   Address,
   PaymentMethod,
   Subscription,
+  User,
 } from '../entities/userEntity';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
 import environment from '../utils/environment';
+import geocoder from '../utils/geocoder';
 
 const Types = mongoose.Schema.Types;
 
@@ -125,6 +126,17 @@ const userSchema = new mongoose.Schema<User>({
     required: false,
     unique: true,
   },
+  location: {
+    // GeoJSON Point
+    type: {
+      type: Types.String,
+      enum: ['Point'],
+    },
+    coordinates: {
+      type: [Types.Number],
+      index: '2dsphere',
+    },
+  },
   address: addressSchema,
   subscription: subscriptionSchema,
   paymentMethod: paymentMethodSchema,
@@ -135,13 +147,39 @@ const userSchema = new mongoose.Schema<User>({
  * @returns {Promise<void>}
  */
 userSchema.pre('save', async function (next) {
-  if (!this.isModified('password')) {
-    next();
+  if (this.isModified('password')) {
+    const salt = await bcrypt.genSalt(10);
+    this.password = await bcrypt.hash(this.password, salt);
   }
 
-  const salt = await bcrypt.genSalt(10);
-  const hash = await bcrypt.hash(this.password, salt);
-  this.password = hash;
+  if (this.isModified('address')) {
+    const address = this.address;
+    const addressString = `${address.houseNumber} ${address.street}, ${address.postalCode} ${address.city}`;
+    const loc = await geocoder(addressString);
+    const latitude = loc[0];
+    const longitude = loc[1];
+    this.location = {
+      type: 'Point',
+      coordinates: [longitude, latitude],
+    };
+  }
+});
+
+userSchema.pre('findOneAndUpdate', async function (next) {
+  const update = this.getUpdate() as User;
+
+  if (update.address) {
+    const address = update.address;
+    const addressString = `${address.houseNumber} ${address.street}, ${address.postalCode} ${address.city}`;
+    const loc = await geocoder(addressString);
+    const latitude = loc[0];
+    const longitude = loc[1];
+    const location = {
+      type: 'Point',
+      coordinates: [longitude, latitude],
+    };
+    this.setUpdate({ ...update, location });
+  }
 });
 
 // Encrypt password using bcrypt while updating (admin)

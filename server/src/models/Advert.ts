@@ -6,6 +6,8 @@ import {
   ProductCategory,
   Colors,
 } from '../entities/advertEntity';
+import userModel from './User';
+import { User } from '../entities/userEntity';
 
 const Types = mongoose.Schema.Types;
 
@@ -45,6 +47,7 @@ const advertSchema = new mongoose.Schema<Advert>({
   createdAt: {
     type: Types.Date,
     required: [true, 'Please add a creation date'],
+    default: Date.now,
   },
   color: {
     type: Types.String,
@@ -86,6 +89,25 @@ const advertSchema = new mongoose.Schema<Advert>({
     ref: 'User',
     required: [true, 'Please add a store'],
   },
+  location: {
+    type: {
+      type: Types.String,
+      enum: ['Point'],
+    },
+    coordinates: {
+      type: [Types.Number],
+      index: '2dsphere',
+    },
+  },
+});
+
+advertSchema.pre('save', async function (next) {
+  const store = await userModel.findById(this.store);
+
+  if (store) {
+    this.location = store.location;
+  }
+  next();
 });
 
 advertSchema.index({
