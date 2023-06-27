@@ -1,5 +1,9 @@
 import { FC, useEffect, useState } from 'react';
-import { getReview, Review } from '../../api/collections/review';
+import {
+  getReview,
+  PopulatedReview,
+  Review,
+} from '../../api/collections/review';
 import { getStore, User } from '../../api/collections/user';
 import { InfoBar } from '../ProductOverview/InfoBar';
 import { Ratings } from '../Ratings';
@@ -7,8 +11,7 @@ import { StoreDetailsModal } from '../Store/StoreDetailsModal';
 import { BodyText } from '../Text/BodyText';
 
 type ReviewBarProps = {
-  review?: Review;
-  store?: User;
+  reviewID?: string;
 };
 const Reviewbar: FC<ReviewBarProps> = (props) => {
   const [showModal, setShowModal] = useState(false);
@@ -19,9 +22,19 @@ const Reviewbar: FC<ReviewBarProps> = (props) => {
   const openModal = () => {
     setShowModal(true);
   };
+
+  const [review, setReview] = useState({} as PopulatedReview);
+
+  useEffect(() => {
+    const fetchReview = async () => {
+      setReview(await getReview(props.reviewID!));
+    };
+    fetchReview();
+  }, []);
+
   return (
     <>
-      {props.review && props.store && (
+      {review && review.reviewer && (
         <InfoBar
           onClick={openModal}
           contentLine1={
@@ -37,14 +50,12 @@ const Reviewbar: FC<ReviewBarProps> = (props) => {
                 }}
                 onClick={openModal}
               >
-                {props.store.name}
+                {review.reviewer.name}
               </BodyText>
               {showModal && (
                 <StoreDetailsModal
                   isShowing={showModal}
                   onClose={closeModal}
-                  storeName={props.store.phoneNumber}
-                  rating={props.store.rating}
                 ></StoreDetailsModal>
               )}
 
@@ -55,8 +66,8 @@ const Reviewbar: FC<ReviewBarProps> = (props) => {
                   color: 'black',
                 }}
               >
-                {props.review.createdAt.toString().substring(0, 10)}
-                {Ratings(props.review.rating ? props.review.rating : 0)}
+                {review.createdAt.toString().substring(0, 10)}
+                {Ratings(review.rating ? review.rating : 0)}
               </BodyText>
             </>
           }
@@ -70,7 +81,7 @@ const Reviewbar: FC<ReviewBarProps> = (props) => {
                 marginLeft: '4%',
               }}
             >
-              {props.review?.description}
+              {review?.description}
             </BodyText>
           }
         />

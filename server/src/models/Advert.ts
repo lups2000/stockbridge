@@ -54,8 +54,7 @@ const advertSchema = new mongoose.Schema<Advert>({
   status: {
     type: String,
     enum: Object.values(AdvertStatus),
-    // TODO: change to true
-    required: [false, 'You could enter the status of the advert'],
+    required: [true, 'You could enter the status of the advert'],
   },
   type: {
     type: String,

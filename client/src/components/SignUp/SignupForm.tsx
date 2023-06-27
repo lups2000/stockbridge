@@ -14,7 +14,7 @@ import {
 } from '../../utils/functions';
 import { ApiClient } from '../../api/apiClient';
 import { LoginContext } from '../../contexts/LoginContext';
-import { User, UserResponse } from '../../api/collections/user';
+import { PopulatedUser, User, UserResponse } from '../../api/collections/user';
 import PaymentElement, { PaymentType } from '../Payment/PaymentElement';
 
 enum ErrorType {
@@ -108,7 +108,7 @@ export const SignupForm: FC = () => {
 
     if (address && city && postalCode && country) {
       new ApiClient() //TODO: Change this to user collections
-        .put<User>(
+        .put<PopulatedUser>(
           `/users/${user?._id}`,
           {
             name: shopName,
