@@ -19,6 +19,8 @@ tags:
     description: Everything about User
   - name: Authentication
     description: Everything about User Authentication
+  - name: Payment
+    description: Everything about Payments
 
 paths:
   /auth/register:
@@ -39,7 +41,7 @@ paths:
                 $ref: '#/components/schemas/User'
         '400':
           description: Invalid Input
-  /user/login:
+  /auth/login:
     post:
       tags:
         - Authentication
@@ -73,7 +75,7 @@ paths:
                 type: string
         '400':
           description: Invalid username/password supplied
-  /user/logout:
+  /auth/logout:
     get:
       tags:
         - Authentication
@@ -82,8 +84,27 @@ paths:
       operationId: logoutUser
       parameters: []
       responses:
-        default:
+          '200':
+            description: successful operation
+            content:
+              application/json:
+                schema:
+                  type: string
+  /auth/verify:
+    get:
+      tags:
+        - Authentication
+      summary: Logs out current logged in user session
+      description: ''
+      operationId: logoutUser
+      parameters: []
+      responses:
+        '200':
           description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
   /user/{id}:
     get:
       tags:
@@ -690,6 +711,131 @@ paths:
           description: Invalid username supplied
         '404':
           description: review found
+      security:
+        - bearerAuth: []
+  /stripe/create-payment-intent:
+    post:
+      tags:
+        - Payment
+      summary: creates a payment intent
+      description: ''
+      operationId: createPaymentIntent
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                amount:
+                  type: integer
+                  format: int64
+                product:
+                  type: string
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: string
+                description: client secret
+      security:
+        - bearerAuth: []
+  /stripe/create-setup-intent:
+    get:
+      tags:
+        - Payment
+      summary: creates a setup intent
+      description: ''
+      operationId: createSetupIntent
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: string
+                description: client secret
+      security:
+        - bearerAuth: []
+  /stripe/create-subscription:
+    post:
+      tags:
+        - Payment
+      summary: creates a subscription
+      description: ''
+      operationId: createSubscription
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                subscriptionType:
+                  type: string
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  subscriptionId:
+                    type: string
+                  clientSecret:
+                    type: string
+      security:
+        - bearerAuth: []
+  /stripe/cancel-subscription:
+    post:
+      tags:
+        - Payment
+      summary: cancels a subscription
+      description: ''
+      operationId: cancelSubscription
+      responses:
+        '204':
+          description: successful operation
+      security:
+        - bearerAuth: []
+  /stripe/get-invoice-link:
+    get:
+      tags:
+        - Payment
+      summary: gets an invoice link
+      description: ''
+      operationId: getInvoiceLink
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: string
+                description: invoice link
+      security:
+        - bearerAuth: []
+  /stripe/webhook:
+    post:
+      tags:
+        - Payment
+      summary: webhook
+      description: Webhook, takes raw body
+      operationId: webhook
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                rawBody:
+                  type: string
+      responses:
+        '200':
+          description: successful operation
       security:
         - bearerAuth: []
 
