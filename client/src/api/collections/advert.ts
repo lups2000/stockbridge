@@ -1,4 +1,7 @@
 import { ApiClient } from '../apiClient';
+import { Offer } from './offer';
+import { Review } from './review';
+import { User } from './user';
 
 export enum AdvertType {
   Sell,
@@ -60,10 +63,30 @@ export interface Advert {
   createdAt?: Date;
 }
 
+export interface PopulatedAdvert {
+  _id?: string;
+  productname?: string;
+  prioritized?: boolean;
+  quantity?: number;
+  description?: string;
+  price?: number;
+  expirationDate?: Date;
+  purchaseDate?: Date;
+  status?: string;
+  type?: string;
+  category?: string;
+  offers?: Offer[];
+  store?: User;
+  reviews?: Review[];
+  imageurl?: string;
+  color?: string;
+  createdAt?: Date;
+}
+
 const apiClient = new ApiClient();
 
-export async function getAdvert(id: string): Promise<Advert> {
-  return await apiClient.get<Advert>(`/adverts/${id}`, {
+export async function getAdvert(id: string): Promise<PopulatedAdvert> {
+  return await apiClient.get<PopulatedAdvert>(`/adverts/${id}`, {
     withCredentials: true,
   });
 }
@@ -89,8 +112,8 @@ export async function deleteAdvert(id: string): Promise<void> {
   });
 }
 
-export async function getAllAdverts(): Promise<Advert[]> {
-  return await apiClient.get<Advert[]>('/adverts/', {
+export async function getAllAdverts(): Promise<PopulatedAdvert[]> {
+  return await apiClient.get<PopulatedAdvert[]>('/adverts/', {
     withCredentials: true,
   });
 }

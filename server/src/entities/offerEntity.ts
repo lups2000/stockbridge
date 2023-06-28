@@ -1,6 +1,4 @@
 import { Types } from 'mongoose';
-import { Advert } from './advertEntity';
-import { User } from './userEntity';
 
 export enum OfferStatus {
   OPEN = 'Open',

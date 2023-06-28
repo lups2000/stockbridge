@@ -1,10 +1,10 @@
 import { FC } from 'react';
-import { ProductCategory, Advert } from '../../api/collections/advert';
+import { ProductCategory, PopulatedAdvert } from '../../api/collections/advert';
 import { BodyText } from '../Text/BodyText';
 import { AdvertsGrid } from './AdvertsGrid';
 
 type AdvertsTabContentProps = {
-  adverts: Advert[];
+  adverts: PopulatedAdvert[];
 };
 const AdvertsTabContent: FC<AdvertsTabContentProps> = (props) => {
   return (
