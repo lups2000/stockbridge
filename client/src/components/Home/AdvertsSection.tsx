@@ -11,7 +11,9 @@ const AdvertsSection: FC = () => {
   useEffect(() => {
     const fetchData = async () => {
       const fetchedAdverts = await getAllAdverts();
-      setAdverts(fetchedAdverts);
+      if (fetchedAdverts.results) {
+        setAdverts(fetchedAdverts.results);
+      }
     };
     fetchData();
   }, []);
@@ -47,18 +49,20 @@ const AdvertsSection: FC = () => {
               marginLeft: '5%',
             }}
           >
-            <Tabs>
-              <ContentTab title="Selling">
-                <AdvertsTabContent
-                  adverts={adverts.filter((a) => a.type === 'Sell')}
-                />
-              </ContentTab>
-              <ContentTab title="Buying">
-                <AdvertsTabContent
-                  adverts={adverts.filter((a) => a.type === 'Ask')}
-                />
-              </ContentTab>
-            </Tabs>
+            {adverts && (
+              <Tabs>
+                <ContentTab title="Selling">
+                  <AdvertsTabContent
+                    adverts={adverts.filter((a) => a.type === 'Sell')}
+                  />
+                </ContentTab>
+                <ContentTab title="Buying">
+                  <AdvertsTabContent
+                    adverts={adverts.filter((a) => a.type === 'Ask')}
+                  />
+                </ContentTab>
+              </Tabs>
+            )}
           </div>
         </div>
       </Stack>
