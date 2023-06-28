@@ -57,8 +57,8 @@ const advertSchema = new mongoose.Schema<Advert>({
   status: {
     type: Types.String,
     enum: Object.values(AdvertStatus),
-    // TODO: change to true
-    required: [false, 'You could enter the status of the advert'],
+    required: [true, 'You could enter the status of the advert'],
+    default: 'Ongoing',
   },
   type: {
     type: Types.String,
@@ -68,7 +68,7 @@ const advertSchema = new mongoose.Schema<Advert>({
   category: {
     type: Types.String,
     enum: Object.values(ProductCategory),
-    required: [false, 'Please add a product category'],
+    required: [true, 'Please add a product category'],
   },
   offers: [
     {

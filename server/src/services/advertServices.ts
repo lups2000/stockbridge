@@ -179,3 +179,41 @@ export const getAdvertsByCategory = async (category: ProductCategory) => {
   );
   return advertModel.find({ category: category });
 };
+
+/**
+ * Returns popular categories
+ *
+ * @param limit - number of categories to return
+ *
+ * @returns Promise containing the most popular categories
+ */
+
+export const getPopularCategories = async (limit: number) => {
+  logger.debug(`${serviceName}: Requesting most popular categories`);
+  return advertModel.aggregate([
+    { $match: { status: 'Ongoing' } },
+    {
+      $group: {
+        _id: '$category',
+        count: { $sum: 1 },
+      },
+    },
+    { $sort: { count: -1 } },
+    { $limit: limit },
+  ]);
+};
+
+export const getPopularAdverts = async (limit: number) => {
+  logger.debug(`${serviceName}: Requesting most popular adverts`);
+  return advertModel.aggregate([
+    { $unwind: '$offers' },
+    {
+      $group: {
+        _id: '$_id',
+        size: { $sum: 1 },
+      },
+    },
+    { $sort: { size: -1 } },
+    { $limit: limit },
+  ]);
+};
