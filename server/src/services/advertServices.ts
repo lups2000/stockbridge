@@ -111,18 +111,23 @@ export const findAllAdverts = async (
 
   if (sortBy && sortBy?.length > 0) {
     let sortParams: [string, -1 | 1][] = [['prioritized', -1]];
+    let isCreatedAtIncluded = false;
 
     for (const sortParam of sortBy) {
       let data: [string, -1 | 1];
       if (sortParam.startsWith('-')) {
         const key = sortParam.slice(1);
+        isCreatedAtIncluded = key === 'createdAt';
         data = [key, -1];
       } else {
         data = [sortParam, 1];
       }
       sortParams.push(data);
     }
-    sortParams = [...sortParams, ['createdAt', -1], ['_id', -1]];
+    if (!isCreatedAtIncluded) {
+      sortParams.push(['createdAt', -1]);
+    }
+    sortParams.push(['_id', -1]);
     query = query.sort(sortParams);
   } else {
     logger.debug(`${serviceName}: No sort params, using default`);
@@ -135,7 +140,7 @@ export const findAllAdverts = async (
 
   const startIndex = (page - 1) * limit;
   const endIndex = page * limit;
-  const total = await advertModel.countDocuments();
+  const total = await advertModel.countDocuments(queryFilter);
 
   query = query.skip(startIndex).limit(limit);
 
@@ -160,7 +165,7 @@ export const findAllAdverts = async (
     };
   }
 
-  return { results, pagination };
+  return { results, pagination, totalNumberOfPages: Math.ceil(total / limit) };
 };
 
 /**
