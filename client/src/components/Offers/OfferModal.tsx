@@ -1,7 +1,6 @@
 import { FC, useContext, useState } from 'react';
 import { Button, Col, Form, Modal, Row, Image } from 'react-bootstrap';
 import {
-  Advert,
   PopulatedAdvert,
   updateAdvert,
 } from '../../api/collections/advert';
@@ -17,7 +16,8 @@ import { Ratings } from '../Ratings';
 
 type OfferContentProps = {
   isShowing: boolean;
-  onClose: () => void;
+  onClose: () =>  void;
+  onSave: () => void;
   offer?: PopulatedOffer;
   advert?: PopulatedAdvert;
   storeName?: String;
@@ -79,7 +79,7 @@ const OfferModal: FC<OfferContentProps> = (props) => {
             offers: [createdOffer._id!],
           });
         }
-        if (props.onClose) props?.onClose();
+        if (props.onSave) props?.onSave();
       } catch (error) {
         console.error(error);
       }

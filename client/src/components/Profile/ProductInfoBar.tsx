@@ -1,32 +1,65 @@
 import React from 'react';
+import { Image } from 'react-bootstrap';
+import imagePlaceholder from '../../assets/product-placeholder.png';
+import { ProfileProdcutAttribute } from './ProfileProdcutAttribute';
+import { useNavigate } from 'react-router-dom';
 require('./profile.scss');
 
 type ProductProps = {
-  imageUrl: string;
-  name: string;
-  date: string;
-  quantity: number;
-  price: number;
+  productId: string | undefined;
+  imageUrl: string | undefined;
+  name: string | undefined;
+  date: string | undefined;
+  quantity: number | undefined;
+  price: number | undefined;
 };
 
 const ProductInfoBar: React.FC<ProductProps> = ({
+  productId,
   imageUrl,
   name,
   date,
   quantity,
   price,
 }) => {
+  const navigate = useNavigate();
   return (
-    <li className="product-bar row">
+    <li className="product-bar row" onClick={() => navigate(`/productoverview/${productId}`)}>
       <div className="product-image col-2">
-        <img src={imageUrl} alt={name} />
+      <Image
+          style={{
+            width: '10em',
+            height: '10em',
+            borderRadius: '60px',
+            borderColor: 'transparent',
+            objectFit: 'fill',
+            marginLeft: '3em'
+          }}
+          src={imageUrl ? imageUrl : imagePlaceholder}
+        />
       </div>
       <div className="product-info col-10">
         <div className="product-details row">
-          <div className="div1"> Name: {name} </div>
-          <div className="div2"> Date:{date}</div>
-          <div className="div3"> Quantity: {quantity}</div>
-          <div className="div4"> Price: {price}</div>
+          <div className="div1">  <ProfileProdcutAttribute
+            name="Product"
+            value={name}
+          ></ProfileProdcutAttribute> </div>
+          
+          <div className="div2">  <ProfileProdcutAttribute
+            name="Date"
+            value={date}
+          ></ProfileProdcutAttribute></div>
+         
+          <div className="div3">  <ProfileProdcutAttribute
+            name="Quantity"
+            value={quantity}
+          ></ProfileProdcutAttribute></div>
+
+          <div className="div4">  <ProfileProdcutAttribute
+            name="Price"
+            value={price}
+            unit='€'
+          ></ProfileProdcutAttribute></div>
         </div>
       </div>
     </li>

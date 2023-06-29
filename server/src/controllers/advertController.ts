@@ -9,6 +9,7 @@ import {
   getAdvertsByCategory,
   getPopularCategories as getPopularCategoriesService,
   getPopularAdverts as getPopularAdvertsService,
+  getAdvertsByStore,
 } from '../services/advertServices';
 import { AuthenticatedRequest } from '../middlewares/authMiddleware';
 import { Advert, ProductCategory } from '../entities/advertEntity';
@@ -22,7 +23,6 @@ import { Advert, ProductCategory } from '../entities/advertEntity';
 export const getAdvert = asyncHandler(
   async (req: AuthenticatedRequest, res: Response) => {
     const { id } = req.params;
-    //verifyIfAuthorized(id, req);
     const advert = await findAdvertById(id);
     res.status(200).json(advert);
   },
@@ -149,6 +149,20 @@ export const getAllAdvertsByCategory = asyncHandler(
     const adverts = await getAdvertsByCategory(category as ProductCategory);
     res.status(200).json(adverts);
   },
+);
+
+/**
+ * This method gets all adverts of a specific store   *
+ * @param req - The request object
+ * @param res - The response object
+ * @returns deleted advert object.
+ */
+export const getAllAdvertsByStore = asyncHandler(
+  async (req: AuthenticatedRequest, res: Response) => {
+    const { store } = req.params;;
+    const adverts = await getAdvertsByStore(store);
+    res.status(200).json(adverts);
+  }
 );
 
 /**

@@ -184,7 +184,7 @@ export const findAllAdverts = async (
  * Returns all adverts of the requested category
  * @param category
  * @param populate determines if the result should be populated
- * @returns Promise containing the deleted advert.
+ * @returns Promise containing the related adverts.
  */
 export const getAdvertsByCategory = async (
   category: ProductCategory,
@@ -193,10 +193,21 @@ export const getAdvertsByCategory = async (
   logger.debug(
     `${serviceName}: Requesting all adverts with category: ${category}`,
   );
-  return await populateResult(
-    advertModel.find({ category: category }),
-    populate,
+  return await populateResult(advertModel.find({ category: category }),
+    populate)
+};
+
+/**
+ * Returns all adverts of the requested store
+ * @param category
+ * @param populate 
+ * @returns Promise containing the related adverts.
+ */
+export const getAdvertsByStore = async (store: string, populate = true) => {
+  logger.debug(
+    `${serviceName}: Requesting all adverts of store: ${store}`,
   );
+  return await populateResult(advertModel.find({ store: store }), populate);
 };
 
 /**

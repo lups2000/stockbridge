@@ -69,3 +69,19 @@ export async function getOffersByAdvert(
     },
   );
 }
+
+/**
+ * Returns offers filtered by the given parameters
+ * @param user the user Id
+ * @param advertType 'Ask' or 'Sell'
+ * @param offerType 'outgoing' or 'incoming'
+ * @returns 
+ */
+export async function getUserSpecificOffers(user: string, advertType: string, offerType: string): Promise<PopulatedOffer[]> {
+  console.debug(user,advertType,offerType);
+  return await apiClient.get<PopulatedOffer[]>(
+    `/offers/getUserSpecificOffers`, 
+    {withCredentials: true},
+    {"user": user, "advertType": advertType, "offerType": offerType}
+    );
+}

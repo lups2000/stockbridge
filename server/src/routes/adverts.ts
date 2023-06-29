@@ -6,6 +6,7 @@ import {
   getAllAdvertsByCategory,
   getPopularAdverts,
   getPopularCategories,
+  getAllAdvertsByStore,
   postAdvert,
   putAdvert,
 } from '../controllers/advertController';
@@ -29,3 +30,5 @@ advertRouter
 advertRouter
   .route('/getAdvertsByCategory/:category')
   .get(protect, getAllAdvertsByCategory);
+
+advertRouter.route('/getAdvertsByStore/:store').get(protect,getAllAdvertsByStore);
