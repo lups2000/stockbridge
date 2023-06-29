@@ -25,6 +25,7 @@ enum DropdownItemType {
 
 interface DropdownItem {
   index: number;
+  link: string;
   type: DropdownItemType;
   icon: string;
 }
@@ -38,35 +39,42 @@ export const UserIconDropdown: FC = () => {
     {
       index: 0,
       type: DropdownItemType.ADVERTS,
+      link: 'MyAdverts',
       icon: advertIcon,
     },
     {
       index: 1,
+      link: 'Selling',
       type: DropdownItemType.SELLING,
       icon: sellingIcon,
     },
     {
       index: 2,
+      link: 'Buying',
       type: DropdownItemType.BUYING,
       icon: buyingIcon,
     },
     {
       index: 3,
+      link: 'StoreDetails',
       type: DropdownItemType.PROFILE,
       icon: storeIcon,
     },
     {
       index: 4,
+      link: 'Premium',
       type: DropdownItemType.PREMIUM,
       icon: premiumIcon,
     },
     {
       index: 5,
+      link: 'HelpAndFAQ',
       type: DropdownItemType.HELP,
       icon: questionIcon,
     },
     {
       index: 6,
+      link: 'logout',
       type: DropdownItemType.LOGOUT,
       icon: logoutIcon,
     },
@@ -81,7 +89,8 @@ export const UserIconDropdown: FC = () => {
       // Handle logout click
       handleLogoutClick();
     } else {
-      navigate(`/userInfo?select=${item.index}`);
+      navigate(`/userInfo?${item.link}`);
+      window.location.reload();
     }
     setDropdownOpen(false); // Close dropdown
   };

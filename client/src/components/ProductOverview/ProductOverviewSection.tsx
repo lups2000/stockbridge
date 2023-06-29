@@ -27,6 +27,10 @@ const ProductOverviewSection: React.FC<ProductOverviewSectionProps> = (
   const [showModal, setShowModal] = useState(false);
   const closeModal = () => {
     setShowModal(false);
+  };
+  const closeModalOnSave = () => {
+    setShowModal(false);
+    //change to set Advert
     window.location.reload();
   };
   const openModal = () => {
@@ -63,6 +67,7 @@ const ProductOverviewSection: React.FC<ProductOverviewSectionProps> = (
           <OfferModal
             isShowing={showModal}
             onClose={closeModal}
+            onSave={closeModalOnSave}
             advert={props.advert}
             storeName={props.store.name}
             rating={props.store.rating}

@@ -117,3 +117,9 @@ export async function getAllAdverts(): Promise<PopulatedAdvert[]> {
     withCredentials: true,
   });
 }
+
+export async function getAdvertsByUser(store: string | undefined): Promise<Advert[]> {
+  return await apiClient.get<Advert[]>(`/adverts/getAdvertsByStore/${store}`, {
+    withCredentials: true,
+  });
+}

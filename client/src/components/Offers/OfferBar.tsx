@@ -1,12 +1,11 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { ProductAttribute } from '../ProductOverview/ProductAttribute';
-import { Offer, PopulatedOffer } from '../../api/collections/offer';
-import { Advert, PopulatedAdvert } from '../../api/collections/advert';
+import { PopulatedOffer } from '../../api/collections/offer';
+import { PopulatedAdvert } from '../../api/collections/advert';
 import { BodyText } from '../Text/BodyText';
 import { OfferModal } from './OfferModal';
 import { Ratings } from '../Ratings';
 import { InfoBar } from '../ProductOverview/InfoBar';
-import { LoginContext } from '../../contexts/LoginContext';
 import { User } from '../../api/collections/user';
 require('./offerBarStyle.scss');
 
@@ -18,6 +17,9 @@ type OfferBarProps = {
 const OfferBar: React.FC<OfferBarProps> = (props) => {
   const [showModal, setShowModal] = useState(false);
   const closeModal = () => {
+    setShowModal(false);
+  };
+  const closeModalOnSave = () => {
     setShowModal(false);
     //change to set Advert
     window.location.reload();
@@ -92,6 +94,7 @@ const OfferBar: React.FC<OfferBarProps> = (props) => {
         <OfferModal
           isShowing={showModal}
           onClose={closeModal}
+          onSave={closeModalOnSave}
           advert={props.advert}
           offer={props.offer}
           storeName={offeree.name!}
