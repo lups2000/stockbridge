@@ -60,6 +60,13 @@ export const delAdvert = async (id: string) => {
 
 /**
  * Find all adverts
+ * @param page page number
+ * @param limit number of items per page
+ * @param search search string
+ * @param sortBy sort string
+ * @param radius radius in km
+ * @param center center of the search area
+ * @param queryStr query string
  * @param populate determines if the result should be populated
  * @returns Promise containing all adverts
  */
@@ -72,6 +79,7 @@ export const findAllAdverts = async (
   radius?: number,
   center?: number[],
   queryStr?: string,
+  populate = true,
 ) => {
   logger.debug(`${serviceName}: Finding all adverts with pagination`);
   logger.debug(`${serviceName}: Query string: ${queryStr}`);
@@ -110,6 +118,8 @@ export const findAllAdverts = async (
   logger.debug(`${serviceName}: Query filter: ${JSON.stringify(queryFilter)}`);
 
   let query = advertModel.find(queryFilter);
+
+  query = populateResult(query, populate);
 
   if (sortBy && sortBy?.length > 0) {
     let sortParams: [string, -1 | 1][] = [['prioritized', -1]];
@@ -166,7 +176,7 @@ export const findAllAdverts = async (
       limit,
     };
   }
-//  return await populateResult(advertModel.find(), populate);
+  //  return await populateResult(advertModel.find(), populate);
   return { results, pagination, totalNumberOfPages: Math.ceil(total / limit) };
 };
 

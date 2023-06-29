@@ -44,7 +44,7 @@ export enum ProductCategory {
 }
 
 export interface AdvertDto {
-  results?: Advert[];
+  results?: PopulatedAdvert[];
   totalNumberOfPages?: number;
   pagination?: Pagination;
 }
@@ -129,8 +129,8 @@ export async function deleteAdvert(id: string): Promise<void> {
   });
 }
 
-export async function getAllAdverts(): Promise<PopulatedAdvert[]> {
-  return await apiClient.get<PopulatedAdvert[]>('/adverts/', {
+export async function getAllAdverts(): Promise<AdvertDto> {
+  return await apiClient.get<AdvertDto>('/adverts/', {
     withCredentials: true,
   });
 }
