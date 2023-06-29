@@ -8,11 +8,12 @@ const serviceName = 'advertServices';
 /**
  * Find an advert by id
  * @param id
+ * @param populate determines if the result should be populated
  * @returns Promise containing the advert
  */
-export const findAdvertById = async (id: string) => {
+export const findAdvertById = async (id: string, populate = true) => {
   logger.debug(`${serviceName}: Finding advert with id: ${id}`);
-  const advert = await advertModel.findById(id);
+  const advert = await populateResult(advertModel.findById(id), populate);
 
   if (!advert) {
     logger.error(`${serviceName}: Advert not found with id of ${id}`);
@@ -41,7 +42,7 @@ export const createAdvert = async (advert: Advert) => {
  */
 export const updateAdvert = async (id: string, advert: Advert) => {
   logger.debug(`${serviceName}: Updating advert with id: ${id} with ${advert}`);
-  return advertModel.findByIdAndUpdate(id, advert, {
+  return await advertModel.findByIdAndUpdate(id, advert, {
     new: true,
     runValidators: true,
   });
@@ -54,11 +55,12 @@ export const updateAdvert = async (id: string, advert: Advert) => {
  */
 export const delAdvert = async (id: string) => {
   logger.debug(`${serviceName}: Deleting advert with id: ${id}`);
-  return advertModel.findByIdAndDelete(id);
+  return await advertModel.findByIdAndDelete(id);
 };
 
 /**
- * Find all adverts // TODO: This is a test function, remove it later // Why remove? copy paste mistake?
+ * Find all adverts
+ * @param populate determines if the result should be populated
  * @returns Promise containing all adverts
  */
 
@@ -164,20 +166,27 @@ export const findAllAdverts = async (
       limit,
     };
   }
-
+//  return await populateResult(advertModel.find(), populate);
   return { results, pagination, totalNumberOfPages: Math.ceil(total / limit) };
 };
 
 /**
  * Returns all adverts of the requested category
  * @param category
+ * @param populate determines if the result should be populated
  * @returns Promise containing the deleted advert.
  */
-export const getAdvertsByCategory = async (category: ProductCategory) => {
+export const getAdvertsByCategory = async (
+  category: ProductCategory,
+  populate = true,
+) => {
   logger.debug(
     `${serviceName}: Requesting all adverts with category: ${category}`,
   );
-  return advertModel.find({ category: category });
+  return await populateResult(
+    advertModel.find({ category: category }),
+    populate,
+  );
 };
 
 /**
@@ -218,3 +227,15 @@ export const getPopularAdverts = async (limit: number) => {
     { $limit: limit },
   ]);
 };
+
+/**
+ * Populates the referenced elements in a document
+ * @param queryResult The document to be populated
+ * @param populate Determines if the result should be populated
+ * @returns
+ */
+function populateResult(queryResult: any, populate: boolean) {
+  return populate
+    ? queryResult.populate(['reviews', 'store', 'offers'])
+    : queryResult;
+}

@@ -1,7 +1,16 @@
 import { FC, useContext, useState } from 'react';
 import { Button, Col, Form, Modal, Row, Image } from 'react-bootstrap';
-import { Advert, updateAdvert } from '../../api/collections/advert';
-import { createOffer, Offer, OfferStatus } from '../../api/collections/offer';
+import {
+  Advert,
+  PopulatedAdvert,
+  updateAdvert,
+} from '../../api/collections/advert';
+import {
+  createOffer,
+  Offer,
+  OfferStatus,
+  PopulatedOffer,
+} from '../../api/collections/offer';
 import { LoginContext } from '../../contexts/LoginContext';
 import { palette } from '../../utils/colors';
 import { Ratings } from '../Ratings';
@@ -9,8 +18,8 @@ import { Ratings } from '../Ratings';
 type OfferContentProps = {
   isShowing: boolean;
   onClose: () => void;
-  offer?: Offer;
-  advert?: Advert;
+  offer?: PopulatedOffer;
+  advert?: PopulatedAdvert;
   storeName?: String;
   rating?: number;
 };

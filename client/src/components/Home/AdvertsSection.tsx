@@ -1,13 +1,13 @@
 import { FC, useEffect, useState } from 'react';
 import { Stack } from 'react-bootstrap';
-import { Advert, getAllAdverts } from '../../api/collections/advert';
+import { PopulatedAdvert, getAllAdverts } from '../../api/collections/advert';
 import { Title } from '../Text/Title';
 import { Filters } from './Filters';
 import Tabs from '../ContentTabs/Tabs';
 import ContentTab from '../ContentTabs/ContentTab';
 import { AdvertsTabContent } from './AdvertsTabContent';
 const AdvertsSection: FC = () => {
-  const [adverts, setAdverts] = useState([] as Advert[]);
+  const [adverts, setAdverts] = useState([] as PopulatedAdvert[]);
   useEffect(() => {
     const fetchData = async () => {
       const fetchedAdverts = await getAllAdverts();

@@ -1,13 +1,13 @@
 import React from 'react';
-import { Advert } from '../../api/collections/advert';
-import { OfferStatus, Offer } from '../../api/collections/offer';
+import { PopulatedAdvert } from '../../api/collections/advert';
+import { OfferStatus, PopulatedOffer } from '../../api/collections/offer';
 import { BodyText } from '../Text/BodyText';
 import { OfferBar } from './OfferBar';
 
 type OfferSectionProps = {
   status: OfferStatus;
-  offers: Offer[];
-  advert: Advert;
+  offers: PopulatedOffer[];
+  advert: PopulatedAdvert;
   storeName: string;
   rating: number;
 };

@@ -25,3 +25,7 @@ advertRouter
   .get(protect, getAdvert)
   .put(protect, putAdvert)
   .delete(protect, deleteAdvert);
+
+advertRouter
+  .route('/getAdvertsByCategory/:category')
+  .get(protect, getAllAdvertsByCategory);

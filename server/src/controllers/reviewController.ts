@@ -8,8 +8,6 @@ import {
   getReviewsByAdvert,
 } from '../services/reviewServices';
 import { AuthenticatedRequest } from '../middlewares/authMiddleware';
-import logger from '../config/logger';
-import { AppError } from '../utils/errorHandler';
 
 /**
  * This method returns a review by id   *
@@ -67,10 +65,6 @@ export const deleteReview = asyncHandler(
   async (req: AuthenticatedRequest, res: Response) => {
     const { id } = req.params;
 
-    /* if (id !== req.user?.id) {
-        throw new AppError('Not authorized to access this route', 'Not authorized to access this route',401)
-    } */
-
     const review = await delReview(id);
     res.status(204).json(review);
   },
@@ -85,7 +79,7 @@ export const deleteReview = asyncHandler(
 export const getAllReviewsByAdvert = asyncHandler(
   async (req: AuthenticatedRequest, res: Response) => {
     const { advertId } = req.params;
-    const reviews = await getReviewsByAdvert(advertId);
+    const reviews = await getReviewsByAdvert(advertId, true);
     res.status(200).json(reviews);
   },
 );

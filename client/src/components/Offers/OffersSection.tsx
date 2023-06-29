@@ -1,26 +1,27 @@
 import { FC, useEffect, useState } from 'react';
-import { Advert } from '../../api/collections/advert';
+import { Advert, PopulatedAdvert } from '../../api/collections/advert';
 import {
   getOffersByAdvert,
   Offer,
   OfferStatus,
+  PopulatedOffer,
 } from '../../api/collections/offer';
 import { ReviewOfferSection } from '../ProductOverview/ReviewOfferSection';
 import { BodyText } from '../Text/BodyText';
 import { OfferSection } from './OfferSection';
 
 type OffersSectionProps = {
-  advert: Advert;
+  advert: PopulatedAdvert;
   storeName: string;
   rating: number;
 };
 
 const OffersSection: FC<OffersSectionProps> = (props) => {
-  const [offers, setOffers] = useState([] as Offer[]);
+  const [offers, setOffers] = useState([] as PopulatedOffer[]);
   useEffect(() => {
     const fetchData = async () => {
       if (props.advert._id) {
-        const fetchedOffers: Offer[] = await getOffersByAdvert(
+        const fetchedOffers: PopulatedOffer[] = await getOffersByAdvert(
           props.advert._id,
         );
         setOffers(fetchedOffers);

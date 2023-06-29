@@ -3,11 +3,13 @@ import { Dropdown } from 'react-bootstrap';
 import { palette } from '../utils/colors';
 import { ColoredLine } from './ColoredLine';
 import { BodyText } from './Text/BodyText';
+import useMediaQuery from '../hooks/useMediaQuery';
 
 /**
  * This component represents the footer/bottom bar of our website.
  */
 export const Footer: FC = () => {
+  const matches = useMediaQuery('(min-width: 900px)');
   return (
     <div
       style={{
@@ -17,7 +19,7 @@ export const Footer: FC = () => {
         flexDirection: 'row',
         alignItems: 'stretch',
         justifyContent: 'center',
-        gap: 100,
+        gap: matches ? 100 : 50,
         paddingTop: 100,
         marginTop: 'auto',
       }}
