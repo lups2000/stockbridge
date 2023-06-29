@@ -6,6 +6,7 @@ import userProfileIcon from '../assets/userProfile.svg';
 import logoutIcon from '../assets/logout.svg';
 import orderIcon from '../assets/orderBox.svg';
 import advertIcon from '../assets/advert.svg';
+import premiumIcon from "../assets/premium.svg"
 import { ApiClient } from '../api/apiClient';
 import { LoginContext } from '../contexts/LoginContext';
 import useMediaQuery from '../hooks/useMediaQuery';
@@ -22,16 +23,24 @@ export const UserIconDropdown: FC = () => {
   const [isDropdownOpen, setDropdownOpen] = useState(false);
   const elementsDropdown: DropdownItem[] = [
     {
+      title: 'My Adverts',
+      icon: advertIcon,
+    },
+    {
+      title: 'Selling',
+      icon: orderIcon,
+    },
+    {
+      title: 'Buying',
+      icon: orderIcon,
+    },
+    {
       title: 'Profile',
       icon: userProfileIcon,
     },
     {
-      title: 'Orders',
-      icon: orderIcon,
-    },
-    {
-      title: 'Adverts',
-      icon: advertIcon,
+      title: 'Premium',
+      icon: premiumIcon,
     },
     {
       title: 'Logout',
@@ -44,10 +53,8 @@ export const UserIconDropdown: FC = () => {
   const toggleDropDown = () => setDropdownOpen(!isDropdownOpen);
 
   const handleItemClick = (item: string) => {
-    if (item === 'Profile') {
-      // Handle profile click
-      navigate('/userInfo');
-    } else if (item === 'Logout') {
+    //TODO navigation
+    if (item === 'Logout') {
       // Handle logout click
       handleLogoutClick();
     }
