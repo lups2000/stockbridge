@@ -14,11 +14,11 @@ export const TopAdverts: FC = () => {
       items: 5,
     },
     big_desktop: {
-      breakpoint: { max: 3000, min: 2000 },
-      items: 5,
+      breakpoint: { max: 3000, min: 1900 },
+      items: 4,
     },
     desktop: {
-      breakpoint: { max: 2000, min: 1400 },
+      breakpoint: { max: 1900, min: 1400 },
       items: 3,
     },
     tablet: {
