@@ -41,6 +41,8 @@ export function Navbar() {
               width={200}
               height={50}
               className="d-inline-block align-top"
+              onClick={() => navigate('/')}
+              style={{ cursor: 'pointer' }}
             />
           </NavbarBS.Brand>
           <NavbarBS.Toggle aria-controls="navbarBSScroll" />
