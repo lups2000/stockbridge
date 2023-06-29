@@ -2,17 +2,30 @@ import React, { FC, useContext, useState } from 'react';
 import userLogo from '../assets/user-logo.svg';
 import { Image } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
-import userProfileIcon from '../assets/userProfile.svg';
 import logoutIcon from '../assets/logout.svg';
-import orderIcon from '../assets/orderBox.svg';
-import advertIcon from '../assets/advert.svg';
-import premiumIcon from "../assets/premium.svg"
 import { ApiClient } from '../api/apiClient';
 import { LoginContext } from '../contexts/LoginContext';
 import useMediaQuery from '../hooks/useMediaQuery';
+import questionIcon from '../assets/question-circle.svg';
+import premiumIcon from '../assets/bookmark-star.svg';
+import storeIcon from '../assets/shop.svg';
+import buyingIcon from '../assets/box-seam.svg';
+import advertIcon from '../assets/cash-stack.svg';
+import sellingIcon from '../assets/cash-coin.svg';
+
+enum DropdownItemType {
+  ADVERTS = 'My Adverts',
+  SELLING = 'Selling',
+  BUYING = 'Buying',
+  PROFILE = 'Store Details',
+  PREMIUM = 'Premium',
+  HELP = 'Help',
+  LOGOUT = 'Logout',
+}
 
 interface DropdownItem {
-  title: string;
+  index: number;
+  type: DropdownItemType;
   icon: string;
 }
 
@@ -23,27 +36,38 @@ export const UserIconDropdown: FC = () => {
   const [isDropdownOpen, setDropdownOpen] = useState(false);
   const elementsDropdown: DropdownItem[] = [
     {
-      title: 'My Adverts',
+      index: 0,
+      type: DropdownItemType.ADVERTS,
       icon: advertIcon,
     },
     {
-      title: 'Selling',
-      icon: orderIcon,
+      index: 1,
+      type: DropdownItemType.SELLING,
+      icon: sellingIcon,
     },
     {
-      title: 'Buying',
-      icon: orderIcon,
+      index: 2,
+      type: DropdownItemType.BUYING,
+      icon: buyingIcon,
     },
     {
-      title: 'Profile',
-      icon: userProfileIcon,
+      index: 3,
+      type: DropdownItemType.PROFILE,
+      icon: storeIcon,
     },
     {
-      title: 'Premium',
+      index: 4,
+      type: DropdownItemType.PREMIUM,
       icon: premiumIcon,
     },
     {
-      title: 'Logout',
+      index: 5,
+      type: DropdownItemType.HELP,
+      icon: questionIcon,
+    },
+    {
+      index: 6,
+      type: DropdownItemType.LOGOUT,
       icon: logoutIcon,
     },
   ];
@@ -52,11 +76,12 @@ export const UserIconDropdown: FC = () => {
 
   const toggleDropDown = () => setDropdownOpen(!isDropdownOpen);
 
-  const handleItemClick = (item: string) => {
-    //TODO navigation
-    if (item === 'Logout') {
+  const handleItemClick = (item: DropdownItem) => {
+    if (item.type === DropdownItemType.LOGOUT) {
       // Handle logout click
       handleLogoutClick();
+    } else {
+      navigate(`/userInfo?select=${item.index}`);
     }
     setDropdownOpen(false); // Close dropdown
   };
@@ -64,7 +89,7 @@ export const UserIconDropdown: FC = () => {
   const DropdownList = elementsDropdown.map((el, index) => (
     <div
       key={index}
-      onClick={() => handleItemClick(el.title)}
+      onClick={() => handleItemClick(el)}
       style={{
         cursor: 'pointer',
         textAlign: 'center',
@@ -87,9 +112,10 @@ export const UserIconDropdown: FC = () => {
         height={16}
         style={{
           marginRight: 8,
+          filter: el.type !== 'Logout' ? 'invert(100%)' : undefined,
         }}
       />
-      <span>{el.title}</span>
+      <span>{el.type}</span>
     </div>
   ));
 
