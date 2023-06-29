@@ -9,8 +9,16 @@ import { AdvertCard } from '../AdvertCard';
  */
 export const TopAdverts: FC = () => {
   const responsive = {
+    huge_desktop: {
+      breakpoint: { max: 6000, min: 3000 },
+      items: 5,
+    },
+    big_desktop: {
+      breakpoint: { max: 3000, min: 2000 },
+      items: 5,
+    },
     desktop: {
-      breakpoint: { max: 3000, min: 1400 },
+      breakpoint: { max: 2000, min: 1400 },
       items: 3,
     },
     tablet: {
