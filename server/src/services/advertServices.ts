@@ -206,6 +206,7 @@ export const getPopularCategories = async (limit: number) => {
 export const getPopularAdverts = async (limit: number) => {
   logger.debug(`${serviceName}: Requesting most popular adverts`);
   return advertModel.aggregate([
+    { $match: { status: 'Ongoing' } },
     { $unwind: '$offers' },
     {
       $group: {
