@@ -164,3 +164,31 @@ export const getAllAdvertsByStore = asyncHandler(
     res.status(200).json(adverts);
   },
 );
+
+/**
+ * This method get the most popular categories (number specified as query param)
+ *
+ * @param req - The request object
+ * @param res - The response object
+ *
+ * @returns an array of strings containing the most popular categories
+ */
+export const getPopularCategories = asyncHandler(
+  async (req: AuthenticatedRequest, res: Response) => {
+    const limit = req.query.limit ? parseInt(req.query.limit as string) : 6;
+    const categories = await getPopularCategoriesService(limit);
+    res.status(200).json({ categories });
+  },
+);
+
+export const getPopularAdverts = asyncHandler(
+  async (req: AuthenticatedRequest, res: Response) => {
+    const limit = req.query.limit ? parseInt(req.query.limit as string) : 10;
+    const adverts = await getPopularAdvertsService(limit);
+    const results = [] as Advert[];
+    for (const advert of adverts) {
+      results.push(await findAdvertById(advert._id));
+    }
+    res.status(200).json({ results });
+  },
+);
