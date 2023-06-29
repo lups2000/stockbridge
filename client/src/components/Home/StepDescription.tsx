@@ -34,7 +34,7 @@ export function StepDescription(props: StepDescriptionProps) {
       >
         {props.number + '.'}
       </Title>
-      <Image style={{ alignSelf: 'center' }} src={props.icon} />
+      <Image style={{ alignSelf: 'center', width: 70, height: 70 }} src={props.icon} />
       <BodyText
         style={{
           textAlign: 'center',

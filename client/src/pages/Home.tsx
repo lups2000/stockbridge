@@ -1,23 +1,23 @@
-import { PostOrSearch } from '../components/Home/PostOrSearch';
-
 import { Page } from '../components/Page';
-import { useMediaQuery } from '@mui/material';
-import { AdvertsSection } from '../components/Home/AdvertsSection';
 import { Instructions } from '../components/Home/Instructions';
+import { MainArea } from '../components/Home/MainArea';
+import { TopCategories } from '../components/Home/TopCategories';
+import { TopAdverts } from '../components/Home/TopAdverts';
 
 export function Home() {
-  const matches = useMediaQuery('(min-width: 768px)');
-
   return (
     <Page>
-      <div
-        style={{
-          marginBottom: '100px',
-        }}
-      >
-        <PostOrSearch />
+      <div>
+        <MainArea />
         <Instructions />
-        <AdvertsSection />
+        <div style={{marginTop: 25, marginBottom: 25}}>
+          <div>
+            <TopCategories />
+          </div>
+          <div>
+            <TopAdverts />
+          </div>
+        </div>
       </div>
     </Page>
   );
