@@ -60,12 +60,124 @@ export const delAdvert = async (id: string) => {
 
 /**
  * Find all adverts
+ * @param page page number
+ * @param limit number of items per page
+ * @param search search string
+ * @param sortBy sort string
+ * @param radius radius in km
+ * @param center center of the search area
+ * @param queryStr query string
  * @param populate determines if the result should be populated
  * @returns Promise containing all adverts
  */
-export const findAllAdverts = async (populate = true) => {
-  logger.debug(`${serviceName}: Finding all adverts`);
-  return await populateResult(advertModel.find(), populate);
+
+export const findAllAdverts = async (
+  page: number,
+  limit: number,
+  search?: string,
+  sortBy?: string[],
+  radius?: number,
+  center?: number[],
+  queryStr?: string,
+  populate = true,
+) => {
+  logger.debug(`${serviceName}: Finding all adverts with pagination`);
+  logger.debug(`${serviceName}: Query string: ${queryStr}`);
+  logger.debug(`${serviceName}: Sort string: ${sortBy}`);
+  logger.debug(`${serviceName}: Page: ${page}`);
+  logger.debug(`${serviceName}: Limit: ${limit}`);
+  logger.debug(`${serviceName}: Search: ${search}`);
+
+  let queryFilter = queryStr ? JSON.parse(queryStr) : {};
+
+  if (queryFilter?.category && queryFilter?.category.$in) {
+    queryFilter = {
+      ...queryFilter,
+      category: { $in: queryFilter.category.$in.split(',') },
+    };
+  }
+
+  if (search) {
+    queryFilter = {
+      ...queryFilter,
+      $text: { $search: search },
+    };
+  }
+
+  if (radius) {
+    queryFilter = {
+      ...queryFilter,
+      location: {
+        $geoWithin: {
+          $centerSphere: [center, radius / 6371],
+        },
+      },
+    };
+  }
+
+  logger.debug(`${serviceName}: Query filter: ${JSON.stringify(queryFilter)}`);
+
+  let query = advertModel.find(queryFilter);
+
+  query = populateResult(query, populate);
+
+  if (sortBy && sortBy?.length > 0) {
+    let sortParams: [string, -1 | 1][] = [['prioritized', -1]];
+    let isCreatedAtIncluded = false;
+
+    for (const sortParam of sortBy) {
+      let data: [string, -1 | 1];
+      if (sortParam.startsWith('-')) {
+        const key = sortParam.slice(1);
+        isCreatedAtIncluded = key === 'createdAt';
+        data = [key, -1];
+      } else {
+        data = [sortParam, 1];
+      }
+      sortParams.push(data);
+    }
+    if (!isCreatedAtIncluded) {
+      sortParams.push(['createdAt', -1]);
+    }
+    sortParams.push(['_id', -1]);
+    query = query.sort(sortParams);
+  } else {
+    logger.debug(`${serviceName}: No sort params, using default`);
+    query = query.sort({
+      prioritized: -1,
+      createdAt: -1,
+      _id: -1,
+    });
+  }
+
+  const startIndex = (page - 1) * limit;
+  const endIndex = page * limit;
+  const total = await advertModel.countDocuments(queryFilter);
+
+  query = query.skip(startIndex).limit(limit);
+
+  const results = await query;
+
+  const pagination: {
+    next?: { page: number; limit: number };
+    prev?: { page: number; limit: number };
+  } = {};
+
+  if (endIndex < total) {
+    pagination.next = {
+      page: page + 1,
+      limit,
+    };
+  }
+
+  if (startIndex > 0) {
+    pagination.prev = {
+      page: page - 1,
+      limit,
+    };
+  }
+  //  return await populateResult(advertModel.find(), populate);
+  return { results, pagination, totalNumberOfPages: Math.ceil(total / limit) };
 };
 
 /**
@@ -96,6 +208,45 @@ export const getAdvertsByStore = async (store: string, populate = true) => {
     `${serviceName}: Requesting all adverts of store: ${store}`,
   );
   return await populateResult(advertModel.find({ store: store }), populate);
+};
+
+/**
+ * Returns popular categories
+ *
+ * @param limit - number of categories to return
+ *
+ * @returns Promise containing the most popular categories
+ */
+
+export const getPopularCategories = async (limit: number) => {
+  logger.debug(`${serviceName}: Requesting most popular categories`);
+  return advertModel.aggregate([
+    { $match: { status: 'Ongoing' } },
+    {
+      $group: {
+        _id: '$category',
+        count: { $sum: 1 },
+      },
+    },
+    { $sort: { count: -1 } },
+    { $limit: limit },
+  ]);
+};
+
+export const getPopularAdverts = async (limit: number) => {
+  logger.debug(`${serviceName}: Requesting most popular adverts`);
+  return advertModel.aggregate([
+    { $match: { status: 'Ongoing' } },
+    { $unwind: '$offers' },
+    {
+      $group: {
+        _id: '$_id',
+        size: { $sum: 1 },
+      },
+    },
+    { $sort: { size: -1 } },
+    { $limit: limit },
+  ]);
 };
 
 /**

@@ -43,6 +43,23 @@ export enum ProductCategory {
   Flowers_And_Bouquets = 'Flowers And Bouquets',
 }
 
+export interface AdvertDto {
+  results?: PopulatedAdvert[];
+  totalNumberOfPages?: number;
+  pagination?: Pagination;
+}
+
+interface Pagination {
+  next?: {
+    page: number;
+    limit: number;
+  };
+  prev?: {
+    page: number;
+    limit: number;
+  };
+}
+
 export interface Advert {
   _id?: string;
   productname?: string;
@@ -112,8 +129,8 @@ export async function deleteAdvert(id: string): Promise<void> {
   });
 }
 
-export async function getAllAdverts(): Promise<PopulatedAdvert[]> {
-  return await apiClient.get<PopulatedAdvert[]>('/adverts/', {
+export async function getAllAdverts(): Promise<AdvertDto> {
+  return await apiClient.get<AdvertDto>('/adverts/', {
     withCredentials: true,
   });
 }

@@ -15,6 +15,7 @@ const env = cleanEnv(process.env, {
   JWT_COOKIE_EXPIRE: num({ default: 30 }),
   STRIPE_SECRET_KEY: str(),
   STRIPE_WEBHOOK_SECRET: str(),
+  MAPQUEST_API_KEY: str(),
 });
 
 export default env;
