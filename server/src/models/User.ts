@@ -137,6 +137,10 @@ const userSchema = new mongoose.Schema<User>({
       index: '2dsphere',
     },
   },
+  registrationCompleted: {
+    type: Types.Boolean,
+    default: false,
+  },
   address: addressSchema,
   subscription: subscriptionSchema,
   paymentMethod: paymentMethodSchema,

@@ -10,6 +10,7 @@ export interface CardProps {
   outline: boolean;
   buttonOnClick?: (amount: number, product: string) => () => void;
   disabled: boolean;
+  mutedText?: string;
 }
 const Card = (props: CardProps) => {
   return (
@@ -26,7 +27,7 @@ const Card = (props: CardProps) => {
       <BootStrapCard.Body>
         <BootStrapCard.Title className="pricing-card-title">
           {`${props.price}€`}
-          <small className="text-muted"> /mo</small>
+          <small className="text-muted"> {props.mutedText || ''}</small>
         </BootStrapCard.Title>
         <ul className="list-unstyled mt-3 mb-4">
           {props.features.map((feature, i) => (

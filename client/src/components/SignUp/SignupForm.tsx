@@ -1,9 +1,16 @@
-import React, { ChangeEvent, FC, FormEvent, useContext, useState } from 'react';
+import React, {
+  ChangeEvent,
+  FC,
+  FormEvent,
+  useContext,
+  useEffect,
+  useState,
+} from 'react';
 import { Title } from '../Text/Title';
 import { palette } from '../../utils/colors';
 import { Button, Form } from 'react-bootstrap';
 import { BodyText } from '../Text/BodyText';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import addIcon from '../../assets/add.svg';
 import backIcon from '../../assets/back.svg';
 import {
@@ -12,9 +19,9 @@ import {
   checkPasswordLength,
   checkPasswordMatch,
 } from '../../utils/functions';
-import { ApiClient } from '../../api/apiClient';
 import { LoginContext } from '../../contexts/LoginContext';
 import { PopulatedUser, User, UserResponse } from '../../api/collections/user';
+import { register, updateUser } from '../../api/collections/user';
 import PaymentElement, { PaymentType } from '../Payment/PaymentElement';
 
 enum ErrorType {
@@ -32,6 +39,8 @@ enum ErrorType {
  */
 export const SignupForm: FC = () => {
   const navigate = useNavigate();
+
+  const location = useLocation();
 
   const [isFirstPartCompleted, setIsFirstPartCompleted] =
     useState<boolean>(false);
@@ -61,6 +70,15 @@ export const SignupForm: FC = () => {
 
   const { user, setUser, setLoggedIn } = useContext(LoginContext);
 
+  useEffect(() => {
+    const searchParams = new URLSearchParams(location.search);
+    const selectValue = searchParams.get('step');
+
+    if (selectValue && selectValue === '2') {
+      setIsFirstPartCompleted(true);
+    }
+  }, [location.search]);
+
   //when the user clicks for the first time on "sign up"
   const handleFirstClick = () => {
     if (email && password && repeatPassword) {
@@ -76,15 +94,7 @@ export const SignupForm: FC = () => {
         setError(ErrorType.PASSWORD_MATCH);
         return;
       }
-      new ApiClient() //TODO: Change this to user collections
-        .post<UserResponse>(
-          '/auth/register',
-          {
-            email,
-            password,
-          },
-          { withCredentials: true },
-        )
+      register({ email, password })
         .then((res) => {
           setUser(res.user);
           setIsFirstPartCompleted(true);
@@ -107,27 +117,23 @@ export const SignupForm: FC = () => {
     e.preventDefault(); // Prevent the default submit and page reload
 
     if (address && city && postalCode && country) {
-      new ApiClient() //TODO: Change this to user collections
-        .put<PopulatedUser>(
-          `/users/${user?._id}`,
-          {
-            name: shopName,
-            address: {
-              street: address,
-              houseNumber,
-              city,
-              postalCode,
-              country,
-            },
-            paymentMethod: {
-              name: cardName,
-              cardNumber,
-              expirationDate: expDatePaymentToDate(expDateCard ?? ''),
-              cvv: cvvCard,
-            },
-          },
-          { withCredentials: true },
-        )
+      updateUser(user?._id!, {
+        name: shopName,
+        address: {
+          street: address,
+          houseNumber,
+          city,
+          postalCode,
+          country,
+        },
+        paymentMethod: {
+          name: cardName,
+          cardNumber,
+          expirationDate: expDatePaymentToDate(expDateCard ?? ''),
+          cvv: cvvCard,
+        },
+        registrationCompleted: true,
+      })
         .then((response) => {
           setError(undefined);
           setLoggedIn(true);
