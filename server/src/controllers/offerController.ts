@@ -226,8 +226,9 @@ async function _checkUserCanEditOrDeleteOffer(req: AuthenticatedRequest) {
   let userId = new ObjectId(req.user?.id);
   const { id } = req.params;
 
-  // The user editing or deleting must be the offeror.
-  if ((await findOfferById(id, false)).offeror.equals(userId)) {
+  // The user editing or deleting must be the offeror or offeree.
+  let offer = await findOfferById(id, false);
+  if (!offer.offeror.equals(userId) && !offer.offeror.equals(userId)) {
     throw new AppError(
       'Not authorized to edit this route',
       'Not authorized to edit this route',
