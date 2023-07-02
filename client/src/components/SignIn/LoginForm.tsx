@@ -4,8 +4,7 @@ import { palette } from '../../utils/colors';
 import { BodyText } from '../Text/BodyText';
 import { useNavigate } from 'react-router-dom';
 import { checkEmail } from '../../utils/functions';
-import { ApiClient } from '../../api/apiClient';
-import { UserResponse } from '../../api/collections/user';
+import { login } from '../../api/collections/user';
 import { LoginContext } from '../../contexts/LoginContext';
 
 enum ErrorType {
@@ -33,21 +32,18 @@ export const LoginForm: FC = () => {
 
     if (email && password) {
       if (checkEmail(email)) {
-        await new ApiClient()
-          .post<UserResponse>(
-            '/auth/login',
-            {
-              email,
-              password,
-            },
-            { withCredentials: true },
-          )
+        await login(email, password)
           .then((response) => {
-            setError(undefined);
-            setLoggedIn(true);
-            setUser(response.user);
+            if (response.user.registrationCompleted) {
+              setError(undefined);
+              setLoggedIn(true);
+              setUser(response.user);
 
-            navigate('/'); //return to the homepage
+              navigate('/');
+            } else {
+              setUser(response.user);
+              navigate('/signUp?step=2');
+            }
           })
           .catch((error) => {
             if (error.response?.status === 401) {

@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 import Card, { CardProps } from '../Premium/Card';
-import { Container, Row } from 'react-bootstrap';
+import { Alert, Container, Row } from 'react-bootstrap';
 import PaymentElement, { PaymentType } from '../../Payment/PaymentElement';
 import { LoginContext } from '../../../contexts/LoginContext';
 import {
@@ -44,6 +44,7 @@ const subscriptionPlans: CardProps[] = [
     buttonLabel: 'Purchase',
     outline: true,
     disabled: false,
+    mutedText: '/month',
   },
   {
     header: 'Advanced Subscription',
@@ -52,6 +53,7 @@ const subscriptionPlans: CardProps[] = [
     buttonLabel: 'Purchase',
     outline: true,
     disabled: false,
+    mutedText: '/month',
   },
   {
     header: 'Premium Subscription',
@@ -64,6 +66,7 @@ const subscriptionPlans: CardProps[] = [
     buttonLabel: 'Purchase',
     outline: true,
     disabled: false,
+    mutedText: '/month',
   },
 ];
 
@@ -73,6 +76,8 @@ const PremiumContent = () => {
   const [product, setProduct] = useState('');
   const [promptPay, setPromptPay] = useState<boolean>(false);
   const [invoiceLink, setInvoiceLink] = useState<string>('');
+  const [isSubscriptionActive, setIsSubscriptionActive] =
+    useState<boolean>(false);
   // const [isLoading, setIsLoading] = useState<boolean>(false);
   const { user } = useContext(LoginContext);
   if (
@@ -102,14 +107,17 @@ const PremiumContent = () => {
     });
   }
   useEffect(() => {
-    if (
-      user?.subscription &&
-      [SubscriptionStatus.UNPAID, SubscriptionStatus.PAST_DUE].includes(
-        user?.subscription?.status,
-      )
-    ) {
-      setPromptPay(true);
-      getInvoiceLink().then((link) => setInvoiceLink(link));
+    if (user?.subscription) {
+      switch (user?.subscription?.status) {
+        case SubscriptionStatus.UNPAID:
+        case SubscriptionStatus.PAST_DUE:
+          setPromptPay(true);
+          getInvoiceLink().then((link) => setInvoiceLink(link));
+          break;
+        case SubscriptionStatus.ACTIVE:
+          setIsSubscriptionActive(true);
+          break;
+      }
     }
   }, [user]);
 
@@ -132,6 +140,7 @@ const PremiumContent = () => {
               }
         }
         disabled={obj.disabled}
+        mutedText={obj.mutedText}
       />
     );
   });
@@ -161,6 +170,30 @@ const PremiumContent = () => {
         <Row className="mb-5 justify-content-center text-center">
           <h2> Subscription Plans </h2>
         </Row>
+        <Row className="mx-5 mb-5 justify-content-center">
+          {isSubscriptionActive && (
+            <Alert variant="secondary">
+              <>
+                <h4>Subscription Details</h4>
+                <br />
+                Subscription Status:{' '}
+                <b>{user?.subscription?.status.toLocaleUpperCase()} </b>
+                <br />
+                Subscription Type: <b> {user?.subscription?.type} </b>
+                <br />
+                Subscription Start Date:
+                <b>
+                  <> {user?.subscription?.from} </>
+                </b>
+                <br />
+                Subscription End Date:
+                <b>
+                  <> {user?.subscription?.to} </>
+                </b>
+              </>
+            </Alert>
+          )}
+        </Row>
         {promptPay && (
           <Row className="mb-5 justify-content-center text-center">
             <h4>
@@ -178,6 +211,16 @@ const PremiumContent = () => {
         </Row>
         <Row className="my-5 justify-content-center text-center">
           <h2> Prioritization Tickets </h2>
+        </Row>
+        <Row className="mx-5 mb-5 justify-content-center">
+          <Alert variant="secondary">
+            <>
+              <h4>
+                Number of Prioritization Tickets Available:{' '}
+                <b>{user?.prioritisationTickets || 0}</b>
+              </h4>
+            </>
+          </Alert>
         </Row>
         <Row className="d-flex flex-row flex-nowrap overflow-auto justify-content-center">
           {tickets}

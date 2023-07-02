@@ -3,7 +3,6 @@ import userLogo from '../assets/user-logo.svg';
 import { Image } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import logoutIcon from '../assets/logout.svg';
-import { ApiClient } from '../api/apiClient';
 import { LoginContext } from '../contexts/LoginContext';
 import useMediaQuery from '../hooks/useMediaQuery';
 import questionIcon from '../assets/question-circle.svg';
@@ -12,6 +11,7 @@ import storeIcon from '../assets/shop.svg';
 import buyingIcon from '../assets/box-seam.svg';
 import advertIcon from '../assets/cash-stack.svg';
 import sellingIcon from '../assets/cash-coin.svg';
+import { logout } from '../api/collections/user';
 
 enum DropdownItemType {
   ADVERTS = 'My Adverts',
@@ -141,8 +141,7 @@ export const UserIconDropdown: FC = () => {
   ));
 
   const handleLogoutClick = () => {
-    new ApiClient()
-      .post('/auth/logout', {}, { withCredentials: true })
+    logout()
       .then(() => {
         setLoggedIn(false);
         navigate('/'); //come back to homepage

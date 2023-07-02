@@ -11,6 +11,7 @@ import logo from '../assets/logo.svg';
 import { useContext } from 'react';
 import { LoginContext } from '../contexts/LoginContext';
 import { palette } from '../utils/colors';
+import { logout } from '../api/collections/user';
 import { UserIconDropdown } from './UserIconDropdown';
 import { CategoriesDropdown } from './CategoriesDropdown';
 import useMediaQuery from '../hooks/useMediaQuery';

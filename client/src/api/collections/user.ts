@@ -62,6 +62,8 @@ export interface PopulatedUser {
   address?: Address;
   subscription?: Subscription;
   paymentMethod?: PaymentMethod;
+  stripeCustomerId?: string;
+  registrationCompleted?: boolean;
 }
 
 export interface UserResponse {
@@ -101,15 +103,23 @@ export async function login(
 }
 
 export async function register(user: User): Promise<UserResponse> {
-  return await apiClient.post<UserResponse>(`/auth/register`, user);
+  return await apiClient.post<UserResponse>(`/auth/register`, user, {
+    withCredentials: true,
+  });
 }
 
-export async function verify(): Promise<User> {
-  return await apiClient.get<User>(`/auth/verify`);
+export async function verify(): Promise<PopulatedUser> {
+  return await apiClient.get<PopulatedUser>(`/auth/verify`, {
+    withCredentials: true,
+  });
 }
 
 export async function logout(): Promise<string> {
-  return await apiClient.post<string>(`/auth/logout`);
+  return await apiClient.post<string>(
+    `/auth/logout`,
+    {},
+    { withCredentials: true },
+  );
 }
 
 export async function getStore(id: String): Promise<PopulatedUser> {
