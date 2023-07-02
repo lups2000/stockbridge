@@ -46,7 +46,7 @@ export const LoginContextProvider = ({
           setUser(undefined);
         });
     };
-    //setIsLoading(true);
+    setIsLoading(true);
     checkAuthentication();
   }, []);
 

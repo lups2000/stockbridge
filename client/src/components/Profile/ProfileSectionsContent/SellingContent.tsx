@@ -1,4 +1,4 @@
-import React, { ReactElement, useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import Tabs from '../../ContentTabs/Tabs';
 import ContentTab from '../../ContentTabs/ContentTab';
 import { LoginContext } from '../../../contexts/LoginContext';

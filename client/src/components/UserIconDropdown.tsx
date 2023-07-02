@@ -84,13 +84,25 @@ export const UserIconDropdown: FC = () => {
 
   const toggleDropDown = () => setDropdownOpen(!isDropdownOpen);
 
+  /** Autoclicks the selected tab section instead of renavigating.
+  */ 
+  const autoClickTab = (index : number) => {
+    const tabButton = document.getElementsByClassName("profile-section-tab-button")[index] as HTMLElement;
+    tabButton.click();
+  }
+
   const handleItemClick = (item: DropdownItem) => {
     if (item.type === DropdownItemType.LOGOUT) {
       // Handle logout click
       handleLogoutClick();
     } else {
+      // Checks that the current page is userInfo
+      if (window.location.pathname.includes('/userInfo')) {
+        autoClickTab(item.index);
+      }
+
       navigate(`/userInfo?${item.link}`);
-      window.location.reload();
+      //window.location.reload();
     }
     setDropdownOpen(false); // Close dropdown
   };
