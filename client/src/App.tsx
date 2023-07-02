@@ -13,11 +13,10 @@ import { ContactUs } from './pages/ContactUs';
 
 function App() {
   return (
-    <SelectedTabContextProvider>
     <LoginContextProvider>
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/userInfo" element={<UserInfo />} />
+        <Route path="/userInfo" element={<SelectedTabContextProvider><UserInfo /></SelectedTabContextProvider>} />
         <Route path="/signUp" element={<SignUp />} />
         <Route path="/signIn" element={<SignIn />} />
         <Route path="/about" element={<About />} />
@@ -25,7 +24,6 @@ function App() {
         <Route path="/productoverview/:id" Component={ProductOverview}></Route>
       </Routes>
     </LoginContextProvider>
-    </SelectedTabContextProvider>
   );
 }
 
