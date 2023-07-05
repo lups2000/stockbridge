@@ -13,6 +13,8 @@ import {
 import { LoginContext } from '../../contexts/LoginContext';
 import { palette } from '../../utils/colors';
 import { Ratings } from '../Ratings';
+import { useNavigate } from 'react-router-dom';
+require("./OfferModal.scss")
 
 type OfferContentProps = {
   isShowing: boolean;
@@ -39,6 +41,7 @@ function colorMap(status: OfferStatus): string {
 }
 const OfferModal: FC<OfferContentProps> = (props) => {
   const { user, loggedIn } = useContext(LoginContext);
+  const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
     Quantity: props.offer?.quantity ? props.offer?.quantity : 0,
@@ -181,7 +184,8 @@ const OfferModal: FC<OfferContentProps> = (props) => {
             }}
           >
             <Row>
-              <Form.Label>{props.advert?.productname}</Form.Label>
+              <Form.Label className='advert-name-offer-modal'
+              onClick={() => navigate(`/productoverview/${props.advert?._id}`)}>{props.advert?.productname}</Form.Label>
             </Row>
             <Row
               style={{
