@@ -5,7 +5,7 @@ import { LoginContext } from '../../../contexts/LoginContext';
 import { PopulatedOffer, getUserSpecificOffers } from '../../../api/collections/offer';
 import { PopulatedAdvert } from '../../../api/collections/advert';
 import NoResultsMessage from '../NoResultsMessage';
-import { OfferBarUserProfile } from '../../Offers/OfferBarUserProfile';
+import { OfferBarUserProfile } from '../../Offers/OfferBarProfile/OfferBarUserProfile';
 
 /**
  * Component that displays the content of Buying section.
@@ -43,14 +43,14 @@ const BuyingContent: React.FC = () => {
         <ContentTab title="Incoming Offers">
         {incomingOffers.length > 0 ? incomingOffers.map((offer, _) => {
             return (
-              <OfferBarUserProfile offer={offer} advert={offer.advert as PopulatedAdvert} />
+              <OfferBarUserProfile offer={offer} advert={offer.advert as PopulatedAdvert} outgoing= {false} />
             );
           }) : <NoResultsMessage />}
         </ContentTab>
         <ContentTab title="Outgoing Offers">
         {outgoingOffers.length > 0 ? outgoingOffers.map((offer, _) => {
             return (
-              <OfferBarUserProfile offer={offer} advert={offer.advert as PopulatedAdvert} />
+              <OfferBarUserProfile offer={offer} advert={offer.advert as PopulatedAdvert}  outgoing= {true}/>
             );
           }) : <NoResultsMessage />}
         </ContentTab>

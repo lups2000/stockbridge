@@ -1,0 +1,75 @@
+.product-details {
+    display: grid;
+    width: 100%;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(2, 1fr);
+    grid-column-gap: 0px;
+    grid-row-gap: 10px;
+  }
+  
+  .div1 {
+    //grid-area: 1 / 1 / 2 / 2;
+    display: flex;
+  }
+  
+  .div2 {
+    //grid-area: 1 / 2 / 2 / 3;
+    display: flex; 
+    justify-content: flex-end
+  }
+  
+  .div3 {
+    //grid-area: 2 / 1 / 3 / 2;
+    display: flex; 
+    justify-content: flex-end
+  }
+  
+  .div4 {
+    float: right;
+    grid-area: 2 / 2 / 3 / 3;
+    display: flex; 
+    justify-content: flex-end
+  }
+  
+  .product-info {
+    display: flex;
+    flex: fill;
+  }
+  
+  .product-bar {
+    background-color: white;
+    border-radius: 15px;
+    //margin-top: 1em;
+    margin-bottom: 2em;
+    max-width: 99%;
+    padding: 0.5em;
+    border: 4px solid lightgray;
+    cursor: pointer;
+  }
+  
+  .no-results-message {
+    position: absolute;
+    top: 70%;
+    left: 55%;
+    transform: translate(-50%, -50%);
+    font-size: 2em;
+    color: #727272;
+  }
+
+
+  .offer-bar-user-profile {
+    border: 'solid';
+    border-color: 'lightgray';
+    border-radius: '15px';
+    justify-content: 'start';
+    width: '100%';
+    cursor: 'pointer';
+  }
+
+
+  .offer-status-icon {
+    align-self: center;
+    margin-top: 40%;
+    margin-left: 50%;
+    opacity: 50%;
+  }
