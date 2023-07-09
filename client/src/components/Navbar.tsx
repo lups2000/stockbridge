@@ -6,15 +6,15 @@ import {
   Container,
   Form,
 } from 'react-bootstrap';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import logo from '../assets/logo.svg';
-import { useContext } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { LoginContext } from '../contexts/LoginContext';
 import { palette } from '../utils/colors';
-import { logout } from '../api/collections/user';
 import { UserIconDropdown } from './UserIconDropdown';
 import { CategoriesDropdown } from './CategoriesDropdown';
 import useMediaQuery from '../hooks/useMediaQuery';
+import "./override.css"
 
 /**
  * This component represents the navbarBS of our website.
@@ -27,12 +27,39 @@ export function Navbar() {
   const matches = useMediaQuery('(min-width: 992px)'); // to detect if the navbar is expanded or not(only way I've found)
   //if matches is true is expanded
 
+  const [search, setSearch] = useSearchParams();
+
+  const [searchInput, setSearchInput] = useState<string>(search.get('q') ?? '');
+
+  const handleSearchClick = () => {
+    if (searchInput.length > 0) {
+      const currentUrl = window.location.pathname;
+      if (currentUrl === '/adverts') {
+        search.set('q', searchInput);
+        setSearch(search,{replace: true});
+      } else {
+        navigate(`/adverts?q=${searchInput}`);
+      }
+    }
+  };
+
+  useEffect(() => {
+    if (searchInput.length > 0) {
+      return;
+    } else {
+      search.delete('q');
+      setSearch(search,{replace: true});
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [searchInput]);
+
   return (
     <>
       <NavbarBS
         expand="lg"
         sticky="top"
         style={{ backgroundColor: palette.pageBG }}
+        className='no-padding-right'
       >
         <Container fluid>
           <NavbarBS.Brand>
@@ -75,6 +102,14 @@ export function Navbar() {
                 className="me-2"
                 aria-label="Search"
                 style={{ borderRadius: 8, padding: 8 }}
+                value={searchInput}
+                onChange={(e) => setSearchInput(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter') {
+                    e.preventDefault()
+                    handleSearchClick();
+                  }
+                }}
               />
               <Button
                 className="font-link"
@@ -84,6 +119,7 @@ export function Navbar() {
                   borderColor: palette.subSectionsBgAccent,
                   borderRadius: 8,
                 }}
+                onClick={handleSearchClick}
               >
                 Search
               </Button>
