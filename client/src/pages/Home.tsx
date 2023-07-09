@@ -10,7 +10,7 @@ export function Home() {
       <div>
         <MainArea />
         <Instructions />
-        <div style={{marginTop: 25, marginBottom: 25}}>
+        <div style={{ marginTop: 25, marginBottom: 25 }}>
           <div>
             <TopCategories />
           </div>

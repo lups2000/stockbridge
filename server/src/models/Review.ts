@@ -1,5 +1,7 @@
 import mongoose from 'mongoose';
+import logger from '../config/logger';
 import { Review } from '../entities/reviewEntity';
+import advertModel from './Advert';
 
 const Types = mongoose.Schema.Types;
 
@@ -30,5 +32,20 @@ const reviewSchema = new mongoose.Schema<Review>({
   },
 });
 
+reviewSchema.pre<Review>('save', async function (next) {
+  try {
+    await advertModel
+      .findOneAndUpdate(
+        { _id: this.reviewedAdvert.id },
+        { $push: { reviews: this } },
+        { new: true, useFindAndModify: false },
+      )
+      .exec();
+    next();
+  } catch (error) {
+    logger.error(`Failed updating advert corresponding to review ${this.id}`);
+  }
+  next();
+});
 const reviewModel = mongoose.model('Review', reviewSchema, 'reviews');
 export default reviewModel;

@@ -24,9 +24,7 @@ offerRouter
   .route('/getOffersByOfferee/:offeree')
   .get(protect, getOffersByOfferee);
 
-offerRouter
-  .route('/getUserSpecificOffers')
-  .get(protect, getUserSpecificOffers);
+offerRouter.route('/getUserSpecificOffers').get(protect, getUserSpecificOffers);
 
 offerRouter.route('/getOffersByAdvert/:advert').get(protect, getOffersByAdvert);
 
@@ -35,7 +33,3 @@ offerRouter
   .get(protect, getOffer)
   .put(protect, putOffer)
   .delete(protect, deleteOffer);
-
-
-
-

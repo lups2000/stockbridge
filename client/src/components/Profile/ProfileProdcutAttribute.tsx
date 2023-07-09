@@ -10,7 +10,9 @@ type ProfileProdcutAttributeProps = {
   margin?: string;
   fontSize?: string;
 };
-const ProfileProdcutAttribute: React.FC<ProfileProdcutAttributeProps> = (props) => {
+const ProfileProdcutAttribute: React.FC<ProfileProdcutAttributeProps> = (
+  props,
+) => {
   return (
     <div
       style={{

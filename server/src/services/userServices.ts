@@ -15,7 +15,7 @@ const serviceName = 'userServices';
  * @returns Promise containing the user
  */
 export const findUserById = async (id: string) => {
-  logger.debug(`${serviceName}: Finding user with id: ${id}`);
+  //logger.debug(`${serviceName}: Finding user with id: ${id}`);
   const user = await userModel.findById(id);
 
   if (!user) {
@@ -23,7 +23,7 @@ export const findUserById = async (id: string) => {
     throw new AppError('User not found', 'User not found', 404);
   }
 
-  logger.debug(`${serviceName}: Returning user ${user}`);
+  //logger.debug(`${serviceName}: Returning user ${user}`);
   return user;
 };
 

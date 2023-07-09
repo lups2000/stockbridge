@@ -9,9 +9,9 @@ export enum AdvertType {
 }
 
 export enum AdvertStatus {
-  Ongoing,
-  Closed,
-  Deleted,
+  Ongoing = 'Ongoing',
+  Closed = 'Closed',
+  Deleted = 'Deleted',
 }
 export enum Colors {
   Blue = 'Blue',
@@ -135,7 +135,9 @@ export async function getAllAdverts(): Promise<AdvertDto> {
   });
 }
 
-export async function getAdvertsByUser(store: string | undefined): Promise<Advert[]> {
+export async function getAdvertsByUser(
+  store: string | undefined,
+): Promise<Advert[]> {
   return await apiClient.get<Advert[]>(`/adverts/getAdvertsByStore/${store}`, {
     withCredentials: true,
   });

@@ -15,7 +15,7 @@ import StoreDetailsForm from '../components/Profile/StoreDetails/StoreDetailsFor
 import { LoginContext } from '../contexts/LoginContext';
 import { Spinner } from 'react-bootstrap';
 import SelectedTabContext from '../contexts/SelectedTabContext';
-import { createBrowserHistory } from "history";
+import { createBrowserHistory } from 'history';
 
 /**
  * Contains the tabs displayed on the sidebar of the profile page and their corresponding content
@@ -27,49 +27,49 @@ const leftTabs: {
   content: ReactElement;
   isSelected: boolean;
 }[] = [
-    {
-      text: 'My Adverts',
-      link: 'MyAdverts',
-      icon: 'bi-cash-stack',
-      content: <MyAdvertsContent />,
-      isSelected: false,
-    },
-    {
-      text: 'Selling',
-      link: 'Selling',
-      icon: 'bi-cash-coin',
-      content: <SellingContent />,
-      isSelected: true,
-    },
-    {
-      text: 'Buying',
-      link: 'Buying',
-      icon: 'bi-box-seam',
-      content: <BuyingContent />,
-      isSelected: false,
-    },
-    {
-      text: 'Store Details',
-      link: 'StoreDetails',
-      icon: 'bi-shop',
-      content: <StoreDetailsForm />,
-      isSelected: false,
-    },
-    {
-      text: 'Premium',
-      link: 'Premium',
-      icon: 'bi-bookmark-star',
-      content: <PremiumContent />,
-      isSelected: false,
-    },
-    {
-      text: 'Help And FAQ',
-      link: 'HelpAndFAQ',
-      icon: 'bi-question-circle',
-      content: <HelpQaContent children={[]} />,
-      isSelected: false,
-    },
-  ];
+  {
+    text: 'My Adverts',
+    link: 'MyAdverts',
+    icon: 'bi-cash-stack',
+    content: <MyAdvertsContent />,
+    isSelected: false,
+  },
+  {
+    text: 'Selling',
+    link: 'Selling',
+    icon: 'bi-cash-coin',
+    content: <SellingContent />,
+    isSelected: true,
+  },
+  {
+    text: 'Buying',
+    link: 'Buying',
+    icon: 'bi-box-seam',
+    content: <BuyingContent />,
+    isSelected: false,
+  },
+  {
+    text: 'Store Details',
+    link: 'StoreDetails',
+    icon: 'bi-shop',
+    content: <StoreDetailsForm />,
+    isSelected: false,
+  },
+  {
+    text: 'Premium',
+    link: 'Premium',
+    icon: 'bi-bookmark-star',
+    content: <PremiumContent />,
+    isSelected: false,
+  },
+  {
+    text: 'Help And FAQ',
+    link: 'HelpAndFAQ',
+    icon: 'bi-question-circle',
+    content: <HelpQaContent children={[]} />,
+    isSelected: false,
+  },
+];
 
 /**
  * The page containing the user information (profile): Ads, Offers, Subsriptions...
@@ -86,17 +86,18 @@ export function UserInfo() {
   useEffect(() => {
     const filterParams = history.location.search.substring(1);
     if (filterParams) {
-      tabContext.selectedProfileSection = Number(leftTabs.findIndex(x => filterParams === x.link));
+      tabContext.selectedProfileSection = Number(
+        leftTabs.findIndex((x) => filterParams === x.link),
+      );
     }
-  }, []);
+  }, [history.location.search, tabContext]);
 
   /**
    * Sets the link to the active tab.
    */
   useEffect(() => {
     history.push(`?${leftTabs[tabContext.selectedProfileSection].link}`);
-  }, [tabContext.selectedProfileSection]);
-
+  }, [history, tabContext.selectedProfileSection]);
 
   return (
     <Page>
@@ -145,8 +146,8 @@ export function UserInfo() {
           />
         ) : (
           <div className="col-10" style={{ paddingTop: '5em' }}>
-          {leftTabs[tabContext.selectedProfileSection].content}
-        </div>
+            {leftTabs[tabContext.selectedProfileSection].content}
+          </div>
         )}
       </div>
     </Page>

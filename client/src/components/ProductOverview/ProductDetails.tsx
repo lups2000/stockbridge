@@ -16,17 +16,16 @@ const ProductDetails = (advert: PopulatedAdvert) => {
         width: 'auto',
       }}
     >
-       <Image
-          style={{
-            width: '20em',
-            height: '20em',
-            borderRadius: '60px',
-            borderColor: 'transparent',
-            objectFit: 'fill'
-          }}
-          src={advert?.imageurl ? advert?.imageurl : imagePlaceholder}
-        />
-      
+      <Image
+        style={{
+          width: '20em',
+          height: '20em',
+          borderRadius: '60px',
+          borderColor: 'transparent',
+          objectFit: 'fill',
+        }}
+        src={advert?.imageurl ? advert?.imageurl : imagePlaceholder}
+      />
 
       <div
         style={{

@@ -96,9 +96,9 @@ export const ContactUs: FC = () => {
                     borderRadius: 50,
                     backgroundColor: 'white',
                     marginTop: 20,
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center"
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
                   }}
                 >
                   <Image
