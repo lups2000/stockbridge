@@ -49,6 +49,7 @@ export interface User {
   address?: string;
   subscription?: string;
   paymentMethod?: PaymentMethod;
+  location?: Location
 }
 export interface PopulatedUser {
   _id?: string;
@@ -64,12 +65,18 @@ export interface PopulatedUser {
   paymentMethod?: PaymentMethod;
   stripeCustomerId?: string;
   registrationCompleted?: boolean;
+  location?: Location
 }
 
 export interface UserResponse {
   message: string;
   user: PopulatedUser;
   jwtToken: string;
+}
+
+export interface Location {
+  type: string;
+  coordinates: [number, number];
 }
 
 const apiClient = new ApiClient();

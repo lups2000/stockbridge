@@ -79,6 +79,7 @@ export const TopAdverts: FC = () => {
                   description={item.description}
                   prioritized={item.prioritized}
                   creationDate={item.createdAt}
+                  fancyEffect={true}
                 />
               );
             })}
