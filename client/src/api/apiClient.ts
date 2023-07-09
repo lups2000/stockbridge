@@ -22,7 +22,7 @@ export class ApiClient {
     queryParams?: any,
   ): Promise<T> {
     return (await queryParams)
-      ? this.request<T>({ url, method: 'GET', params: queryParams , ...config })
+      ? this.request<T>({ url, method: 'GET', params: queryParams, ...config })
       : this.request<T>({ url, method: 'GET', ...config });
   }
 

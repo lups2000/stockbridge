@@ -26,7 +26,7 @@ export const TopAdverts: FC = () => {
       items: 2,
     },
     mobile: {
-      breakpoint: { max: 1000, min: 650},
+      breakpoint: { max: 1000, min: 650 },
       items: 1,
     },
   };

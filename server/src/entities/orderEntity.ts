@@ -1,15 +1,16 @@
 import { Offer } from './offerEntity';
 
-export enum ORDER_STATUS {
-  PAYMENT_PENDING,
-  SHIPMENT_PENDING,
-  RECEIVED,
+export enum OrderStatus {
+  PAYMENT_PENDING = 'Payment Pending',
+  SHIPMENT_PENDING = 'Shipment Pending',
+  RECEIVED = 'Received',
 }
 
 export interface Order {
   id: string;
   totalPrice: number;
   quantity: number;
-  status: ORDER_STATUS;
+  status: OrderStatus;
   offer: Offer;
+  createdAt: Date;
 }

@@ -74,12 +74,12 @@ export const EditAdvertModal: FC<EditAdvertContentProps> = (props) => {
     const { name, value, type } = event.target;
     setFormData({
       ...formData,
-      [name]: type == 'number' ? parseInt(value) : value,
+      [name]: type === 'number' ? parseInt(value) : value,
     });
     setErrors({
       ...errors,
       [name]: value
-        ? type == 'number'
+        ? type === 'number'
           ? parseInt(value) > 0
             ? ''
             : `${name} must be higher than 0`

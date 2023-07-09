@@ -32,7 +32,7 @@ export const AdvertCard: FC = () => {
           gap: 50,
           paddingLeft: 5,
           paddingRight: 5,
-          marginTop: 10
+          marginTop: 10,
         }}
       >
         <div style={{ display: 'flex', flexDirection: 'column' }}>
@@ -63,7 +63,9 @@ export const AdvertCard: FC = () => {
           jdkskdjakdjs kjdkajsdkja kdjkajkdjak
         </BodyText>
       </div>
-      <Button style={{ position: 'absolute', left: 10, bottom: 10 }}>View Advert</Button>
+      <Button style={{ position: 'absolute', left: 10, bottom: 10 }}>
+        View Advert
+      </Button>
       <BodyText
         style={{
           fontSize: 15,

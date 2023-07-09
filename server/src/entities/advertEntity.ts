@@ -1,3 +1,4 @@
+import { ObjectId } from 'mongodb';
 import { Offer } from './offerEntity';
 import { Review } from './reviewEntity';
 import { User, Location } from './userEntity';
@@ -8,9 +9,9 @@ export enum AdvertType {
 }
 
 export enum AdvertStatus {
-  Ongoing,
-  Closed,
-  Deleted,
+  Ongoing = 'Ongoing',
+  Closed = 'Closed',
+  Deleted = 'Deleted',
 }
 export enum Colors {
   Blue = 'Blue',

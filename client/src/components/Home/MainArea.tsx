@@ -5,7 +5,6 @@ import { Title } from '../Text/Title';
 import { useState } from 'react';
 import { EditAdvertModal } from '../ProductOverview/EditAdvertModal';
 
-
 export function MainArea() {
   const [showModal, setShowModal] = useState(false);
 

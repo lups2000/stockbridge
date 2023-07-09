@@ -57,12 +57,7 @@ export const TopCategories: FC = () => {
                 e.currentTarget.style.boxShadow = '0 0 0 rgba(0, 0, 0, 0.2)';
               }}
             >
-              <Image
-                src={icon}
-                alt="icon"
-                width={100}
-                height={100}
-              />
+              <Image src={icon} alt="icon" width={100} height={100} />
               <span
                 style={{ paddingLeft: 10, paddingRight: 10, marginTop: 20 }}
               >

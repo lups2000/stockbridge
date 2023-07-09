@@ -72,7 +72,6 @@ export const postOffer = asyncHandler(
         400,
       );
     }
-
     const offer = await createOffer(req.body);
     res.status(201).json(offer);
   },
@@ -183,7 +182,7 @@ export const getUserSpecificOffers = asyncHandler(
   async (req: AuthenticatedRequest, res: Response) => {
     const { user, advertType, offerType } = req.query;
     const userId = req.user?.id;
-    
+
     if (userId != user) {
       throw new AppError(
         'Not authorized to access this route',
@@ -203,16 +202,14 @@ export const getUserSpecificOffers = asyncHandler(
         break;
       }
       default: {
-        throw new AppError(
-          'Unknown offer type',
-          'Unknown offer type',
-          400,
-        );
+        throw new AppError('Unknown offer type', 'Unknown offer type', 400);
       }
     }
 
     // Forced casting for the type Advert
-    offers = offers.filter(x => (x.advert as unknown as Advert).type === advertType);
+    offers = offers.filter(
+      (x) => (x.advert as unknown as Advert).type === advertType,
+    );
 
     res.status(200).json(offers);
   },
@@ -235,6 +232,11 @@ async function _checkUserCanEditOrDeleteOffer(req: AuthenticatedRequest) {
       401,
     );
   }
+}
+
+async function _checkAuthorizedUser(userId: ObjectId, advertId: string) {
+  const advert = await findAdvertById(advertId);
+  return advert.store === userId;
 }
 
 /**

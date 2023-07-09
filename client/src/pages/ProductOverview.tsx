@@ -1,12 +1,7 @@
 import { useContext, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import {
-  Advert,
-  Colors,
-  getAdvert,
-  PopulatedAdvert,
-} from '../api/collections/advert';
-import { getStore, PopulatedUser, User } from '../api/collections/user';
+import { Colors, getAdvert, PopulatedAdvert } from '../api/collections/advert';
+import { User } from '../api/collections/user';
 import { OffersSection } from '../components/Offers/OffersSection';
 import { Page } from '../components/Page';
 import { ProductOverviewSection } from '../components/ProductOverview/ProductOverviewSection';
@@ -53,9 +48,9 @@ const ProductOverview = () => {
       }
     };
     fetchData();
-  }, []);
+  }, [id]);
 
-  const { user, loggedIn } = useContext(LoginContext);
+  const { user } = useContext(LoginContext);
   const owner = store._id === user?._id;
   return (
     <Page>

@@ -31,4 +31,10 @@ advertRouter
   .route('/getAdvertsByCategory/:category')
   .get(protect, getAllAdvertsByCategory);
 
-advertRouter.route('/getAdvertsByStore/:store').get(protect,getAllAdvertsByStore);
+advertRouter
+  .route('/getAdvertsByStore/:store')
+  .get(protect, getAllAdvertsByStore);
+
+advertRouter
+  .route('/getAdvertsByStore/:store')
+  .get(protect, getAllAdvertsByStore);

@@ -20,7 +20,7 @@ export const findAdvertById = async (id: string, populate = true) => {
     throw new AppError('Advert not found', 'Advert not found', 404);
   }
 
-  logger.debug(`${serviceName}: Returning advert ${advert}`);
+  //logger.debug(`${serviceName}: Returning advert ${advert}`);
   return advert;
 };
 
@@ -193,20 +193,20 @@ export const getAdvertsByCategory = async (
   logger.debug(
     `${serviceName}: Requesting all adverts with category: ${category}`,
   );
-  return await populateResult(advertModel.find({ category: category }),
-    populate)
+  return await populateResult(
+    advertModel.find({ category: category }),
+    populate,
+  );
 };
 
 /**
  * Returns all adverts of the requested store
  * @param category
- * @param populate 
+ * @param populate
  * @returns Promise containing the related adverts.
  */
 export const getAdvertsByStore = async (store: string, populate = true) => {
-  logger.debug(
-    `${serviceName}: Requesting all adverts of store: ${store}`,
-  );
+  logger.debug(`${serviceName}: Requesting all adverts of store: ${store}`);
   return await populateResult(advertModel.find({ store: store }), populate);
 };
 

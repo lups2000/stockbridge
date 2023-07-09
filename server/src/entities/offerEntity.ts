@@ -1,10 +1,9 @@
 import { Types } from 'mongoose';
 
-
 export enum OfferStatus {
   OPEN = 'Open',
   ACCEPTED = 'Accepted',
-  REJECTED = 'REJECTED',
+  REJECTED = 'Rejected',
   CANCELED = 'Canceled',
 }
 
