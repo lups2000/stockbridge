@@ -50,7 +50,7 @@ export const listenToErrorEvents = (httpServer: Http.Server): void => {
 const handleError = (errorToHandle: unknown): void => {
   try {
     const appError: AppError = normalizeError(errorToHandle);
-    logger.error(appError.message, appError);
+    logger.error(appError.stack);
     // A common best practice is to crash when an unknown error (non-trusted) is being thrown
     if (!appError.isTrusted) {
       terminateHttpServerAndExit();

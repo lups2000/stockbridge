@@ -68,14 +68,10 @@ const EditReviewModal: FC<EditReviewContentProps> = (props) => {
           const createdReview = await createReview({
             description: description,
             rating: rating,
-            reviewer: user,
+            reviewer: user!._id,
             reviewedAdvert: props.advert,
             createdAt: new Date(),
           } as Review);
-          // Don't mind thins line please it will be removed at my next PR
-          await updateAdvert(props.advert._id!, {
-            reviews: [createdReview._id],
-          });
         }
         setErrors({
           description: false,

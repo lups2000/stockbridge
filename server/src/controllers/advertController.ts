@@ -108,7 +108,7 @@ export const postAdvert = asyncHandler(
 export const putAdvert = asyncHandler(
   async (req: AuthenticatedRequest, res: Response) => {
     const { id } = req.params;
-    _checkUserCanEditOrDeleteAdvert(req);
+    await _checkUserCanEditOrDeleteAdvert(req);
     const advert = await updateAdvert(id, req.body);
     res.status(200).json(advert);
   },
@@ -123,7 +123,7 @@ export const putAdvert = asyncHandler(
 export const deleteAdvert = asyncHandler(
   async (req: AuthenticatedRequest, res: Response) => {
     const { id } = req.params;
-
+    await _checkUserCanEditOrDeleteAdvert(req);
     const advert = await delAdvert(id);
     res.status(204).json(advert);
   },
