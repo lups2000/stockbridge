@@ -40,7 +40,7 @@ export const getAdverts = asyncHandler(
   async (req: AuthenticatedRequest, res: Response) => {
     const reqQuery = { ...req.query };
 
-    ['search', 'sort', 'page', 'limit', 'radius'].forEach(
+    ['q', 'sort', 'page', 'limit', 'radius'].forEach( //change search->q
       (param) => delete reqQuery[param],
     );
 
@@ -65,8 +65,8 @@ export const getAdverts = asyncHandler(
     if (req.query.limit) {
       limit = parseInt(req.query.limit as string);
     }
-    if (req.query.search) {
-      search = req.query.search as string;
+    if (req.query.q) { // change search -> q
+      search = req.query.q as string; // change search -> q
     }
     if (req.query.radius) {
       radius = parseInt(req.query.radius as string);
