@@ -118,6 +118,7 @@ export const AdvertsGrid: FC<AdvertGridProps> = (props) => {
                 description={item.description}
                 prioritized={item.prioritized}
                 creationDate={item.createdAt}
+                fancyEffect={true}
               />
             </div>
           ))
