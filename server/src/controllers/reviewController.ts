@@ -8,6 +8,8 @@ import {
   getReviewsByAdvert,
 } from '../services/reviewServices';
 import { AuthenticatedRequest } from '../middlewares/authMiddleware';
+import { AppError } from '../utils/errorHandler';
+import { Review } from '../entities/reviewEntity';
 
 /**
  * This method returns a review by id   *
@@ -31,6 +33,16 @@ export const getReview = asyncHandler(
  */
 export const postReview = asyncHandler(
   async (req: AuthenticatedRequest, res: Response) => {
+    const newReview: Review = req.body;
+
+    if ((newReview.reviewer as unknown as string) !== req.user?.id) {
+      throw new AppError(
+        'Not authorized to access this route',
+        'Not authorized to access this route',
+        403,
+      );
+    }
+
     const review = await createReview(req.body);
     res.status(201).json(review);
   },
@@ -46,9 +58,13 @@ export const putReview = asyncHandler(
   async (req: AuthenticatedRequest, res: Response) => {
     const { id } = req.params;
 
-    /* if (id !== req.user?.id) {
-        throw new AppError('Not authorized to access this route', 'Not authorized to access this route',401)
-    } */
+    if (id !== req.user?.id) {
+      throw new AppError(
+        'Not authorized to access this route',
+        'Not authorized to access this route',
+        401,
+      );
+    }
 
     const review = await updateReview(id, req.body);
     res.status(200).json(review);
@@ -64,6 +80,16 @@ export const putReview = asyncHandler(
 export const deleteReview = asyncHandler(
   async (req: AuthenticatedRequest, res: Response) => {
     const { id } = req.params;
+
+    const reviewToDelete: Review = await findReviewById(id);
+
+    if (reviewToDelete.reviewer.id !== req.user?.id) {
+      throw new AppError(
+        'Not authorized to access this route',
+        'Not authorized to access this route',
+        401,
+      );
+    }
 
     const review = await delReview(id);
     res.status(204).json(review);
