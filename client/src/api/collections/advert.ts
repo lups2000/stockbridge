@@ -136,24 +136,6 @@ export async function deleteAdvert(id: string): Promise<void> {
   });
 }
 
-/*export async function getAllAdverts(): Promise<AdvertDto> {
-  return await apiClient.get<AdvertDto>('/adverts/', {
-export async function getAllAdverts(queryParams: any): Promise<AdvertDto> {
-  return await apiClient.get<AdvertDto>(
-    `/adverts`,
-    {
-      withCredentials: true,
-    },
-    queryParams,
-  );
-}
-
-export async function getPopularCategories(): Promise<CategoryDto> {
-  return await apiClient.get<CategoryDto>(`/adverts/getPopularCategories`, {
-    withCredentials: true,
-  });
-}*/
-
 export async function getAdvertsByUser(
   store: string | undefined,
 ): Promise<Advert[]> {
@@ -163,23 +145,13 @@ export async function getAdvertsByUser(
 }
 
 export async function getAllAdverts(queryParams: any): Promise<AdvertDto> {
-  return await apiClient.get<AdvertDto>(
-    `/adverts`,
-    {
-      withCredentials: true,
-    },
-    queryParams,
-  );
+  return await apiClient.get<AdvertDto>(`/adverts`, {}, queryParams);
 }
 
 export async function getPopularCategories(): Promise<CategoryDto> {
-  return await apiClient.get<CategoryDto>(`/adverts/getPopularCategories`, {
-    withCredentials: true,
-  });
+  return await apiClient.get<CategoryDto>(`/adverts/getPopularCategories`);
 }
 
 export async function getPopularAdverts(): Promise<AdvertDto> {
-  return await apiClient.get<AdvertDto>(`/adverts/getPopularAdverts`, {
-    withCredentials: true,
-  });
+  return await apiClient.get<AdvertDto>(`/adverts/getPopularAdverts`);
 }
