@@ -16,6 +16,7 @@ type OfferBarUserProfileInfoProps = {
     advert: PopulatedAdvert;
     offer: PopulatedOffer;
     outgoing: boolean;
+    highlight: string;
     onClick: () => void;
 };
 
@@ -60,6 +61,7 @@ const OfferBarUserProfileInfo: React.FC<OfferBarUserProfileInfoProps> = (props) 
           <div className="div1">  <ProfileProdcutAttribute
             name="Product"
             value={props.advert?.productname ?? "No name found"}
+            highlight= {props.highlight}
           ></ProfileProdcutAttribute> </div>
           
           <div className="div2">  <ProfileProdcutAttribute

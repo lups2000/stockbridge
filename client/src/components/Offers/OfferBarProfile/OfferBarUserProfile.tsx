@@ -9,6 +9,7 @@ type OfferBarUserProfileProps = {
     offer: PopulatedOffer;
     advert: PopulatedAdvert;
     outgoing: boolean;
+    highlight: string;
 };
 
 /**
@@ -53,6 +54,7 @@ const OfferBarUserProfile: React.FC<OfferBarUserProfileProps> = (props) => {
                     advert={props.advert}
                     offer={props.offer}
                     outgoing = {props.outgoing}
+                    highlight= {props.highlight}
                 />
                 {showModal && (
                     <OfferModal
