@@ -1,6 +1,6 @@
 import { fontSize } from '@mui/system';
-import React from 'react';
 import { BodyText } from '../Text/BodyText';
+import React, { useEffect, useRef } from 'react';
 
 type ProfileProdcutAttributeProps = {
   name: string;
@@ -9,10 +9,29 @@ type ProfileProdcutAttributeProps = {
   border?: boolean;
   margin?: string;
   fontSize?: string;
+  highlight? : string;
 };
-const ProfileProdcutAttribute: React.FC<ProfileProdcutAttributeProps> = (
-  props,
-) => {
+const ProfileProdcutAttribute: React.FC<ProfileProdcutAttributeProps> = (props) => {
+  const textRef = useRef<HTMLDivElement | null>(null);
+
+    useEffect(() => {
+        const node = textRef.current;
+        if (node) {
+          // Reset the div's content before adding new text
+          node.innerHTML = '';
+            const textNode = document.createTextNode(props.value as string);
+            node.appendChild(textNode);
+
+            if (props.highlight && props.highlight?.trim()) {
+                const innerHTML = node.innerHTML;
+                const index = innerHTML.toLocaleLowerCase().indexOf(props.highlight.toLowerCase());
+                if (index >= 0) { 
+                    node.innerHTML = innerHTML.substring(0, index) + "<span class='highlight'>" + innerHTML.substring(index, index+props.highlight.length) + "</span>" + innerHTML.substring(index + props.highlight.length);
+                }
+            }
+        }
+    }, [props.value, props.highlight]);
+
   return (
     <div
       style={{
@@ -37,7 +56,19 @@ const ProfileProdcutAttribute: React.FC<ProfileProdcutAttributeProps> = (
       >
         {props.name}:
       </BodyText>
-      <BodyText
+      {
+        props.highlight ? <div
+        className="font-link"
+        style={{
+          width: '100%',
+          fontFamily: 'Poppins',
+          font: 'light',
+          fontSize: props.fontSize ? props.fontSize : '20px',
+          marginBottom: "0.8em"
+        }}
+        ref={textRef}
+      >
+      </div> : <BodyText
         style={{
           width: '100%',
           //height: props.border ? '40px' : '',
@@ -52,6 +83,8 @@ const ProfileProdcutAttribute: React.FC<ProfileProdcutAttributeProps> = (
       >
         {`${props?.value} ${props?.unit ? props?.unit : ''}`}
       </BodyText>
+      }
+      
     </div>
   );
 };
