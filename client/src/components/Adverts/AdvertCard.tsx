@@ -1,11 +1,11 @@
-import React, { FC } from 'react';
+import React, { FC, useContext } from 'react';
 import { Button, Image } from 'react-bootstrap';
 import { BodyText } from '../Text/BodyText';
 import { ColoredLine } from '../ColoredLine';
 import prioritizedIcon from '../../assets/prioritized.svg';
-//import noImageAvailable from '../../assets/NoImageAvailable.jpg';
-import emptyIcon from "../../assets/product-placeholder.png"
+import emptyIcon from '../../assets/product-placeholder.png';
 import { useNavigate } from 'react-router-dom';
+import { LoginContext } from '../../contexts/LoginContext';
 
 export interface AdvertCardProps {
   id: string | undefined;
@@ -16,11 +16,13 @@ export interface AdvertCardProps {
   icon?: string;
   prioritized: boolean | undefined;
   creationDate: Date | undefined;
-  fancyEffect: boolean
+  fancyEffect: boolean;
 }
 
 export const AdvertCard: FC<AdvertCardProps> = (props) => {
   const navigate = useNavigate();
+
+  const { loggedIn } = useContext(LoginContext);
 
   const creationDateFormatted = props.creationDate
     ? new Date(props.creationDate.toString()).toLocaleDateString('it', {
@@ -41,22 +43,32 @@ export const AdvertCard: FC<AdvertCardProps> = (props) => {
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
-        transition: props.fancyEffect ? 'transform 0.3s, box-shadow 0.3s': undefined,
+        transition: props.fancyEffect
+          ? 'transform 0.3s, box-shadow 0.3s'
+          : undefined,
         cursor: 'pointer',
       }}
-      onMouseEnter={props.fancyEffect ? (e) => {
-        e.currentTarget.style.transform = 'scale(1.05)';
-        e.currentTarget.style.boxShadow = '0 0 10px rgba(0, 0, 0, 0.3)';
-      } : undefined}
-      onMouseLeave={props.fancyEffect ? (e) => {
-        e.currentTarget.style.transform = 'scale(1)';
-        e.currentTarget.style.boxShadow = 'none';
-      } : undefined}
+      onMouseEnter={
+        props.fancyEffect
+          ? (e) => {
+              e.currentTarget.style.transform = 'scale(1.05)';
+              e.currentTarget.style.boxShadow = '0 0 10px rgba(0, 0, 0, 0.3)';
+            }
+          : undefined
+      }
+      onMouseLeave={
+        props.fancyEffect
+          ? (e) => {
+              e.currentTarget.style.transform = 'scale(1)';
+              e.currentTarget.style.boxShadow = 'none';
+            }
+          : undefined
+      }
     >
       <Image
         src={props.icon || emptyIcon}
         alt="image"
-        width={props.icon ? 200 : 230}
+        width={props.icon ? 200 : 180}
         height={props.icon ? 200 : 150}
         style={{ marginTop: 30 }}
       />
@@ -101,7 +113,14 @@ export const AdvertCard: FC<AdvertCardProps> = (props) => {
       </div>
       <Button
         style={{ position: 'absolute', left: 10, bottom: 10 }}
-        onClick={() => navigate(`/productoverview/${props.id}`)}
+        onClick={() => {
+          if(loggedIn){
+            navigate(`/productoverview/${props.id}`)
+          }
+          else{
+            navigate("/signIn")
+          }
+        }}
       >
         View Advert
       </Button>

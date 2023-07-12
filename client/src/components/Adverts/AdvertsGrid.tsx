@@ -8,17 +8,19 @@ import ReactPaginate from 'react-paginate';
 import { Title } from '../Text/Title';
 import { Button } from 'react-bootstrap';
 import { useSearchParams } from 'react-router-dom';
+import { CustomMap } from './CustomMap';
 
 interface AdvertGridProps {
   adverts: PopulatedAdvert[] | undefined;
   currentCategory: string;
   totalNumberOfPages: number;
+  isMapOpen: boolean;
   handlePageClick: (selectedItem: { selected: number }) => void;
 }
 
 /**
  * Component to display the grid with all the adverts.
- * @returns 
+ * @returns
  */
 export const AdvertsGrid: FC<AdvertGridProps> = (props) => {
   const [search, setSearch] = useSearchParams();
@@ -35,9 +37,9 @@ export const AdvertsGrid: FC<AdvertGridProps> = (props) => {
     } else {
       search.set('type', 'Sell');
     }
-    setSearch(search,{replace: true});
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [advertType, search ]);
+    setSearch(search, { replace: true });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [advertType, search]);
 
   return (
     <div
@@ -94,6 +96,13 @@ export const AdvertsGrid: FC<AdvertGridProps> = (props) => {
             </BodyText>
           </Button>
         </div>
+      ) : undefined}
+      {props.isMapOpen ? (
+        props.adverts ? (
+          <CustomMap adverts={props.adverts} />
+        ) : (
+          undefined
+        )
       ) : undefined}
       {props.adverts ? (
         props.adverts.length > 0 ? (

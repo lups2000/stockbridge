@@ -6,7 +6,6 @@ import { Sort } from './Sort';
 import { useSearchParams } from 'react-router-dom';
 import { useAdverts } from '../../hooks/useAdverts';
 import { AdvertsGrid } from './AdvertsGrid';
-import { CustomMap } from '../Map/CustomMap';
 import { palette } from '../../utils/colors';
 import { Page } from '../Page';
 
@@ -50,7 +49,7 @@ export const AdvertsPagination: FC = () => {
   };
 
   const handleMapClick = () => {
-    setMapMode(true);
+    setMapMode(!mapMode);
   };
 
   useEffect(() => {
@@ -61,11 +60,11 @@ export const AdvertsPagination: FC = () => {
 
   const matches = useMediaQuery('(min-width: 768px)');
 
-  if (mapMode) {
+  /*if (mapMode) {
     return (
       <CustomMap adverts={adverts} onChangeModality={() => setMapMode(false)} />
     );
-  }
+  }*/
 
   //I am using component <Page> here because I want to display the map full screen.
   return (
@@ -91,6 +90,7 @@ export const AdvertsPagination: FC = () => {
             adverts={adverts}
             currentCategory={category}
             totalNumberOfPages={totalNumberOfPages}
+            isMapOpen={mapMode}
             handlePageClick={handlePageClick}
           />
           <div
@@ -99,7 +99,7 @@ export const AdvertsPagination: FC = () => {
               flexDirection: 'row',
               position: 'absolute',
               gap: 30,
-              right: 20,
+              right: 12,
             }}
           >
             <Button
@@ -110,7 +110,7 @@ export const AdvertsPagination: FC = () => {
               }}
               onClick={handleMapClick}
             >
-              View on Map
+              {mapMode ? "Close Map" : "View on Map"}
             </Button>
             <Sort />
           </div>
