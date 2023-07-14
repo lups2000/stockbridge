@@ -21,10 +21,10 @@ export const SelectedTabContextProvider = ({
 }: SelectedTabContextProviderType) => {
   const [selectedProfileSection, setSelectedProfileSection] = useState(5);
 
-  const tabSettings = {
-    selectedProfileSection: selectedProfileSection,
-    setSelectedProfileSection: setSelectedProfileSection,
-  };
+  // const tabSettings = {
+  //   selectedProfileSection: selectedProfileSection,
+  //   setSelectedProfileSection: setSelectedProfileSection,
+  // };
 
   return (
     <SelectedTabContext.Provider

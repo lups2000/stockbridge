@@ -31,17 +31,17 @@ const BuyingContent: React.FC = () => {
 
         const outgoingSell = await getUserSpecificOffers(
           user?._id as string,
-          'Ask',
+          'Sell',
           'outgoing',
         );
-        const incomingSell = await getUserSpecificOffers(
+        const incomingAsk = await getUserSpecificOffers(
           user?._id as string,
           'Ask',
           'incoming',
         );
 
         setOutgoingOffers(outgoingSell as PopulatedOffer[]);
-        setIncomingOffers(incomingSell as PopulatedOffer[]);
+        setIncomingOffers(incomingAsk as PopulatedOffer[]);
       } catch (error) {
         console.error(error);
       }
