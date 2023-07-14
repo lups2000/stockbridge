@@ -213,9 +213,9 @@ export const getPopularAdverts = asyncHandler(
 async function _checkUserCanEditOrDeleteAdvert(req: AuthenticatedRequest) {
   let userId = new ObjectId(req.user?.id);
   const { id } = req.params;
-
+  const advert = await findAdvertById(id, false)
   // The user editing or deleting must be the one who created the advert.
-  if (!(await findAdvertById(id, false)).store.equals(userId)) {
+  if (!(advert.store.equals(userId))) {
     throw new AppError(
       'Not authorized to edit this route',
       'Not authorized to edit this route',

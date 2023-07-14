@@ -12,7 +12,6 @@ type StoreDetailsProps = {
   onClose: () => void;
   store: string;
 };
-
 const StoreDetailsModal: FC<StoreDetailsProps> = (props) => {
   const [categories, setCategories] = useState(
     [] as { category: string; count: number }[],

@@ -12,7 +12,7 @@ const serviceName = 'advertServices';
  * @param populate determines if the result should be populated
  * @returns Promise containing the advert
  */
-export const findAdvertById = async (id: string, populate = true) => {
+export const findAdvertById = async (id: string, populate = true): Promise<Advert> => {
   logger.debug(`${serviceName}: Finding advert with id: ${id}`);
   const advert = await populateResult(advertModel.findById(id), populate);
 

@@ -1,4 +1,5 @@
 import { ObjectId } from 'mongodb';
+import { Types } from 'mongoose';
 import { Offer } from './offerEntity';
 import { Review } from './reviewEntity';
 import { User, Location } from './userEntity';
@@ -44,7 +45,7 @@ export enum ProductCategory {
 }
 
 export interface Advert {
-  _id: string;
+  id: string;
   productname: string;
   description: string;
   imageurl?: string;
@@ -58,8 +59,8 @@ export interface Advert {
   status: string;
   type: string;
   category: string;
-  offers?: Offer[];
-  reviews?: Review[];
-  store: User;
+  offers?: ObjectId[];
+  reviews?: ObjectId[];
+  store: ObjectId;
   location: Location;
 }

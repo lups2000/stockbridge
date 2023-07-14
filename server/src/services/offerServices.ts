@@ -105,7 +105,7 @@ export const findAllOffersByOfferee = async (
 export const findAllOffersByAdvert = async (
   advert: string,
   populate = true,
-) => {
+): Promise<Offer[]> => {
   logger.debug(
     `${serviceName}: Requesting all offers related to advert: ${advert}`,
   );

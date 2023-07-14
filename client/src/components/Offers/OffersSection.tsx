@@ -31,7 +31,7 @@ const OffersSection: FC<OffersSectionProps> = (props) => {
   const openOffers = offers.filter((o) => o.status === 'Open');
   const acceptedOffers = offers.filter((o) => o.status === 'Accepted');
   const rejectedOffers = offers.filter((o) => o.status === 'Rejected');
-  const canceledOffers = offers.filter((o) => o.status === 'Canceled');
+  const canceledOffers = offers.filter((o) => o.status === 'Canceled' || o.status === 'Canceled - Out of Stock');
   return (
     <ReviewOfferSection section="OFFERS">
       {openOffers.length > 0 && (
@@ -63,7 +63,7 @@ const OffersSection: FC<OffersSectionProps> = (props) => {
       )}
       {canceledOffers.length > 0 && (
         <OfferSection
-          status={OfferStatus.CANCELED}
+          status={OfferStatus.CANCELED_USER}
           offers={canceledOffers}
           advert={props.advert}
           storeName={props.storeName}

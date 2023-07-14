@@ -31,24 +31,24 @@ function colorMap(status: OfferStatus): string {
       return '#4ECBA9';
     case OfferStatus.REJECTED:
       return 'red';
-    case OfferStatus.CANCELED:
+    case OfferStatus.CANCELED_OUT_OF_STOCK:
       return '#ffc071';
+    case OfferStatus.CANCELED_USER:
+        return '#ffc071';
     default:
       return '#4285F4';
   }
 }
 const OfferModal: FC<OfferContentProps> = (props) => {
-  const { user } = useContext(LoginContext);
-  const navigate = useNavigate();
-
+  const { user} = useContext(LoginContext);
+  const navigate = useNavigate()
   const [formData, setFormData] = useState({
     quantity: props.offer?.quantity ? props.offer?.quantity : 0,
     price: props.offer?.price ? props.offer?.price : 0,
     createdAt: new Date(),
-  });
+  } as Offer);
 
   const offeree = user?._id === props.offer?.offeree?._id;
-  console.log(offeree);
   const handleChange = (event: any) => {
     event.preventDefault();
     const { name, value } = event.target;
@@ -79,58 +79,78 @@ const OfferModal: FC<OfferContentProps> = (props) => {
   const [showCreationModal, setShowCreationModal] = useState(false);
   const [showAcceptanceModal, setShowAcceptanceModal] = useState(false);
   const [showRejectionModal, setShowRejectionModal] = useState(false);
-
+  const [OutOfStockError, setOutOfStockError] = useState(false);
+  const [showOutOfStockModal, setShowOutOfStockModal] = useState(false);
   const closeModal = (responseType: ResponseType) => {
-    if (responseType === ResponseType.SUCCESSFUL_OFFER_ACCEPTANCE) {
-      setShowAcceptanceModal(false);
-      window.location.reload();
-    } else {
-      if (responseType === ResponseType.SUCCESSFUL_OFFER_CREATION) {
+    console.log(responseType)
+      if(responseType ===  ResponseType.SUCCESSFUL_OFFER_ACCEPTANCE) {
+        setShowAcceptanceModal(false);
+        window.location.reload();
+      }
+      else { 
+        if (responseType === ResponseType.SUCCESSFUL_OFFER_CREATION) {
         setShowCreationModal(false);
         window.location.reload();
-      } else {
-        if (responseType === ResponseType.SUCCESSFUL_OFFER_REJECTION) {
-          setShowRejectionModal(false);
-          window.location.reload();
-        } else {
-          if (responseType === ResponseType.UNSUCCESSFUL_OFFER_REJECTION) {
+        } else { if (responseType === ResponseType.SUCCESSFUL_OFFER_REJECTION) {
             setShowRejectionModal(false);
-          } else {
-            if (responseType === ResponseType.UNSUCCESSFUL_OFFER_ACCEPTANCE) {
-              setShowAcceptanceModal(false);
-            } else {
-              if (responseType === ResponseType.UNSUCCESSFUL_OFFER_CREATION) {
-                setShowCreationModal(false);
+            window.location.reload();
+          }  else {
+             if (responseType === ResponseType.UNSUCCESSFUL_OFFER_REJECTION) {
+              setShowRejectionModal(false);
+              window.location.reload();
+            } else { 
+              if (responseType === ResponseType.UNSUCCESSFUL_OFFER_ACCEPTANCE) {
+                setShowAcceptanceModal(false);
+                window.location.reload();
+              } else { 
+                if (responseType === ResponseType.UNSUCCESSFUL_OFFER_CREATION) {
+                  setShowCreationModal(false);
+                } else { 
+                  if (responseType === ResponseType.OUT_OF_STOCK) {
+                    setShowOutOfStockModal(false);
+                    window.location.reload();
+                  }
+                }
               }
             }
           }
         }
       }
-    }
-  };
+    };
 
   const handleSubmit = async () => {
     if (isValid()) {
-      try {
-        const newOffer = await createOffer({
+        await createOffer({
           quantity: formData.quantity,
           price: formData.price,
           createdAt: new Date(),
           status: OfferStatus.OPEN,
-          offeror: user?._id,
+          offeror: user,
           offeree: props.advert?.store,
           advert: props.advert?._id,
-        } as Offer);
-        if (newOffer) {
-          setShowCreationModal(true);
-        } else {
+        } as Offer).then(newOffer => { 
+          setFormData(newOffer);
+          if (newOffer && newOffer.status === OfferStatus.CANCELED_OUT_OF_STOCK) {
+            setOutOfStockError(true)
+            setShowOutOfStockModal(true)
+            setAcceptanceError(false)
+            setCreationError(false)
+            setRejectionError(false)
+          } else {
+            if (newOffer) {
+              setShowCreationModal(true);
+            } else {
+              setCreationError(true);
+              setShowCreationModal(true);
+              setAcceptanceError(false)
+              setOutOfStockError(false)
+              setRejectionError(false)
+            }
+          }
+      })
+       .catch ((error) => {
           setCreationError(true);
-          setShowCreationModal(true);
-        }
-        if (props.onSave) props?.onSave();
-      } catch (error) {
-        setCreationError(true);
-      }
+      })
     } else {
       setErrors({
         price: formData.price
@@ -215,7 +235,16 @@ const OfferModal: FC<OfferContentProps> = (props) => {
           offer={props.offer!}
           onClose={closeModal}
         />
-      ) : (
+      ) : showOutOfStockModal ? <ResponseModal
+      isShowing={showOutOfStockModal}
+      responseType={
+        OutOfStockError
+          ? ResponseType.OUT_OF_STOCK :
+          ResponseType.SUCCESSFUL_OFFER_CREATION
+      }
+      offer={formData}
+      onClose={closeModal}
+    /> : (
         <Modal
           show={props.isShowing}
           onHide={() => props.onClose()}
@@ -466,7 +495,7 @@ const OfferModal: FC<OfferContentProps> = (props) => {
               </Col>
             </Row>
           </Modal.Body>
-          {(!props.offer || props.offer.status !== 'Rejected') && (
+          {(!props.offer || !['Rejected', 'Canceled', 'Canceled - Out of Stock'].includes(props.offer.status!)) && (
             <Modal.Footer
               style={{
                 justifyContent: offeree ? 'center' : 'end',
@@ -511,7 +540,7 @@ const OfferModal: FC<OfferContentProps> = (props) => {
               {offeree && props.offer?.status === 'Accepted' && (
                 <Button
                   className="text-white"
-                  onClick={handleReject}
+                  onClick={() => navigate('/userInfo')}
                   style={{
                     background: palette.green,
                     borderColor: palette.green,

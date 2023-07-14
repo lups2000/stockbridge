@@ -1,8 +1,11 @@
 import mongoose from 'mongoose';
 import logger from '../config/logger';
 import { AdvertStatus } from '../entities/advertEntity';
+import { OfferStatus } from '../entities/offerEntity';
 import { OrderStatus, Order } from '../entities/orderEntity';
 import { findAdvertById } from '../services/advertServices';
+import { findAllOffersByAdvert } from '../services/offerServices';
+import advertModel from './Advert';
 import offerModel from './Offer';
 
 const Types = mongoose.Schema.Types;
@@ -40,7 +43,16 @@ orderSchema.pre<Order>('save', async function (next) {
         if (advert.quantity <= 0) {
           advert.status = AdvertStatus.Closed;
         }
-        advert.save();
+        const offers = await findAllOffersByAdvert(advert.id)
+        offers.forEach(async fetchedOffer => {
+          if (fetchedOffer.status === OfferStatus.OPEN &&
+            fetchedOffer.quantity > advert.quantity) {
+            logger.warn(fetchedOffer)
+            fetchedOffer.status = OfferStatus.CANCELED_OUT_OF_STOCK;
+            await offerModel.findByIdAndUpdate(fetchedOffer.id, fetchedOffer)
+          }
+        })
+       await advertModel.findByIdAndUpdate(advert.id, advert)
       }
       next();
     }
