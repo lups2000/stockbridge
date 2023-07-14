@@ -47,11 +47,12 @@ const EditReviewModal: FC<EditReviewContentProps> = (props) => {
       setErrors(validationErrors);
     } else {
       try {
-        if (props.advert) {
+        if (props.advert?._id) {
           const createdReview = await createReview({
             description: description,
             rating: rating,
             reviewer: user!._id,
+            reviewee: props.advert.store,
             reviewedAdvert: props.advert,
             createdAt: new Date(),
           } as Review);

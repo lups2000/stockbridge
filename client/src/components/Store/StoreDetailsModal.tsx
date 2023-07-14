@@ -1,302 +1,251 @@
-import { FC, useState } from 'react';
-import { Button, Col, Form, Modal, Row, Image } from 'react-bootstrap';
-import { Advert } from '../../api/collections/advert';
-import { Offer, OfferStatus } from '../../api/collections/offer';
-import { palette } from '../../utils/colors';
+import _ from 'lodash';
+import { FC, useEffect, useState } from 'react';
+import { Col, Form, FormLabel, Modal, Row } from 'react-bootstrap';
+import { getCategoriesByStore } from '../../api/collections/advert';
+import { getReviewsByReviewee, PopulatedReview } from '../../api/collections/review';
+import { getStore, PopulatedUser } from '../../api/collections/user';
 import { Ratings } from '../Ratings';
+import { BodyText } from '../Text/BodyText';
 
 type StoreDetailsProps = {
   isShowing: boolean;
   onClose: () => void;
-  offer?: Offer;
-  storeName?: String;
-  rating?: number;
-  advert?: Advert;
+  store: string;
 };
-function colorMap(status: OfferStatus): string {
-  switch (status) {
-    case OfferStatus.OPEN:
-      return '#4285F4';
-    case OfferStatus.ACCEPTED:
-      return '#4ECBA9';
-    case OfferStatus.REJECTED:
-      return 'red';
-    case OfferStatus.CANCELED:
-      return '#ffc071';
-    default:
-      return '#4285F4';
-  }
-}
+
 const StoreDetailsModal: FC<StoreDetailsProps> = (props) => {
-  const [formData, setFormData] = useState({
-    quantity: props.offer?.quantity ? props.offer?.quantity : 0,
-    price: props.offer?.price ? props.offer?.price : 0,
-  });
-
-  const handleChange = (event: any) => {
-    event.preventDefault();
-    const { name, value } = event.target;
-    setFormData({
-      ...formData,
-      [name]: value,
-    });
-  };
-
-  const [errors, setErrors] = useState({
-    price: false,
-    quantity: false,
-  });
-
-  const validationErrors = {
-    price: false,
-    quantity: false,
-  };
-  const handleSubmit = async () => {
-    if (!formData.quantity) {
-      validationErrors.quantity = true;
-    }
-    if (!formData.price) {
-      validationErrors.price = true;
-    }
-    if (Object.values(validationErrors).some((e) => e)) {
-      console.log('Errors are happening');
-      console.log(validationErrors);
-      setErrors(validationErrors);
-    } else {
+  const [categories, setCategories] = useState(
+    [] as { category: string; count: number }[],
+  );
+  const [reviews, setReviews] = useState([] as PopulatedReview[]);
+  const [populatedStore, setStore] = useState({} as PopulatedUser);
+  useEffect(() => {
+    const fetchCategories = async () => {
+      let fetchedCategories = await getCategoriesByStore(props.store);
+      const counts = _.countBy(fetchedCategories);
+      let categoriesToCount: { category: string; count: number }[] = [];
+      Object.keys(counts).forEach((k) =>
+        categoriesToCount.push({ category: k, count: counts[k] }),
+      );
+      categoriesToCount.sort((c1, c2) => c2.count - c1.count);
+      setCategories(categoriesToCount);
+    };
+    const fetchReviews = async () => {
       try {
-        setErrors({
-          price: false,
-          quantity: false,
-        });
-        if (props.onClose) props?.onClose();
+        const fetchedReviews = await getReviewsByReviewee(props.store);
+        console.log(fetchedReviews);
+        setReviews(fetchedReviews);
       } catch (error) {
-        console.error(error);
+        console.log('an error happened');
       }
-    }
-  };
-  const status = props.offer ? props.offer.status : OfferStatus.OPEN;
+    };
+    const fetchStore = async () => {
+      setStore(await getStore(props.store));
+    };
+
+    if (props.store) fetchCategories();
+    fetchStore();
+    fetchReviews();
+  }, [props.store]);
   return (
-    <Modal show={props.isShowing} onHide={props.onClose} centered size="lg">
-      <Modal.Header closeButton>
-        <Modal.Title>Offer Overview</Modal.Title>
-      </Modal.Header>
-      <Modal.Body>
-        <Row>
-          <Col></Col>
-          <Col></Col>
-          <Col>
-            <Form.Label
-              style={{
-                marginLeft: '50%',
-                fontSize: '16px',
-                color: 'GrayText',
-                font: 'light',
-              }}
-            >
-              {props.offer
-                ? props.offer.createdAt?.toDateString().substring(0, 10)
-                : new Date().toDateString().substring(0, 10)}
-            </Form.Label>
-          </Col>
-        </Row>
-        <Row>
-          <Col>
-            <Form.Group>
-              <Form.Label
-                style={{
-                  padding: '10px',
-                  color: 'balck',
-                  margin: '5px',
-                  fontSize: '16px',
-                  marginBottom: '30px',
-                  fontWeight: 800,
-                }}
-              >
-                Status:
-              </Form.Label>
-              <Form.Label
-                style={{
-                  color: colorMap(
-                    props.offer?.status
-                      ? props.offer?.status
-                      : OfferStatus.OPEN,
-                  ),
-                  fontWeight: 600,
-                }}
-              >
-                {status}
-              </Form.Label>
-            </Form.Group>
-          </Col>
-          <Col></Col>
-          <Col></Col>
-        </Row>
-        <Row
-          style={{
-            justifyContent: 'center',
-            alignItems: 'center',
-          }}
-        >
-          <Col>
-            <Image
-              style={{
-                width: '160px',
-                height: '160px',
-                borderRadius: '60px',
-              }}
-              src={props.advert?.imageurl}
-            />
-          </Col>
-          <Col>
+    <>
+      {' '}
+      {categories.length > 0 && (
+        <Modal show={props.isShowing} onHide={props.onClose} centered size="lg">
+          <Modal.Header
+            style={{ borderTop: 'none', borderBottom: 'none' }}
+            closeButton
+          ></Modal.Header>
+          <Modal.Body style={{ borderTop: 'none', borderBottom: 'none' }}>
             <Row>
-              <Form.Label>{props.advert?.productname}</Form.Label>
+              {' '}
+              <FormLabel
+                style={{
+                  fontSize: '24px',
+                  fontWeight: 500,
+                }}
+              >
+                {populatedStore.name}
+              </FormLabel>
+              {Ratings(populatedStore.rating ?? 0)}
             </Row>
             <Row
               style={{
-                marginTop: '10px',
+                marginTop: '30px',
               }}
             >
-              <Form.Label>Color: {props.advert?.color}</Form.Label>
-            </Row>
-            {props.advert?.purchaseDate && (
-              <Row
-                style={{
-                  marginTop: '10px',
-                }}
-              >
-                <Form.Label>
-                  Purchase Date:{' '}
-                  {props.advert?.purchaseDate.toString().substring(0, 10)}
-                </Form.Label>
-              </Row>
-            )}
-            {props.advert?.expirationDate && (
-              <Row
-                style={{
-                  marginTop: '10px',
-                }}
-              >
-                <Form.Label>
-                  Purchase Date:{' '}
-                  {props.advert?.expirationDate.toString().substring(0, 10)}
-                </Form.Label>
-              </Row>
-            )}
-          </Col>
-          <Col>
-            <Row>
-              <Form.Label>
-                {props.advert?.type === 'Sell' ? 'Seller' : 'Buyer'}:{' '}
-                {props.storeName}
-                {Ratings(props.rating ? props.rating : 0)}
-              </Form.Label>
-            </Row>
-            <Row>
-              <Form.Group
-                style={{
-                  display: 'flex',
-                  flexDirection: 'row',
-                  alignItems: 'center',
-                  alignContent: 'center',
-                  gap: '10%',
-                  marginTop: '10px',
-                }}
-              >
-                <Form.Label
+              <Col>
+                {populatedStore.createdAt && (
+                  <Form.Group
+                    style={{
+                      display: 'flex',
+                      flexDirection: 'row',
+                      gap: '2px',
+                      width: '100%',
+                    }}
+                  >
+                    <FormLabel
+                      style={{
+                        fontWeight: 600,
+                      }}
+                    >
+                      Member since:
+                    </FormLabel>
+                    <FormLabel style={{ marginLeft: '2%' }}>
+                      {' '}
+                      {populatedStore.createdAt?.toString().slice(0, 10)}
+                    </FormLabel>
+                  </Form.Group>
+                )}
+                {categories && (
+                  <Form.Group
+                    style={{
+                      display: 'flex',
+                      flexDirection: 'row',
+                      gap: '2px',
+                      width: '100%',
+                    }}
+                  >
+                    {' '}
+                    <FormLabel
+                      style={{
+                        fontWeight: 600,
+                      }}
+                    >
+                      Main Product Category:{' '}
+                    </FormLabel>
+                    <FormLabel style={{ marginLeft: '2%' }}>
+                      {categories[0].category}
+                    </FormLabel>
+                  </Form.Group>
+                )}
+              </Col>
+              <Col>
+                <Form.Group
                   style={{
-                    width: props.offer ? '60px' : '110px',
+                    display: 'flex',
+                    flexDirection: 'column',
                   }}
                 >
-                  {' '}
-                  Price {props.offer ? '' : '(€)'}
-                </Form.Label>
-                {props.offer ? (
-                  <Form.Label
+                  <FormLabel
                     style={{
-                      color: palette.gray,
-                      font: 'bold',
                       fontWeight: 600,
                     }}
                   >
-                    {props.offer.price} €
-                  </Form.Label>
-                ) : (
-                  <Form.Control
-                    style={{
-                      width: '30%',
-                      color: palette.gray,
-                    }}
-                    type="number"
-                    name="price"
-                    value={formData.price}
-                    onChange={handleChange}
-                    required
-                    isInvalid={!!errors.price}
-                  ></Form.Control>
-                )}
-              </Form.Group>
+                    Address:
+                  </FormLabel>
+                  <FormLabel>
+                    {populatedStore.address && populatedStore.address.street}{' '}
+                    {populatedStore.address &&
+                      populatedStore.address.houseNumber}
+                  </FormLabel>
+                  <FormLabel>
+                    {populatedStore.address &&
+                      populatedStore.address.postalCode}
+                    , {populatedStore.address && populatedStore.address.city}
+                  </FormLabel>
+                  <FormLabel>
+                    {populatedStore.address && populatedStore.address.country}
+                  </FormLabel>
+                </Form.Group>
+              </Col>
             </Row>
-            <Row>
-              <Form.Group
+            {(reviews && reviews.length > 0) && <div
+              style={{
+                overflowX: 'auto',
+              }}
+            >
+              <div
                 style={{
                   display: 'flex',
-                  flexDirection: 'row',
-                  alignItems: 'center',
-                  alignContent: 'center',
-                  gap: '10%',
-                  marginTop: '10px',
+                  gap: 25,
+                  marginTop: 50,
+                  height: '150px',
                 }}
               >
-                <Form.Label
-                  style={{
-                    width: props.offer ? '60px' : '110px',
-                  }}
-                >
-                  {' '}
-                  Quantity {props.offer ? '' : '(pcs)'}
-                </Form.Label>
-                {props.offer ? (
-                  <Form.Label
+                {reviews.map((r, i) => (
+                  <div
                     style={{
-                      color: palette.gray,
-                      font: 'bold',
-                      fontWeight: 600,
+                      borderRadius: 8,
+                      border: '1px solid #ccc',
+
+                      height: '100%',
+                      borderColor: 'gray',
+                      backgroundColor: 'white',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      cursor: 'pointer',
+                      transition: 'box-shadow 0.3s ease',
+                      boxShadow: '0 0 0 rgba(0, 0, 0, 0.2)',
+                    }}
+                    onMouseOver={(e) => {
+                      e.currentTarget.style.boxShadow =
+                        '0 0 8px rgba(0, 0, 0, 0.3)';
+                    }}
+                    onMouseOut={(e) => {
+                      e.currentTarget.style.boxShadow =
+                        '0 0 0 rgba(0, 0, 0, 0.2)';
                     }}
                   >
-                    {props.offer.quantity} pcs
-                  </Form.Label>
-                ) : (
-                  <Form.Control
-                    style={{
-                      width: '30%',
-                      color: palette.gray,
-                    }}
-                    type="number"
-                    name="quantity"
-                    value={formData.quantity}
-                    onChange={handleChange}
-                    required
-                    isInvalid={!!errors.quantity}
-                  ></Form.Control>
-                )}
-              </Form.Group>
-            </Row>
-          </Col>
-        </Row>
-      </Modal.Body>
-      <Modal.Footer>
-        <Button
-          className="text-white"
-          onClick={handleSubmit}
-          style={{
-            background: palette.green,
-            borderColor: palette.green,
-          }}
-        >
-          Confirm
-        </Button>
-      </Modal.Footer>
-    </Modal>
+                    <span
+                      style={{
+                        marginTop: 20,
+                        paddingLeft: 10,
+                        paddingRight: 10,
+                        display: 'flex',
+                        flexDirection: 'row',
+                        width: '100%',
+                      }}
+                    >
+                      <BodyText
+                        style={{
+                          fontSize: 12,
+                          fontWeight: 500,
+                          textAlign: 'start',
+                          width: '50%',
+                        }}
+                      >
+                        {r.reviewer.name?.slice(1, 10)}
+                      </BodyText>
+                      <BodyText
+                        style={{
+                          fontSize: 12,
+                          fontWeight: 500,
+                          textAlign: 'end',
+                          width: '50%',
+                        }}
+                      >
+                        {r.createdAt.toString().slice(0, 10)}
+                        {Ratings(r.rating ?? 0)}
+                      </BodyText>
+                    </span>
+                    <BodyText
+                      style={{
+                        fontSize: 12,
+                        textAlign: 'start',
+                        color: 'GrayText',
+                        paddingLeft: 10,
+                        paddingRight: 10,
+                        width: 200,
+                        display: '-webkit-box',
+                        WebkitBoxOrient: 'vertical',
+                        WebkitLineClamp: 3,
+                        overflow: 'hidden',
+                        textOverflow: 'ellipsis',
+                        whiteSpace: 'break-spaces',
+                      }}
+                    >
+                      {r.description}
+                    </BodyText>
+                  </div>
+                ))}
+              </div>
+            </div>
+            }
+          </Modal.Body>
+        </Modal>
+      )}
+    </>
   );
 };
 

@@ -2,15 +2,17 @@ import React, { useContext, useState } from 'react';
 
 import { ProductDetailsTopBar } from './ProductDetailsTopBar';
 import { ProductDetails } from './ProductDetails';
-
 import { Button } from 'react-bootstrap';
 import { PopulatedAdvert } from '../../api/collections/advert';
 import { OfferModal } from '../Offers/OfferModal';
-import { User } from '../../api/collections/user';
+import { PopulatedUser } from '../../api/collections/user';
 import { LoginContext } from '../../contexts/LoginContext';
 import { PriorizationModal } from '../Priorization/PriorizationModal';
 
-type ProductOverviewSectionProps = { advert: PopulatedAdvert; store: User };
+type ProductOverviewSectionProps = {
+  advert: PopulatedAdvert;
+  store: PopulatedUser;
+};
 
 const ProductOverviewSection: React.FC<ProductOverviewSectionProps> = (
   props,

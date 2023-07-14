@@ -17,6 +17,7 @@ export interface Review {
   description: string;
   createdAt: Date;
   reviewer: string;
+  reviewee: string;
   reviewedAdvert: string;
 }
 
@@ -58,6 +59,15 @@ export async function getAllReviews(): Promise<Review[]> {
 export async function getReviewsByAdvert(advertId: string): Promise<Review[]> {
   return await apiClient.get<Review[]>(
     `/reviews/getReviewsByAdvert/${advertId}`,
+    {
+      withCredentials: true,
+    },
+  );
+}
+
+export async function getReviewsByReviewee(store: string): Promise<PopulatedReview[]> {
+  return await apiClient.get<PopulatedReview[]>(
+    `/reviews/getReviewsByReviewee/${store}`,
     {
       withCredentials: true,
     },

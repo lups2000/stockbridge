@@ -37,6 +37,11 @@ const reviewSchema = new mongoose.Schema<Review>({
     ref: 'Advert',
     required: true,
   },
+  reviewee: {
+    type: Types.ObjectId,
+    ref: 'User',
+    required: true,
+  },
 });
 
 // reviewSchema.pre<Review>('save', async function (next) {

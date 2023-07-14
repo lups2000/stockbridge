@@ -115,6 +115,17 @@ export async function getAdvert(id: string): Promise<PopulatedAdvert> {
   });
 }
 
+export async function getCategoriesByStore(
+  store: string,
+): Promise<ProductCategory[]> {
+  return await apiClient.get<ProductCategory[]>(
+    `/adverts/getCategoriesByStore/${store}`,
+    {
+      withCredentials: true,
+    },
+  );
+}
+
 export async function createAdvert(advert: Advert): Promise<Advert> {
   return await apiClient.post<Advert>(`/adverts/`, advert, {
     withCredentials: true,
