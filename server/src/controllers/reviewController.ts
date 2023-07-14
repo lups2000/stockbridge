@@ -6,6 +6,7 @@ import {
   updateReview,
   delReview,
   getReviewsByAdvert,
+  getReviewsByReviewee,
 } from '../services/reviewServices';
 import { AuthenticatedRequest } from '../middlewares/authMiddleware';
 import { AppError } from '../utils/errorHandler';
@@ -106,6 +107,20 @@ export const getAllReviewsByAdvert = asyncHandler(
   async (req: AuthenticatedRequest, res: Response) => {
     const { advertId } = req.params;
     const reviews = await getReviewsByAdvert(advertId, true);
+    res.status(200).json(reviews);
+  },
+);
+
+/**
+ * This method gets all reviews of a specific advert   *
+ * @param req - The request object
+ * @param res - The response object
+ * @returns list of reviews.
+ */
+export const getAllReviewsByReviewee = asyncHandler(
+  async (req: AuthenticatedRequest, res: Response) => {
+    const { store } = req.params;
+    const reviews = await getReviewsByReviewee(store);
     res.status(200).json(reviews);
   },
 );

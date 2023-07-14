@@ -2,6 +2,7 @@ import advertModel from '../models/Advert';
 import type { Advert, ProductCategory } from '../entities/advertEntity';
 import logger from '../config/logger';
 import { AppError } from '../utils/errorHandler';
+import { ObjectId } from 'mongodb';
 
 const serviceName = 'advertServices';
 

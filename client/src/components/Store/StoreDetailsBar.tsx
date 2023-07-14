@@ -1,14 +1,17 @@
-import React from 'react';
-import { User } from '../../api/collections/user';
+import React, { useEffect, useState } from 'react';
+import { getStore, PopulatedUser, User } from '../../api/collections/user';
 import { Ratings } from '../Ratings';
 import { BodyText } from '../Text/BodyText';
+import { StoreDetailsModal } from './StoreDetailsModal';
 
 type StoreDetailsBarProps = {
-  category?: string;
-  store?: User;
+  category: string;
+  store: PopulatedUser;
 };
 
 const StoreDetailsBar: React.FC<StoreDetailsBarProps> = (props) => {
+  const [showModal, setShowModal] = useState(false);
+  console.log('store: ', props.store);
   const fieldContainer = (message: string, value: string, rating = false) => {
     return (
       <div
@@ -42,7 +45,7 @@ const StoreDetailsBar: React.FC<StoreDetailsBarProps> = (props) => {
               : {}
           }
         >
-          <BodyText
+          <div
             style={{
               width: 'auto',
               fontWeight: 300,
@@ -54,9 +57,18 @@ const StoreDetailsBar: React.FC<StoreDetailsBarProps> = (props) => {
               textDecorationColor: rating ? '#ffffff' : '',
             }}
           >
-            {value}
+            <BodyText
+              style={{
+                textDecoration: rating ? 'underline' : '',
+                cursor: rating ? 'pointer' : '',
+              }}
+              onClick={rating ? () => setShowModal(true) : () => {}}
+            >
+              {' '}
+              {value}
+            </BodyText>
             {rating && Ratings(props.store?.rating ? props.store.rating : 0)}
-          </BodyText>
+          </div>
         </div>
       </div>
     );
@@ -97,6 +109,13 @@ const StoreDetailsBar: React.FC<StoreDetailsBarProps> = (props) => {
           {fieldContainer('Store:', props.store?.name ?? '', true)}
         </React.Fragment>
       </div>
+      {showModal && (
+        <StoreDetailsModal
+          isShowing={showModal}
+          store={props.store._id!}
+          onClose={() => setShowModal(false)}
+        />
+      )}
     </div>
   );
 };

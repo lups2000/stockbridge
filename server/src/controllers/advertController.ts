@@ -144,6 +144,15 @@ export const getAllAdvertsByCategory = asyncHandler(
   },
 );
 
+export const getCategoriesByStore = asyncHandler(
+  async (req: AuthenticatedRequest, res: Response) => {
+    const { store } = req.params;
+    const adverts: Advert[] = await getAdvertsByStore(store);
+    const categories = adverts.map((advert) => advert.category);
+    res.status(200).json(categories);
+  },
+);
+
 export const prioritizeAdvert = asyncHandler(
   async (req: AuthenticatedRequest, res: Response) => {
     const { advert } = req.params;

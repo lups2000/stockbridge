@@ -2,6 +2,7 @@ import { Router } from 'express';
 import {
   deleteReview,
   getAllReviewsByAdvert,
+  getAllReviewsByReviewee,
   getReview,
   postReview,
   putReview,
@@ -20,3 +21,7 @@ reviewRouter
 reviewRouter
   .route('/getReviewsByAdvert/:advertId')
   .get(protect, getAllReviewsByAdvert);
+
+reviewRouter
+  .route('/getReviewsByReviewee/:store')
+  .get(protect, getAllReviewsByReviewee);

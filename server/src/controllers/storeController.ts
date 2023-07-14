@@ -1,8 +1,9 @@
-import { type Response, Router } from 'express';
+import { type Response } from 'express';
 import { User } from '../entities/userEntity';
 import { AuthenticatedRequest } from '../middlewares/authMiddleware';
-import { findUserById, updateUser } from '../services/userServices';
+import { findUserById } from '../services/userServices';
 import asyncHandler from 'express-async-handler';
+import logger from '../config/logger';
 /**
  * This method returns a user by id   *
  * @param req - The request object
@@ -18,23 +19,7 @@ export const getStore = asyncHandler(
       name: user.name,
       address: user.address,
       rating: user.rating,
+      createdAt: user.createdAt,
     });
-  },
-);
-
-/**
- * This method updates a user by id   *
- * @param req - The request object
- * @param res - The response object
- * @returns updated user object.
- */
-export const putStore = asyncHandler(
-  async (req: AuthenticatedRequest, res: Response) => {
-    const { id } = req.params;
-    const updateContent = {
-      rating: req.body.rating,
-    } as User;
-    const user = await updateUser(id, updateContent);
-    res.status(200).json(user);
   },
 );

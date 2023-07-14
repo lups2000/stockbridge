@@ -76,6 +76,16 @@ export const getReviewsByAdvert = async (advertId: string, populate = true) => {
 };
 
 /**
+ * Returns all reviews of the requested user
+ * @param store
+ * @returns Promise containing the list of reviews
+ */
+export const getReviewsByReviewee = async (store: string, populate = true) => {
+  logger.debug(`${serviceName}: Requesting all reviews for user: ${store}`);
+  return await populateResult(reviewModel.find({ reviewee: store }), populate);
+};
+
+/**
  * Populates the referenced elements in a document
  * @param queryResult The document to be populated
  * @param populate Determines if the result should be populated
@@ -83,6 +93,6 @@ export const getReviewsByAdvert = async (advertId: string, populate = true) => {
  */
 function populateResult(queryResult: any, populate: boolean) {
   return populate
-    ? queryResult.populate(['reviewer', 'reviewedAdvert'])
+    ? queryResult.populate(['reviewer', 'reviewedAdvert', 'reviewee'])
     : queryResult;
 }

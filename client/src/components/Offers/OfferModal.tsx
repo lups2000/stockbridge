@@ -1,6 +1,7 @@
 import { FC, useContext, useState } from 'react';
 import { Button, Col, Form, Modal, Row, Image } from 'react-bootstrap';
-import { PopulatedAdvert, updateAdvert } from '../../api/collections/advert';
+import { useNavigate } from 'react-router-dom';
+import { PopulatedAdvert } from '../../api/collections/advert';
 import {
   createOffer,
   Offer,
@@ -37,7 +38,8 @@ function colorMap(status: OfferStatus): string {
   }
 }
 const OfferModal: FC<OfferContentProps> = (props) => {
-  const { user, loggedIn } = useContext(LoginContext);
+  const { user } = useContext(LoginContext);
+  const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
     quantity: props.offer?.quantity ? props.offer?.quantity : 0,

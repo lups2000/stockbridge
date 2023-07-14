@@ -1,5 +1,7 @@
 import { FC, useEffect, useState } from 'react';
 import { getReview, PopulatedReview } from '../../api/collections/review';
+import { getStore, PopulatedUser } from '../../api/collections/user';
+
 import { InfoBar } from '../ProductOverview/InfoBar';
 import { Ratings } from '../Ratings';
 import { StoreDetailsModal } from '../Store/StoreDetailsModal';
@@ -22,10 +24,11 @@ const Reviewbar: FC<ReviewBarProps> = (props) => {
 
   useEffect(() => {
     const fetchReview = async () => {
-      setReview(await getReview(props.reviewID!));
+      const fetchedReview = await getReview(props.reviewID!);
+      setReview(fetchedReview);
     };
     fetchReview();
-  }, [props.reviewID]);
+  }, [props.reviewID, review.reviewer?._id]);
 
   return (
     <>
@@ -53,6 +56,7 @@ const Reviewbar: FC<ReviewBarProps> = (props) => {
                 <StoreDetailsModal
                   isShowing={showModal}
                   onClose={closeModal}
+                  store={review.reviewer._id!}
                 ></StoreDetailsModal>
               )}
               <BodyText
