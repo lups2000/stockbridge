@@ -1,4 +1,3 @@
-import { fontSize } from '@mui/system';
 import { BodyText } from '../Text/BodyText';
 import React, { useEffect, useRef } from 'react';
 

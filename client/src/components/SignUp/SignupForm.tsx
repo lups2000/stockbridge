@@ -20,7 +20,6 @@ import {
   checkPasswordMatch,
 } from '../../utils/functions';
 import { LoginContext } from '../../contexts/LoginContext';
-import { PopulatedUser, User, UserResponse } from '../../api/collections/user';
 import { register, updateUser } from '../../api/collections/user';
 import PaymentElement, { PaymentType } from '../Payment/PaymentElement';
 

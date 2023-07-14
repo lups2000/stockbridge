@@ -1,10 +1,5 @@
 import { FC, useEffect, useState } from 'react';
-import {
-  getReview,
-  PopulatedReview,
-  Review,
-} from '../../api/collections/review';
-import { getStore, User } from '../../api/collections/user';
+import { getReview, PopulatedReview } from '../../api/collections/review';
 import { InfoBar } from '../ProductOverview/InfoBar';
 import { Ratings } from '../Ratings';
 import { StoreDetailsModal } from '../Store/StoreDetailsModal';
@@ -30,7 +25,7 @@ const Reviewbar: FC<ReviewBarProps> = (props) => {
       setReview(await getReview(props.reviewID!));
     };
     fetchReview();
-  }, []);
+  }, [props.reviewID]);
 
   return (
     <>
@@ -47,6 +42,8 @@ const Reviewbar: FC<ReviewBarProps> = (props) => {
                   color: 'black',
                   textDecoration: 'underline',
                   cursor: 'pointer',
+                  width: '50%',
+                  textAlign: 'start',
                 }}
                 onClick={openModal}
               >
@@ -58,12 +55,13 @@ const Reviewbar: FC<ReviewBarProps> = (props) => {
                   onClose={closeModal}
                 ></StoreDetailsModal>
               )}
-
               <BodyText
                 style={{
                   font: 'light',
                   fontFamily: 'Poppins',
                   color: 'black',
+                  width: '50%',
+                  textAlign: 'end',
                 }}
               >
                 {review.createdAt.toString().substring(0, 10)}

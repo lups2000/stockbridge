@@ -85,11 +85,13 @@ export const UserIconDropdown: FC = () => {
   const toggleDropDown = () => setDropdownOpen(!isDropdownOpen);
 
   /** Autoclicks the selected tab section instead of renavigating.
-  */ 
-  const autoClickTab = (index : number) => {
-    const tabButton = document.getElementsByClassName("profile-section-tab-button")[index] as HTMLElement;
+   */
+  const autoClickTab = (index: number) => {
+    const tabButton = document.getElementsByClassName(
+      'profile-section-tab-button',
+    )[index] as HTMLElement;
     tabButton.click();
-  }
+  };
 
   const handleItemClick = (item: DropdownItem) => {
     if (item.type === DropdownItemType.LOGOUT) {

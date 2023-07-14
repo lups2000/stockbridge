@@ -20,7 +20,7 @@ export const findAdvertById = async (id: string, populate = true) => {
     throw new AppError('Advert not found', 'Advert not found', 404);
   }
 
-  logger.debug(`${serviceName}: Returning advert ${advert}`);
+  logger.debug(`${serviceName}: Returning advert with id ${advert._id}`);
   return advert;
 };
 
@@ -42,7 +42,7 @@ export const createAdvert = async (advert: Advert) => {
  */
 export const updateAdvert = async (id: string, advert: Advert) => {
   logger.debug(`${serviceName}: Updating advert with id: ${id} with ${advert}`);
-  return advertModel.findByIdAndUpdate(id, advert, {
+  return await advertModel.findOneAndUpdate({_id: id}, advert, {
     new: true,
     runValidators: true,
   });
@@ -267,6 +267,7 @@ export const getPopularAdverts = async (limit: number) => {
     { $limit: limit },
   ]);
 };
+
 
 /**
  * Populates the referenced elements in a document

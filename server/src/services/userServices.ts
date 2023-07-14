@@ -6,7 +6,7 @@ import {
   type SubscriptionStatus,
   SubscriptionType,
 } from '../entities/userEntity';
-
+import * as _ from 'lodash'; 
 const serviceName = 'userServices';
 
 /**
@@ -47,11 +47,12 @@ export const updateUser = async (id: string, user: User) => {
   logger.debug(`${serviceName}: Updating user with id: ${id} with ${user}`);
 
   if (user.hasOwnProperty('prioritisationTickets')) {
-    throw new AppError(
-      'Cannot update prioritisation tickets',
-      'Cannot update prioritisation tickets',
-      403,
-    );
+    const existingUser = await userModel.findById(id);
+    if (existingUser?.prioritisationTickets! < user.prioritisationTickets) {
+      logger.error(
+        'An increase of the number of tickets is only possible through a premium subscription',
+      );
+    }
   }
 
   return userModel.findByIdAndUpdate(id, user, {
@@ -127,3 +128,17 @@ export const handleSubscription = async (
   logger.debug(`${serviceName}: Updating user ${userId} with ${user}`);
   await userModel.findByIdAndUpdate(user.id, user);
 };
+
+export async function deductTicket(userId: string): Promise<User | undefined> {
+  const existingUser = await findUserById(userId);
+  if (existingUser) {
+    if (existingUser?.prioritisationTickets && existingUser?.prioritisationTickets! >= 1) {
+      existingUser!.prioritisationTickets = existingUser.prioritisationTickets - 1
+    } else {
+      logger.error(
+        'Insufficient number of tickets',
+      );
+    }
+    return existingUser;
+  }   
+}

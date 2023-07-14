@@ -3,7 +3,6 @@ import Tabs, { AdvertSortCriteria, OfferSortCriteria } from '../../ContentTabs/T
 import ContentTab from '../../ContentTabs/ContentTab';
 import ProductInfoBar from '../ProductInfoBar';
 import {
-  Advert,
   PopulatedAdvert,
   getAdvertsByUser,
 } from '../../../api/collections/advert';
@@ -13,7 +12,7 @@ import { LoginContext } from '../../../contexts/LoginContext';
 /**
  * Component that displays the content of MyAdverts section.
  */
-const MyAdvertsContent: React.FC = ({}) => {
+const MyAdvertsContent: React.FC = () => {
   const [buyingAdverts, setBuyingAdverts] = useState([] as PopulatedAdvert[]);
   const [sellingAdverts, setSellingAdverts] = useState([] as PopulatedAdvert[]);
   const { user, loggedIn } = useContext(LoginContext);
@@ -37,7 +36,7 @@ const MyAdvertsContent: React.FC = ({}) => {
       }
     };
     fetchData();
-  }, []);
+  }, [user?._id]);
 
 
 

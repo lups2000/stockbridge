@@ -44,7 +44,7 @@ export enum ProductCategory {
 }
 
 export interface Advert {
-  id: string;
+  _id: string;
   productname: string;
   description: string;
   imageurl?: string;

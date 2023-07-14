@@ -51,6 +51,8 @@ const OfferBar: React.FC<OfferBarProps> = (props) => {
                 font: 'light',
                 fontFamily: 'Poppins',
                 color: 'black',
+                width: '50%',
+                textAlign: 'start',
               }}
             >
               {offerer.name ?? 'No Name given'}
@@ -61,6 +63,8 @@ const OfferBar: React.FC<OfferBarProps> = (props) => {
                 font: 'light',
                 fontFamily: 'Poppins',
                 color: 'black',
+                width: '50%',
+                textAlign: 'end',
               }}
             >
               {props?.offer?.createdAt?.toString().slice(0, 10)}

@@ -24,8 +24,8 @@ const InfoBar: FC<InfoBarProps> = (props) => {
           flexDirection: 'row',
           width: '100%',
           paddingLeft: '30px',
+          paddingRight: '30px',
           paddingTop: '30px',
-          gap: '80%',
         }}
       >
         {props.contentLine1}

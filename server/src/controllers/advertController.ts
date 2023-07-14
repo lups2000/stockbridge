@@ -15,6 +15,7 @@ import { AuthenticatedRequest } from '../middlewares/authMiddleware';
 import { Advert, ProductCategory } from '../entities/advertEntity';
 import { ObjectId } from 'mongodb';
 import { AppError } from '../utils/errorHandler';
+import { findUserById, updateUser } from '../services/userServices';
 
 /**
  * This method returns an advert by id   *
@@ -143,6 +144,15 @@ export const getAllAdvertsByCategory = asyncHandler(
   },
 );
 
+export const prioritizeAdvert = asyncHandler(
+  async (req: AuthenticatedRequest, res: Response) => {
+    const { advert } = req.params;
+    const fetchedAdvert = await findAdvertById(advert, false);
+    fetchedAdvert.prioritized = true;
+    const updatedAdvert = await updateAdvert(advert, fetchedAdvert);
+    res.status(200).json(updatedAdvert);
+  },
+);
 /**
  * This method gets all adverts of a specific store   *
  * @param req - The request object
@@ -184,6 +194,8 @@ export const getPopularAdverts = asyncHandler(
     res.status(200).json({ results });
   },
 );
+
+
 
 /**
  * Checks if a user can edit or delete an advert with a given id.
