@@ -4,10 +4,17 @@ import logger from '../config/logger';
 import { Offer, OfferStatus } from '../entities/offerEntity';
 import { OrderStatus } from '../entities/orderEntity';
 import { findAdvertById } from '../services/advertServices';
-import { findOfferById } from '../services/offerServices';
+import advertModel from './Advert';
 import orderModel from './Order';
 
 const Types = mongoose.Schema.Types;
+
+class InsufficientStock extends Error {
+  constructor(message: string) {
+    super(message);
+    this.name = 'Insufficiet Stock'; // Set the name of the error type
+  }
+}
 
 export const offerSchema = new mongoose.Schema<Offer>({
   price: {
@@ -47,17 +54,28 @@ export const offerSchema = new mongoose.Schema<Offer>({
   },
 });
 
+// Or, in Node.js >= 7.6.0:
+offerSchema.pre('save', async function(next) {
+  const advert = await findAdvertById(this.advert.toString());
+  if (this.quantity > advert.quantity) {
+    this.status = OfferStatus.CANCELED_OUT_OF_STOCK;
+  }
+  next()
+});
+
 offerSchema.post<Offer>('save', async function (offer: Offer) {
   try {
     const advert = await findAdvertById(offer.advert.toString());
-    if (!advert.offers?.includes(new ObjectId(this.id))) {
-      if (advert.offers) {
-        advert.offers.push(new ObjectId(this.id));
-      } else {
-        advert.offers = [new ObjectId(this.id)];
+    const offerId = new ObjectId(offer.id)
+    if (!advert.offers || advert.offers.length == 0) {
+
+      advert.offers = [offerId]
+    } else {
+      if (!advert.offers?.includes(offerId)) {
+        advert.offers.push(offerId);
       }
-      advert.save();
     }
+      await advertModel.findByIdAndUpdate(advert.id, advert)
   } catch (error) {
     logger.error(`Failed updating advert corresponding to offer ${this.id}`);
   }

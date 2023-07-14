@@ -26,16 +26,14 @@ const OfferBarUserProfileInfo: React.FC<OfferBarUserProfileInfoProps> = (props) 
     switch (props.offer.status) {
       case OfferStatus.ACCEPTED:
         return ["bi-check-circle", "#4ECBA9"]
-        break;
       case OfferStatus.REJECTED:
         return ["bi-x-circle", "red"]
-        break;
       case OfferStatus.OPEN:
         return ["bi-clock-history", "#4285F4"];
-        break;
-      case OfferStatus.CANCELED:
+      case OfferStatus.CANCELED_OUT_OF_STOCK:
         return ["bi-dash-circle", "#ffc071"]
-        break;
+      case OfferStatus.CANCELED_USER:
+        return ["bi-dash-circle", "#ffc071"]
       default:
         return ["bi-dash-circle", "#ffc071"]
     }

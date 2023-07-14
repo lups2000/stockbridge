@@ -115,7 +115,7 @@ advertSchema.pre('save', async function (next) {
 
 advertSchema.pre('findOneAndUpdate',  async function (next) { 
   const thisAdvert = this.getUpdate() as Advert;
-  const existingAdvert = await advertModel.findById(thisAdvert._id)
+  const existingAdvert = await advertModel.findById(thisAdvert.id)
   if (!existingAdvert?.prioritized && thisAdvert.prioritized) {
     const concernedUser = await userModel.findById(existingAdvert?.store);
     if (concernedUser) {

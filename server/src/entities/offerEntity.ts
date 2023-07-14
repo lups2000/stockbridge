@@ -4,7 +4,8 @@ export enum OfferStatus {
   OPEN = 'Open',
   ACCEPTED = 'Accepted',
   REJECTED = 'Rejected',
-  CANCELED = 'Canceled',
+  CANCELED_OUT_OF_STOCK = 'Canceled - Out of Stock',
+  CANCELED_USER = 'Canceled'
 }
 
 export interface Offer {

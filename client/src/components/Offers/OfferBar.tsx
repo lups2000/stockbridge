@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { ProductAttribute } from '../ProductOverview/ProductAttribute';
-import { PopulatedOffer } from '../../api/collections/offer';
+import { OfferStatus, PopulatedOffer } from '../../api/collections/offer';
 import { PopulatedAdvert } from '../../api/collections/advert';
 import { BodyText } from '../Text/BodyText';
 import { OfferModal } from './OfferModal';
 import { Ratings } from '../Ratings';
 import { InfoBar } from '../ProductOverview/InfoBar';
 import { User } from '../../api/collections/user';
+import outOfStock from '../../assets/out-of-stock.svg'
 require('./offerBarStyle.scss');
 
 type OfferBarProps = {
@@ -91,6 +92,16 @@ const OfferBar: React.FC<OfferBarProps> = (props) => {
               value={props?.offer?.price}
               unit="€"
             />
+            {
+              props.offer.status === OfferStatus.CANCELED_OUT_OF_STOCK && 
+              <img
+              style={{
+                marginBottom: '2%',
+              }}
+              src={outOfStock}
+              alt="OOS"
+            />
+            }
           </div>
         }
       />

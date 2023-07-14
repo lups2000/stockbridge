@@ -1,7 +1,7 @@
 import { CSSProperties, FC } from 'react';
 
 export type TextProps = {
-  style: CSSProperties;
+  style?: CSSProperties;
   children: React.ReactNode;
   onClick?: () => void;
 };
