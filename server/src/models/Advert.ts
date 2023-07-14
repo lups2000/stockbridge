@@ -10,6 +10,8 @@ import {
 } from '../entities/advertEntity';
 import userModel from './User';
 import { User } from '../entities/userEntity';
+import { findUserById } from '../services/userServices';
+import { getUser } from '../controllers/userController';
 
 const Types = mongoose.Schema.Types;
 
@@ -104,13 +106,26 @@ const advertSchema = new mongoose.Schema<Advert>({
 });
 
 advertSchema.pre('save', async function (next) {
-  const store = await userModel.findById(this.store);
-
+  const store = await userModel.findById(this.store.id);
   if (store) {
     this.location = store.location;
   }
   next();
 });
+
+advertSchema.pre('findOneAndUpdate',  async function (next) { 
+  const thisAdvert = this.getUpdate() as Advert;
+  const existingAdvert = await advertModel.findById(thisAdvert._id)
+  if (!existingAdvert?.prioritized && thisAdvert.prioritized) {
+    const concernedUser = await userModel.findById(existingAdvert?.store);
+    if (concernedUser) {
+      concernedUser.prioritisationTickets = concernedUser.prioritisationTickets - 1
+      concernedUser.save()
+    }
+  }
+  next();
+});
+
 
 advertSchema.index({
   productname: 'text',

@@ -1,13 +1,11 @@
 import { FC, useEffect, useState } from 'react';
-import { Advert, PopulatedAdvert } from '../../api/collections/advert';
+import { PopulatedAdvert } from '../../api/collections/advert';
 import {
   getOffersByAdvert,
-  Offer,
   OfferStatus,
   PopulatedOffer,
 } from '../../api/collections/offer';
 import { ReviewOfferSection } from '../ProductOverview/ReviewOfferSection';
-import { BodyText } from '../Text/BodyText';
 import { OfferSection } from './OfferSection';
 
 type OffersSectionProps = {
@@ -28,7 +26,7 @@ const OffersSection: FC<OffersSectionProps> = (props) => {
       }
     };
     fetchData();
-  }, []);
+  }, [props.advert._id]);
 
   const openOffers = offers.filter((o) => o.status === 'Open');
   const acceptedOffers = offers.filter((o) => o.status === 'Accepted');

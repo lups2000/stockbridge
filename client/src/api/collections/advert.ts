@@ -144,6 +144,7 @@ export async function getAdvertsByUser(
   });
 }
 
+
 export async function getAllAdverts(queryParams: any): Promise<AdvertDto> {
   return await apiClient.get<AdvertDto>(`/adverts`, {}, queryParams);
 }
@@ -154,4 +155,10 @@ export async function getPopularCategories(): Promise<CategoryDto> {
 
 export async function getPopularAdverts(): Promise<AdvertDto> {
   return await apiClient.get<AdvertDto>(`/adverts/getPopularAdverts`);
+}
+
+export async function prioritizeAdvert(advert: string): Promise<Advert> {
+  return await apiClient.get<Advert>(`/adverts/prioritizeAdvert/${advert}`, {
+    withCredentials: true
+  })
 }

@@ -10,7 +10,6 @@ import {
   PaymentMethod,
   PopulatedUser,
   updateUser,
-  User,
 } from '../../../api/collections/user';
 import { LoginContext } from '../../../contexts/LoginContext';
 import {

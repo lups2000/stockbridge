@@ -22,7 +22,7 @@ const ProductOverviewSection: React.FC<ProductOverviewSectionProps> = (
       ? 'Buy'
       : 'Sell'
     : props.advert?.prioritized
-    ? 'Prioritized'
+    ? ''
     : 'Prioritize';
 
   const [showOfferModal, setShowOfferModal] = useState(false);
@@ -79,28 +79,31 @@ const ProductOverviewSection: React.FC<ProductOverviewSectionProps> = (
         <PriorizationModal
           isShowing={showPriorizationModal}
           onClose={closePriorizationModal}
+          advertID={props.advert._id!}
         />
-        <Button
-          style={{
-            cursor: 'pointer',
-            fontWeight: 'bold',
-            fontFamily: 'Poppins',
-            width: '150px',
-            marginLeft: '85%',
-            marginTop: '25px',
-            fontSize: '24px',
-            textAlign: 'center',
-            color: 'white',
-            textDecoration: 'none',
-            padding: '7px',
-            border: 'rounded-md',
-            backgroundColor: 'black',
-            borderColor: 'black',
-          }}
-          onClick={owner ? openPriorizationModal : openOfferModal}
-        >
-          {button_text}
-        </Button>
+        {button_text !== '' && (
+          <Button
+            style={{
+              cursor: 'pointer',
+              fontWeight: 'bold',
+              fontFamily: 'Poppins',
+              width: '150px',
+              marginLeft: '85%',
+              marginTop: '25px',
+              fontSize: '24px',
+              textAlign: 'center',
+              color: 'white',
+              textDecoration: 'none',
+              padding: '7px',
+              border: 'rounded-md',
+              backgroundColor: 'black',
+              borderColor: 'black',
+            }}
+            onClick={owner ? openPriorizationModal : openOfferModal}
+          >
+            {button_text}
+          </Button>
+        )}
       </div>
     </div>
   );

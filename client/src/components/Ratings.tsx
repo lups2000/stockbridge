@@ -1,5 +1,3 @@
-import { useState } from 'react';
-
 const Ratings = (rating: number, onClick?: (rating: number) => void) => {
   return (
     <div className="rating-stars">

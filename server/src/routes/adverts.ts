@@ -9,6 +9,7 @@ import {
   getAllAdvertsByStore,
   postAdvert,
   putAdvert,
+  prioritizeAdvert,
 } from '../controllers/advertController';
 import { protect } from '../middlewares/authMiddleware';
 
@@ -32,3 +33,7 @@ advertRouter
 advertRouter
   .route('/getAdvertsByStore/:store')
   .get(protect, getAllAdvertsByStore);
+
+advertRouter
+  .route('/prioritizeAdvert/:advert')
+  .get(protect, prioritizeAdvert);

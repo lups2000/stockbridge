@@ -1,6 +1,6 @@
 import { FC, useContext, useState } from 'react';
 import { Button, Col, Form, Modal, Row, Image } from 'react-bootstrap';
-import { PopulatedAdvert } from '../../api/collections/advert';
+import { PopulatedAdvert, updateAdvert } from '../../api/collections/advert';
 import {
   createOffer,
   Offer,

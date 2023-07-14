@@ -17,7 +17,14 @@ function App() {
     <LoginContextProvider>
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/userInfo" element={<SelectedTabContextProvider><UserInfo /></SelectedTabContextProvider>} />
+        <Route
+          path="/userInfo"
+          element={
+            <SelectedTabContextProvider>
+              <UserInfo />
+            </SelectedTabContextProvider>
+          }
+        />
         <Route path="/signUp" element={<SignUp />} />
         <Route path="/signIn" element={<SignIn />} />
         <Route path="/about" element={<About />} />

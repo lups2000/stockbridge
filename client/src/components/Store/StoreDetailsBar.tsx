@@ -18,7 +18,7 @@ const StoreDetailsBar: React.FC<StoreDetailsBarProps> = (props) => {
           gap: '4%',
           alignItems: 'start',
           justifyContent: 'start',
-          width: '30%',
+          width: '50%',
         }}
       >
         <BodyText
@@ -85,7 +85,6 @@ const StoreDetailsBar: React.FC<StoreDetailsBarProps> = (props) => {
         style={{
           display: 'flex',
           flexDirection: 'row',
-          gap: '15%',
           alignItems: 'start',
           justifyContent: 'start',
           width: '100%',
@@ -95,11 +94,7 @@ const StoreDetailsBar: React.FC<StoreDetailsBarProps> = (props) => {
           {fieldContainer('Category:', props.category ? props.category : '')}
         </React.Fragment>
         <React.Fragment key={'store-name  '}>
-          {fieldContainer(
-            'Store:',
-            props.store?.name ? props.store.name : 'No Name',
-            true,
-          )}
+          {fieldContainer('Store:', props.store?.name ?? '', true)}
         </React.Fragment>
       </div>
     </div>

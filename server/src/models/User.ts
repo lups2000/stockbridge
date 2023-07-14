@@ -215,3 +215,8 @@ userSchema.methods.matchPassword = async function (enteredPassword: string) {
 
 const userModel = mongoose.model('User', userSchema, 'users');
 export default userModel;
+
+
+userSchema.path('prioritisationTickets').validate(function(tickets) {
+  return !tickets || tickets >= 0
+})

@@ -48,7 +48,7 @@ const SellingContent: React.FC = () => {
       }
     };
     fetchData();
-  }, []);
+  }, [user?._id]);
 
   /**
    * Filters the displayed offers based on the search text and sorts it based on 
