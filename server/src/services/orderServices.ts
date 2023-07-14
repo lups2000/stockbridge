@@ -71,7 +71,19 @@ export const findAllOrders = async () => {
  * @param offer : id of the offer
  * @returns Promise containing the deleted advert.
  */
-export const findOrderByOffer = async (offer: string) => {
+export const findOrderByOffer = async (offer: string, populate = true) => {
   logger.debug(`${serviceName}: Requesting the order of offer: ${offer}`);
-  return orderModel.find({ offer: offer });
+  return await populateResult(orderModel.find({ offer: offer }), populate);
 };
+
+/**
+ * Populates the referenced elements in a document
+ * @param queryResult The document to be populated
+ * @param populate Determines if the result should be populated
+ * @returns
+ */
+function populateResult(queryResult: any, populate: boolean) {
+  return populate
+    ? queryResult.populate(['offer'])
+    : queryResult;
+}

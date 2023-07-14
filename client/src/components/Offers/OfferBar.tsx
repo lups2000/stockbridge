@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { ProductAttribute } from '../ProductOverview/ProductAttribute';
 import { OfferStatus, PopulatedOffer } from '../../api/collections/offer';
 import { PopulatedAdvert } from '../../api/collections/advert';
@@ -8,6 +8,7 @@ import { Ratings } from '../Ratings';
 import { InfoBar } from '../ProductOverview/InfoBar';
 import { User } from '../../api/collections/user';
 import outOfStock from '../../assets/out-of-stock.svg'
+import { LoginContext } from '../../contexts/LoginContext';
 require('./offerBarStyle.scss');
 
 type OfferBarProps = {
@@ -17,6 +18,7 @@ type OfferBarProps = {
 
 const OfferBar: React.FC<OfferBarProps> = (props) => {
   const [showModal, setShowModal] = useState(false);
+  const { isLoading } = useContext(LoginContext);
   const closeModal = () => {
     setShowModal(false);
   };
@@ -42,7 +44,8 @@ const OfferBar: React.FC<OfferBarProps> = (props) => {
     fetchData();
   }, [props.offer.offeree, props.offer.offeror]);
   return (
-    <>
+    <> 
+     {!isLoading ? 
       <InfoBar
         onClick={openModal}
         contentLine1={
@@ -104,7 +107,7 @@ const OfferBar: React.FC<OfferBarProps> = (props) => {
             }
           </div>
         }
-      />
+      /> : <></>}
       {showModal && (
         <OfferModal
           isShowing={showModal}

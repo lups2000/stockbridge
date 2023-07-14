@@ -12,6 +12,9 @@ import { AuthenticatedRequest } from '../middlewares/authMiddleware';
 import { ObjectId } from 'mongodb';
 import { Order } from '../entities/orderEntity';
 import { AppError } from '../utils/errorHandler';
+import { Offer } from '../entities/offerEntity';
+import { findAllOffersByOfferee, findAllOffersByOfferor } from '../services/offerServices';
+import { Advert } from '../entities/advertEntity';
 
 /**
  * This method returns a order by id
@@ -103,6 +106,57 @@ export const getOrdersOfOffer = asyncHandler(
 
     order = _findAndCheckRelatedOrders(userId, order)[0];
     res.status(200).json(order);
+  },
+);
+
+
+/**
+ * This method gets all orders that match the request body parameters  *
+ * @param req - The request object
+ * @param res - The response object
+ * @returns the requested orders.
+ */
+export const getUserSpecificOrders = asyncHandler(
+  async (req: AuthenticatedRequest, res: Response) => {
+    const { user, orderType } = req.query;
+    const userId = req.user?.id;
+
+    if (userId != user) {
+      throw new AppError(
+        'Not authorized to access this route',
+        'Not authorized to access this route',
+        401,
+      );
+    }
+    var offers: Offer[];
+    switch (orderType) {
+      // Gets the related offers in case the order is of type Ask / Buying
+      case 'Ask': {
+        var offersByOfferor = await findAllOffersByOfferor(user as string) as Offer[];
+        offersByOfferor = offersByOfferor.filter((x) => x.advert && (x.advert as unknown as Advert).type === 'Sell');
+        var offersByOfferee = await findAllOffersByOfferee(user as string) as Offer[];
+        offersByOfferee = offersByOfferee.filter((x) => x.advert && (x.advert as unknown as Advert).type === 'Ask');
+        offers = offersByOfferor.concat(offersByOfferee);
+        break;
+      }
+      // Gets the related offers in case the order is of type Sell
+      case 'Sell': {
+        var offersByOfferor = await findAllOffersByOfferor(user as string) as Offer[];
+        offersByOfferor = offersByOfferor.filter((x) => x.advert && (x.advert as unknown as Advert).type === 'Ask');
+        var offersByOfferee = await findAllOffersByOfferee(user as string) as Offer[];
+        offersByOfferee = offersByOfferee.filter((x) => x.advert && (x.advert as unknown as Advert).type === 'Sell');
+        offers = offersByOfferor.concat(offersByOfferee);
+        break;
+      }
+      default: {
+        throw new AppError('Unknown offer type', 'Unknown offer type', 400);
+      }
+    }
+
+    // Get the orders corresponding to the offers.
+    // Using the index 0 in the map is because the findOrderByOffer returns a list of orders
+    var orders = (await Promise.all(offers.flatMap(async x => (await findOrderByOffer(x.id))[0]))).filter(x => x != null);
+    res.status(200).json(orders);
   },
 );
 

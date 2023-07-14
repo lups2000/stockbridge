@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { PopulatedAdvert } from '../../api/collections/advert';
 import { OfferStatus, PopulatedOffer } from '../../api/collections/offer';
 import { BodyText } from '../Text/BodyText';
 import { OfferBar } from './OfferBar';
+import { LoginContext } from '../../contexts/LoginContext';
 
 type OfferSectionProps = {
   status: OfferStatus;
@@ -30,7 +31,9 @@ function colorMap(status: OfferStatus): string {
 }
 
 const OfferSection: React.FC<OfferSectionProps> = (props) => {
+  const { isLoading } = useContext(LoginContext);
   return (
+    
     <div
       style={{
         display: 'flex',
@@ -62,7 +65,7 @@ const OfferSection: React.FC<OfferSectionProps> = (props) => {
           fontFamily: 'Poppins',
         }}
       >
-        {props?.offers &&
+        {!isLoading && props?.offers &&
           (props.offers.length > 0 ? (
             props.offers.map((offer, index) => (
               <React.Fragment key={`offer-${index}`}>
@@ -74,7 +77,8 @@ const OfferSection: React.FC<OfferSectionProps> = (props) => {
             <BodyText style={{}}>No offers yet ...</BodyText>
           ))}
       </div>
-    </div>
+      
+    </div> 
   );
 };
 

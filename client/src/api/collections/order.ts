@@ -1,4 +1,5 @@
 import { ApiClient } from '../apiClient';
+import { Offer, PopulatedOffer } from './offer';
 
 export enum OrderStatus {
   PAYMENT_PENDING = 'Payment Pending',
@@ -11,7 +12,15 @@ export interface PopulatedOrder {
   totalPrice: number;
   quantity: number;
   status: OrderStatus;
-  offer: string;
+  offer: Offer;
+}
+
+export interface NestedPopulatedOrder {
+  _id: string;
+  totalPrice: number;
+  quantity: number;
+  status: OrderStatus;
+  offer: PopulatedOffer;
 }
 
 const apiClient = new ApiClient();
@@ -45,6 +54,25 @@ export async function getOrdersByAdvert(advert: string): Promise<Order[]> {
     withCredentials: true,
   });
 }
+
+/**
+ * Returns orders filtered by the given parameters
+ * @param user the user Id
+ * @param advertType 'Ask' or 'Sell'
+ * @returns
+ */
+export async function getUserSpecificOrders(
+  user: string,
+  orderType: string,
+): Promise<PopulatedOrder[]> {
+  console.debug(user, orderType);
+  return await apiClient.get<PopulatedOrder[]>(
+    `/orders/getUserSpecificOrders`,
+    { withCredentials: true },
+    { user: user, orderType: orderType },
+  );
+}
+
 
 export interface Order {
   _id: string;

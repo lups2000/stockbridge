@@ -176,7 +176,7 @@ export const getOffersByOfferee = asyncHandler(
  * This method gets all offers that match the request body parameters  *
  * @param req - The request object
  * @param res - The response object
- * @returns deleted offer object.
+ * @returns the requested offers.
  */
 export const getUserSpecificOffers = asyncHandler(
   async (req: AuthenticatedRequest, res: Response) => {

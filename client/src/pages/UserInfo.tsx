@@ -90,14 +90,14 @@ export function UserInfo() {
         leftTabs.findIndex((x) => filterParams === x.link),
       );
     }
-  }, [history.location.search, tabContext]);
+  }, []);
 
   /**
    * Sets the link to the active tab.
    */
   useEffect(() => {
     history.push(`?${leftTabs[tabContext.selectedProfileSection].link}`);
-  }, [history, tabContext.selectedProfileSection]);
+  }, [tabContext.selectedProfileSection]);
 
   return (
     <Page>
