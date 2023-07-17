@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import Card, { CardProps } from '../Premium/Card';
 import { Alert, Container, Row } from 'react-bootstrap';
 import PaymentElement, { PaymentType } from '../../Payment/PaymentElement';
@@ -123,7 +123,8 @@ const PremiumContent = () => {
 
   const plans = subscriptionPlans.map((obj, i) => {
     return (
-      <Card
+      
+        <Card
         key={obj.header}
         header={obj.header}
         price={obj.price}
@@ -142,6 +143,7 @@ const PremiumContent = () => {
         disabled={obj.disabled}
         mutedText={obj.mutedText}
       />
+     
     );
   });
 
@@ -174,22 +176,8 @@ const PremiumContent = () => {
           {isSubscriptionActive && (
             <Alert variant="secondary">
               <>
-                <h4>Subscription Details</h4>
-                <br />
-                Subscription Status:{' '}
-                <b>{user?.subscription?.status.toLocaleUpperCase()} </b>
-                <br />
-                Subscription Type: <b>{user?.subscription?.type}</b>
-                <br />
-                Subscription Start Date:
-                <b>
-                  <> {user?.subscription?.from} </>
-                </b>
-                <br />
-                Subscription End Date:
-                <b>
-                  <> {user?.subscription?.to} </>
-                </b>
+                <b>Current Time Period:{'   '}</b>
+                  {user?.subscription?.from.toString().slice(0,10)} - {user?.subscription?.to.toString().slice(0,10)}
               </>
             </Alert>
           )}
