@@ -1,11 +1,12 @@
 import { FC } from 'react';
-import { Advert, PopulatedAdvert } from '../../api/collections/advert';
+import { PopulatedAdvert } from '../../api/collections/advert';
 import { ReviewOfferSection } from '../ProductOverview/ReviewOfferSection';
 import { Reviewbar } from './Reviewbar';
 
 type ReviewsSectionProps = {
   advert: PopulatedAdvert;
 };
+
 const ReviewsSection: FC<ReviewsSectionProps> = (props) => {
   return (
     <ReviewOfferSection section="REVIEWS">

@@ -15,7 +15,8 @@ import { ObjectId } from 'mongodb';
 import { AppError } from '../utils/errorHandler';
 import { Offer } from '../entities/offerEntity';
 import { findAdvertById } from '../services/advertServices';
-import { Advert } from '../entities/advertEntity';
+import { Advert, AdvertStatus } from '../entities/advertEntity';
+import logger from '../config/logger';
 
 /**
  * This method returns a offer by id   *
@@ -87,7 +88,6 @@ export const putOffer = asyncHandler(
   async (req: AuthenticatedRequest, res: Response) => {
     const { id } = req.params;
     _checkUserCanEditOrDeleteOffer(req);
-
     const offer = await updateOffer(id, req.body);
     res.status(200).json(offer);
   },
@@ -222,7 +222,6 @@ export const getUserSpecificOffers = asyncHandler(
 async function _checkUserCanEditOrDeleteOffer(req: AuthenticatedRequest) {
   let userId = new ObjectId(req.user?.id);
   const { id } = req.params;
-
   // The user editing or deleting must be the offeror or offeree.
   let offer = await findOfferById(id, false);
   

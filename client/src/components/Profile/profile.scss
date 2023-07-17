@@ -44,6 +44,7 @@
   max-width: 99%;
   padding: 0.5em;
   cursor: pointer;
+  position: relative;
 }
 
 .no-results-message {
@@ -53,4 +54,14 @@
   transform: translate(-50%, -50%);
   font-size: 2em;
   color: #727272;
+}
+
+
+.corner-image {
+  position: absolute;
+  bottom: -1.5em;
+  left: 6.5em;
+  width: 7em;
+  height: 7em;
+  z-index: 1;
 }
