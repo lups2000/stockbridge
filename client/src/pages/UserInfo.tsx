@@ -78,21 +78,7 @@ export function UserInfo() {
   const { isLoading } = useContext(LoginContext);
   const matches = useMediaQuery('(min-width: 1070px)');
   const tabContext = useContext(SelectedTabContext);
-
   const navigate = useNavigate();
-
-  /**
-   * Sets the active tab from the link history.
-   */
-  useEffect(() => {
-    const filterParams = history.location.search.substring(1);
-    if (filterParams) {
-      tabContext.selectedProfileSection = Number(
-        leftTabs.findIndex((x) => filterParams === x.link),
-      );
-    }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
   /**
    * Sets the link to the active tab.
