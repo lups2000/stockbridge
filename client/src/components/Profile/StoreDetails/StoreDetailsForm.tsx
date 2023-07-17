@@ -3,20 +3,17 @@ import { Form, Button, Row, Col } from 'react-bootstrap';
 import { palette } from '../../../utils/colors';
 import AccountInformationForm from './AccountInformationForm';
 import ShipmentDetailsForm from './ShipmentDetailsForm';
-import PaymentDetailsForm from './PaymentDetailsForm';
 import StoreDetailsHeader from './StoreDetailsHeader';
 import {
   Address,
-  PaymentMethod,
   PopulatedUser,
   updateUser,
 } from '../../../api/collections/user';
 import { LoginContext } from '../../../contexts/LoginContext';
-import {
-  autocompleteCardNumber,
-  autocompleteExpirationDate,
-  expDatePaymentToDate,
-} from '../../../utils/functions';
+import PaymentElement, { PaymentType } from '../../Payment/PaymentElement';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import userDefaultImage from '../../../assets/defaultUser.png';
 
 export interface InputProps {
   value: string;
@@ -63,7 +60,11 @@ const StoreDetailsForm: React.FC = () => {
   const [error, setError] = useState<boolean>(false);
 
   const [name, setName] = useState<string>(user?.name as string);
-  const [image, setImage] = useState<string>('');
+  const [image, setImage] = useState<string>(
+    (user?.imageUrl as string) ?? userDefaultImage,
+  );
+
+  const [showPaymentModal, setShowPaymentModal] = useState<boolean>(false);
 
   const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setName(e.target.value);
@@ -113,28 +114,30 @@ const StoreDetailsForm: React.FC = () => {
     setCountry(e.target.value);
   };
 
-  const [cardHolder, setCardHolder] = useState(user?.paymentMethod!.name || '');
-  const [cardNumber, setCardNumber] = useState(
-    user?.paymentMethod!.cardNumber || '',
-  );
-  const [cvv, setCvv] = useState(user?.paymentMethod!.cvv || '');
-  const [expiration, setExpiration] = useState('');
+  // const [cardHolder, setCardHolder] = useState(user?.paymentMethod!.name || '');
+  // const [cardNumber, setCardNumber] = useState(
+  //   user?.paymentMethod!.cardNumber || '',
+  // );
+  // const [cvv, setCvv] = useState(user?.paymentMethod!.cvv || '');
+  // const [expiration, setExpiration] = useState('');
+  //
+  // const handleCardHolderChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  //   setCardHolder(e.target.value);
+  // };
+  //
+  // const handleCardNumberChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  //   setCardNumber(autocompleteCardNumber(e) ?? '');
+  // };
+  //
+  // const handleCcvChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  //   setCvv(e.target.value);
+  // };
+  //
+  // const handleExpirationChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  //   setExpiration(autocompleteExpirationDate(e) ?? '');
+  // };
 
-  const handleCardHolderChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setCardHolder(e.target.value);
-  };
-
-  const handleCardNumberChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setCardNumber(autocompleteCardNumber(e) ?? '');
-  };
-
-  const handleCcvChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setCvv(e.target.value);
-  };
-
-  const handleExpirationChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setExpiration(autocompleteExpirationDate(e) ?? '');
-  };
+  let notify: () => void;
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -149,32 +152,60 @@ const StoreDetailsForm: React.FC = () => {
         postalCode: postalCode || undefined,
         country: country || undefined,
       };
-      const paymentMethod: PaymentMethod = {
-        name: cardHolder || undefined,
-        cardNumber: cardNumber || undefined,
-        cvv: cvv || undefined,
-        expirationDate: expiration
-          ? expDatePaymentToDate(expiration)
-          : undefined,
-      };
+      // const paymentMethod: PaymentMethod = {
+      //   name: cardHolder || undefined,
+      //   cardNumber: cardNumber || undefined,
+      //   cvv: cvv || undefined,
+      //   expirationDate: expiration
+      //     ? expDatePaymentToDate(expiration)
+      //     : undefined,
+      // };
       const updatedUser: PopulatedUser = {
         name: name || undefined,
         email: email || undefined,
         password: password || undefined,
         phoneNumber: phone || undefined,
+        imageUrl: image || undefined,
         ...(Object.values(address).some((value) => value !== undefined) && {
           address,
         }),
-        ...(Object.values(paymentMethod).some(
-          (value) => value !== undefined,
-        ) && {
-          paymentMethod,
-        }),
+        // ...(Object.values(paymentMethod).some(
+        //   (value) => value !== undefined,
+        // ) && {
+        //   paymentMethod,
+        // }),
       };
-
-      await updateUser(user?._id!, updatedUser);
+      try {
+        await updateUser(user?._id!, updatedUser);
+        notify = () =>
+          toast.success('Changes Saved!', {
+            position: 'bottom-right',
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: 'colored',
+          });
+        notify();
+      } catch (error) {
+        notify = () =>
+          toast.error('Error Saving Changes!', {
+            position: 'bottom-right',
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: 'colored',
+          });
+        notify();
+      }
     }
   };
+
 
   return (
     <>
@@ -223,26 +254,40 @@ const StoreDetailsForm: React.FC = () => {
           }}
           onChangeError={(error) => setError(error)}
         />
-        <PaymentDetailsForm
-          cardHolder={{
-            value: cardHolder,
-            onChange: handleCardHolderChange,
-          }}
-          cardNumber={{
-            value: cardNumber,
-            onChange: handleCardNumberChange,
-          }}
-          ccv={{
-            value: cvv,
-            onChange: handleCcvChange,
-          }}
-          expiration={{
-            value: expiration,
-            onChange: handleExpirationChange,
-          }}
-          onChangeError={(error) => setError(error)}
-        />
+        {/*<PaymentDetailsForm*/}
+        {/*  cardHolder={{*/}
+        {/*    value: cardHolder,*/}
+        {/*    onChange: handleCardHolderChange,*/}
+        {/*  }}*/}
+        {/*  cardNumber={{*/}
+        {/*    value: cardNumber,*/}
+        {/*    onChange: handleCardNumberChange,*/}
+        {/*  }}*/}
+        {/*  ccv={{*/}
+        {/*    value: cvv,*/}
+        {/*    onChange: handleCcvChange,*/}
+        {/*  }}*/}
+        {/*  expiration={{*/}
+        {/*    value: expiration,*/}
+        {/*    onChange: handleExpirationChange,*/}
+        {/*  }}*/}
+        {/*  onChangeError={(error) => setError(error)}*/}
+        {/*/>*/}
         <Row className={'mb-2 justify-content-end '}>
+          <Col xs={3}>
+            <Button
+              onClick={() => setShowPaymentModal(true)}
+              className={'mb-2'}
+              style={{
+                width: '100%',
+                border: 'none',
+                backgroundColor: palette.subSectionsBgAccent,
+                borderRadius: 30,
+              }}
+            >
+              Edit Payment Details
+            </Button>
+          </Col>
           <Col xs={2}>
             <Button
               type="submit"
@@ -259,6 +304,14 @@ const StoreDetailsForm: React.FC = () => {
           </Col>
         </Row>
       </Form>
+      {showPaymentModal ? (
+        <PaymentElement
+          show={showPaymentModal}
+          onHide={() => setShowPaymentModal(false)}
+          type={PaymentType.SETUP_INTENT}
+        />
+      ) : undefined}
+      <ToastContainer />
     </>
   );
 };

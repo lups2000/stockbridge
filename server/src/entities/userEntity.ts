@@ -55,6 +55,7 @@ export interface User {
   stripeCustomerId: string;
   location: Location;
   registrationCompleted: boolean;
+  imageUrl: string;
 
   getSignedJwtToken(): string;
 

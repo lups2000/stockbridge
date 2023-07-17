@@ -16,7 +16,6 @@ import defaultUserImage from '../../../assets/defaultUser.png';
 const StoreDetailsHeader: React.FC<StoreDetailsProps> = (props) => {
   const [showModal, setShowModal] = useState(false);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
-
   const handleImageClick = () => {
     setShowModal(true);
   };

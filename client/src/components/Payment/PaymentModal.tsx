@@ -10,6 +10,8 @@ import {
 } from '@stripe/stripe-js';
 import { Modal, Spinner } from 'react-bootstrap';
 import { PaymentProps, PaymentType } from './PaymentElement';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export default function PaymentModal(props: PaymentProps) {
   const stripe = useStripe();
@@ -30,7 +32,6 @@ export default function PaymentModal(props: PaymentProps) {
     if (!clientSecret) {
       return;
     }
-
     stripe
       .retrievePaymentIntent(clientSecret)
       .then(({ paymentIntent }: PaymentIntentResult) => {
@@ -53,6 +54,8 @@ export default function PaymentModal(props: PaymentProps) {
         }
       });
   }, [stripe]);
+
+  let notify: () => void;
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -88,6 +91,17 @@ export default function PaymentModal(props: PaymentProps) {
         }));
         break;
       default:
+        notify = () =>
+          toast.error('Invalid type', {
+            position: 'bottom-right',
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: 'colored',
+          });
         throw new Error('Invalid type');
     }
 
@@ -95,15 +109,39 @@ export default function PaymentModal(props: PaymentProps) {
       props.onHide();
       setIsLoading(false);
       setMessage('');
+      toast.success('Succeeded!', {
+        position: 'bottom-right',
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: 'colored',
+      });
       return;
     }
-
+    let errorMessage: string;
     if (error!.type === 'card_error' || error!.type === 'validation_error') {
       setMessage(error!.message!);
+      errorMessage = error!.message!;
     } else {
       setMessage('An unexpected error occurred.');
+      errorMessage = 'An unexpected error occurred.';
     }
 
+    notify = () =>
+      toast.error(errorMessage, {
+        position: 'bottom-right',
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: 'colored',
+      });
+    notify();
     setIsLoading(false);
   };
 
@@ -112,89 +150,92 @@ export default function PaymentModal(props: PaymentProps) {
   };
 
   return (
-    <Modal
-      show={props.show}
-      onHide={() => {
-        props.onHide();
-        setMessage('');
-      }}
-      aria-labelledby="contained-modal-title-vcenter"
-      centered
-      style={{ display: 'flex', alignItems: 'center' }}
-    >
-      <Modal.Header closeButton>
-        <Modal.Title id="contained-modal-title-vcenter">Payment</Modal.Title>
-      </Modal.Header>
-      <Modal.Body
-        style={{
-          fontFamily: '-apple-system, BlinkMacSystemFont, sans-serif',
-          fontSize: '16px',
-          display: 'flex',
-          justifyContent: 'center',
-          alignContent: 'center',
-          padding: '0',
-          // height: '100vh',
-          // width: '100vw',
+    <>
+      <Modal
+        show={props.show}
+        onHide={() => {
+          props.onHide();
+          setMessage('');
         }}
+        aria-labelledby="contained-modal-title-vcenter"
+        centered
+        style={{ display: 'flex', alignItems: 'center' }}
       >
-        <form
-          id="payment-form"
-          onSubmit={handleSubmit}
+        <Modal.Header closeButton>
+          <Modal.Title id="contained-modal-title-vcenter">Payment</Modal.Title>
+        </Modal.Header>
+        <Modal.Body
           style={{
-            width: '30vw',
-            minWidth: '500px',
-            alignSelf: 'center',
-            // boxShadow:
-            //   '0px 0px 0px 0.5px rgba(50, 50, 93, 0.1), 0px 2px 5px 0px rgba(50, 50, 93, 0.1), 0px 1px 1.5px 0px rgba(0, 0, 0, 0.07)',
-            borderRadius: '7px',
-            padding: '20px 40px',
+            fontFamily: '-apple-system, BlinkMacSystemFont, sans-serif',
+            fontSize: '16px',
+            display: 'flex',
+            justifyContent: 'center',
+            alignContent: 'center',
+            padding: '0',
+            // height: '100vh',
+            // width: '100vw',
           }}
         >
-          <PaymentElement
-            id="payment-element"
-            options={paymentElementOptions}
-          />
-          <button
-            disabled={isLoading || !stripe || !elements}
-            id="submit"
+          <form
+            id="payment-form"
+            onSubmit={handleSubmit}
             style={{
-              background: '#5469d4',
-              fontFamily: 'Arial, sans-serif',
-              color: '#ffffff',
-              borderRadius: '4px',
-              border: 0,
-              padding: '12px 16px',
-              marginTop: '16px',
-              fontSize: '16px',
-              fontWeight: 600,
-              cursor: 'pointer',
-              display: 'block',
-              transition: 'all 0.2s ease',
-              boxShadow: '0px 4px 5.5px 0px rgba(0, 0, 0, 0.07)',
-              width: '100%',
+              width: '30vw',
+              minWidth: '500px',
+              alignSelf: 'center',
+              // boxShadow:
+              //   '0px 0px 0px 0.5px rgba(50, 50, 93, 0.1), 0px 2px 5px 0px rgba(50, 50, 93, 0.1), 0px 1px 1.5px 0px rgba(0, 0, 0, 0.07)',
+              borderRadius: '7px',
+              padding: '20px 40px',
             }}
           >
-            <span id="button-text">
-              {isLoading ? <Spinner animation="grow" /> : 'Pay now'}
-            </span>
-          </button>
-          {/* Show any error or success messages */}
-          {message && (
-            <div
-              id="payment-message"
+            <PaymentElement
+              id="payment-element"
+              options={paymentElementOptions}
+            />
+            <button
+              disabled={isLoading || !stripe || !elements}
+              id="submit"
               style={{
-                color: 'rgb(105, 115, 134)',
+                background: '#5469d4',
+                fontFamily: 'Arial, sans-serif',
+                color: '#ffffff',
+                borderRadius: '4px',
+                border: 0,
+                padding: '12px 16px',
+                marginTop: '16px',
                 fontSize: '16px',
-                lineHeight: '20px',
-                paddingTop: '12px',
-                textAlign: 'center',
+                fontWeight: 600,
+                cursor: 'pointer',
+                display: 'block',
+                transition: 'all 0.2s ease',
+                boxShadow: '0px 4px 5.5px 0px rgba(0, 0, 0, 0.07)',
+                width: '100%',
               }}
             >
-              {message}
-            </div>
-          )}
-        </form>
-      </Modal.Body>
-    </Modal>
+              <span id="button-text">
+                {isLoading ? <Spinner animation="grow" /> : 'Pay now'}
+              </span>
+            </button>
+            {/* Show any error or success messages */}
+            {message && (
+              <div
+                id="payment-message"
+                style={{
+                  color: 'rgb(105, 115, 134)',
+                  fontSize: '16px',
+                  lineHeight: '20px',
+                  paddingTop: '12px',
+                  textAlign: 'center',
+                }}
+              >
+                {message}
+              </div>
+            )}
+          </form>
+        </Modal.Body>
+      </Modal>
+      <ToastContainer />
+    </>
   );
 }
