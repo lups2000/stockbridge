@@ -1,5 +1,4 @@
 import imagePlaceholder from '../../../assets/product-placeholder.png';
-import { Image } from 'react-bootstrap';
 import {
 
   OfferStatus
@@ -9,6 +8,7 @@ import React from 'react';
 import { ProfileProdcutAttribute } from '../../Profile/ProfileProdcutAttribute';
 import { Advert, PopulatedAdvert } from '../../../api/collections/advert';
 import { PopulatedOffer } from '../../../api/collections/offer';
+import { Image } from 'react-bootstrap';
 require('./OfferBarUserProfile.scss');
 
 type OrderBarUserProfileInfoProps = {
@@ -48,10 +48,10 @@ const OrderBarUserProfileInfo: React.FC<OrderBarUserProfileInfoProps> = (props) 
           style={{
             width: '10em',
             height: '10em',
-            borderRadius: '60px',
+            borderRadius: '3em',
             borderColor: 'transparent',
             objectFit: 'fill',
-            marginLeft: '3em'
+            marginLeft: '3%'
           }}
           src={props.picture ? props.picture : imagePlaceholder}
         />
@@ -87,10 +87,6 @@ const OrderBarUserProfileInfo: React.FC<OrderBarUserProfileInfoProps> = (props) 
         </div>
       </div>
       <div className="status col-1">
-      <link
-        rel="stylesheet"
-        href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css"
-      ></link>
       <div className='offer-status-icon'>
         <i className={`bi ${getOfferIcon()[0]}`} 
         style={{ color: getOfferIcon()[1] , fontSize: "3em"}}></i>

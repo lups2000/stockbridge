@@ -16,7 +16,7 @@ const Card = (props: CardProps) => {
   return (
     <BootStrapCard
       className={
-        'shadow-sm p-0 m-auto text-center' +
+        'shadow-sm p-0 m-auto text-center mb-5' +
         (props.outline ? '' : ' opacity-50')
       }
       style={{ width: '18rem' }}
