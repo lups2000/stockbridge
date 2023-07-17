@@ -10,10 +10,10 @@ import {
   updateOffer,
 } from '../../api/collections/offer';
 import { LoginContext } from '../../contexts/LoginContext';
-import { palette } from '../../utils/colors';
 import { Ratings } from '../Ratings';
 import { ResponseModal, ResponseType } from './ResponseModal';
-
+import { FadeLoader } from 'react-spinners';
+import { palette } from '../../utils/colors';
 type OfferContentProps = {
   isShowing: boolean;
   onClose: () => void;
@@ -79,6 +79,7 @@ const OfferModal: FC<OfferContentProps> = (props) => {
   const [showCreationModal, setShowCreationModal] = useState(false);
   const [showAcceptanceModal, setShowAcceptanceModal] = useState(false);
   const [showRejectionModal, setShowRejectionModal] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [OutOfStockError, setOutOfStockError] = useState(false);
   const [showOutOfStockModal, setShowOutOfStockModal] = useState(false);
   const closeModal = (responseType: ResponseType) => {
@@ -119,6 +120,7 @@ const OfferModal: FC<OfferContentProps> = (props) => {
     };
 
   const handleSubmit = async () => {
+    setIsLoading(true)
     if (isValid()) {
         await createOffer({
           quantity: formData.quantity,
@@ -129,24 +131,24 @@ const OfferModal: FC<OfferContentProps> = (props) => {
           offeree: props.advert?.store,
           advert: props.advert?._id,
         } as Offer).then(newOffer => { 
-          setFormData(newOffer);
-          if (newOffer && newOffer.status === OfferStatus.CANCELED_OUT_OF_STOCK) {
-            setOutOfStockError(true)
-            setShowOutOfStockModal(true)
-            setAcceptanceError(false)
-            setCreationError(false)
-            setRejectionError(false)
+          if (newOffer) {
+            setIsLoading(false)
+            setShowCreationModal(true);
+            setFormData(newOffer);
+            if (newOffer.status === OfferStatus.CANCELED_OUT_OF_STOCK) {
+              setOutOfStockError(true)
+              setShowOutOfStockModal(true)
+              setAcceptanceError(false)
+              setCreationError(false)
+              setRejectionError(false)
+            }
           } else {
-            if (newOffer) {
-              setShowCreationModal(true);
-            } else {
               setCreationError(true);
               setShowCreationModal(true);
               setAcceptanceError(false)
               setOutOfStockError(false)
               setRejectionError(false)
             }
-          }
       })
        .catch ((error) => {
           setCreationError(true);
@@ -174,12 +176,14 @@ const OfferModal: FC<OfferContentProps> = (props) => {
   };
 
   const handleReject = async () => {
+    setIsLoading(true)
     try {
       if (props.offer?._id) {
         updateOffer(props.offer._id, {
           status: OfferStatus.REJECTED,
         });
       }
+      setIsLoading(false)
       setShowRejectionModal(true);
     } catch (error) {
       setRejectionError(true);
@@ -187,12 +191,14 @@ const OfferModal: FC<OfferContentProps> = (props) => {
   };
 
   const handleAccept = async () => {
+    setIsLoading(true)
     try {
       if (props.offer?._id) {
         updateOffer(props.offer._id, {
           status: OfferStatus.ACCEPTED,
         });
       }
+      setIsLoading(false)
       setShowAcceptanceModal(true);
     } catch (error) {
       setAcceptanceError(true);
@@ -201,7 +207,15 @@ const OfferModal: FC<OfferContentProps> = (props) => {
 
   const status = props.offer ? props.offer.status : OfferStatus.OPEN;
   return (
-    <>
+   
+     isLoading ? <FadeLoader color={palette.subSectionsBgAccent} style={{
+      position: 'absolute',
+      left: '45%',
+      right: '45%',
+      top: '45%',
+      bottom: '45%'
+    }} /> :
+      <>
       {showCreationModal ? (
         <ResponseModal
           isShowing={showCreationModal}
