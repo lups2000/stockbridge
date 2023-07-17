@@ -29,7 +29,9 @@ export const findReviewById = async (id: string, populate = true) => {
  * @returns Promise containing the review
  */
 export const createReview = async (review: Review) => {
-  logger.debug(`${serviceName}: Creating review ${review}`);
+  logger.debug(
+    `${serviceName}: Creating review for reviewer ${review.reviewer}`,
+  );
   return await reviewModel.create(review);
 };
 
@@ -40,7 +42,7 @@ export const createReview = async (review: Review) => {
  * @returns Promise containing the updated review
  */
 export const updateReview = async (id: string, review: Review) => {
-  logger.debug(`${serviceName}: Updating review with id: ${id} with ${review}`);
+  logger.debug(`${serviceName}: Updating review with id: ${id}`);
   return reviewModel.findByIdAndUpdate(id, review, {
     new: true,
     runValidators: true,

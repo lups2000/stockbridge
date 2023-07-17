@@ -14,6 +14,7 @@ import { Ratings } from '../Ratings';
 import { ResponseModal, ResponseType } from './ResponseModal';
 import { FadeLoader } from 'react-spinners';
 import { palette } from '../../utils/colors';
+import { Checkbox } from '@mui/material';
 type OfferContentProps = {
   isShowing: boolean;
   onClose: () => void;
@@ -34,14 +35,14 @@ function colorMap(status: OfferStatus): string {
     case OfferStatus.CANCELED_OUT_OF_STOCK:
       return '#ffc071';
     case OfferStatus.CANCELED_USER:
-        return '#ffc071';
+      return '#ffc071';
     default:
       return '#4285F4';
   }
 }
 const OfferModal: FC<OfferContentProps> = (props) => {
-  const { user} = useContext(LoginContext);
-  const navigate = useNavigate()
+  const { user } = useContext(LoginContext);
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     quantity: props.offer?.quantity ? props.offer?.quantity : 0,
     price: props.offer?.price ? props.offer?.price : 0,
@@ -82,77 +83,79 @@ const OfferModal: FC<OfferContentProps> = (props) => {
   const [isLoading, setIsLoading] = useState(false);
   const [OutOfStockError, setOutOfStockError] = useState(false);
   const [showOutOfStockModal, setShowOutOfStockModal] = useState(false);
+  const [isConsentChecked, setIsConsentChecked] = useState(false);
   const closeModal = (responseType: ResponseType) => {
-    console.log(responseType)
-      if(responseType ===  ResponseType.SUCCESSFUL_OFFER_ACCEPTANCE) {
-        setShowAcceptanceModal(false);
-        window.location.reload();
-      }
-      else { 
-        if (responseType === ResponseType.SUCCESSFUL_OFFER_CREATION) {
+    console.log(responseType);
+    if (responseType === ResponseType.SUCCESSFUL_OFFER_ACCEPTANCE) {
+      setShowAcceptanceModal(false);
+      window.location.reload();
+    } else {
+      if (responseType === ResponseType.SUCCESSFUL_OFFER_CREATION) {
         setShowCreationModal(false);
         window.location.reload();
-        } else { if (responseType === ResponseType.SUCCESSFUL_OFFER_REJECTION) {
+      } else {
+        if (responseType === ResponseType.SUCCESSFUL_OFFER_REJECTION) {
+          setShowRejectionModal(false);
+          window.location.reload();
+        } else {
+          if (responseType === ResponseType.UNSUCCESSFUL_OFFER_REJECTION) {
             setShowRejectionModal(false);
             window.location.reload();
-          }  else {
-             if (responseType === ResponseType.UNSUCCESSFUL_OFFER_REJECTION) {
-              setShowRejectionModal(false);
+          } else {
+            if (responseType === ResponseType.UNSUCCESSFUL_OFFER_ACCEPTANCE) {
+              setShowAcceptanceModal(false);
               window.location.reload();
-            } else { 
-              if (responseType === ResponseType.UNSUCCESSFUL_OFFER_ACCEPTANCE) {
-                setShowAcceptanceModal(false);
-                window.location.reload();
-              } else { 
-                if (responseType === ResponseType.UNSUCCESSFUL_OFFER_CREATION) {
-                  setShowCreationModal(false);
-                } else { 
-                  if (responseType === ResponseType.OUT_OF_STOCK) {
-                    setShowOutOfStockModal(false);
-                    window.location.reload();
-                  }
+            } else {
+              if (responseType === ResponseType.UNSUCCESSFUL_OFFER_CREATION) {
+                setShowCreationModal(false);
+              } else {
+                if (responseType === ResponseType.OUT_OF_STOCK) {
+                  setShowOutOfStockModal(false);
+                  window.location.reload();
                 }
               }
             }
           }
         }
       }
-    };
+    }
+  };
 
   const handleSubmit = async () => {
-    setIsLoading(true)
+    setIsLoading(true);
     if (isValid()) {
-        await createOffer({
-          quantity: formData.quantity,
-          price: formData.price,
-          createdAt: new Date(),
-          status: OfferStatus.OPEN,
-          offeror: user,
-          offeree: props.advert?.store,
-          advert: props.advert?._id,
-        } as Offer).then(newOffer => { 
+      await createOffer({
+        quantity: formData.quantity,
+        price: formData.price,
+        createdAt: new Date(),
+        status: OfferStatus.OPEN,
+        offeror: user,
+        offeree: props.advert?.store,
+        advert: props.advert?._id,
+      } as Offer)
+        .then((newOffer) => {
           if (newOffer) {
-            setIsLoading(false)
+            setIsLoading(false);
             setShowCreationModal(true);
             setFormData(newOffer);
             if (newOffer.status === OfferStatus.CANCELED_OUT_OF_STOCK) {
-              setOutOfStockError(true)
-              setShowOutOfStockModal(true)
-              setAcceptanceError(false)
-              setCreationError(false)
-              setRejectionError(false)
+              setOutOfStockError(true);
+              setShowOutOfStockModal(true);
+              setAcceptanceError(false);
+              setCreationError(false);
+              setRejectionError(false);
             }
           } else {
-              setCreationError(true);
-              setShowCreationModal(true);
-              setAcceptanceError(false)
-              setOutOfStockError(false)
-              setRejectionError(false)
-            }
-      })
-       .catch ((error) => {
+            setCreationError(true);
+            setShowCreationModal(true);
+            setAcceptanceError(false);
+            setOutOfStockError(false);
+            setRejectionError(false);
+          }
+        })
+        .catch((error) => {
           setCreationError(true);
-      })
+        });
     } else {
       setErrors({
         price: formData.price
@@ -176,29 +179,32 @@ const OfferModal: FC<OfferContentProps> = (props) => {
   };
 
   const handleReject = async () => {
-    setIsLoading(true)
+    setIsLoading(true);
     try {
       if (props.offer?._id) {
         updateOffer(props.offer._id, {
           status: OfferStatus.REJECTED,
         });
       }
-      setIsLoading(false)
+      setIsLoading(false);
       setShowRejectionModal(true);
     } catch (error) {
       setRejectionError(true);
     }
   };
 
+  const handleConsentChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setIsConsentChecked(event.target.checked);
+    };
   const handleAccept = async () => {
-    setIsLoading(true)
+    setIsLoading(true);
     try {
       if (props.offer?._id) {
         updateOffer(props.offer._id, {
           status: OfferStatus.ACCEPTED,
         });
       }
-      setIsLoading(false)
+      setIsLoading(false);
       setShowAcceptanceModal(true);
     } catch (error) {
       setAcceptanceError(true);
@@ -206,16 +212,19 @@ const OfferModal: FC<OfferContentProps> = (props) => {
   };
 
   const status = props.offer ? props.offer.status : OfferStatus.OPEN;
-  return (
-   
-     isLoading ? <FadeLoader color={palette.subSectionsBgAccent} style={{
-      position: 'absolute',
-      left: '45%',
-      right: '45%',
-      top: '45%',
-      bottom: '45%'
-    }} /> :
-      <>
+  return isLoading ? (
+    <FadeLoader
+      color={palette.subSectionsBgAccent}
+      style={{
+        position: 'absolute',
+        left: '45%',
+        right: '45%',
+        top: '45%',
+        bottom: '45%',
+      }}
+    />
+  ) : (
+    <>
       {showCreationModal ? (
         <ResponseModal
           isShowing={showCreationModal}
@@ -249,16 +258,18 @@ const OfferModal: FC<OfferContentProps> = (props) => {
           offer={props.offer as Offer}
           onClose={closeModal}
         />
-      ) : showOutOfStockModal ? <ResponseModal
-      isShowing={showOutOfStockModal}
-      responseType={
-        OutOfStockError
-          ? ResponseType.OUT_OF_STOCK :
-          ResponseType.SUCCESSFUL_OFFER_CREATION
-      }
-      offer={formData}
-      onClose={closeModal}
-    /> : (
+      ) : showOutOfStockModal ? (
+        <ResponseModal
+          isShowing={showOutOfStockModal}
+          responseType={
+            OutOfStockError
+              ? ResponseType.OUT_OF_STOCK
+              : ResponseType.SUCCESSFUL_OFFER_CREATION
+          }
+          offer={formData}
+          onClose={closeModal}
+        />
+      ) : (
         <Modal
           show={props.isShowing}
           onHide={() => props.onClose()}
@@ -509,10 +520,13 @@ const OfferModal: FC<OfferContentProps> = (props) => {
               </Col>
             </Row>
           </Modal.Body>
-          {(!props.offer || !['Rejected', 'Canceled', 'Canceled - Out of Stock'].includes(props.offer.status!)) && (
+          {(!props.offer ||
+            !['Rejected', 'Canceled', 'Canceled - Out of Stock'].includes(
+              props.offer.status!,
+            )) && (
             <Modal.Footer
               style={{
-                justifyContent: offeree ? 'center' : 'end',
+                justifyContent: offeree ? 'center' : 'space-between'
               }}
             >
               {offeree && props.offer?.status === 'Open' && (
@@ -540,16 +554,26 @@ const OfferModal: FC<OfferContentProps> = (props) => {
                 </Button>
               )}
               {!props.offer && (
-                <Button
-                  className="text-white"
-                  onClick={handleSubmit}
-                  style={{
-                    background: palette.green,
-                    borderColor: palette.green,
-                  }}
-                >
-                  Confirm
-                </Button>
+                <>
+                  <div>
+                    <input type="checkbox" id="consent-checkbox" checked={isConsentChecked}
+                      onChange={handleConsentChange} style={{marginRight: '5px'}}/>
+                    <label htmlFor="consent-checkbox">
+                      I agree to the terms and conditions
+                    </label>
+                  </div>
+                  <Button
+                    className="text-white"
+                    onClick={handleSubmit}
+                    disabled={!isConsentChecked}
+                    style={{
+                      background: palette.green,
+                      borderColor: palette.green,
+                    }}
+                  >
+                    Confirm
+                  </Button>
+                </>
               )}
               {offeree && props.offer?.status === 'Accepted' && (
                 <Button

@@ -6,7 +6,9 @@ import {
   type SubscriptionStatus,
   SubscriptionType,
 } from '../entities/userEntity';
-import * as _ from 'lodash'; 
+import * as _ from 'lodash';
+import orderModel from '../models/Order';
+import { OrderStatus } from '../entities/orderEntity';
 const serviceName = 'userServices';
 
 /**
@@ -88,22 +90,33 @@ export const handleSuccessfulPaymentIntent = async (
     `${serviceName}: Handling successful payment intent for ${userId}`,
   );
   const user = (await userModel.findById(userId)) as User;
-  switch (product) {
-    case 'Basic Pack':
+  switch (true) {
+    case product === 'Basic Pack':
       user.prioritisationTickets += 5;
       break;
-    case 'Advanced Pack':
+    case product === 'Advanced Pack':
       user.prioritisationTickets += 10;
       break;
-    case 'Premium Pack':
+    case product === 'Premium Pack':
       user.prioritisationTickets += 20;
       break;
-    case 'Basic Subscription':
-    case 'Advanced Subscription':
-    case 'Premium Subscription':
+    case product === 'Basic Subscription':
+    case product === 'Advanced Subscription':
+    case product === 'Premium Subscription':
+      break;
+    case product.startsWith('offerId_'):
+      const offerId = product.split('_')[1];
+      orderModel.findOneAndUpdate(
+        { offer: offerId },
+        {
+          status: OrderStatus.RECEIVED,
+        },
+      );
       break;
     default:
-      throw new AppError('Product not found', 'Product not found', 404);
+      if (!product.startsWith('offerId_')) {
+        throw new AppError('Product not found', 'Product not found', 404);
+      }
   }
   await userModel.findByIdAndUpdate(user.id, user);
 };
@@ -132,13 +145,15 @@ export const handleSubscription = async (
 export async function deductTicket(userId: string): Promise<User | undefined> {
   const existingUser = await findUserById(userId);
   if (existingUser) {
-    if (existingUser?.prioritisationTickets && existingUser?.prioritisationTickets! >= 1) {
-      existingUser!.prioritisationTickets = existingUser.prioritisationTickets - 1
+    if (
+      existingUser?.prioritisationTickets &&
+      existingUser?.prioritisationTickets! >= 1
+    ) {
+      existingUser!.prioritisationTickets =
+        existingUser.prioritisationTickets - 1;
     } else {
-      logger.error(
-        'Insufficient number of tickets',
-      );
+      logger.error('Insufficient number of tickets');
     }
     return existingUser;
-  }   
+  }
 }

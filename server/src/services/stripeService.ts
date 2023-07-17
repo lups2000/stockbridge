@@ -7,10 +7,10 @@ import {
 import environment from '../utils/environment';
 import Stripe from 'stripe';
 import { AppError } from '../utils/errorHandler';
-import {
-  handleSubscription,
-  handleSuccessfulPaymentIntent,
-} from './userServices';
+import { handleSubscription } from './userServices';
+import userModel from '../models/User';
+import orderModel from '../models/Order';
+import { OrderStatus } from '../entities/orderEntity';
 
 const serviceName = 'stripeService';
 const stripe = new Stripe(environment.STRIPE_SECRET_KEY, {
@@ -35,6 +35,7 @@ export const createStripePaymentIntent = async (
   amount: number,
   product: string,
   config?: any,
+  automaticPaymentMethods?: boolean,
 ) => {
   logger.debug(
     `${serviceName}: Creating stripe payment intent for ${user.email}`,
@@ -42,20 +43,22 @@ export const createStripePaymentIntent = async (
   const customer = (await stripe.customers.retrieve(
     user.stripeCustomerId,
   )) as Stripe.Customer;
+  const paymentMethod = automaticPaymentMethods
+    ? {
+        payment_method: customer.invoice_settings.default_payment_method,
+      }
+    : {};
   return await stripe.paymentIntents.create({
-    amount,
+    amount: amount * 100,
     currency: 'eur',
     customer: user.stripeCustomerId,
-    automatic_payment_methods: {
-      enabled: true,
-    },
     // payment_method: customer.default_source,
     metadata: {
       userId: user.id,
       product: product,
     },
-    setup_future_usage: 'off_session',
     ...config,
+    ...paymentMethod,
   });
 };
 
@@ -284,4 +287,45 @@ export const webhookHandler = async (
   }
   // Return a response to acknowledge receipt of the event
   return true;
+};
+
+export const handleSuccessfulPaymentIntent = async (
+  userId: string,
+  product: string,
+) => {
+  logger.debug(
+    `${serviceName}: Handling successful payment intent for ${userId}`,
+  );
+  const user = (await userModel.findById(userId)) as User;
+  switch (true) {
+    case product === 'Basic Pack':
+      user.prioritisationTickets += 5;
+      break;
+    case product === 'Advanced Pack':
+      user.prioritisationTickets += 10;
+      break;
+    case product === 'Premium Pack':
+      user.prioritisationTickets += 20;
+      break;
+    case product === 'Basic Subscription':
+    case product === 'Advanced Subscription':
+    case product === 'Premium Subscription':
+      break;
+    case product.startsWith('offerId_'):
+      const offerId = product.split('_')[1];
+      logger.debug(
+        `${serviceName}: Handling successful payment intent for ${offerId}`,
+      );
+      logger.debug(`${serviceName}: Updating order status to RECEIVED`);
+      await orderModel.findOneAndUpdate(
+        { offer: offerId },
+        {
+          status: OrderStatus.RECEIVED,
+        },
+      );
+      break;
+    default:
+      throw new AppError('Product not found', 'Product not found', 404);
+  }
+  await userModel.findByIdAndUpdate(user.id, user);
 };

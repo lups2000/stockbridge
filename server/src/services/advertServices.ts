@@ -42,8 +42,8 @@ export const createAdvert = async (advert: Advert) => {
  * @returns Promise containing the updated advert
  */
 export const updateAdvert = async (id: string, advert: Advert) => {
-  logger.debug(`${serviceName}: Updating advert with id: ${id} with ${advert}`);
-  return await advertModel.findOneAndUpdate({_id: id}, advert, {
+  logger.debug(`${serviceName}: Updating advert with id: ${id} `);
+  return advertModel.findOneAndUpdate({_id: id}, advert, {
     new: true,
     runValidators: true,
   });
