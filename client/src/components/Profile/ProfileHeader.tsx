@@ -44,13 +44,13 @@ export function ProfileHeader() {
             fontWeight: 500,
           }}
         >
-          <h1>
+          <span>
             Out of stock? or got
             <br />
             too much stock?
             <br />
             No worries!
-          </h1>
+          </span>
         </Title>
       </div>
     </div>

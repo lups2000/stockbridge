@@ -49,7 +49,6 @@ const ProfileProdcutAttribute: React.FC<ProfileProdcutAttributeProps> = (props) 
         style={{
           fontWeight: 'bold',
           fontFamily: 'Poppins',
-          //width: '100%',
           fontSize: props.fontSize ? props.fontSize : '20px',
         }}
       >
@@ -70,11 +69,6 @@ const ProfileProdcutAttribute: React.FC<ProfileProdcutAttributeProps> = (props) 
       </div> : <BodyText
         style={{
           width: '100%',
-          //height: props.border ? '40px' : '',
-          //borderRadius: '10px',
-          //border: props?.border ? '3px solid black' : '',
-          //textAlign: props.border ? 'center' : 'start',
-          //justifyContent: 'start',
           fontFamily: 'Poppins',
           font: 'light',
           fontSize: props.fontSize ? props.fontSize : '20px',
