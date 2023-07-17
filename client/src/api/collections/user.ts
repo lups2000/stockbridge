@@ -49,7 +49,10 @@ export interface User {
   address?: string;
   subscription?: string;
   paymentMethod?: PaymentMethod;
-  location?: Location
+  location?: Location;
+  stripeCustomerId?: string;
+  registrationCompleted?: boolean;
+  imageUrl?: string;
 }
 export interface PopulatedUser {
   _id?: string;
@@ -63,9 +66,10 @@ export interface PopulatedUser {
   address?: Address;
   subscription?: Subscription;
   paymentMethod?: PaymentMethod;
+  location?: Location;
   stripeCustomerId?: string;
   registrationCompleted?: boolean;
-  location?: Location
+  imageUrl?: string;
 }
 
 export interface UserResponse {

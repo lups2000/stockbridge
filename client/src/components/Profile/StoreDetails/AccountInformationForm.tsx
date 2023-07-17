@@ -6,11 +6,11 @@ import { checkEmail, checkPhoneNumber } from '../../../utils/functions';
 
 const AccountInformationForm = (props: AccountInformationFormProps) => {
   useEffect(() => {
-    if (props.email.value && props.password.value && props.phone.value) {
+    if (props.email.value && props.phone.value) {
       if (
         checkPhoneNumber(props.phone.value) &&
         checkEmail(props.email.value) &&
-        props.password.value.length >= 6
+        (props.password.value.length >= 6 || !props.password.value)
       ) {
         props.onChangeError(false);
       } else {

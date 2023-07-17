@@ -141,6 +141,10 @@ const userSchema = new mongoose.Schema<User>({
     type: Types.Boolean,
     default: false,
   },
+  imageUrl: {
+    type: Types.String,
+    required: false,
+  },
   address: addressSchema,
   subscription: subscriptionSchema,
   paymentMethod: paymentMethodSchema,
