@@ -35,10 +35,10 @@ const ProductInfoBar: React.FC<ProductProps> = ({
           style={{
             width: '10em',
             height: '10em',
-            borderRadius: '60px',
+            borderRadius: '3em',
             borderColor: 'transparent',
             objectFit: 'fill',
-            marginLeft: '3em',
+            marginLeft: '3%',
           }}
           src={imageUrl ? imageUrl : imagePlaceholder}
         />

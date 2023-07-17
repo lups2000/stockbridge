@@ -1,7 +1,6 @@
 import { palette } from '../../utils/colors';
 import profilePageImage from './/../../assets/profilePageImage.png';
-import { Button, Image } from 'react-bootstrap';
-import { BodyText } from '../Text/BodyText';
+import { Image } from 'react-bootstrap';
 import { Title } from '../Text/Title';
 import useMediaQuery from './../../hooks/useMediaQuery';
 
@@ -31,12 +30,8 @@ export function ProfileHeader() {
       <div
         className="textContainer"
         style={{
-          display: 'inline-block',
+          display: 'block',
           position: 'relative',
-          //marginTop: "5em",
-          //width: "30%",
-          alignContent: 'left',
-          left: '35%',
           top: '20%',
         }}
       >
@@ -58,32 +53,6 @@ export function ProfileHeader() {
           </h1>
         </Title>
       </div>
-
-      <Button
-        style={{
-          display: 'inline-block',
-          backgroundColor: palette.subSectionsBgAccent,
-          borderColor: palette.subSectionsBgAccent,
-          borderRadius: 30,
-          width: '20%',
-          maxWidth: 260,
-          position: 'relative',
-          float: 'right',
-          right: '5%',
-          top: '70%',
-        }}
-      >
-        <BodyText
-          style={{
-            margin: 'auto',
-            fontSize: 15,
-            color: 'white',
-            fontWeight: 600,
-          }}
-        >
-          POST YOUR ADVERT
-        </BodyText>
-      </Button>
     </div>
   );
 }

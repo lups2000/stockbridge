@@ -1,3 +1,5 @@
+import useMediaQuery from "../../hooks/useMediaQuery";
+
 //import styles from "./profile.scss"
 require('./tabStyles.scss');
 
@@ -13,10 +15,12 @@ type LeftTabProps = {
  * Component that displays the tabs on the left sidebar.
  */
 export function ProfileSectionTab(props: LeftTabProps) {
+  const matches = useMediaQuery('(min-width: 1527px)');
+  const tooSmall = useMediaQuery('(min-width: 1070px)');
   return (
     <li
       className="profile-section-tab"
-      style={{ display: 'inline', width: '100%', alignSelf: 'left' }}
+      style={{ display: 'inline', width: '100%',  fontSize: matches ? "25px" : "21px" }}
     >
       <link
         rel="stylesheet"

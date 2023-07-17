@@ -1,10 +1,8 @@
 import { useContext, useEffect, ReactElement } from 'react';
 import { Page } from '../components/Page';
 import { ProfileHeader } from '../components/Profile/ProfileHeader';
-import '../styles/userInfo.css';
 import { palette } from '../utils/colors';
 import useMediaQuery from './../hooks/useMediaQuery';
-
 import { ProfileSectionTab } from '../components/ContentTabs/ProfileSectionTab';
 import MyAdvertsContent from '../components/Profile/ProfileSectionsContent/MyAdvertsContent';
 import SellingContent from '../components/Profile/ProfileSectionsContent/SellingContent';
@@ -77,7 +75,7 @@ const leftTabs: {
 export function UserInfo() {
   const history = createBrowserHistory();
   const { isLoading } = useContext(LoginContext);
-  const matches = useMediaQuery('(min-width: 768px)');
+  const matches = useMediaQuery('(min-width: 1070px)');
   const tabContext = useContext(SelectedTabContext);
 
   /**
@@ -105,23 +103,28 @@ export function UserInfo() {
 
       <div className="row">
         <div
-          className="col-2 profile-section-container"
+          className={
+            matches
+              ? 'col-2 profile-section-container'
+              : 'profile-section-container justify-content-center'
+          }
           style={{
             left: 0,
-            minHeight: '100em',
-            height: '100%',
+            paddingRight: 0,
+            minHeight: matches ? '70em' : '',
             backgroundColor: palette.subSectionsBgLighter,
             alignItems: 'center',
-            display: matches ? 'flex' : 'none',
-            flexDirection: 'column',
+            display: 'flex',
+            flexDirection: matches ? 'column' : 'row',
           }}
         >
           <div
             className="sections-container"
             style={{
-              marginTop: '40%',
+              marginTop: matches ? '40%' : '',
               flexDirection: 'column',
               gap: 0,
+              width: '100%',
             }}
           >
             {leftTabs.map((section, sectionIndex) => {
@@ -145,7 +148,10 @@ export function UserInfo() {
             style={{ position: 'absolute', left: '50%', top: '50%' }}
           />
         ) : (
-          <div className="col-10" style={{ paddingTop: '5em' }}>
+          <div
+            className={matches ? 'col-10' : ''}
+            style={{ paddingTop: '5em' }}
+          >
             {leftTabs[tabContext.selectedProfileSection].content}
           </div>
         )}

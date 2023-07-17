@@ -166,9 +166,9 @@ const PremiumContent = () => {
 
   return (
     <>
-      <Container fluid className="py-2 overflow-hidden ">
+      <Container fluid className="py-2 overflow-hidden">
         <Row className="mb-5 justify-content-center text-center">
-          <h2> Subscription Plans </h2>
+          <h2>Subscription Plans</h2>
         </Row>
         <Row className="mx-5 mb-5 justify-content-center">
           {isSubscriptionActive && (
@@ -179,7 +179,7 @@ const PremiumContent = () => {
                 Subscription Status:{' '}
                 <b>{user?.subscription?.status.toLocaleUpperCase()} </b>
                 <br />
-                Subscription Type: <b> {user?.subscription?.type} </b>
+                Subscription Type: <b>{user?.subscription?.type}</b>
                 <br />
                 Subscription Start Date:
                 <b>
@@ -201,16 +201,15 @@ const PremiumContent = () => {
               purchasing a new subscription.
             </h4>
             <a href={invoiceLink} target="_blank" rel="noreferrer">
-              {' '}
-              Click here to pay the invoice{' '}
+              Click here to pay the invoice
             </a>
           </Row>
         )}
-        <Row className="d-flex flex-row flex-nowrap overflow-auto justify-content-center">
+        <Row className="d-flex flex-row flex-wrap justify-content-center px-3">
           {plans}
         </Row>
         <Row className="my-5 justify-content-center text-center">
-          <h2> Prioritization Tickets </h2>
+          <h2>Prioritization Tickets</h2>
         </Row>
         <Row className="mx-5 mb-5 justify-content-center">
           <Alert variant="secondary">
@@ -222,10 +221,11 @@ const PremiumContent = () => {
             </>
           </Alert>
         </Row>
-        <Row className="d-flex flex-row flex-nowrap overflow-auto justify-content-center">
+        <Row className="d-flex flex-row flex-wrap justify-content-center">
           {tickets}
         </Row>
       </Container>
+
       {amount > 0 && product && (
         <PaymentElement
           amount={amount * 100}

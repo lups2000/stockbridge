@@ -40,8 +40,8 @@ const ProfileProdcutAttribute: React.FC<ProfileProdcutAttributeProps> = (props) 
         textAlign: 'start',
         alignItems: 'center',
         justifyContent: 'center',
-
-        gap: '3em',
+        width: "100%",
+        gap: '10%',
         color: 'black',
       }}
     >
