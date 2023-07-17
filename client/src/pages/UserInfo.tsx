@@ -14,6 +14,7 @@ import { LoginContext } from '../contexts/LoginContext';
 import { Spinner } from 'react-bootstrap';
 import SelectedTabContext from '../contexts/SelectedTabContext';
 import { createBrowserHistory } from 'history';
+import { useNavigate } from 'react-router-dom';
 
 /**
  * Contains the tabs displayed on the sidebar of the profile page and their corresponding content
@@ -78,6 +79,8 @@ export function UserInfo() {
   const matches = useMediaQuery('(min-width: 1070px)');
   const tabContext = useContext(SelectedTabContext);
 
+  const navigate = useNavigate();
+
   /**
    * Sets the active tab from the link history.
    */
@@ -88,13 +91,19 @@ export function UserInfo() {
         leftTabs.findIndex((x) => filterParams === x.link),
       );
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   /**
    * Sets the link to the active tab.
    */
   useEffect(() => {
-    history.push(`?${leftTabs[tabContext.selectedProfileSection].link}`);
+    try {
+      history.push(`?${leftTabs[tabContext.selectedProfileSection].link}`);
+    } catch {
+      navigate('*'); //not found page
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [tabContext.selectedProfileSection]);
 
   return (
