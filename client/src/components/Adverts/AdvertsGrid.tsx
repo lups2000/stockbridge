@@ -9,6 +9,7 @@ import { Title } from '../Text/Title';
 import { Button } from 'react-bootstrap';
 import { useSearchParams } from 'react-router-dom';
 import { CustomMap } from './CustomMap';
+import "../override.css"
 
 interface AdvertGridProps {
   adverts: PopulatedAdvert[] | undefined;

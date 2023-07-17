@@ -1,19 +1,20 @@
 import React, { ChangeEvent, FC, useState } from 'react';
-import { Button, Dropdown, Form, Modal } from 'react-bootstrap';
+import { Button, Dropdown, Form, Modal, Image } from 'react-bootstrap';
 import { palette } from '../../utils/colors';
 import { BodyText } from '../Text/BodyText';
 import Slider from '@mui/material/Slider';
 import { ProductCategory } from '../../api/collections/advert';
 import { useSearchParams } from 'react-router-dom';
-import "../override.css"
+import '../override.css';
+import deleteIcon from "../../assets/deleteX.svg"
 
 interface FilterAdvertsModalProps {
   isOpen: boolean;
   setIsOpen: (status: boolean) => void;
   filters: {
-    category: {
-      value: string;
-      setValue: (newValue: string) => void;
+    categories: {
+      value: string[];
+      setValue: (newValue: string[]) => void;
     };
     rangePrice: {
       value: number[];
@@ -32,12 +33,14 @@ interface FilterAdvertsModalProps {
 
 /**
  * Component that manages the filters in case the screen is small. It's a modal
- * @returns 
+ * @returns
  */
 export const FilterAdvertsModal: FC<FilterAdvertsModalProps> = (props) => {
   const { filters } = props;
 
-  const [category, setCategory] = useState<string>(filters.category.value);
+  const [selectedCategories, setSelectedCategories] = useState<string[]>(
+    filters.categories.value,
+  );
   const [rangePrice, setRangePrice] = useState<number[]>(
     filters.rangePrice.value,
   );
@@ -50,7 +53,7 @@ export const FilterAdvertsModal: FC<FilterAdvertsModalProps> = (props) => {
 
   const handleClose = () => {
     //set previous state
-    setCategory(filters.category.value);
+    setSelectedCategories(filters.categories.value);
     setRangePrice(filters.rangePrice.value);
     setRangeQuantity(filters.rangeQuantity.value);
     setRadius(filters.radius.value);
@@ -58,7 +61,7 @@ export const FilterAdvertsModal: FC<FilterAdvertsModalProps> = (props) => {
   };
 
   const saveResults = () => {
-    filters.category.setValue(category);
+    filters.categories.setValue(selectedCategories);
     filters.rangePrice.setValue(rangePrice);
     filters.rangeQuantity.setValue(rangeQuantity);
     filters.radius.setValue(radius);
@@ -67,9 +70,9 @@ export const FilterAdvertsModal: FC<FilterAdvertsModalProps> = (props) => {
 
   const handleConfirm = () => {
     saveResults();
-    if (category) {
-      console.log(category);
-      search.set('category[in]', category);
+    if (selectedCategories) {
+      const categories = selectedCategories.join(',');
+      search.set('category[in]', categories);
       setSearch(search, { replace: true });
     }
 
@@ -97,19 +100,33 @@ export const FilterAdvertsModal: FC<FilterAdvertsModalProps> = (props) => {
 
   const handleReset = () => {
     //reset internal state
-    setCategory('');
+    setSelectedCategories([]);
     setRangePrice([0, 1000]);
     setRangeQuantity([0, 1000]);
     setRadius(0);
     //reset external state
-    filters.category.setValue('');
+    filters.categories.setValue([]);
     filters.rangePrice.setValue([0, 1000]);
     filters.rangeQuantity.setValue([0, 1000]);
     filters.radius.setValue(0);
   };
 
+  const handleCategoryClick = (category: string) => {
+    if (!selectedCategories.includes(category)) {
+      setSelectedCategories([...selectedCategories, category]);
+    }
+  };
+
+  const handleDeleteCategory = (category: string) => {
+    const updatedCategories = selectedCategories.filter((c) => c !== category);
+    setSelectedCategories(updatedCategories);
+  };
   return (
-    <Modal show={props.isOpen} onHide={handleClose} className='no-padding-right'>
+    <Modal
+      show={props.isOpen}
+      onHide={handleClose}
+      className="no-padding-right"
+    >
       <Modal.Header closeButton>
         <Modal.Title>Filters</Modal.Title>
       </Modal.Header>
@@ -120,34 +137,88 @@ export const FilterAdvertsModal: FC<FilterAdvertsModalProps> = (props) => {
           alignItems: 'center',
         }}
       >
-        <Dropdown style={{ marginTop: 30 }}>
-          <Dropdown.Toggle
-            style={{
-              backgroundColor: 'transparent',
-              border: 'none',
-              color: 'black',
-              width: 200,
-              fontFamily: 'Poppins',
-              fontWeight: 500,
-            }}
-            id="dropdown-basic"
-            defaultValue={'Categories'}
-          >
-            {category || 'Categories'}
-          </Dropdown.Toggle>
-          <Dropdown.Menu
-            style={{ maxHeight: 200, overflowY: 'scroll' }}
-            className="hide-scrollbar"
-          >
-            {Object.values(ProductCategory)
-              .filter((key) => isNaN(Number(key)))
-              .map((c, index) => (
-                <Dropdown.Item key={index} onClick={() => setCategory(c)}>
-                  {c}
-                </Dropdown.Item>
-              ))}
-          </Dropdown.Menu>
-        </Dropdown>
+        <div>
+          <Dropdown style={{ marginTop: 30 }}>
+            <Dropdown.Toggle
+              style={{
+                backgroundColor: 'transparent',
+                border: 'none',
+                color: 'black',
+                width: 200,
+                fontFamily: 'Poppins',
+                textAlign: 'left',
+                fontWeight: 500,
+                paddingLeft: 0,
+              }}
+              id="dropdown-basic"
+            >
+              Select Category
+            </Dropdown.Toggle>
+            <Dropdown.Menu
+              style={{
+                maxHeight: 200,
+                overflowY: 'scroll',
+              }}
+              className="hide-scrollbar"
+            >
+              {Object.values(ProductCategory)
+                .filter((key) => isNaN(Number(key)))
+                .map((c, index) => (
+                  <Dropdown.Item
+                    key={index}
+                    onClick={() => handleCategoryClick(c)}
+                  >
+                    {c}
+                  </Dropdown.Item>
+                ))}
+            </Dropdown.Menu>
+          </Dropdown>
+
+          {selectedCategories.length > 0 && (
+            <div
+              style={{
+                marginTop: 5,
+                borderRadius: 10,
+                backgroundColor: palette.subSectionsBgLighter,
+                padding: '5px 10px',
+                maxHeight: 150,
+                overflowY: 'scroll',
+              }}
+              className="hide-scrollbar"
+            >
+              <ul style={{ listStyleType: 'none', padding: 0, margin: 0 }}>
+                {selectedCategories.map((category, index) => {
+                  return (
+                    <li
+                      key={index}
+                      style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'space-between',
+                        marginBottom: 5,
+                      }}
+                    >
+                      <span
+                        style={{ overflow: 'hidden', textOverflow: 'ellipsis' }}
+                      >
+                        {category}
+                      </span>
+                      <Image
+                        src={deleteIcon}
+                        style={{
+                          width: 20,
+                          height: 20,
+                          cursor: 'pointer',
+                        }}
+                        onClick={() => handleDeleteCategory(category)}
+                      />
+                    </li>
+                  );
+                })}
+              </ul>
+            </div>
+          )}
+        </div>
         <div style={{ width: 190, marginTop: 20 }}>
           <BodyText style={{ textAlign: 'center', fontWeight: 500 }}>
             Price:
@@ -210,7 +281,7 @@ export const FilterAdvertsModal: FC<FilterAdvertsModalProps> = (props) => {
           }}
           onClick={handleConfirm}
         >
-          Save Changes
+          Apply
         </Button>
       </Modal.Footer>
     </Modal>
