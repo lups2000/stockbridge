@@ -11,4 +11,8 @@ export const palette = {
 
   placeholderTextBootstrap: '#808080',
   borderBoostrap: '#cccccc',
+
+  advertCardBg: "#FFF5F8",
+  advertCardLine: "#4ECBA9",
+  advertCardButton: "#233EC9"
 };

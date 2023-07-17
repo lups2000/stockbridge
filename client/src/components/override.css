@@ -2,9 +2,20 @@
     display: none;
 }
 .carousel-container {
-    height: 500px; 
+    height: 425px; 
     padding: 20px;
 }
 .no-padding-right {
     padding-right: 0 !important;
+}
+.page-item.active .page-link {
+    color: #fff !important;
+    background-color: #f76c6c !important;
+    border-color: #f76c6c !important;
+}
+
+.page-item .page-link {
+  color: #f76c6c !important;
+  box-shadow: none !important; 
+  outline: none !important; 
 }

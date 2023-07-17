@@ -1,4 +1,5 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
+import "bootstrap-icons/font/bootstrap-icons.css"
 import { Home } from './pages/Home';
 import { Routes, Route } from 'react-router-dom';
 import { UserInfo } from './pages/UserInfo';

@@ -34,7 +34,12 @@ export const AdvertsPagination: FC = () => {
   useEffect(() => {
     const cat = search.get('category[in]');
     if (cat !== null && cat !== category) {
-      setCategory(cat);
+      if(cat.includes(",")){ //it means that we have selected more than one category
+        setCategory("Adverts selected categories")
+      }
+      else{
+        setCategory(cat);
+      }
     } else {
       setCategory('');
     }
@@ -59,12 +64,6 @@ export const AdvertsPagination: FC = () => {
   }, []);
 
   const matches = useMediaQuery('(min-width: 768px)');
-
-  /*if (mapMode) {
-    return (
-      <CustomMap adverts={adverts} onChangeModality={() => setMapMode(false)} />
-    );
-  }*/
 
   //I am using component <Page> here because I want to display the map full screen.
   return (

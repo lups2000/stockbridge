@@ -7,37 +7,37 @@ import { BodyText } from '../Text/BodyText';
 import useMediaQuery from '../../hooks/useMediaQuery';
 import { ProductCategory } from '../../api/collections/advert';
 import { ColoredLine } from '../ColoredLine';
-//import { DatePicker } from '../DatePicker';
 import filtersIcon from '../../assets/filters.svg';
 import { FilterAdvertsModal } from './FilterAdvertsModal';
 import { useSearchParams } from 'react-router-dom';
 import '../../components/override.css';
+import deleteIcon from '../../assets/deleteX.svg';
 
 /**
  * This components represents the filters section in the home page.
  */
 export const Filters: FC = () => {
   const [search, setSearch] = useSearchParams();
-  const [category, setCategory] = useState<string>('');
   const [rangePrice, setRangePrice] = useState<number[]>([0, 1000]);
   const [rangeQuantity, setRangeQuantity] = useState<number[]>([0, 1000]);
   const [radius, setRadius] = useState<number>(0);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+  const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
 
   const matches = useMediaQuery('(min-width: 768px)');
 
   useEffect(() => {
-    const cat = search.get('category[in]');
-    if (cat !== null) {
-      setCategory(cat);
+    const categories = search.get('category[in]')?.split(',');
+    if (categories !== null && categories) {
+      setSelectedCategories(categories);
     } else {
-      setCategory('');
+      setSelectedCategories([]);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [search.get('category[in]')]);
 
   const handleReset = () => {
-    setCategory('');
+    setSelectedCategories([]);
     setRangePrice([0, 1000]);
     setRangeQuantity([0, 1000]);
     setRadius(0);
@@ -51,9 +51,9 @@ export const Filters: FC = () => {
   };
 
   const handleConfirm = () => {
-    if (category) {
-      console.log(category);
-      search.set('category[in]', category);
+    if (selectedCategories) {
+      const categories = selectedCategories.join(',');
+      search.set('category[in]', categories);
       setSearch(search, { replace: true });
     }
 
@@ -79,18 +79,25 @@ export const Filters: FC = () => {
     }
   };
 
-  const handleCategoryClick = (category: string) => {
-    setCategory(category);
-  };
-
   const handleButtonClick = () => {
     setIsModalOpen(!isModalOpen);
+  };
+
+  const handleCategoryClick = (category: string) => {
+    if (!selectedCategories.includes(category)) {
+      setSelectedCategories([...selectedCategories, category]);
+    }
+  };
+
+  const handleDeleteCategory = (category: string) => {
+    const updatedCategories = selectedCategories.filter((c) => c !== category);
+    setSelectedCategories(updatedCategories);
   };
 
   if (!matches) {
     // if the screen is small
     return (
-      <div style={{ marginTop: -10, marginLeft: 10, zIndex: 1000 }}>
+      <div style={{ marginTop: -13, marginLeft: 10, zIndex: 1000 }}>
         <Button
           style={{ border: 'none', backgroundColor: 'white' }}
           onClick={handleButtonClick}
@@ -101,9 +108,9 @@ export const Filters: FC = () => {
           isOpen={isModalOpen}
           setIsOpen={(status) => setIsModalOpen(status)}
           filters={{
-            category: {
-              value: category,
-              setValue: setCategory,
+            categories: {
+              value: selectedCategories,
+              setValue: setSelectedCategories,
             },
             rangePrice: {
               value: rangePrice,
@@ -139,39 +146,88 @@ export const Filters: FC = () => {
         Filters
       </Title>
       <ColoredLine height={1} width={100} color="black" />
-      <Dropdown style={{ marginTop: 30 }}>
-        <Dropdown.Toggle
-          style={{
-            backgroundColor: 'transparent',
-            border: 'none',
-            color: 'black',
-            width: 200,
-            fontFamily: 'Poppins',
-            textAlign: 'left',
-            fontWeight: 500,
-            paddingLeft: 0,
-          }}
-          id="dropdown-basic"
-          defaultValue={'Categories'}
-        >
-          {category || 'Categories'}
-        </Dropdown.Toggle>
-        <Dropdown.Menu
-          style={{
-            maxHeight: 200,
-            overflowY: 'scroll',
-          }}
-          className="hide-scrollbar"
-        >
-          {Object.values(ProductCategory)
-            .filter((key) => isNaN(Number(key)))
-            .map((c, index) => (
-              <Dropdown.Item key={index} onClick={() => handleCategoryClick(c)}>
-                {c}
-              </Dropdown.Item>
-            ))}
-        </Dropdown.Menu>
-      </Dropdown>
+      <div>
+        <Dropdown style={{ marginTop: 30 }}>
+          <Dropdown.Toggle
+            style={{
+              backgroundColor: 'transparent',
+              border: 'none',
+              color: 'black',
+              width: 200,
+              fontFamily: 'Poppins',
+              textAlign: 'left',
+              fontWeight: 500,
+              paddingLeft: 0,
+            }}
+            id="dropdown-basic"
+          >
+            Select Category
+          </Dropdown.Toggle>
+          <Dropdown.Menu
+            style={{
+              maxHeight: 200,
+              overflowY: 'scroll',
+            }}
+            className="hide-scrollbar"
+          >
+            {Object.values(ProductCategory)
+              .filter((key) => isNaN(Number(key)))
+              .map((c, index) => (
+                <Dropdown.Item
+                  key={index}
+                  onClick={() => handleCategoryClick(c)}
+                >
+                  {c}
+                </Dropdown.Item>
+              ))}
+          </Dropdown.Menu>
+        </Dropdown>
+
+        {selectedCategories.length > 0 && (
+          <div
+            style={{
+              marginTop: 5,
+              borderRadius: 10,
+              backgroundColor: palette.subSectionsBgLighter,
+              padding: '5px 10px',
+              maxHeight: 150,
+              overflowY: 'scroll',
+            }}
+            className="hide-scrollbar"
+          >
+            <ul style={{ listStyleType: 'none', padding: 0, margin: 0 }}>
+              {selectedCategories.map((category, index) => {
+                return (
+                  <li
+                    key={index}
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'space-between',
+                      marginBottom: 5,
+                    }}
+                  >
+                    <span
+                      style={{ overflow: 'hidden', textOverflow: 'ellipsis' }}
+                    >
+                      {category}
+                    </span>
+                    <Image
+                      src={deleteIcon}
+                      style={{
+                        width: 20,
+                        height: 20,
+                        cursor: 'pointer',
+                      }}
+                      onClick={() => handleDeleteCategory(category)}
+                    />
+                  </li>
+                );
+              })}
+            </ul>
+          </div>
+        )}
+      </div>
       <div style={{ width: 190, marginTop: 20 }}>
         <BodyText style={{ fontWeight: 500 }}>Price:</BodyText>
         <Slider
