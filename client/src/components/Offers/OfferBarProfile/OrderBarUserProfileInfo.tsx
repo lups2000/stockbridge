@@ -1,48 +1,47 @@
 import imagePlaceholder from '../../../assets/product-placeholder.png';
-import {
 
-  OfferStatus
-} from '../../../api/collections/offer';
-
-import React from 'react';
+import React, { useState } from 'react';
 import { ProfileProdcutAttribute } from '../../Profile/ProfileProdcutAttribute';
 import { Advert, PopulatedAdvert } from '../../../api/collections/advert';
 import { PopulatedOffer } from '../../../api/collections/offer';
 import { Image } from 'react-bootstrap';
+import { NestedPopulatedOrder, OrderStatus } from '../../../api/collections/order';
 require('./OfferBarUserProfile.scss');
 
 type OrderBarUserProfileInfoProps = {
     picture: string | undefined
     advert: PopulatedAdvert | Advert;
     offer: PopulatedOffer;
+    order: NestedPopulatedOrder;
     outgoing: boolean;
     highlight: string;
-    onClick: () => void;
 };
 
 const OrderBarUserProfileInfo: React.FC<OrderBarUserProfileInfoProps> = (props) => {
   const getOfferIcon = function() : [string,string]
   {
-    return ["bi-check-circle", "#4ECBA9"];
-    switch (props.offer.status) {
-      case OfferStatus.ACCEPTED:
+    switch (props.order.status) {
+      case OrderStatus.RECEIVED:
         return ["bi-check-circle", "#4ECBA9"]
-
-      case OfferStatus.REJECTED:
-        return ["bi-x-circle", "red"]
-
-      case OfferStatus.OPEN:
-        return ["bi-clock-history", "#4285F4"];
-
-      case OfferStatus.CANCELED_USER:
-        return ["bi-dash-circle", "#ffc071"]
+      case OrderStatus.PAYMENT_PENDING:
+        return ["bi-credit-card", "#4285F4"];
       default:
-        return ["bi-dash-circle", "#ffc071"]
+        return ["bi-credit-card", "#4285F4"]
     }
   }
-  
+
+  const [isHovered, setIsHovered] = useState(false);
+  const handleMouseOver = () => {
+    setIsHovered(true);
+  }
+
+  const handleMouseOut = () => {
+    setIsHovered(false);
+  }
+
+
   return (
-    <li className="product-bar offer row" style={{backgroundColor: 'white'}} onClick={props.onClick}>
+    <li className="product-bar offer non-clickable row" style={{backgroundColor: 'white'}}>
       <div className="product-image col-2">
       <Image
           style={{
@@ -51,7 +50,7 @@ const OrderBarUserProfileInfo: React.FC<OrderBarUserProfileInfoProps> = (props) 
             borderRadius: '3em',
             borderColor: 'transparent',
             objectFit: 'fill',
-            marginLeft: '3%'
+            marginRight: '1em',
           }}
           src={props.picture ? props.picture : imagePlaceholder}
         />
@@ -66,31 +65,38 @@ const OrderBarUserProfileInfo: React.FC<OrderBarUserProfileInfoProps> = (props) 
           
           <div className="div2">  <ProfileProdcutAttribute
             name="Store"
-            value={"story"} //props.outgoing ? props.offer.offeree?.name : props.offer.offeror?.name}
+            value={props.outgoing ? props.offer.offeree?.name : props.offer.offeror?.name}
           ></ProfileProdcutAttribute></div>
 
           <div className="div2">  <ProfileProdcutAttribute
             name="Date"
-            value={"21.03.2023"}//props.offer.createdAt?.toString().substring(0, 10)}
+            value={props.offer.createdAt?.toString().substring(0, 10)}
           ></ProfileProdcutAttribute></div>
          
           <div className="div3">  <ProfileProdcutAttribute
             name="Quantity"
-            value={5}//props.offer.quantity}
+            value={props.order.quantity}
           ></ProfileProdcutAttribute></div>
 
           <div className="div4">  <ProfileProdcutAttribute
-            name="Price"
-            value={4}//props.offer.price}
+            name="Total Price"
+            value={props.order.totalPrice}
             unit='€'
           ></ProfileProdcutAttribute></div>
         </div>
       </div>
       <div className="status col-1">
-      <div className='offer-status-icon'>
+      <div className='offer-status-icon'         
+        onMouseOver={handleMouseOver}
+        onMouseOut={handleMouseOut}>
         <i className={`bi ${getOfferIcon()[0]}`} 
         style={{ color: getOfferIcon()[1] , fontSize: "3em"}}></i>
       </div>
+      {isHovered && 
+        <div className = {'hover-text'}>
+          {"order status"}
+        </div>
+      }
       </div>
     </li>
   );

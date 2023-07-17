@@ -5,7 +5,7 @@ import {
   OfferStatus
 } from '../../../api/collections/offer';
 
-import React from 'react';
+import React, { useState } from 'react';
 import { ProfileProdcutAttribute } from '../../Profile/ProfileProdcutAttribute';
 import { PopulatedAdvert } from '../../../api/collections/advert';
 import { PopulatedOffer } from '../../../api/collections/offer';
@@ -21,6 +21,16 @@ type OfferBarUserProfileInfoProps = {
 };
 
 const OfferBarUserProfileInfo: React.FC<OfferBarUserProfileInfoProps> = (props) => {
+  const [isHovered, setIsHovered] = useState(false);
+  const handleMouseOver = () => {
+    setIsHovered(true);
+  }
+
+  const handleMouseOut = () => {
+    setIsHovered(false);
+  }
+
+  
   const getOfferIcon = function() : [string,string]
   {
     switch (props.offer.status) {
@@ -85,10 +95,17 @@ const OfferBarUserProfileInfo: React.FC<OfferBarUserProfileInfoProps> = (props) 
         </div>
       </div>
       <div className="status col-1">
-      <div className='offer-status-icon'>
+        <div className='offer-status-icon'
+          onMouseOver={handleMouseOver}
+          onMouseOut={handleMouseOut}>
         <i className={`bi ${getOfferIcon()[0]}`} 
         style={{ color: getOfferIcon()[1] , fontSize: "3em"}}></i>
       </div>
+      {isHovered && 
+        <div className = {'hover-text'} style={{marginLeft: '0.5em'}}>
+        {props.offer.status}
+      </div>
+      }
       </div>
     </li>
   );

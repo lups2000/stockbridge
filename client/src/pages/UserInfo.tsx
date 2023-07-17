@@ -130,6 +130,7 @@ export function UserInfo() {
             {leftTabs.map((section, sectionIndex) => {
               return (
                 <ProfileSectionTab
+                  key={sectionIndex}
                   title={section.text}
                   icon={section.icon}
                   index={sectionIndex}

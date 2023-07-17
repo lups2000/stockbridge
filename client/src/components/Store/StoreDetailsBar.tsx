@@ -11,7 +11,6 @@ type StoreDetailsBarProps = {
 
 const StoreDetailsBar: React.FC<StoreDetailsBarProps> = (props) => {
   const [showModal, setShowModal] = useState(false);
-  console.log('store: ', props.store);
   const fieldContainer = (message: string, value: string, rating = false) => {
     return (
       <div

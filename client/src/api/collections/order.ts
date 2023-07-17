@@ -9,6 +9,7 @@ export enum OrderStatus {
 
 export interface PopulatedOrder {
   _id: string;
+  createdAt: string;
   totalPrice: number;
   quantity: number;
   status: OrderStatus;
@@ -17,6 +18,7 @@ export interface PopulatedOrder {
 
 export interface NestedPopulatedOrder {
   _id: string;
+  createdAt: string;
   totalPrice: number;
   quantity: number;
   status: OrderStatus;
