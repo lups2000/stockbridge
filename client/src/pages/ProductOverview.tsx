@@ -2,7 +2,6 @@ import { useContext, useEffect, useState } from 'react';
 import { Spinner } from 'react-bootstrap';
 import { useParams } from 'react-router-dom';
 import { Colors, getAdvert, PopulatedAdvert } from '../api/collections/advert';
-import { getStore, PopulatedUser } from '../api/collections/user';
 import { OffersSection } from '../components/Offers/OffersSection';
 import { Page } from '../components/Page';
 import { ProductOverviewSection } from '../components/ProductOverview/ProductOverviewSection';
@@ -32,7 +31,6 @@ const ProductOverview = () => {
     color: Colors.Blue,
     createdAt: new Date(),
   } as PopulatedAdvert);
-  const [store, setStore] = useState({} as PopulatedUser);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -43,11 +41,8 @@ const ProductOverview = () => {
           if (fetchedAdvert) {
             setAdvert(fetchedAdvert as PopulatedAdvert);
             setIsLoading(false)
-          if (fetchedAdvert.store) {
-            setStore(await getStore(fetchedAdvert.store._id!));
           }
         }
-      }
       } catch (error) {
         console.error(error);
       }
@@ -56,7 +51,7 @@ const ProductOverview = () => {
   }, [id]);
 
   const { user } = useContext(LoginContext);
-  const owner = store._id === user?._id;
+  const owner = advert.store?._id === user?._id;
   return (
     isLoading ? <FadeLoader color={palette.subSectionsBgAccent} style={{
       position: 'absolute',
@@ -73,17 +68,17 @@ const ProductOverview = () => {
             maxWidth: '100vw', // Set the maximum width to the viewport width
           }}
         >
-          <StoreDetailsBar category={advert.category!} store={store} />
-          <ProductOverviewSection advert={advert} store={store} />
+          <StoreDetailsBar category={advert.category!} store={advert.store!} />
+          <ProductOverviewSection advert={advert} store={advert.store!} />
           {owner && advert.offers && advert.offers.length > 0 && (
             <OffersSection
               advert={advert}
-              storeName={store.name || ''}
-              rating={store.rating || 0}
+              storeName={advert.store?.name || ''}
+              rating={advert.store?.rating || 0}
             />
           )}
           {advert.reviews && advert.reviews.length > 0 && advert._id && (
-            <ReviewsSection advert={advert} />
+            <ReviewsSection advert={advert}/>
           )}
         </div>
       ) : (

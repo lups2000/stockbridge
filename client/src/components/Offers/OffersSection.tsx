@@ -3,7 +3,6 @@ import { PopulatedAdvert } from '../../api/collections/advert';
 import {
   getOffersByAdvert,
   OfferStatus,
-  PopulatedOffer,
 } from '../../api/collections/offer';
 import { ReviewOfferSection } from '../ProductOverview/ReviewOfferSection';
 import { OfferSection } from './OfferSection';
@@ -15,23 +14,11 @@ type OffersSectionProps = {
 };
 
 const OffersSection: FC<OffersSectionProps> = (props) => {
-  const [offers, setOffers] = useState([] as PopulatedOffer[]);
-  useEffect(() => {
-    const fetchData = async () => {
-      if (props.advert._id) {
-        const fetchedOffers: PopulatedOffer[] = await getOffersByAdvert(
-          props.advert._id,
-        );
-        setOffers(fetchedOffers);
-      }
-    };
-    fetchData();
-  }, [props.advert._id]);
 
-  const openOffers = offers.filter((o) => o.status === 'Open');
-  const acceptedOffers = offers.filter((o) => o.status === 'Accepted');
-  const rejectedOffers = offers.filter((o) => o.status === 'Rejected');
-  const canceledOffers = offers.filter((o) => o.status === 'Canceled' || o.status === 'Canceled - Out of Stock');
+  const openOffers = props.advert.offers?.filter((o) => o.status === 'Open') ?? [];
+  const acceptedOffers = props.advert.offers?.filter((o) => o.status === 'Accepted') ?? [];
+  const rejectedOffers = props.advert.offers?.filter((o) => o.status === 'Rejected') ?? [];
+  const canceledOffers = props.advert.offers?.filter((o) => o.status === 'Canceled') ?? [];
   return (
     <ReviewOfferSection section="OFFERS">
       {openOffers.length > 0 && (

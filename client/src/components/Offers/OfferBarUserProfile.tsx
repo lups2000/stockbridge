@@ -1,16 +1,16 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { ProductAttribute } from '../ProductOverview/ProductAttribute';
-import { PopulatedOffer } from '../../api/collections/offer';
+import { Offer } from '../../api/collections/offer';
 import { PopulatedAdvert } from '../../api/collections/advert';
 import { BodyText } from '../Text/BodyText';
 import { OfferModal } from './OfferModal';
 import { Ratings } from '../Ratings';
 import { InfoBar } from '../ProductOverview/InfoBar';
-import { User } from '../../api/collections/user';
+import { getStore, PopulatedUser } from '../../api/collections/user';
 require('./offerBarStyle.scss');
 
 type OfferBarUserProfileProps = {
-  offer: PopulatedOffer;
+  offer: Offer;
   advert: PopulatedAdvert;
 };
 
@@ -34,19 +34,21 @@ const OfferBarUserProfile: React.FC<OfferBarUserProfileProps> = (props) => {
   const openModal = () => {
     setShowModal(true);
   };
-  const [offerer, setOfferer] = useState({} as User);
-  const [offeree, setOfferee] = useState({} as User);
+  const [offerer, setOfferer] = useState({} as PopulatedUser);
+  const [offeree, setOfferee] = useState({} as PopulatedUser);
   useEffect(() => {
-    const fetchData = () => {
+    const fetchData = async () => {
       try {
-        setOfferer(props.offer.offeror!);
-        setOfferee(props.offer.offeree!);
+        const fetchedOfferor = await getStore(props.offer.offeror!)
+        setOfferer(fetchedOfferor);
+        const fetchedOfferee = await getStore(props.offer.offeree!)
+        setOfferee(fetchedOfferee);
       } catch (error) {
         console.error(error);
       }
     };
     fetchData();
-  }, []);
+  }, [props.offer.offeree, props.offer.offeror]);
 
   return (
     <>
@@ -67,8 +69,8 @@ const OfferBarUserProfile: React.FC<OfferBarUserProfileProps> = (props) => {
                 }}
               >
                 {/* The state does not work properly, this is a workaround that issue */}
-                {props.offer.offeror?.name ?? 'No Name given'}
-                {Ratings(props.offer.offeror?.rating ?? 0)}
+                {offerer?.name ?? 'No Name given'}
+                {Ratings(offerer?.rating ?? 0)}
               </BodyText>
               <BodyText
                 style={{

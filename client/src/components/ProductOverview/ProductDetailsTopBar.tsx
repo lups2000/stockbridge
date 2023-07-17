@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import edit from '../../assets/edit-pencil.svg';
 import review from '../../assets/carbon_review.svg';
 import { Button, Image } from 'react-bootstrap';
-import { PopulatedAdvert } from '../../api/collections/advert';
+import { AdvertStatus, PopulatedAdvert } from '../../api/collections/advert';
 import { EditAdvertModal } from './EditAdvertModal';
 import { BodyText } from '../Text/BodyText';
 import { EditReviewModal } from './EditReviewModal';
@@ -50,7 +50,8 @@ const ProductDetailsTopBar: React.FC<ProductDetailsTopBarProps> = (props) => {
       >
         PRODUCT DETAILS
       </BodyText>
-      <Button
+     
+     {props.advert.status !== AdvertStatus.Closed && <Button
         style={{
           width: 'full',
           marginRight: '20px',
@@ -61,6 +62,7 @@ const ProductDetailsTopBar: React.FC<ProductDetailsTopBarProps> = (props) => {
       >
         <Image src={props.owner ? edit : review}></Image>
       </Button>
+    }
       {showAdvertModal && (
         <EditAdvertModal
           isShowing={showAdvertModal}

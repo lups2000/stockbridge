@@ -1,8 +1,8 @@
-import React, { useContext, useEffect, useState } from 'react';
-import { PopulatedOffer } from '../../../api/collections/offer';
+import React, { useEffect, useState } from 'react';
+import { Offer, PopulatedOffer } from '../../../api/collections/offer';
 import { PopulatedAdvert } from '../../../api/collections/advert';
 import { OfferModal } from '../OfferModal';
-import { User } from '../../../api/collections/user';
+import { getStore, User } from '../../../api/collections/user';
 import { OfferBarUserProfileInfo } from './OfferBarUserProfileInfo';
 
 type OfferBarUserProfileProps = {
@@ -44,7 +44,7 @@ const OfferBarUserProfile: React.FC<OfferBarUserProfileProps> = (props) => {
             }
         };
         fetchData();
-    }, []);
+    }, [props.offer.offeree, props.offer.offeror]);
 
     return (
         <>

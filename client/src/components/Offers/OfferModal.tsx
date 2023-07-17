@@ -18,7 +18,7 @@ type OfferContentProps = {
   isShowing: boolean;
   onClose: () => void;
   onSave: () => void;
-  offer?: PopulatedOffer;
+  offer?: Offer | PopulatedOffer;
   advert?: PopulatedAdvert;
   storeName?: String;
   rating?: number;
@@ -48,7 +48,7 @@ const OfferModal: FC<OfferContentProps> = (props) => {
     createdAt: new Date(),
   } as Offer);
 
-  const offeree = user?._id === props.offer?.offeree?._id;
+  const offeree = user?._id === props.offer?.offeree;
   const handleChange = (event: any) => {
     event.preventDefault();
     const { name, value } = event.target;
@@ -235,7 +235,7 @@ const OfferModal: FC<OfferContentProps> = (props) => {
               ? ResponseType.UNSUCCESSFUL_OFFER_ACCEPTANCE
               : ResponseType.SUCCESSFUL_OFFER_ACCEPTANCE
           }
-          offer={props.offer!}
+          offer={props.offer as Offer}
           onClose={closeModal}
         />
       ) : showRejectionModal ? (
@@ -246,7 +246,7 @@ const OfferModal: FC<OfferContentProps> = (props) => {
               ? ResponseType.UNSUCCESSFUL_OFFER_REJECTION
               : ResponseType.SUCCESSFUL_OFFER_REJECTION
           }
-          offer={props.offer!}
+          offer={props.offer as Offer}
           onClose={closeModal}
         />
       ) : showOutOfStockModal ? <ResponseModal

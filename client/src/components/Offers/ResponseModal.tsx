@@ -5,8 +5,9 @@ import success from '../../assets/success.svg';
 import fail from '../../assets/fail.svg';
 import outofstock from '../../assets/out-of-stock.svg';
 import { Image } from 'react-bootstrap';
-import { Offer, PopulatedOffer } from '../../api/collections/offer';
+import { Offer } from '../../api/collections/offer';
 import { useNavigate } from 'react-router-dom';
+
 
 export enum ResponseType {
   SUCCESSFUL_OFFER_CREATION,
@@ -21,7 +22,7 @@ export enum ResponseType {
 type OfferCreationModalProps = {
   responseType: ResponseType;
   isShowing: boolean;
-  offer?: PopulatedOffer | Offer;
+  offer: Offer;
   onClose: (responseType: ResponseType) => void;
 };
 
