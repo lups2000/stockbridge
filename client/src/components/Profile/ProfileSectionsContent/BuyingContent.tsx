@@ -13,6 +13,9 @@ import { OfferBarUserProfile } from '../../Offers/OfferBarProfile/OfferBarUserPr
 import { sortedAndFilteredOffers, sortedAndFilteredOrders } from '../../../utils/functions';
 import { OrderBarUserProfile } from '../../Offers/OfferBarProfile/OrderBarUserProfile';
 import { NestedPopulatedOrder, getUserSpecificOrders } from '../../../api/collections/order';
+import { palette } from '../../../utils/colors';
+import { FadeLoader } from 'react-spinners';
+import LoadingElementsContent from './LoadingElementsContent';
 
 /**
  * Component that displays the content of Buying section.
@@ -27,7 +30,8 @@ const BuyingContent: React.FC = () => {
   const [sortCriteria, setSortCriteria] = useState<AdvertSortCriteria | OfferSortCriteria>(AdvertSortCriteria.NONE);
   // False == order asc , True == order desc
   const [sortOrder, setSortOrder] = useState(false);
-  
+  const [isLoading, setIsLoading] = useState(true);
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -45,7 +49,7 @@ const BuyingContent: React.FC = () => {
         let orders = await getUserSpecificOrders(user?._id as string, 'Ask');
         let nestedOrders = await Promise.all(orders.map(async x => {
           let offer = await getOffer(x.offer._id ?? "");
-          return  {
+          return {
             _id: x._id,
             createdAt: x.createdAt,
             totalPrice: x.totalPrice,
@@ -54,40 +58,47 @@ const BuyingContent: React.FC = () => {
             offer: offer
           } as NestedPopulatedOrder
         }));
-        
+
 
         setOutgoingOffers(outgoingSell as PopulatedOffer[]);
         setIncomingOffers(incomingAsk as PopulatedOffer[]);
         setOrders(nestedOrders as unknown as NestedPopulatedOrder[]);
+        setIsLoading(false);
       } catch (error) {
         console.error(error);
       }
     };
     fetchData();
   }, []);
-    
+
   return (
     <div>
-      <Tabs isOffer = {true} searchText={searchText} setSearchText={setSearchText} sortCriteria={sortCriteria} setSortCriteria={setSortCriteria} sortOrder= {sortOrder} setSortOrder={setSortOrder}>
+      <Tabs isOffer={true} searchText={searchText} setSearchText={setSearchText} sortCriteria={sortCriteria} setSortCriteria={setSortCriteria} sortOrder={sortOrder} setSortOrder={setSortOrder}>
         <ContentTab title="Orders">
-        {sortedAndFilteredOrders(orders, sortCriteria, searchText, sortOrder).length > 0 ? sortedAndFilteredOrders(orders, sortCriteria, searchText, sortOrder).map((order, _) => {
-            return (
-              <OrderBarUserProfile key= {order._id} order={order} outgoing={false} highlight={searchText} advert={order.offer?.advert!}/>
-            );
-          }) : <NoResultsMessage />}
+          {isLoading ? 
+            <LoadingElementsContent />
+            : sortedAndFilteredOrders(orders, sortCriteria, searchText, sortOrder).length > 0 ? sortedAndFilteredOrders(orders, sortCriteria, searchText, sortOrder).map((order, _) => {
+              return (
+                <OrderBarUserProfile key={order._id} order={order} outgoing={false} highlight={searchText} advert={order.offer?.advert!} />
+              );
+            }) : <NoResultsMessage />}
         </ContentTab>
 
         <ContentTab title="Incoming Offers" >
-        {sortedAndFilteredOffers(incomingOffers, sortCriteria, searchText, sortOrder).length > 0 ? sortedAndFilteredOffers(incomingOffers, sortCriteria, searchText, sortOrder).map((offer, _) => {
+          {isLoading ? 
+           <LoadingElementsContent />
+           : sortedAndFilteredOffers(incomingOffers, sortCriteria, searchText, sortOrder).length > 0 ? sortedAndFilteredOffers(incomingOffers, sortCriteria, searchText, sortOrder).map((offer, _) => {
             return (
-              <OfferBarUserProfile offer={offer} advert={offer.advert as PopulatedAdvert} outgoing= {false} highlight={searchText} />
+              <OfferBarUserProfile offer={offer} advert={offer.advert as PopulatedAdvert} outgoing={false} highlight={searchText} />
             );
           }) : <NoResultsMessage />}
         </ContentTab>
         <ContentTab title="Outgoing Offers">
-        {sortedAndFilteredOffers(outgoingOffers, sortCriteria, searchText, sortOrder).length > 0 ? sortedAndFilteredOffers(outgoingOffers, sortCriteria, searchText, sortOrder).map((offer, _) => {
+          {isLoading ? 
+          <LoadingElementsContent /> 
+          : sortedAndFilteredOffers(outgoingOffers, sortCriteria, searchText, sortOrder).length > 0 ? sortedAndFilteredOffers(outgoingOffers, sortCriteria, searchText, sortOrder).map((offer, _) => {
             return (
-              <OfferBarUserProfile offer={offer} advert={offer.advert as PopulatedAdvert}  outgoing= {true} highlight={searchText}/>
+              <OfferBarUserProfile offer={offer} advert={offer.advert as PopulatedAdvert} outgoing={true} highlight={searchText} />
             );
           }) : <NoResultsMessage />}
         </ContentTab>
