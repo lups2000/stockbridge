@@ -3,7 +3,7 @@ import { Button, Stack } from 'react-bootstrap';
 import { Filters } from './Filters';
 import useMediaQuery from '../../hooks/useMediaQuery';
 import { Sort } from './Sort';
-import { useSearchParams } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useAdverts } from '../../hooks/useAdverts';
 import { AdvertsGrid } from './AdvertsGrid';
 import { palette } from '../../utils/colors';
@@ -14,6 +14,8 @@ import { Page } from '../Page';
  */
 export const AdvertsPagination: FC = () => {
   const [search, setSearch] = useSearchParams();
+
+  const navigate = useNavigate();
 
   const [category, setCategory] = useState<string>('');
 
@@ -63,6 +65,33 @@ export const AdvertsPagination: FC = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  useEffect(() => {
+    const possibleParamKeys: string[] = [
+      'page',
+      'category[in]',
+      'type',
+      'price[gte]',
+      'price[lte]',
+      'quantity[gte]',
+      'quantity[lte]',
+      'radius',
+
+      'sort',
+    ];
+    const paramKeys = Array.from(search.keys());
+
+    const areParamsValid = paramKeys.every((key) =>
+      possibleParamKeys.includes(key),
+    );
+
+    if (areParamsValid) {
+      return;
+    } else {
+      navigate('*'); //not found page
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [search]);
+
   const matches = useMediaQuery('(min-width: 768px)');
 
   //I am using component <Page> here because I want to display the map full screen.
@@ -109,7 +138,7 @@ export const AdvertsPagination: FC = () => {
               }}
               onClick={handleMapClick}
             >
-              {mapMode ? "Close Map" : "View on Map"}
+              {mapMode ? 'Close Map' : 'View on Map'}
             </Button>
             <Sort />
           </div>

@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState } from 'react';
 import { Spinner } from 'react-bootstrap';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { Colors, getAdvert, PopulatedAdvert } from '../api/collections/advert';
 import { OffersSection } from '../components/Offers/OffersSection';
 import { Page } from '../components/Page';
@@ -33,6 +33,8 @@ const ProductOverview = () => {
   } as PopulatedAdvert);
   const [isLoading, setIsLoading] = useState(true);
 
+  const navigate = useNavigate();
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -45,6 +47,7 @@ const ProductOverview = () => {
         }
       } catch (error) {
         console.error(error);
+        navigate("*") //not found page
       }
     };
     fetchData();
@@ -85,7 +88,6 @@ const ProductOverview = () => {
         <Spinner role="status" />
       )}
     </Page>
-    
   );
 };
 
