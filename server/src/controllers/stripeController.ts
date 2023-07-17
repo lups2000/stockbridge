@@ -12,7 +12,6 @@ import {
   webhookHandler,
 } from '../services/stripeService';
 import logger from '../config/logger';
-import Stripe from 'stripe';
 
 export const createPaymentIntent = asyncHandler(
   async (req: AuthenticatedRequest, res: Response) => {
@@ -22,6 +21,12 @@ export const createPaymentIntent = asyncHandler(
       user,
       amount,
       product,
+      {
+        setup_future_usage: 'off_session',
+        automatic_payment_methods: {
+          enabled: true,
+        },
+      },
     );
     res.status(200).json(paymentIntent.client_secret);
   },

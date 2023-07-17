@@ -30,7 +30,9 @@ export const findOfferById = async (id: string, populate = true) => {
  * @returns Promise containing the offer
  */
 export const createOffer = async (offer: Offer) => {
-  logger.debug(`${serviceName}: Creating offer ${offer.id}`);
+  logger.debug(
+    `${serviceName}: Creating offer for advert: ${offer.advert._id} and offeror: ${offer.offeror}`,
+  );
   return await offerModel.create(offer);
 };
 
@@ -42,7 +44,7 @@ export const createOffer = async (offer: Offer) => {
  */
 export const updateOffer = async (id: string, offer: Offer) => {
   logger.debug(`${serviceName}: Updating offer with id: ${id} with ${offer}`);
-  return await offerModel.findByIdAndUpdate(id, offer, {
+  return offerModel.findByIdAndUpdate(id, offer, {
     new: true,
     runValidators: true,
   });
@@ -55,7 +57,7 @@ export const updateOffer = async (id: string, offer: Offer) => {
  */
 export const delOffer = async (id: string) => {
   logger.debug(`${serviceName}: Deleting offer with id: ${id}`);
-  return await offerModel.findByIdAndDelete(id);
+  return offerModel.findByIdAndDelete(id);
 };
 
 /**

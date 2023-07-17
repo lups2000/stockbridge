@@ -55,27 +55,26 @@ export const offerSchema = new mongoose.Schema<Offer>({
 });
 
 // Or, in Node.js >= 7.6.0:
-offerSchema.pre('save', async function(next) {
+offerSchema.pre('save', async function (next) {
   const advert = await findAdvertById(this.advert.toString());
   if (this.quantity > advert.quantity) {
     this.status = OfferStatus.CANCELED_OUT_OF_STOCK;
   }
-  next()
+  next();
 });
 
 offerSchema.post<Offer>('save', async function (offer: Offer) {
   try {
     const advert = await findAdvertById(offer.advert.toString());
-    const offerId = new ObjectId(offer.id)
+    const offerId = new ObjectId(offer.id);
     if (!advert.offers || advert.offers.length == 0) {
-
-      advert.offers = [offerId]
+      advert.offers = [offerId];
     } else {
       if (!advert.offers?.includes(offerId)) {
         advert.offers.push(offerId);
       }
     }
-      await advertModel.findByIdAndUpdate(advert.id, advert)
+    await advertModel.findByIdAndUpdate(advert.id, advert);
   } catch (error) {
     logger.error(`Failed updating advert corresponding to offer ${this.id}`);
   }
@@ -94,6 +93,7 @@ offerSchema.post<Offer>('findOneAndUpdate', async function (offer: Offer) {
     }
   } catch (error) {
     logger.error(`Failed creating order for offer ${offer.id}`);
+    logger.error(error);
   }
 });
 

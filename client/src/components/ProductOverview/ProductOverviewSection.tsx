@@ -84,7 +84,7 @@ const ProductOverviewSection: React.FC<ProductOverviewSectionProps> = (
           onClose={closePriorizationModal}
           advertID={props.advert._id!}
         />
-         {props.advert.status !== AdvertStatus.Closed && !props.advert.prioritized &&
+         {props.advert.status !== AdvertStatus.Closed && button_text !== '' &&
         <Button
           style={{
             cursor: 'pointer',
