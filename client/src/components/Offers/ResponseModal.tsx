@@ -51,8 +51,7 @@ const ResponseModal: FC<OfferCreationModalProps> = (props) => {
   const advert = props.responseType === ResponseType.SUCCESSFUL_ADVERT_CREATION || props.responseType === ResponseType.UNSUCCESSFUL_ADVERT_CREATION || props.responseType === ResponseType.SUCCESSFUL_ADVERT_UPDATE || props.responseType === ResponseType.UNSUCCESSFUL_ADVERT_UPDATE || props.responseType === ResponseType.OUT_OF_ADVERTS;
   const outOfStock = props.responseType === ResponseType.OUT_OF_STOCK;
   const outOfAdverts = props.responseType === ResponseType.OUT_OF_ADVERTS;
-  const navigate = useNavigate();
-  console.log(props.advertID)
+  const navigate = useNavigate(); 
   return (
     <Modal
       show={props.isShowing}
