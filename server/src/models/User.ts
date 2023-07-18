@@ -54,6 +54,7 @@ const subscriptionSchema = new mongoose.Schema<Subscription>({
       'incomplete',
       'incomplete_expired',
     ],
+    required: [true, 'Please add a status'],
   },
   type: {
     type: Types.String,
@@ -62,6 +63,7 @@ const subscriptionSchema = new mongoose.Schema<Subscription>({
       'Advanced Subscription',
       'Premium Subscription',
     ],
+    required: [true, 'Please add a subscription type'],
   },
 });
 
@@ -220,7 +222,6 @@ userSchema.methods.matchPassword = async function (enteredPassword: string) {
 const userModel = mongoose.model('User', userSchema, 'users');
 export default userModel;
 
-
-userSchema.path('prioritisationTickets').validate(function(tickets) {
-  return !tickets || tickets >= 0
-})
+userSchema.path('prioritisationTickets').validate(function (tickets) {
+  return !tickets || tickets >= 0;
+});

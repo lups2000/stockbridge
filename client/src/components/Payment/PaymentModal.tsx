@@ -109,6 +109,9 @@ export default function PaymentModal(props: PaymentProps) {
       props.onHide();
       setIsLoading(false);
       setMessage('');
+      if (props.onSuccess) {
+        props.onSuccess();
+      }
       toast.success('Succeeded!', {
         position: 'bottom-right',
         autoClose: 5000,

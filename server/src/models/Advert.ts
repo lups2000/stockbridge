@@ -8,8 +8,6 @@ import {
 } from '../entities/advertEntity';
 import userModel from './User';
 import { User } from '../entities/userEntity';
-import { findUserById } from '../services/userServices';
-import { getUser } from '../controllers/userController';
 
 const Types = mongoose.Schema.Types;
 
@@ -111,19 +109,19 @@ advertSchema.pre('save', async function (next) {
   next();
 });
 
-advertSchema.pre('findOneAndUpdate',  async function (next) { 
+advertSchema.pre('findOneAndUpdate', async function (next) {
   const thisAdvert = this.getUpdate() as Advert;
-  const existingAdvert = await advertModel.findById(thisAdvert.id)
+  const existingAdvert = await advertModel.findById(thisAdvert.id);
   if (!existingAdvert?.prioritized && thisAdvert.prioritized) {
     const concernedUser = await userModel.findById(existingAdvert?.store);
     if (concernedUser) {
-      concernedUser.prioritisationTickets = concernedUser.prioritisationTickets - 1
-      concernedUser.save()
+      concernedUser.prioritisationTickets =
+        concernedUser.prioritisationTickets - 1;
+      concernedUser.save();
     }
   }
   next();
 });
-
 
 advertSchema.index({
   productname: 'text',

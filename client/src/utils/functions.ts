@@ -145,7 +145,7 @@ export function checkExpirationDateAvert(date: string) {
             case AdvertSortCriteria.Quantity:
               return (a.quantity ?? 0) - (b.quantity ?? 0);
             case ExtraCriteria.STATUS:
-              return (a.status as string ?? "").localeCompare(b.status as string ?? "");
+              return (a.status > b.status ? 1 : a.status < b.status ? -1 : 0);
             case ExtraCriteria.STORE:
               return (a.advert?.store?.toLocaleLowerCase() ?? "").localeCompare(b.advert?.store?.toLocaleLowerCase() ?? "");
             default:
@@ -178,7 +178,7 @@ export function checkExpirationDateAvert(date: string) {
             case AdvertSortCriteria.Quantity:
               return (a.quantity ?? 0) - (b.quantity ?? 0);
             case ExtraCriteria.STATUS:
-              return (a.status ?? "").localeCompare(b.status ?? "");
+              return (a.status > b.status ? 1 : a.status < b.status ? -1 : 0);
             case ExtraCriteria.STORE:
               return (a.offer?.advert?.store ?? "").localeCompare(b.offer?.advert?.store ?? "");
             default:
