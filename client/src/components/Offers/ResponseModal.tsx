@@ -120,7 +120,7 @@ const ResponseModal: FC<OfferCreationModalProps> = (props) => {
               The product has run out of stock!
             </BodyText>}
             {outOfAdverts && <BodyText>
-              You have used up all of your adverts!
+              You have reached the limit number of adverts for this week!
             </BodyText>}
             {
               !advert && <BodyText

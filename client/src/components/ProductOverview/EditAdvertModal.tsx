@@ -126,13 +126,11 @@ export const EditAdvertModal: FC<EditAdvertContentProps> = (props) => {
   };
 
   const navigate = useNavigate();
-
   const handleSubmit = async () => {
     if (!loggedIn) {
       navigate('/signIn');
     }
     if (isValid()) {
-      console.log(props.advert?._id)
       try {
         if (props.advert?._id) {
           await updateAdvert(props.advert._id, {
@@ -183,7 +181,12 @@ export const EditAdvertModal: FC<EditAdvertContentProps> = (props) => {
               setShowResponseModal(true);
             }
           }).catch((error) => {
+          if (error.response.status === 403) {
+            setResponseType(ResponseType.OUT_OF_ADVERTS);
+          }
+           else {
             setResponseType(ResponseType.UNSUCCESSFUL_ADVERT_CREATION);
+           } 
             setShowResponseModal(true);
           });
         }
