@@ -19,6 +19,7 @@ import {
 } from '../../utils/functions';
 import { BodyText } from '../Text/BodyText';
 import { useNavigate } from 'react-router-dom';
+import { ResponseModal, ResponseType } from '../Offers/ResponseModal';
 
 type EditAdvertContentProps = {
   isShowing: boolean;
@@ -68,6 +69,9 @@ export const EditAdvertModal: FC<EditAdvertContentProps> = (props) => {
     Quantity: '',
   });
 
+  const [showResponseModal, setShowResponseModal] = useState(false);
+  const [responseType, setResponseType] = useState(ResponseType.SUCCESSFUL_ADVERT_CREATION);
+
   const handleChange = (event: any) => {
     // we put type any because we are handling various events, such as HTML input, HTML select ecc
     event.preventDefault();
@@ -87,6 +91,8 @@ export const EditAdvertModal: FC<EditAdvertContentProps> = (props) => {
         : `${name} is missing`,
     });
   };
+
+  const [advertID, setAdvertID] = useState('')
 
   const handleImageClick = () => {
     if (fileInputRef.current != null) {
@@ -126,6 +132,7 @@ export const EditAdvertModal: FC<EditAdvertContentProps> = (props) => {
       navigate('/signIn');
     }
     if (isValid()) {
+      console.log(props.advert?._id)
       try {
         if (props.advert?._id) {
           await updateAdvert(props.advert._id, {
@@ -138,7 +145,18 @@ export const EditAdvertModal: FC<EditAdvertContentProps> = (props) => {
             price: formData.Price,
             category: formData.category,
             imageurl: encodedImage,
-          } as Advert);
+          } as Advert).then(updatedAdvert => {
+            if (updatedAdvert) {
+              setResponseType(ResponseType.SUCCESSFUL_ADVERT_UPDATE);
+              setShowResponseModal(true);
+            } else {
+              setResponseType(ResponseType.UNSUCCESSFUL_ADVERT_UPDATE);
+              setShowResponseModal(true);
+            }
+          }).catch((error) => {
+            setResponseType(ResponseType.UNSUCCESSFUL_ADVERT_UPDATE);
+            setShowResponseModal(true);
+          });
         } else {
           await createAdvert({
             productname: formData.productname,
@@ -155,12 +173,22 @@ export const EditAdvertModal: FC<EditAdvertContentProps> = (props) => {
             store: user?._id,
             imageurl: encodedImage,
             type: advertType,
+          }).then(createdAdvert => {
+            if (createdAdvert) {
+              setAdvertID(createdAdvert._id!)
+              setResponseType(ResponseType.SUCCESSFUL_ADVERT_CREATION);
+              setShowResponseModal(true);
+            } else {
+              setResponseType(ResponseType.UNSUCCESSFUL_ADVERT_CREATION);
+              setShowResponseModal(true);
+            }
+          }).catch((error) => {
+            setResponseType(ResponseType.UNSUCCESSFUL_ADVERT_CREATION);
+            setShowResponseModal(true);
           });
         }
       } catch (error) {
         console.error(error);
-      } finally {
-        if (props.onClose) props?.onClose();
       }
     } else {
       setErrors({
@@ -181,6 +209,15 @@ export const EditAdvertModal: FC<EditAdvertContentProps> = (props) => {
   };
 
   return (
+      showResponseModal ? <ResponseModal responseType={responseType} isShowing={showResponseModal} advertID={props.advert ? props.advert._id! : advertID} onClose={function (responseType: ResponseType): void {
+      if (responseType === ResponseType.SUCCESSFUL_ADVERT_CREATION) {
+        props.onClose()
+        window.location.reload()
+      } else {
+        props.onClose()
+      } 
+    } }/>:
+    
     <Modal size="lg" show={props.isShowing} onHide={props.onClose}>
       <Modal.Header closeButton>
         <Modal.Title>Advert Details</Modal.Title>

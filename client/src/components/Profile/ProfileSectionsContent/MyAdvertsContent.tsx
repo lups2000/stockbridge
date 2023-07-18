@@ -13,10 +13,10 @@ import { LoginContext } from '../../../contexts/LoginContext';
 function sortClosed(adverts: (Advert|PopulatedAdvert)[]) {
   return adverts.sort((a,b) => {
     if (a.status === AdvertStatus.Closed && b.status !== AdvertStatus.Closed) {
-      return 1
+      return -1
     } else {
       if (b.status === AdvertStatus.Closed && a.status !== AdvertStatus.Closed) {
-        return 0
+        return 1
       } else {
         return 0
       }
@@ -40,19 +40,21 @@ const MyAdvertsContent: React.FC = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const fetchedAdverts = await getAdvertsByUser(user?._id);
-        let sellingAds = fetchedAdverts.filter((x) => x.type === 'Sell');
-        sellingAds = sortClosed(sellingAds) as Advert[];
-        setSellingAdverts(sellingAds as PopulatedAdvert[]);
-        let buyingAds = fetchedAdverts.filter((x) => x.type === 'Ask');
-        buyingAds = sortClosed(buyingAds) as Advert[];
-        setBuyingAdverts(buyingAds as PopulatedAdvert[]);
+        if (user) {
+          const fetchedAdverts = await getAdvertsByUser(user?._id);
+          let sellingAds = fetchedAdverts.filter((x) => x.type === 'Sell');
+          sellingAds = sortClosed(sellingAds) as Advert[];
+          setSellingAdverts(sellingAds as PopulatedAdvert[]);
+          let buyingAds = fetchedAdverts.filter((x) => x.type === 'Ask');
+          buyingAds = sortClosed(buyingAds) as Advert[];
+          setBuyingAdverts(buyingAds as PopulatedAdvert[]);
+        }
       } catch (error) {
         console.error(error);
       }
     };
     fetchData();
-  }, [user?._id]);
+  }, [user]);
 
 
 

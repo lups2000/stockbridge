@@ -14,7 +14,6 @@ import { Ratings } from '../Ratings';
 import { ResponseModal, ResponseType } from './ResponseModal';
 import { FadeLoader } from 'react-spinners';
 import { palette } from '../../utils/colors';
-import { Checkbox } from '@mui/material';
 type OfferContentProps = {
   isShowing: boolean;
   onClose: () => void;
@@ -233,7 +232,6 @@ const OfferModal: FC<OfferContentProps> = (props) => {
               ? ResponseType.UNSUCCESSFUL_OFFER_CREATION
               : ResponseType.SUCCESSFUL_OFFER_CREATION
           }
-          offer={formData}
           onClose={closeModal}
         />
       ) : showAcceptanceModal ? (
@@ -244,7 +242,6 @@ const OfferModal: FC<OfferContentProps> = (props) => {
               ? ResponseType.UNSUCCESSFUL_OFFER_ACCEPTANCE
               : ResponseType.SUCCESSFUL_OFFER_ACCEPTANCE
           }
-          offer={props.offer as Offer}
           onClose={closeModal}
         />
       ) : showRejectionModal ? (
@@ -255,7 +252,6 @@ const OfferModal: FC<OfferContentProps> = (props) => {
               ? ResponseType.UNSUCCESSFUL_OFFER_REJECTION
               : ResponseType.SUCCESSFUL_OFFER_REJECTION
           }
-          offer={props.offer as Offer}
           onClose={closeModal}
         />
       ) : showOutOfStockModal ? (
@@ -266,7 +262,6 @@ const OfferModal: FC<OfferContentProps> = (props) => {
               ? ResponseType.OUT_OF_STOCK
               : ResponseType.SUCCESSFUL_OFFER_CREATION
           }
-          offer={formData}
           onClose={closeModal}
         />
       ) : (
