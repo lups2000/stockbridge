@@ -5,6 +5,7 @@ import { BodyText } from '../Text/BodyText';
 type ProductAttributeProps = {
   name: string;
   value?: string | number | Date;
+  color?: string;
   unit?: string;
   border?: boolean;
   margin?: string;
@@ -85,8 +86,6 @@ const ProductAttribute: React.FC<ProductAttributeProps> = (props) => {
         textAlign: 'start',
         alignItems: 'center',
         justifyContent: 'center',
-
-        gap: '30px',
         color: 'black',
       }}
     >
@@ -100,9 +99,19 @@ const ProductAttribute: React.FC<ProductAttributeProps> = (props) => {
       >
         {mapAttributeName(props.name)}:
       </BodyText>
+      {props.color && <div style={{
+        backgroundColor: props.color, 
+        width: '3.5em', 
+        height: '2em',
+        borderRadius: '10px',
+        position: 'relative',
+        bottom: '0.4em',
+        marginRight: '2%'
+        
+      }}/>}
       <BodyText
         style={{
-          width: '150px',
+          width: props.color ? '4.5em' : '7.5em',
           height: border ? '40px' : '',
           borderRadius: '10px',
           border: border ? '3px solid black' : '',
@@ -113,7 +122,7 @@ const ProductAttribute: React.FC<ProductAttributeProps> = (props) => {
           fontSize: props.fontSize ? props.fontSize : '20px',
         }}
       >
-        {`${props?.value} ${unit ?? ''}`}
+        {`${props?.value ?? ''} ${unit ?? ''}`}
       </BodyText>
     </div>
   );

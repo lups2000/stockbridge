@@ -28,7 +28,7 @@ const ProductOverview = () => {
     store: '',
     reviews: [],
     imageurl: '',
-    color: Colors.Blue,
+    color: undefined,
     createdAt: new Date(),
   } as PopulatedAdvert);
   const [isLoading, setIsLoading] = useState(true);

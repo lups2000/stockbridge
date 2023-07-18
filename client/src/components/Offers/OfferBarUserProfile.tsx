@@ -94,14 +94,12 @@ const OfferBarUserProfile: React.FC<OfferBarUserProfileProps> = (props) => {
               }}
             >
               <ProductAttribute
-                name="Quantity"
+                name="quantity"
                 value={props?.offer?.quantity}
-                unit="pcs"
               />
               <ProductAttribute
-                name="Price"
+                name="price"
                 value={props?.offer?.price}
-                unit="€"
               />
             </div>
           }
