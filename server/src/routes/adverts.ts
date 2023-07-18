@@ -12,11 +12,14 @@ import {
   getCategoriesByStore,
   prioritizeAdvert,
 } from '../controllers/advertController';
-import { protect } from '../middlewares/authMiddleware';
+import { protect, setUserIfAvailable } from '../middlewares/authMiddleware';
 
 export const advertRouter = Router();
 
-advertRouter.route('/').post(protect, postAdvert).get(getAdverts);
+advertRouter
+  .route('/')
+  .post(protect, postAdvert)
+  .get(setUserIfAvailable, getAdverts);
 advertRouter.route('/getAdvertsByCategory/:cat').get(getAllAdvertsByCategory);
 advertRouter.route('/getPopularCategories').get(getPopularCategories);
 advertRouter.route('/getPopularAdverts').get(getPopularAdverts);
@@ -36,6 +39,4 @@ advertRouter
   .get(protect, getCategoriesByStore);
 
 
-advertRouter
-  .route('/prioritizeAdvert/:advert')
-  .get(protect, prioritizeAdvert);
+advertRouter.route('/prioritizeAdvert/:advert').get(protect, prioritizeAdvert);

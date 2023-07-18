@@ -5,6 +5,7 @@ import userModel from '../models/User';
 import { AppError } from '../utils/errorHandler';
 import environment from '../utils/environment';
 import { User } from '../entities/userEntity';
+import logger from '../config/logger';
 
 export interface AuthenticatedRequest extends Request {
   user?: User | null; // Replace 'any' with the appropriate type for the user object
@@ -46,5 +47,25 @@ export const protect = asyncHandler(
         401,
       );
     }
+  },
+);
+
+export const setUserIfAvailable = asyncHandler(
+  async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
+    if (req.cookies && req.cookies.jwtToken) {
+      let jwtToken = req.cookies.jwtToken;
+      try {
+        // Verify token
+        const decoded: JwtPayload = jwt.verify(
+          jwtToken,
+          environment.JWT_SECRET,
+        ) as JwtPayload;
+
+        req.user = await userModel.findById(decoded.id);
+      } catch (err) {
+        logger.info('No user found');
+      }
+    }
+    next();
   },
 );

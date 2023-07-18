@@ -85,8 +85,8 @@ export const getAdverts = asyncHandler(
       limit,
       search,
       sortBy,
-      radius === 0 ? undefined : radius,
-      radius === 0 ? undefined : req.user?.location?.coordinates,
+      radius === 0 || !req.user ? undefined : radius,
+      radius === 0 || !req.user ? undefined : req.user?.location?.coordinates,
       queryStr,
     );
 
