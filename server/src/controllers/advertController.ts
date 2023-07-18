@@ -20,6 +20,7 @@ import {
 import { ObjectId } from 'mongodb';
 import { AppError } from '../utils/errorHandler';
 import { User } from '../entities/userEntity';
+import advertModel from '../models/Advert';
 
 /**
  * This method returns an advert by id   *
@@ -163,10 +164,11 @@ export const getCategoriesByStore = asyncHandler(
 export const prioritizeAdvert = asyncHandler(
   async (req: AuthenticatedRequest, res: Response) => {
     const { advert } = req.params;
-    const fetchedAdvert = await findAdvertById(advert, false);
-    fetchedAdvert.prioritized = true;
-    const updatedAdvert = await updateAdvert(advert, fetchedAdvert);
-    res.status(200).json(updatedAdvert);
+    const fetchedAdvert = await advertModel.findOneAndUpdate({_id: advert}, {
+      id: advert,
+      prioritized: true
+    });
+    res.status(200).json(fetchedAdvert);
   },
 );
 /**
