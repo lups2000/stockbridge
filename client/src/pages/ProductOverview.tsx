@@ -51,7 +51,7 @@ const ProductOverview = () => {
       }
     };
     fetchData();
-  }, [id]);
+  }, [id, navigate]);
 
   const { user } = useContext(LoginContext);
   const owner = advert.store?._id === user?._id;

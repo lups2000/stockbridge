@@ -1,8 +1,5 @@
 import { ObjectId } from 'mongodb';
-import { Types } from 'mongoose';
-import { Offer } from './offerEntity';
-import { Review } from './reviewEntity';
-import { User, Location } from './userEntity';
+import { Location } from './userEntity';
 
 export enum AdvertType {
   Sell,
@@ -21,6 +18,28 @@ export enum Colors {
   Green = 'Green',
 }
 
+export enum Sizes {
+  XS = 'XS',
+  S = 'S',
+  M = 'M',
+  L = 'L',
+  XL = 'XL'
+}
+
+export enum Options {
+  YES = 'Yes',
+  NO = 'No',
+  UNKNOWN = 'Unknown' 
+}
+
+export enum EnergyClass {
+  A =  'A',
+  B = 'B',
+  C = 'C',
+  D = 'D',
+  E = 'E',
+  F = 'F'
+}
 export enum ProductCategory {
   Apparel_And_Accessories = 'Apparel And Accessories',
   Electronics_And_Gadgets = 'Electronics And Gadgets',
@@ -50,7 +69,8 @@ export interface Advert {
   description: string;
   imageurl?: string;
   prioritized: boolean;
-  color: string;
+  color?: string;
+  size?: string;
   expirationDate: Date;
   purchaseDate: Date;
   quantity: number;
@@ -63,4 +83,16 @@ export interface Advert {
   reviews?: ObjectId[];
   store: ObjectId;
   location: Location;
+  fabric?: string;
+  sustainable?: string;
+  energyClass?: string;
+  crueltyFree?: string;
+  recyclable?: string;
+  width?: number;
+  height?: number;
+  length?: number;
+  weight?: number;
+  pages?: number;
+  volume?: number;
+  material?: string;
 }

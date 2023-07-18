@@ -4,6 +4,10 @@ import { ProductAttribute } from './ProductAttribute';
 import { Image } from 'react-bootstrap';
 import imagePlaceholder from '../../assets/product-placeholder.png';
 import { palette } from '../../utils/colors';
+import { categoryToAttributes, groupList } from './EditAdvertModal';
+import _ from 'lodash';
+
+
 
 const ProductDetails = (advert: PopulatedAdvert) => {
   return (
@@ -51,7 +55,7 @@ const ProductDetails = (advert: PopulatedAdvert) => {
               fontWeight: 600,
             }}
           >
-            {advert.productname ?? 'Fake Product Name'}
+            {advert.productname ?? ''}
           </BodyText>
           {advert.prioritized && (
             <BodyText
@@ -85,25 +89,31 @@ const ProductDetails = (advert: PopulatedAdvert) => {
         >
           {advert?.description ? advert.description : ''}
         </BodyText>
-        {advert?.color && (
-          <ProductAttribute
-            margin=""
-            name="Color"
-            value={advert?.color}
-          ></ProductAttribute>
-        )}
-        {advert?.purchaseDate && (
-          <ProductAttribute
-            name="Purchased On"
-            value={advert.purchaseDate.toString().substring(0, 10)}
-          ></ProductAttribute>
-        )}
-        {advert?.expirationDate && (
-          <ProductAttribute
-            name="Expires On"
-            value={`${advert.expirationDate.toString().substring(0, 10)}`}
-          ></ProductAttribute>
-        )}
+        {
+          groupList(categoryToAttributes(advert.category!) ?? [], 2).map((g) =>  { 
+            return (<div
+            style={{
+              display: 'flex',
+              flexDirection: 'row',
+              gap: '20%',
+              alignItems: 'start',
+              justifyContent: 'start',
+              marginTop: '5%',
+              width: 'auto',
+            }}
+          > {
+            g.map((attribute) => {
+            const value = (advert as any)[attribute]
+            return (
+              attribute in advert && value &&  <ProductAttribute
+              name={attribute}
+              value={['purchaseDate', 'expirationDate', 'createdAt'].includes(attribute) ? value.toString().substring(0, 10) : value}
+            ></ProductAttribute>
+            )
+            
+          })
+        }
+        </div>)})}
         <div
           style={{
             display: 'flex',
@@ -116,16 +126,12 @@ const ProductDetails = (advert: PopulatedAdvert) => {
           }}
         >
           <ProductAttribute
-            name="Quantity"
+            name="quantity"
             value={advert?.quantity}
-            unit="pcs"
-            border={true}
           ></ProductAttribute>
           <ProductAttribute
-            name="Price"
+            name="price"
             value={advert?.price}
-            unit="€"
-            border={true}
           ></ProductAttribute>
         </div>
       </div>
