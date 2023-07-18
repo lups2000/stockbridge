@@ -247,6 +247,11 @@ async function _checkAuthorizedUser(userId: ObjectId, advertId: string) {
  * @returns the filtered list.
  */
 function _findAndCheckRelatedOffers(userId: ObjectId, offers: Offer[]): any {
+  if(offers.length == 0)
+  {
+    return offers;
+  }
+  
   let relatedOffers = offers.filter(
     (x) =>
       (x.offeror && x.offeror.equals(userId)) ||

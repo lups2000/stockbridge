@@ -104,7 +104,7 @@ const advertSchema = new mongoose.Schema<Advert>({
 });
 
 advertSchema.pre('save', async function (next) {
-  const store = await userModel.findById(this.store.id);
+  const store = await userModel.findById(this.store);
   if (store) {
     this.location = store.location;
   }

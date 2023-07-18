@@ -191,6 +191,11 @@ async function _checkUserCanEditOrDeleteOrder(req: AuthenticatedRequest) {
  * @returns the filtered list.
  */
 function _findAndCheckRelatedOrders(userId: string, orders: Order[]): any {
+  if (orders.length == 0 )
+  {
+    return orders;
+  }
+  
   let relatedOrders = orders.filter(
     (x) =>
       (x.offer.offeror && x.offer.offeror.equals(userId)) ||
