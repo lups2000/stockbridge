@@ -138,6 +138,8 @@ export const findAllAdverts = async (
   logger.debug(`${serviceName}: Page: ${page}`);
   logger.debug(`${serviceName}: Limit: ${limit}`);
   logger.debug(`${serviceName}: Search: ${search}`);
+  logger.debug(`${serviceName}: Radius: ${radius}`);
+  logger.debug(`${serviceName}: Center: ${center}`);
 
   let queryFilter = queryStr ? JSON.parse(queryStr) : {};
 
