@@ -4,15 +4,25 @@ import {
   AdvertType,
   Advert,
   ProductCategory,
-  Colors,
   Sizes,
   Options,
   EnergyClass,
+  Color,
 } from '../entities/advertEntity';
 import userModel from './User';
 
 const Types = mongoose.Schema.Types;
 
+const ColorSchema = new mongoose.Schema<Color>({
+  name: {
+    type: Types.String,
+    required: [false, 'please add the color name']
+  }, 
+  hex: {
+    type: Types.String,
+    required: [false]
+  }
+})
 const advertSchema = new mongoose.Schema<Advert>({
   productname: {
     type: Types.String,
@@ -51,11 +61,7 @@ const advertSchema = new mongoose.Schema<Advert>({
     required: [true, 'Please add a creation date'],
     default: Date.now,
   },
-  color: {
-    type: Types.String,
-    enum: Object.values(Colors),
-    required: [false, 'You could enter a color for the product'],
-  },
+  color: ColorSchema,
   energyClass: {
     type: Types.String,
     enum: Object.values(EnergyClass),

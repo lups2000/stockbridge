@@ -363,7 +363,7 @@ const OfferModal: FC<OfferContentProps> = (props) => {
                       marginTop: '10px',
                     }}
                   >
-                    <Form.Label>Color: {props.advert?.color}</Form.Label>
+                    <Form.Label>Color: {props.advert?.color.name}</Form.Label>
                   </Row>
                 )}
                 {props.advert?.purchaseDate && (

@@ -5,7 +5,6 @@ import { Image } from 'react-bootstrap';
 import imagePlaceholder from '../../assets/product-placeholder.png';
 import { palette } from '../../utils/colors';
 import { categoryToAttributes, groupList } from './EditAdvertModal';
-import _ from 'lodash';
 
 
 
@@ -107,7 +106,8 @@ const ProductDetails = (advert: PopulatedAdvert) => {
             return (
               attribute in advert && value &&  <ProductAttribute
               name={attribute}
-              value={['purchaseDate', 'expirationDate', 'createdAt'].includes(attribute) ? value.toString().substring(0, 10) : value}
+              value={['purchaseDate', 'expirationDate', 'createdAt'].includes(attribute) ? value.toString().substring(0, 10) : attribute === 'color' ? value.name :value}
+              color={value.hex}
             ></ProductAttribute>
             )
             

@@ -5,12 +5,12 @@ import {
   updateAdvert,
   createAdvert,
   ProductCategory,
-  Colors,
   PopulatedAdvert,
   Sizes,
   Options,
   EnergyClass,
 } from '../../api/collections/advert';
+import { ChromePicker } from 'react-color';
 import { palette } from '../../utils/colors';
 import defaultPostAdvertImage from '../../assets/advertPostAdvert.svg';
 import trashIcon from '../../assets/trash-bin.svg';
@@ -22,6 +22,8 @@ import {
 } from '../../utils/functions';
 import { BodyText } from '../Text/BodyText';
 import { useNavigate } from 'react-router-dom';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import colorPicker  from '../../assets/colour-picker.svg'
 import { FormAttribute } from './FormAttribute';
 import { ResponseModal, ResponseType } from '../Offers/ResponseModal';
 
@@ -83,6 +85,31 @@ export function categoryToAttributes(category: string) {
 }
 
 
+function mapColorName(hex: string): string | undefined {
+  switch(hex.toUpperCase()) {
+    case '#0000FF': 
+    return 'Blue';
+    case '#FF0000':
+      return 'Red';
+    case '#008000':
+      return 'Green';
+    case '#000000':
+      return 'Black';
+    case '#FFFFFF':
+      return 'White'  
+    case '#FFC0CB':
+      return 'Pink';
+    case '#FFFF00':
+      return 'Yellow';
+    case '#FFA500':
+      return 'Orange';
+    case '#A020F0': 
+    return 'Purple';
+    default: 
+    return undefined;
+  }
+
+}
 export const EditAdvertModal: FC<EditAdvertContentProps> = (props) => {
   const { user, loggedIn } = useContext(LoginContext);
 
@@ -93,13 +120,22 @@ export const EditAdvertModal: FC<EditAdvertContentProps> = (props) => {
   const [encodedImage, setEncodedImage] = useState(
     props.advert?.imageurl ?? '',
   );
-
+  const colorPickerRef = useRef<HTMLDivElement>(null);
   const [advertType, setAdvertType] = useState(
     props.advert?.type ? props.advert?.type : 'Sell',
   );
 
   const handleType = (event: any) => {
     setAdvertType(event.target.value);
+  };
+
+  
+
+
+  const handleClickOutside = (event: MouseEvent) => {
+    if (colorPickerRef.current && !colorPickerRef.current.contains(event.target as Node)) {
+      setShowPicker(false);
+    }
   };
   const [attributeList, setAttributeList] = useState<string[]>();
   useEffect(() => {
@@ -143,6 +179,7 @@ export const EditAdvertModal: FC<EditAdvertContentProps> = (props) => {
     Quantity: '',
   });
 
+  
   function attributes(name: string, formData: any) {
   switch (name) {
     case 'purchaseDate': 
@@ -161,13 +198,43 @@ export const EditAdvertModal: FC<EditAdvertContentProps> = (props) => {
     }
   }/>
   case 'color': 
-  return <FormAttribute name={name} control={false} label='Product Color' placeholder="Color" value={formData.color} defaultOption=" -- Select Color -- " options={Object.values(Colors)
-    .filter((key) => isNaN(Number(key)))
-    .map((c, index) => (
-      <option key={index}>{c}</option>
-    ))} onChange={
-    handleChange
-  }/>
+  return  <Col>
+  <Form.Group>
+    <Form.Label
+      style={{
+        paddingLeft: 10,
+        fontWeight: '600',
+      }}
+    >
+      Product Color
+    </Form.Label>
+    {
+      showPicker && 
+      <div ref={colorPickerRef} style={{ position: 'absolute', top: '1em', right: '3em' }}>
+    <ChromePicker
+      color={formData.color?.hex}
+      onChange={ (color: any) => handleColorChange(color) }
+    />
+</div>
+    }
+    <Form.Group style={{ position: 'relative' }}>
+    <Form.Control style={{
+      padding: 10,
+      color: palette.gray,
+      margin: 5,
+    }}  type="text" 
+    name="color" 
+    placeholder="Enter Color or Select" onChange={(e) => {
+        handleColorChange({'name': e.currentTarget.value });
+    }} value={formData.color?.name ?? formData.color?.hex}></Form.Control>
+    <div className="input-group-append">
+      <Button style={{ position: 'absolute', top: '0.33em', right: '-1em', background: 'transparent', borderColor: 'transparent', width: '15%'}} onClick={handlePipetteClick}>
+        <Image src={colorPicker}/>
+      </Button>
+    </div>
+    </Form.Group>
+  </Form.Group>
+</Col>
   case 'size':
     return <FormAttribute name={name} control={false} label='Size' placeholder="Size" value={formData.size} defaultOption=" -- Select Size -- " options={Object.values(Sizes)
       .filter((key) => isNaN(Number(key)))
@@ -302,7 +369,7 @@ export const EditAdvertModal: FC<EditAdvertContentProps> = (props) => {
           await updateAdvert(props.advert._id, {
             productname: formData.productname,
             description: formData.description,
-            color: formData.color ? formData.color : undefined,
+            color: formData.color ?? undefined,
             expirationDate: new Date(formData.expirationDate ?? ''),
             purchaseDate: new Date(formData.purchaseDate ?? ''),
             quantity: formData.Quantity,
@@ -335,11 +402,12 @@ export const EditAdvertModal: FC<EditAdvertContentProps> = (props) => {
             setShowResponseModal(true);
           });
         } else {
+          
           await createAdvert({
             productname: formData.productname,
             description: formData.description,
             prioritized: false,
-            color: formData.color ? formData.color : undefined,
+            color: formData.color ?? undefined,
             expirationDate: new Date(formData.expirationDate ?? ''),
             purchaseDate: new Date(formData.purchaseDate ?? ''),
             quantity: formData.Quantity,
@@ -402,6 +470,32 @@ export const EditAdvertModal: FC<EditAdvertContentProps> = (props) => {
       });
     }
   };
+  const [showPicker, setShowPicker ] = useState(false);
+  useEffect(() => {
+    if (showPicker) {
+      document.addEventListener('mousedown', handleClickOutside);
+    } else {
+      document.removeEventListener('mousedown', handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [showPicker]);
+  const handleColorChange = (selectedColor: any) => {
+    setFormData({
+      ...formData, 
+      color: {
+        name: selectedColor.name ?? mapColorName(selectedColor.hex),
+        hex: selectedColor.hex
+      }
+    })
+  };
+
+  const handlePipetteClick = () => {
+    setShowPicker(!showPicker)
+  }
+
   return (
       showResponseModal ? <ResponseModal responseType={responseType} isShowing={showResponseModal} advertID={props.advert ? props.advert._id! : advertID} onClose={function (responseType: ResponseType): void {
       if (responseType === ResponseType.SUCCESSFUL_ADVERT_CREATION) {
@@ -653,7 +747,7 @@ export const EditAdvertModal: FC<EditAdvertContentProps> = (props) => {
                   type="number"
                   name="Price"
                   min={1}
-                  value={formData.Price ?? ''}
+                  value={Number(formData.Price ?? '')}
                   onChange={handleChange}
                   required
                   isInvalid={!!errors.Price}

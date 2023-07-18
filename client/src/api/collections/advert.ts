@@ -88,7 +88,10 @@ interface Pagination {
     limit: number;
   };
 }
-
+export interface Color {
+  name?: string;
+  hex?: string;
+}
 export interface Advert {
   _id?: string;
   productname?: string;
@@ -105,7 +108,7 @@ export interface Advert {
   store?: string;
   reviews?: string[];
   imageurl?: string;
-  color?: string;
+  color?: Color ;
   createdAt?: Date;
   size?: string;
   fabric?: string;
@@ -138,7 +141,7 @@ export interface PopulatedAdvert {
   store?: User;
   reviews?: Review[];
   imageurl?: string;
-  color?: string;
+  color?: Color;
   size?: string;
   createdAt?: Date;
   fabric?: string;
