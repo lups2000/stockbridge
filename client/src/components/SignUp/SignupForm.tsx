@@ -15,7 +15,6 @@ import addIcon from '../../assets/add.svg';
 import backIcon from '../../assets/back.svg';
 import {
   checkEmail,
-  expDatePaymentToDate,
   checkPasswordLength,
   checkPasswordMatch,
 } from '../../utils/functions';
@@ -58,14 +57,15 @@ export const SignupForm: FC = () => {
   const [country, setCountry] = useState<string>();
 
   //payment info
-  const [cardName, setCardName] = useState<string>();
-  const [cardNumber, setCardNumber] = useState<string>();
-  const [expDateCard, setExpDateCard] = useState<string>();
-  const [cvvCard, setCvvCard] = useState<string>();
+  // const [cardName, setCardName] = useState<string>();
+  // const [cardNumber, setCardNumber] = useState<string>();
+  // const [expDateCard, setExpDateCard] = useState<string>();
+  // const [cvvCard, setCvvCard] = useState<string>();
 
   const [error, setError] = useState<ErrorType | undefined>(undefined);
 
   const [isModalShowing, setIsModalShowing] = useState(false);
+  const [isPaymentSetupCompleted, setIsPaymentSetupCompleted] = useState(false);
 
   const { user, setUser, setLoggedIn } = useContext(LoginContext);
 
@@ -125,12 +125,12 @@ export const SignupForm: FC = () => {
           postalCode,
           country,
         },
-        paymentMethod: {
-          name: cardName,
-          cardNumber,
-          expirationDate: expDatePaymentToDate(expDateCard ?? ''),
-          cvv: cvvCard,
-        },
+        // paymentMethod: {
+        //   name: cardName,
+        //   cardNumber,
+        //   expirationDate: expDatePaymentToDate(expDateCard ?? ''),
+        //   cvv: cvvCard,
+        // },
         registrationCompleted: true,
       })
         .then((response) => {
@@ -360,15 +360,23 @@ export const SignupForm: FC = () => {
             >
               <img src={addIcon} alt="addIcon" />
               <BodyText style={{ fontSize: 15, marginTop: 15, marginLeft: 8 }}>
-                Add a payment method
+                {isPaymentSetupCompleted
+                  ? 'Edit payment method'
+                  : 'Add payment method'}
               </BodyText>
             </div>
             {error ? (
               <BodyText style={{ color: 'red' }}>{error}</BodyText>
             ) : undefined}
+            {!isPaymentSetupCompleted ? (
+              <BodyText style={{ color: 'red' }}>
+                Please add a valid payment method
+              </BodyText>
+            ) : undefined}
             <div className="d-grid font-link" style={{ marginTop: 15 }}>
               <Button
                 type="submit"
+                disabled={!isPaymentSetupCompleted}
                 style={{
                   color: 'white',
                   backgroundColor: palette.subSectionsBgAccent,
@@ -411,6 +419,7 @@ export const SignupForm: FC = () => {
           show={isModalShowing}
           onHide={() => setIsModalShowing(false)}
           type={PaymentType.SETUP_INTENT}
+          onSuccess={() => setIsPaymentSetupCompleted(true)}
         />
       ) : undefined}
     </div>

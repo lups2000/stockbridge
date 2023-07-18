@@ -30,6 +30,7 @@ export interface PaymentProps {
   onHide: () => void;
   product?: string;
   type: PaymentType;
+  onSuccess?: () => void;
 }
 
 const PaymentElement = (props: PaymentProps) => {
@@ -80,6 +81,7 @@ const PaymentElement = (props: PaymentProps) => {
             show={props.show}
             onHide={props.onHide}
             type={props.type}
+            onSuccess={props.onSuccess}
           />
         </Elements>
       ) : (
