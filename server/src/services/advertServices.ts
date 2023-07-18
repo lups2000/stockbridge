@@ -78,7 +78,7 @@ export const createAdvert = async (advert: Advert, user: User) => {
     throw new AppError(
       `Advert limit reached`,
       `Advert limit reachedAdvert limit of ${advertLimit} reached`,
-      400,
+      403,
     );
   }
 

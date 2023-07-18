@@ -14,6 +14,7 @@ import { Ratings } from '../Ratings';
 import { ResponseModal, ResponseType } from './ResponseModal';
 import { FadeLoader } from 'react-spinners';
 import { palette } from '../../utils/colors';
+import _ from 'lodash';
 type OfferContentProps = {
   isShowing: boolean;
   onClose: () => void;
@@ -60,11 +61,11 @@ const OfferModal: FC<OfferContentProps> = (props) => {
 
   const [errors, setErrors] = useState(
     {} as {
-      price: string;
-      quantity: string;
+      price: string | undefined;
+      quantity: string | undefined;
     },
   );
-  const isValid = () => {
+  const isValid = () => { 
     return (
       formData.price &&
       formData.price >= 0 &&
@@ -84,7 +85,6 @@ const OfferModal: FC<OfferContentProps> = (props) => {
   const [showOutOfStockModal, setShowOutOfStockModal] = useState(false);
   const [isConsentChecked, setIsConsentChecked] = useState(false);
   const closeModal = (responseType: ResponseType) => {
-    console.log(responseType);
     if (responseType === ResponseType.SUCCESSFUL_OFFER_ACCEPTANCE) {
       setShowAcceptanceModal(false);
       window.location.reload();
@@ -121,8 +121,8 @@ const OfferModal: FC<OfferContentProps> = (props) => {
   };
 
   const handleSubmit = async () => {
-    setIsLoading(true);
     if (isValid()) {
+      setIsLoading(true)
       await createOffer({
         quantity: formData.quantity,
         price: formData.price,
@@ -133,10 +133,10 @@ const OfferModal: FC<OfferContentProps> = (props) => {
         advert: props.advert?._id,
       } as Offer)
         .then((newOffer) => {
+          props.onClose()
           if (newOffer) {
             setIsLoading(false);
             setShowCreationModal(true);
-            setFormData(newOffer);
             if (newOffer.status === OfferStatus.CANCELED_OUT_OF_STOCK) {
               setOutOfStockError(true);
               setShowOutOfStockModal(true);
@@ -154,22 +154,21 @@ const OfferModal: FC<OfferContentProps> = (props) => {
         })
         .catch((error) => {
           setCreationError(true);
+          setShowCreationModal(true);
         });
     } else {
       setErrors({
         price: formData.price
           ? formData.price > 0
-            ? ''
+            ? undefined
             : 'Price must be greater than 0'
           : 'Price is missing',
         quantity: formData.quantity
           ? formData.quantity > 0
-            ? (
-                props.advert?.type === 'Sell'
-                  ? formData.quantity <= props.advert?.quantity!
-                  : formData.quantity >= props.advert?.quantity!
+            ? (                
+                  formData.quantity <= props.advert?.quantity!
               )
-              ? ''
+              ? undefined
               : 'Quantity must be less or equal to available Quantity'
             : 'Quantity must be greater than 0'
           : 'Quantity is missing',
@@ -232,7 +231,6 @@ const OfferModal: FC<OfferContentProps> = (props) => {
               ? ResponseType.UNSUCCESSFUL_OFFER_CREATION
               : ResponseType.SUCCESSFUL_OFFER_CREATION
           }
-          offer={formData}
           onClose={closeModal}
         />
       ) : showAcceptanceModal ? (
@@ -243,7 +241,6 @@ const OfferModal: FC<OfferContentProps> = (props) => {
               ? ResponseType.UNSUCCESSFUL_OFFER_ACCEPTANCE
               : ResponseType.SUCCESSFUL_OFFER_ACCEPTANCE
           }
-          offer={props.offer as Offer}
           onClose={closeModal}
         />
       ) : showRejectionModal ? (
@@ -254,7 +251,6 @@ const OfferModal: FC<OfferContentProps> = (props) => {
               ? ResponseType.UNSUCCESSFUL_OFFER_REJECTION
               : ResponseType.SUCCESSFUL_OFFER_REJECTION
           }
-          offer={props.offer as Offer}
           onClose={closeModal}
         />
       ) : showOutOfStockModal ? (
@@ -265,7 +261,6 @@ const OfferModal: FC<OfferContentProps> = (props) => {
               ? ResponseType.OUT_OF_STOCK
               : ResponseType.SUCCESSFUL_OFFER_CREATION
           }
-          offer={formData}
           onClose={closeModal}
         />
       ) : (
@@ -507,7 +502,7 @@ const OfferModal: FC<OfferContentProps> = (props) => {
                           value={formData.quantity}
                           onChange={handleChange}
                           required
-                          isInvalid={!!errors.quantity}
+                          isInvalid={!_.isNil(errors.quantity)}
                         />
                         <Form.Control.Feedback type="invalid">
                           {errors.quantity}
