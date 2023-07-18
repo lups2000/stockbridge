@@ -18,15 +18,17 @@ type OrderBarUserProfileInfoProps = {
 };
 
 const OrderBarUserProfileInfo: React.FC<OrderBarUserProfileInfoProps> = (props) => {
-  const getOfferIcon = function() : [string,string]
+  const getOfferIcon = function() : [string,string, string]
   {
     switch (props.order.status) {
       case OrderStatus.RECEIVED:
-        return ["bi-check-circle", "#4ECBA9"]
+        return ["bi-check-circle", "#4ECBA9", "Received"]
       case OrderStatus.PAYMENT_PENDING:
-        return ["bi-credit-card", "#4285F4"];
+        return ["bi-credit-card", "#4285F4", "Payment pending"];
+      case OrderStatus.SHIPMENT_PENDING:
+        return ["bi-bi-truck", "#4285F4", "Shipment pending"];
       default:
-        return ["bi-credit-card", "#4285F4"]
+        return ["bi-credit-card", "#4285F4", "Payment pending"]
     }
   }
 
@@ -92,9 +94,9 @@ const OrderBarUserProfileInfo: React.FC<OrderBarUserProfileInfoProps> = (props) 
         <i className={`bi ${getOfferIcon()[0]}`} 
         style={{ color: getOfferIcon()[1] , fontSize: "3em"}}></i>
       </div>
-      {isHovered && 
-        <div className = {'hover-text'}>
-          {"order status"}
+        {isHovered &&
+          <div className={'hover-text'}>
+            {getOfferIcon()[2]}
         </div>
       }
       </div>
