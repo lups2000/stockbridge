@@ -61,7 +61,7 @@ const OfferBar: React.FC<OfferBarProps> = (props) => {
               }}
             >
               {offerer.name ?? 'No Name given'}
-              {Ratings(offerer.rating ?? 0)}
+              {Ratings(offerer.rating ?? 0, 'red')}
             </BodyText>
             <BodyText
               style={{

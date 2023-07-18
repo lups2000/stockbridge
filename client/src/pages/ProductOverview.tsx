@@ -1,18 +1,19 @@
 import { useContext, useEffect, useState } from 'react';
-import { Spinner } from 'react-bootstrap';
 import { useNavigate, useParams } from 'react-router-dom';
-import { Colors, getAdvert, PopulatedAdvert } from '../api/collections/advert';
-import { OffersSection } from '../components/Offers/OffersSection';
+import { getAdvert, PopulatedAdvert } from '../api/collections/advert';
+import { getStore, PopulatedUser } from '../api/collections/user';
 import { Page } from '../components/Page';
 import { ProductOverviewSection } from '../components/ProductOverview/ProductOverviewSection';
 import { ReviewsSection } from '../components/Reviews/ReviewsSection';
 import { StoreDetailsBar } from '../components/Store/StoreDetailsBar';
 import { LoginContext } from '../contexts/LoginContext';
+import { OffersSection } from '../components/ProductOverview/Offers/OffersSection';
 import { FadeLoader } from 'react-spinners';
 import { palette } from '../utils/colors';
+
 const ProductOverview = () => {
   const { id } = useParams();
-  let [advert, setAdvert] = useState({
+  const [advert, setAdvert] = useState({
     id: '',
     productname: '',
     prioritized: false,
@@ -31,7 +32,12 @@ const ProductOverview = () => {
     color: undefined,
     createdAt: new Date(),
   } as PopulatedAdvert);
-  const [isLoading, setIsLoading] = useState(true);
+  const [store, setStore] = useState({} as PopulatedUser);
+
+  const { user } = useContext(LoginContext);
+  const owner = store._id === user?._id;
+
+  const [isLoading, setIsLoading] = useState<boolean>(true);
 
   const navigate = useNavigate();
 
@@ -42,50 +48,52 @@ const ProductOverview = () => {
           const fetchedAdvert = await getAdvert(id);
           if (fetchedAdvert) {
             setAdvert(fetchedAdvert as PopulatedAdvert);
-            setIsLoading(false)
+            setIsLoading(false);
+            if (fetchedAdvert.store) {
+              await getStore(fetchedAdvert.store._id!).then((response) =>
+                setStore(response),
+              );
+            }
           }
         }
       } catch (error) {
-        console.error(error);
-        navigate("*") //not found page
+        navigate('*'); //not found page
       }
     };
     fetchData();
   }, [id, navigate]);
 
-  const { user } = useContext(LoginContext);
-  const owner = advert.store?._id === user?._id;
   return (
-    isLoading ? <FadeLoader color={palette.subSectionsBgAccent} style={{
-      position: 'absolute',
-      left: '45%',
-      right: '45%',
-      top: '45%',
-      bottom: '45%'
-    }} /> :
     <Page>
-      {advert ? (
+      {!isLoading ? (
         <div
           style={{
             width: '100%',
             maxWidth: '100vw', // Set the maximum width to the viewport width
           }}
         >
-          <StoreDetailsBar category={advert.category!} store={advert.store!} />
-          <ProductOverviewSection advert={advert} store={advert.store!} />
-          {owner && advert.offers && advert.offers.length > 0 && (
+          <StoreDetailsBar category={advert.category!} store={store} />
+          <ProductOverviewSection advert={advert} store={store} />
+          {owner && advert.offers && (
             <OffersSection
               advert={advert}
-              storeName={advert.store?.name || ''}
-              rating={advert.store?.rating || 0}
+              storeName={store.name ?? ''}
+              rating={store.rating ?? 0}
             />
           )}
-          {advert.reviews && advert.reviews.length > 0 && advert._id && (
-            <ReviewsSection advert={advert}/>
-          )}
+          {advert.reviews && advert._id && <ReviewsSection advert={advert} />}
         </div>
       ) : (
-        <Spinner role="status" />
+        <div
+          style={{
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            marginTop: 100,
+          }}
+        >
+          <FadeLoader color={palette.subSectionsBgAccent} />
+        </div>
       )}
     </Page>
   );

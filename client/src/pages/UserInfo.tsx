@@ -96,7 +96,7 @@ export function UserInfo() {
     <Page>
       <ProfileHeader />
 
-      <div className="row">
+      <div className="row" style={{maxWidth: "100%"}}>
         <div
           className={
             matches

@@ -3,15 +3,15 @@ import React, { useContext, useState } from 'react';
 import { ProductDetailsTopBar } from './ProductDetailsTopBar';
 import { ProductDetails } from './ProductDetails';
 import { Button } from 'react-bootstrap';
-import { AdvertStatus, PopulatedAdvert } from '../../api/collections/advert';
+import { PopulatedAdvert } from '../../api/collections/advert';
 import { OfferModal } from '../Offers/OfferModal';
-import { User } from '../../api/collections/user';
+import { PopulatedUser } from '../../api/collections/user';
 import { LoginContext } from '../../contexts/LoginContext';
 import { PriorizationModal } from '../Priorization/PriorizationModal';
 
 type ProductOverviewSectionProps = {
   advert: PopulatedAdvert;
-  store: User;
+  store: PopulatedUser;
 };
 
 const ProductOverviewSection: React.FC<ProductOverviewSectionProps> = (
@@ -20,15 +20,14 @@ const ProductOverviewSection: React.FC<ProductOverviewSectionProps> = (
   const { user } = useContext(LoginContext);
   const owner = user?._id === props.advert?.store?._id;
   const button_text = !owner
-    ? (props.advert?.type === 'Sell'
-      ? 'Buy'
-      : 'Sell')
-    : (props.advert?.prioritized
+    ? 'Make offer'
+    : props.advert?.prioritized
     ? ''
-    : 'Prioritize');
+    : 'Prioritize';
 
   const [showOfferModal, setShowOfferModal] = useState(false);
   const [showPriorizationModal, setShowPriorizationModal] = useState(false);
+
   const closeOfferModal = (rerender: boolean) => {
     setShowOfferModal(false);
     if (rerender) window.location.reload();
@@ -44,71 +43,65 @@ const ProductOverviewSection: React.FC<ProductOverviewSectionProps> = (
     setShowPriorizationModal(true);
   };
   return (
-    <div
-      style={{
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'start',
-        gap: '30px',
-        width: 'auto',
-        marginTop: '10%',
-        marginBottom: '5%',
-      }}
-    >
-      <ProductDetailsTopBar
-        owner={owner}
-        advert={props.advert}
-      ></ProductDetailsTopBar>
+    <>
       <div
         style={{
-          background: '#FDDFE3',
-          alignItems: 'start',
-          justifyContent: 'start',
-          paddingLeft: '3%',
-          width: '100%',
-          padding: '40px',
+          display: 'flex',
+          flexDirection: 'column',
+          backgroundColor: '#FDDFE3',
         }}
       >
-        {props.advert && ProductDetails(props.advert)}
-        <OfferModal
-          isShowing={showOfferModal}
-          onClose={() => closeOfferModal(false)}
-          onSave={() => closeOfferModal(true)}
-          advert={props.advert}
-          storeName={props.store.name}
-          rating={props.store.rating}
-        />
-       
-        <PriorizationModal
-          isShowing={showPriorizationModal}
-          onClose={closePriorizationModal}
-          advertID={props.advert._id!}
-        />
-         {props.advert.status !== AdvertStatus.Closed && button_text !== '' &&
-        <Button
+        <ProductDetailsTopBar owner={owner} advert={props.advert} />
+        <div
           style={{
-            cursor: 'pointer',
-            fontWeight: 'bold',
-            fontFamily: 'Poppins',
-            width: '150px',
-            marginLeft: '85%',
-            marginTop: '25px',
-            fontSize: '24px',
-            textAlign: 'center',
-            color: 'white',
-            textDecoration: 'none',
-            padding: '7px',
-            border: 'rounded-md',
-            backgroundColor: 'black',
-            borderColor: 'black',
+            paddingTop: 30,
+            paddingBottom: 100,
+            paddingLeft: 15,
+            position: 'relative',
           }}
-          onClick={owner ? openPriorizationModal : openOfferModal}
         >
-          {button_text}
-        </Button>
-        }
+          {props.advert ? <ProductDetails advert={props.advert} /> : undefined}
+          {!props.advert.prioritized || !owner ? (
+            <div>
+              <Button
+                style={{
+                  cursor: 'pointer',
+                  position: 'absolute',
+                  right: 12,
+                  bottom: 30,
+                  width: 150,
+                  fontWeight: 600,
+                  fontSize: 24,
+                  padding: 7,
+                  textAlign: 'center',
+                  color: 'white',
+                  textDecoration: 'none',
+                  border: 'rounded-md',
+                  backgroundColor: 'black',
+                  borderColor: 'black',
+                }}
+                onClick={owner ? openPriorizationModal : openOfferModal}
+              >
+                {button_text}
+              </Button>
+            </div>
+          ) : undefined}
+        </div>
       </div>
-    </div>
+      <OfferModal
+        isShowing={showOfferModal}
+        onClose={() => closeOfferModal(false)}
+        onSave={() => closeOfferModal(true)}
+        advert={props.advert}
+        storeName={props.store.name}
+        rating={props.store.rating}
+      />
+      <PriorizationModal
+        isShowing={showPriorizationModal}
+        onClose={closePriorizationModal}
+        advertID={props.advert._id!}
+      />
+    </>
   );
 };
 

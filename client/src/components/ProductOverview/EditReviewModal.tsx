@@ -15,40 +15,30 @@ type EditReviewContentProps = {
 const EditReviewModal: FC<EditReviewContentProps> = (props) => {
   const [description, setDescription] = useState('');
 
-  const [errors, setErrors] = useState({
-    description: false,
-    rating: false,
-  });
+  const [error, setError] = useState<boolean>(false);
   const [rating, setRating] = useState(0);
 
   const handleRatingChange = (newRating: number) => {
     setRating(newRating);
-  };
-  const handleDescriptionChange = (event: any) => {
-    event.preventDefault();
-    const { value } = event.target;
-    setDescription(value);
+    setError(false);
   };
 
-  const validationErrors = {
-    description: false,
-    rating: false,
+  const handleDescriptionChange = (
+    event: React.ChangeEvent<HTMLTextAreaElement>,
+  ) => {
+    const value = event.target.value;
+    setDescription(value);
+    setError(false);
   };
+
   const { user } = useContext(LoginContext);
   const handleSubmit = async () => {
-    if (!description) {
-      validationErrors.description = true;
-    }
-    if (!rating) {
-      validationErrors.rating = true;
-    }
-    if (Object.values(validationErrors).some((e) => e)) {
-      console.log('Errors are happening');
-      setErrors(validationErrors);
+    if (!rating || !description) {
+      setError(true);
     } else {
       try {
         if (props.advert) {
-           await createReview({
+          await createReview({
             description: description,
             rating: rating,
             reviewer: user!._id,
@@ -57,20 +47,20 @@ const EditReviewModal: FC<EditReviewContentProps> = (props) => {
             createdAt: new Date(),
           } as Review);
         }
-        setErrors({
-          description: false,
-          rating: false,
-        });
-        if (props.onClose) props?.onClose();
+        if (props.onClose){
+          props.onClose()
+          window.location.reload()
+        };
       } catch (error) {
         console.error(error);
       }
     }
   };
+
   return (
     <Modal show={props.isShowing} onHide={props.onClose}>
       <Modal.Header closeButton>
-        <Modal.Title>New Review</Modal.Title>
+        <Modal.Title>Write your review</Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <Form>
@@ -91,7 +81,7 @@ const EditReviewModal: FC<EditReviewContentProps> = (props) => {
             >
               Review
             </Form.Label>
-            {Ratings(rating, handleRatingChange)}
+            {Ratings(rating, 'red', handleRatingChange)}
           </Form.Group>
           <Form.Group>
             <Form.Control
@@ -106,7 +96,16 @@ const EditReviewModal: FC<EditReviewContentProps> = (props) => {
               name="description"
               value={description}
               onChange={handleDescriptionChange}
-            ></Form.Control>
+              isInvalid={error}
+            />
+            <Form.Control.Feedback
+              style={{
+                margin: '5px',
+              }}
+              type="invalid"
+            >
+              {error && 'Review incomplete'}
+            </Form.Control.Feedback>
           </Form.Group>
         </Form>
       </Modal.Body>
@@ -115,8 +114,8 @@ const EditReviewModal: FC<EditReviewContentProps> = (props) => {
           className="text-white"
           onClick={handleSubmit}
           style={{
-            background: palette.green,
-            borderColor: palette.green,
+            background: palette.subSectionsBgAccent,
+            borderColor: palette.subSectionsBgAccent,
           }}
         >
           Submit

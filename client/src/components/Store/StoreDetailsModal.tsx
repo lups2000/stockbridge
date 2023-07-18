@@ -2,7 +2,10 @@ import _ from 'lodash';
 import { FC, useEffect, useState } from 'react';
 import { Col, Form, FormLabel, Modal, Row } from 'react-bootstrap';
 import { getCategoriesByStore } from '../../api/collections/advert';
-import { getReviewsByReviewee, PopulatedReview } from '../../api/collections/review';
+import {
+  getReviewsByReviewee,
+  PopulatedReview,
+} from '../../api/collections/review';
 import { getStore, PopulatedUser } from '../../api/collections/user';
 import { Ratings } from '../Ratings';
 import { BodyText } from '../Text/BodyText';
@@ -66,7 +69,7 @@ const StoreDetailsModal: FC<StoreDetailsProps> = (props) => {
               >
                 {populatedStore.name}
               </FormLabel>
-              {Ratings(populatedStore.rating ?? 0)}
+              {Ratings(populatedStore.rating ?? 0, 'red')}
             </Row>
             <Row
               style={{
@@ -149,98 +152,99 @@ const StoreDetailsModal: FC<StoreDetailsProps> = (props) => {
                 </Form.Group>
               </Col>
             </Row>
-            {(reviews && reviews.length > 0) && <div
-              style={{
-                overflowX: 'auto',
-              }}
-            >
+            {reviews && reviews.length > 0 && (
               <div
                 style={{
-                  display: 'flex',
-                  gap: 25,
-                  marginTop: 50,
-                  height: '150px',
+                  overflowX: 'auto',
                 }}
               >
-                {reviews.map((r, i) => (
-                  <div
-                    style={{
-                      borderRadius: 8,
-                      border: '1px solid #ccc',
+                <div
+                  style={{
+                    display: 'flex',
+                    gap: 25,
+                    marginTop: 50,
+                    height: '150px',
+                  }}
+                >
+                  {reviews.map((r, i) => (
+                    <div
+                      style={{
+                        borderRadius: 8,
+                        border: '1px solid #ccc',
 
-                      height: '100%',
-                      borderColor: 'gray',
-                      backgroundColor: 'white',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      cursor: 'pointer',
-                      transition: 'box-shadow 0.3s ease',
-                      boxShadow: '0 0 0 rgba(0, 0, 0, 0.2)',
-                    }}
-                    onMouseOver={(e) => {
-                      e.currentTarget.style.boxShadow =
-                        '0 0 8px rgba(0, 0, 0, 0.3)';
-                    }}
-                    onMouseOut={(e) => {
-                      e.currentTarget.style.boxShadow =
-                        '0 0 0 rgba(0, 0, 0, 0.2)';
-                    }}
-                  >
-                    <span
-                      style={{
-                        marginTop: 20,
-                        paddingLeft: 10,
-                        paddingRight: 10,
-                        display: 'flex',
-                        flexDirection: 'row',
-                        width: '100%',
+                        height: '100%',
+                        borderColor: 'gray',
+                        backgroundColor: 'white',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        cursor: 'pointer',
+                        transition: 'box-shadow 0.3s ease',
+                        boxShadow: '0 0 0 rgba(0, 0, 0, 0.2)',
+                      }}
+                      onMouseOver={(e) => {
+                        e.currentTarget.style.boxShadow =
+                          '0 0 8px rgba(0, 0, 0, 0.3)';
+                      }}
+                      onMouseOut={(e) => {
+                        e.currentTarget.style.boxShadow =
+                          '0 0 0 rgba(0, 0, 0, 0.2)';
                       }}
                     >
+                      <span
+                        style={{
+                          marginTop: 20,
+                          paddingLeft: 10,
+                          paddingRight: 10,
+                          display: 'flex',
+                          flexDirection: 'row',
+                          width: '100%',
+                        }}
+                      >
+                        <BodyText
+                          style={{
+                            fontSize: 12,
+                            fontWeight: 500,
+                            textAlign: 'start',
+                            width: '50%',
+                          }}
+                        >
+                          {r.reviewer.name?.slice(1, 10)}
+                        </BodyText>
+                        <BodyText
+                          style={{
+                            fontSize: 12,
+                            fontWeight: 500,
+                            textAlign: 'end',
+                            width: '50%',
+                          }}
+                        >
+                          {r.createdAt.toString().slice(0, 10)}
+                          {Ratings(r.rating ?? 0, 'red')}
+                        </BodyText>
+                      </span>
                       <BodyText
                         style={{
                           fontSize: 12,
-                          fontWeight: 500,
                           textAlign: 'start',
-                          width: '50%',
+                          color: 'GrayText',
+                          paddingLeft: 10,
+                          paddingRight: 10,
+                          width: 200,
+                          display: '-webkit-box',
+                          WebkitBoxOrient: 'vertical',
+                          WebkitLineClamp: 3,
+                          overflow: 'hidden',
+                          textOverflow: 'ellipsis',
+                          whiteSpace: 'break-spaces',
                         }}
                       >
-                        {r.reviewer.name?.slice(1, 10)}
+                        {r.description}
                       </BodyText>
-                      <BodyText
-                        style={{
-                          fontSize: 12,
-                          fontWeight: 500,
-                          textAlign: 'end',
-                          width: '50%',
-                        }}
-                      >
-                        {r.createdAt.toString().slice(0, 10)}
-                        {Ratings(r.rating ?? 0)}
-                      </BodyText>
-                    </span>
-                    <BodyText
-                      style={{
-                        fontSize: 12,
-                        textAlign: 'start',
-                        color: 'GrayText',
-                        paddingLeft: 10,
-                        paddingRight: 10,
-                        width: 200,
-                        display: '-webkit-box',
-                        WebkitBoxOrient: 'vertical',
-                        WebkitLineClamp: 3,
-                        overflow: 'hidden',
-                        textOverflow: 'ellipsis',
-                        whiteSpace: 'break-spaces',
-                      }}
-                    >
-                      {r.description}
-                    </BodyText>
-                  </div>
-                ))}
+                    </div>
+                  ))}
+                </div>
               </div>
-            </div>
-            }
+            )}
           </Modal.Body>
         </Modal>
       )}

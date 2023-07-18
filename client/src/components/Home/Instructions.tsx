@@ -30,11 +30,11 @@ const stepDescription: StepDescriptionInterface[] = [
         icon: howWorks1,
       },
       {
-        message: 'Wait for offers from customers.',
+        message: 'Select the item and make an offer to the seller.',
         icon: howWorks2,
       },
       {
-        message: 'Accept an offer and finalize the deal.',
+        message: "Wait for the seller's response and complete the order.",
         icon: howWorks3,
       },
     ],

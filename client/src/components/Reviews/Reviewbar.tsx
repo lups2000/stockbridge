@@ -1,6 +1,5 @@
 import { FC, useEffect, useState } from 'react';
 import { getReview, PopulatedReview } from '../../api/collections/review';
-import { getStore, PopulatedUser } from '../../api/collections/user';
 
 import { InfoBar } from '../ProductOverview/InfoBar';
 import { Ratings } from '../Ratings';
@@ -69,7 +68,7 @@ const Reviewbar: FC<ReviewBarProps> = (props) => {
                 }}
               >
                 {review.createdAt.toString().substring(0, 10)}
-                {Ratings(review.rating ? review.rating : 0)}
+                {Ratings(review.rating ? review.rating : 0, 'red')}
               </BodyText>
             </>
           }

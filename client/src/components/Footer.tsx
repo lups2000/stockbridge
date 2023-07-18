@@ -69,9 +69,6 @@ export const Footer: FC = () => {
         >
           English
         </Dropdown.Toggle>
-        <Dropdown.Menu>
-          <Dropdown.Item href="#/action-1">German</Dropdown.Item>
-        </Dropdown.Menu>
       </Dropdown>
     </div>
   );
