@@ -3,7 +3,11 @@ import { ChangeEvent } from 'react';
 import { OfferStatus } from '../api/collections/offer';
 import { palette } from './colors';
 
-import { AdvertSortCriteria, ExtraCriteria, OfferSortCriteria } from '../components/ContentTabs/Tabs';
+import {
+  AdvertSortCriteria,
+  ExtraCriteria,
+  OfferSortCriteria,
+} from '../components/ContentTabs/Tabs';
 import { PopulatedOffer } from '../api/collections/offer';
 import { NestedPopulatedOrder } from '../api/collections/order';
 
@@ -139,68 +143,100 @@ export function colorMap(status: OfferStatus): string {
   }
 }
 
-  /**
-   * Filters the displayed offers based on the search text and sorts it based on 
-   * the selected criteria in the specified order 
-   * @param list the list to be filtered and sorted
-   * @returns 
-   */
-  export function sortedAndFilteredOffers(list: PopulatedOffer[], sortCriteria: AdvertSortCriteria | OfferSortCriteria, searchText: string, sortOrder: boolean ) : PopulatedOffer[]{
-    let result = list
-      .filter(x => x.advert?.productname?.toLowerCase().includes(searchText.toLocaleLowerCase()))
-      .sort((a, b) => {
-          switch (sortCriteria) {
-            case AdvertSortCriteria.NONE:
-              return 0;
-            case AdvertSortCriteria.NAME:
-              return (a.advert?.productname ?? "").localeCompare(b.advert?.productname ?? "");
-            case AdvertSortCriteria.DATE:
-              return ((a.createdAt ?? "") > (b.createdAt ?? "") ? 1 : ((a.createdAt ?? "") < (b.createdAt ?? "") ? -1 : 0));
-            case AdvertSortCriteria.PRICE:
-              return (a.price ?? 0) - (b.price ?? 0);
-            case AdvertSortCriteria.Quantity:
-              return (a.quantity ?? 0) - (b.quantity ?? 0);
-            case ExtraCriteria.STATUS:
-              return (a.status > b.status ? 1 : a.status < b.status ? -1 : 0);
-            case ExtraCriteria.STORE:
-              return (a.advert?.store?.toLocaleLowerCase() ?? "").localeCompare(b.advert?.store?.toLocaleLowerCase() ?? "");
-            default:
-              return 0;
-          }
+/**
+ * Filters the displayed offers based on the search text and sorts it based on
+ * the selected criteria in the specified order
+ * @param list the list to be filtered and sorted
+ * @returns
+ */
+export function sortedAndFilteredOffers(
+  list: PopulatedOffer[],
+  sortCriteria: AdvertSortCriteria | OfferSortCriteria,
+  searchText: string,
+  sortOrder: boolean,
+): PopulatedOffer[] {
+  let result = list
+    .filter((x) =>
+      x.advert?.productname
+        ?.toLowerCase()
+        .includes(searchText.toLocaleLowerCase()),
+    )
+    .sort((a, b) => {
+      switch (sortCriteria) {
+        case AdvertSortCriteria.NONE:
+          return 0;
+        case AdvertSortCriteria.NAME:
+          return (a.advert?.productname ?? '').localeCompare(
+            b.advert?.productname ?? '',
+          );
+        case AdvertSortCriteria.DATE:
+          return (a.createdAt ?? '') > (b.createdAt ?? '')
+            ? 1
+            : (a.createdAt ?? '') < (b.createdAt ?? '')
+            ? -1
+            : 0;
+        case AdvertSortCriteria.PRICE:
+          return (a.price ?? 0) - (b.price ?? 0);
+        case AdvertSortCriteria.Quantity:
+          return (a.quantity ?? 0) - (b.quantity ?? 0);
+        case ExtraCriteria.STATUS:
+          return a.status > b.status ? 1 : a.status < b.status ? -1 : 0;
+        case ExtraCriteria.STORE:
+          return (a.advert?.store?.toLocaleLowerCase() ?? '').localeCompare(
+            b.advert?.store?.toLocaleLowerCase() ?? '',
+          );
+        default:
+          return 0;
+      }
+    });
+  return sortOrder ? result : result.reverse();
+}
 
-      })
-      return sortOrder ? result : result.reverse();
-  }
-
-  /**
-   * Filters the displayed orders based on the search text and sorts it based on 
-   * the selected criteria in the specified order 
-   * @param list the list to be filtered and sorted
-   * @returns 
-   */
-  export function sortedAndFilteredOrders(list: NestedPopulatedOrder[], sortCriteria: AdvertSortCriteria | OfferSortCriteria, searchText: string, sortOrder: boolean) : NestedPopulatedOrder[] {
-    let result = list
-      .filter(x => x.offer?.advert?.productname?.toLowerCase().includes(searchText.toLocaleLowerCase()))
-      .sort((a, b) => {
-          switch (sortCriteria) {
-            case AdvertSortCriteria.NONE:
-              return 0;
-            case AdvertSortCriteria.NAME:
-              return (a.offer?.advert?.productname ?? "").localeCompare(b.offer?.advert?.productname ?? "");
-            case AdvertSortCriteria.DATE:
-              return ((a.createdAt ?? "") > (b.createdAt ?? "") ? 1 : ((a.createdAt ?? "") < (b.createdAt ?? "") ? -1 : 0));
-            case AdvertSortCriteria.PRICE:
-              return (a.totalPrice ?? 0) - (b.totalPrice ?? 0);
-            case AdvertSortCriteria.Quantity:
-              return (a.quantity ?? 0) - (b.quantity ?? 0);
-            case ExtraCriteria.STATUS:
-              return (a.status > b.status ? 1 : a.status < b.status ? -1 : 0);
-            case ExtraCriteria.STORE:
-              return (a.offer?.advert?.store ?? "").localeCompare(b.offer?.advert?.store ?? "");
-            default:
-              return 0;
-          }
-
-      })
-      return sortOrder ? result : result.reverse();
-  }
+/**
+ * Filters the displayed orders based on the search text and sorts it based on
+ * the selected criteria in the specified order
+ * @param list the list to be filtered and sorted
+ * @returns
+ */
+export function sortedAndFilteredOrders(
+  list: NestedPopulatedOrder[],
+  sortCriteria: AdvertSortCriteria | OfferSortCriteria,
+  searchText: string,
+  sortOrder: boolean,
+): NestedPopulatedOrder[] {
+  let result = list
+    .filter((x) =>
+      x.offer?.advert?.productname
+        ?.toLowerCase()
+        .includes(searchText.toLocaleLowerCase()),
+    )
+    .sort((a, b) => {
+      switch (sortCriteria) {
+        case AdvertSortCriteria.NONE:
+          return 0;
+        case AdvertSortCriteria.NAME:
+          return (a.offer?.advert?.productname ?? '').localeCompare(
+            b.offer?.advert?.productname ?? '',
+          );
+        case AdvertSortCriteria.DATE:
+          return (a.createdAt ?? '') > (b.createdAt ?? '')
+            ? 1
+            : (a.createdAt ?? '') < (b.createdAt ?? '')
+            ? -1
+            : 0;
+        case AdvertSortCriteria.PRICE:
+          return (a.totalPrice ?? 0) - (b.totalPrice ?? 0);
+        case AdvertSortCriteria.Quantity:
+          return (a.quantity ?? 0) - (b.quantity ?? 0);
+        case ExtraCriteria.STATUS:
+          return a.status > b.status ? 1 : a.status < b.status ? -1 : 0;
+        case ExtraCriteria.STORE:
+          return (a.offer?.advert?.store ?? '').localeCompare(
+            b.offer?.advert?.store ?? '',
+          );
+        default:
+          return 0;
+      }
+    });
+  return sortOrder ? result : result.reverse();
+}

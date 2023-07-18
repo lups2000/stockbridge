@@ -1,4 +1,4 @@
-import useMediaQuery from "../../hooks/useMediaQuery";
+import useMediaQuery from '../../hooks/useMediaQuery';
 
 //import styles from "./profile.scss"
 require('./tabStyles.scss');
@@ -20,7 +20,11 @@ export function ProfileSectionTab(props: LeftTabProps) {
   return (
     <li
       className="profile-section-tab"
-      style={{ display: 'inline', width: '100%',  fontSize: matches ? "25px" : "21px" }}
+      style={{
+        display: 'inline',
+        width: '100%',
+        fontSize: matches ? '25px' : '21px',
+      }}
     >
       <link
         rel="stylesheet"

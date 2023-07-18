@@ -9,7 +9,7 @@ import { Title } from '../Text/Title';
 import { Button } from 'react-bootstrap';
 import { useSearchParams } from 'react-router-dom';
 import { CustomMap } from './CustomMap';
-import "../override.css"
+import '../override.css';
 import NoResultsMessage from '../Profile/NoResultsMessage';
 
 interface AdvertGridProps {
@@ -138,13 +138,13 @@ export const AdvertsGrid: FC<AdvertGridProps> = (props) => {
               position: 'relative',
               top: '-17em',
               right: '-5%',
-              zIndex: -10
+              zIndex: -10,
               //justifyContent: 'center',
               //width: '100%',
               //height: '100vh',
             }}
           >
-           <NoResultsMessage />
+            <NoResultsMessage />
           </div>
         )
       ) : (

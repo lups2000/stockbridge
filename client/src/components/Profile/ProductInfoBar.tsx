@@ -3,7 +3,7 @@ import { Image } from 'react-bootstrap';
 import imagePlaceholder from '../../assets/product-placeholder.png';
 import { ProfileProdcutAttribute } from './ProfileProdcutAttribute';
 import { useNavigate } from 'react-router-dom';
-import closedTag from '../../assets/closed-tag.svg'
+import closedTag from '../../assets/closed-tag.svg';
 import { AdvertStatus } from '../../api/collections/advert';
 require('./profile.scss');
 
@@ -15,7 +15,7 @@ type ProductProps = {
   quantity: number | undefined;
   price: number | undefined;
   highlight: string;
-  status: string|undefined;
+  status: string | undefined;
 };
 
 const ProductInfoBar: React.FC<ProductProps> = ({
@@ -26,7 +26,7 @@ const ProductInfoBar: React.FC<ProductProps> = ({
   quantity,
   price,
   highlight,
-  status
+  status,
 }) => {
   const navigate = useNavigate();
   return (
@@ -34,14 +34,10 @@ const ProductInfoBar: React.FC<ProductProps> = ({
       className="product-bar row"
       onClick={() => navigate(`/productoverview/${productId}`)}
     >
-      {status === AdvertStatus.Closed && 
-      <Image
-      src={closedTag}
-      alt="Corner Image"
-      className="corner-image"
-    />}
+      {status === AdvertStatus.Closed && (
+        <Image src={closedTag} alt="Corner Image" className="corner-image" />
+      )}
 
-      
       <div className="product-image col-2">
         <Image
           style={{
@@ -61,11 +57,11 @@ const ProductInfoBar: React.FC<ProductProps> = ({
             <ProfileProdcutAttribute
               name="Product"
               value={name}
-              highlight= {highlight}
+              highlight={highlight}
             ></ProfileProdcutAttribute>{' '}
           </div>
 
-          <div className="div2"> 
+          <div className="div2">
             <ProfileProdcutAttribute
               name="Date"
               value={date}

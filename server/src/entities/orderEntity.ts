@@ -6,7 +6,6 @@ export enum OrderStatus {
   RECEIVED = 'RECEIVED',
 }
 
-
 export interface Order {
   id: string;
   totalPrice: number;

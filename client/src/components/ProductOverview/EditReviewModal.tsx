@@ -47,10 +47,10 @@ const EditReviewModal: FC<EditReviewContentProps> = (props) => {
             createdAt: new Date(),
           } as Review);
         }
-        if (props.onClose){
-          props.onClose()
-          window.location.reload()
-        };
+        if (props.onClose) {
+          props.onClose();
+          window.location.reload();
+        }
       } catch (error) {
         console.error(error);
       }

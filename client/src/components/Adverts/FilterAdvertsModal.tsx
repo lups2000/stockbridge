@@ -6,7 +6,7 @@ import Slider from '@mui/material/Slider';
 import { ProductCategory } from '../../api/collections/advert';
 import { useSearchParams } from 'react-router-dom';
 import '../override.css';
-import deleteIcon from "../../assets/deleteX.svg"
+import deleteIcon from '../../assets/deleteX.svg';
 
 interface FilterAdvertsModalProps {
   isOpen: boolean;

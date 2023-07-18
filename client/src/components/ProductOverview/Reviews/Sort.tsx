@@ -11,17 +11,16 @@ export enum SortTypes {
 }
 
 interface SortProps {
-    onModalitySelected: (type: SortTypes) => void
+  onModalitySelected: (type: SortTypes) => void;
 }
 
 export const Sort: FC<SortProps> = (props) => {
   const [sortingType, setSortingType] = useState<SortTypes>(SortTypes.NONE);
 
-
   const handleClick = (type: SortTypes) => {
-    setSortingType(type)
-    props.onModalitySelected(type)
-  }
+    setSortingType(type);
+    props.onModalitySelected(type);
+  };
 
   return (
     <Dropdown>

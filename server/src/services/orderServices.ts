@@ -83,7 +83,5 @@ export const findOrderByOffer = async (offer: string, populate = true) => {
  * @returns
  */
 function populateResult(queryResult: any, populate: boolean) {
-  return populate
-    ? queryResult.populate(['offer'])
-    : queryResult;
+  return populate ? queryResult.populate(['offer']) : queryResult;
 }

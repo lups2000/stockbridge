@@ -1,7 +1,10 @@
 import { FC, useEffect, useState } from 'react';
 import { BodyText } from '../Text/BodyText';
 import { Image } from 'react-bootstrap';
-import { getPopularCategories, ProductCategory } from '../../api/collections/advert';
+import {
+  getPopularCategories,
+  ProductCategory,
+} from '../../api/collections/advert';
 import { useNavigate } from 'react-router-dom';
 import { FadeLoader } from 'react-spinners';
 import { palette } from '../../utils/colors';
@@ -10,14 +13,14 @@ import { categories } from './icons';
  * This component displays the top categories, those with more adverts.
  */
 
- export const mapIcon = (category: string) => {
+export const mapIcon = (category: string) => {
   switch (category) {
     case ProductCategory.Apparel_And_Accessories:
       return categories.apparel_and_accessories;
     case ProductCategory.Electronics_And_Gadgets:
       return categories.electronics;
     case ProductCategory.Home_And_Kitchen:
-      return categories.kitchen; 
+      return categories.kitchen;
     case ProductCategory.Furniture_And_Decor:
       return categories.furniture;
     case ProductCategory.Health_And_Beauty:
@@ -31,7 +34,7 @@ import { categories } from './icons';
     case ProductCategory.Automotive_Parts:
       return categories.automotive;
     case ProductCategory.Food_And_Beverages:
-      return categories.food; 
+      return categories.food;
     case ProductCategory.Office_Supplies:
       return categories.office;
     case ProductCategory.Tools_And_Hardware:
@@ -41,21 +44,21 @@ import { categories } from './icons';
     case ProductCategory.Babies_And_Kids_Products:
       return categories.babies;
     case ProductCategory.Jewelry_And_Accessories:
-      return categories.jewelry; 
+      return categories.jewelry;
     case ProductCategory.Gardening_Supplies:
-      return categories.gardening; 
+      return categories.gardening;
     case ProductCategory.Art_And_Craft_Supplies:
-      return categories.arts_and_crafts; 
+      return categories.arts_and_crafts;
     case ProductCategory.Musical_Instruments:
-      return categories.musical; 
+      return categories.musical;
     case ProductCategory.Travel_And_Luggage:
-      return categories.travel; 
+      return categories.travel;
     case ProductCategory.Flowers_And_Bouquets:
-        return categories.flowers;
+      return categories.flowers;
     default:
       return categories.default_category;
-}
-}
+  }
+};
 export const TopCategories: FC = () => {
   const [topCategories, setTopCategories] = useState<string[]>();
 

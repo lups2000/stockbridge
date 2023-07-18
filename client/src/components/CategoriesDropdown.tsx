@@ -12,11 +12,11 @@ export const CategoriesDropdown: FC = () => {
 
   const toggleDropDown = () => setDropdownOpen(!isDropdownOpen);
 
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const handleItemClick = (el: string) => {
-    navigate(`/adverts?category[in]=${el}`)
-  }
+    navigate(`/adverts?category[in]=${el}`);
+  };
 
   const DropdownList = productCategories.map((el, index) => (
     <div
@@ -83,7 +83,7 @@ export const CategoriesDropdown: FC = () => {
               maxHeight: 300,
               minWidth: 300,
             }}
-            className='hide-scrollbar'
+            className="hide-scrollbar"
           >
             {DropdownList}
           </div>

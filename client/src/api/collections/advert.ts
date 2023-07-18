@@ -25,22 +25,22 @@ export enum Sizes {
   S = 'S',
   M = 'M',
   L = 'L',
-  XL = 'XL'
+  XL = 'XL',
 }
 
 export enum Options {
   YES = 'Yes',
   NO = 'No',
-  UNKNOWN = 'Unknown' 
+  UNKNOWN = 'Unknown',
 }
 
 export enum EnergyClass {
-  A =  'A',
+  A = 'A',
   B = 'B',
   C = 'C',
   D = 'D',
   E = 'E',
-  F = 'F'
+  F = 'F',
 }
 export enum ProductCategory {
   Apparel_And_Accessories = 'Apparel And Accessories',
@@ -108,7 +108,7 @@ export interface Advert {
   store?: string;
   reviews?: string[];
   imageurl?: string;
-  color?: Color ;
+  color?: Color;
   createdAt?: Date;
   size?: string;
   fabric?: string;
@@ -206,7 +206,6 @@ export async function getAdvertsByUser(
   });
 }
 
-
 export async function getAllAdverts(queryParams: any): Promise<AdvertDto> {
   return await apiClient.get<AdvertDto>(`/adverts`, {}, queryParams);
 }
@@ -221,6 +220,6 @@ export async function getPopularAdverts(): Promise<AdvertDto> {
 
 export async function prioritizeAdvert(advert: string): Promise<Advert> {
   return await apiClient.get<Advert>(`/adverts/prioritizeAdvert/${advert}`, {
-    withCredentials: true
-  })
+    withCredentials: true,
+  });
 }

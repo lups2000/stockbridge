@@ -25,7 +25,7 @@ export const ReviewList: FC<ReviewDisplay> = (props) => {
               date={new Date(item.createdAt)}
               description={item.description}
               rating={item.rating}
-              style={{width: "100%"}}
+              style={{ width: '100%' }}
             />
           ))
         ) : (

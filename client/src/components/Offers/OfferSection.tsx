@@ -24,7 +24,7 @@ function colorMap(status: OfferStatus): string {
     case OfferStatus.CANCELED_OUT_OF_STOCK:
       return '#ffc071';
     case OfferStatus.CANCELED_USER:
-        return '#ffc071';
+      return '#ffc071';
     default:
       return '#4285F4';
   }
@@ -33,7 +33,6 @@ function colorMap(status: OfferStatus): string {
 const OfferSection: React.FC<OfferSectionProps> = (props) => {
   const { isLoading } = useContext(LoginContext);
   return (
-    
     <div
       style={{
         display: 'flex',
@@ -65,7 +64,8 @@ const OfferSection: React.FC<OfferSectionProps> = (props) => {
           fontFamily: 'Poppins',
         }}
       >
-        {!isLoading && props?.offers &&
+        {!isLoading &&
+          props?.offers &&
           (props.offers.length > 0 ? (
             props.offers.map((offer, index) => (
               <React.Fragment key={`offer-${index}`}>
@@ -77,8 +77,7 @@ const OfferSection: React.FC<OfferSectionProps> = (props) => {
             <BodyText style={{}}>No offers yet ...</BodyText>
           ))}
       </div>
-      
-    </div> 
+    </div>
   );
 };
 

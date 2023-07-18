@@ -164,9 +164,9 @@ export const UserIconDropdown: FC = () => {
   const handleUserIconClick = () => {
     handleItemClick({
       index: 0,
-      link: "MyAdverts",
+      link: 'MyAdverts',
       type: DropdownItemType.ADVERTS,
-      icon: ""
+      icon: '',
     });
   };
 

@@ -16,7 +16,7 @@ export const StoreDetailsElement: FC<StoreDetailsElementProps> = (props) => {
           fontSize: 24,
         }}
       >
-        {props.label + ":"}
+        {props.label + ':'}
       </BodyText>
       <div>{props.children}</div>
     </div>

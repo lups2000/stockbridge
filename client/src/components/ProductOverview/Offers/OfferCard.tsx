@@ -8,7 +8,7 @@ import { PopulatedAdvert } from '../../../api/collections/advert';
 interface OfferCardProps {
   status: OfferStatus;
   offer: PopulatedOffer;
-  advert: PopulatedAdvert
+  advert: PopulatedAdvert;
   style?: CSSProperties;
 }
 
@@ -38,7 +38,7 @@ export const OfferCard: FC<OfferCardProps> = (props) => {
           flexDirection: 'column',
           padding: 16,
           ...props.style,
-          cursor: "pointer"
+          cursor: 'pointer',
         }}
         onClick={openModal}
       >
@@ -53,7 +53,12 @@ export const OfferCard: FC<OfferCardProps> = (props) => {
             <BodyText style={{ fontSize: 18, marginBottom: 0 }}>
               {props.offer.offeror?.name}
             </BodyText>
-            <div>{Ratings(props.offer.offeror?.rating ? props.offer.offeror.rating : 0, 'red')}</div>
+            <div>
+              {Ratings(
+                props.offer.offeror?.rating ? props.offer.offeror.rating : 0,
+                'red',
+              )}
+            </div>
           </div>
           <div
             style={{

@@ -21,22 +21,22 @@ export enum Sizes {
   S = 'S',
   M = 'M',
   L = 'L',
-  XL = 'XL'
+  XL = 'XL',
 }
 
 export enum Options {
   YES = 'Yes',
   NO = 'No',
-  UNKNOWN = 'Unknown' 
+  UNKNOWN = 'Unknown',
 }
 
 export enum EnergyClass {
-  A =  'A',
+  A = 'A',
   B = 'B',
   C = 'C',
   D = 'D',
   E = 'E',
-  F = 'F'
+  F = 'F',
 }
 export enum ProductCategory {
   Apparel_And_Accessories = 'Apparel And Accessories',

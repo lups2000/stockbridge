@@ -5,7 +5,6 @@ import { palette } from '../../../utils/colors';
 import { ReviewCard } from './ReviewCard';
 import { ReviewDisplay } from '../../Reviews/ReviewsSection';
 
-
 export const ReviewsGrid: FC<ReviewDisplay> = (props) => {
   return (
     <div
