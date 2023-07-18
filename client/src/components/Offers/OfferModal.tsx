@@ -49,7 +49,7 @@ const OfferModal: FC<OfferContentProps> = (props) => {
     createdAt: new Date(),
   } as Offer);
 
-  const offeree = user?._id === props.offer?.offeree;
+  const offeree = user?._id === (props.offer as PopulatedOffer).offeree?._id;
   const handleChange = (event: any) => {
     event.preventDefault();
     const { name, value } = event.target;
