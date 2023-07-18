@@ -85,6 +85,7 @@ export const CustomMap: FC<CustomMapProps> = (props) => {
                         prioritized={advert.prioritized}
                         creationDate={advert.createdAt}
                         fancyEffect={false}
+                        category={advert.category}
                       />
                     </Popup>
                   </Marker>

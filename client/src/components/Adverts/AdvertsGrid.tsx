@@ -9,7 +9,7 @@ import { Title } from '../Text/Title';
 import { Button } from 'react-bootstrap';
 import { useSearchParams } from 'react-router-dom';
 import { CustomMap } from './CustomMap';
-import "../override.css"
+import '../override.css';
 
 interface AdvertGridProps {
   adverts: PopulatedAdvert[] | undefined;
@@ -101,9 +101,7 @@ export const AdvertsGrid: FC<AdvertGridProps> = (props) => {
       {props.isMapOpen ? (
         props.adverts ? (
           <CustomMap adverts={props.adverts} />
-        ) : (
-          undefined
-        )
+        ) : undefined
       ) : undefined}
       {props.adverts ? (
         props.adverts.length > 0 ? (
@@ -129,6 +127,7 @@ export const AdvertsGrid: FC<AdvertGridProps> = (props) => {
                 prioritized={item.prioritized}
                 creationDate={item.createdAt}
                 fancyEffect={true}
+                category={item.category}
               />
             </div>
           ))
