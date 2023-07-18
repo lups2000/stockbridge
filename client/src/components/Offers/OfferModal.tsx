@@ -46,7 +46,9 @@ const OfferModal: FC<OfferContentProps> = (props) => {
     price: props.offer?.price ? props.offer?.price : 0,
     createdAt: new Date(),
   } as Offer);
-  const offeree = props.offer?.offeree && user?._id === (props.offer as PopulatedOffer).offeree?._id;
+  const offeree =
+    props.offer?.offeree &&
+    user?._id === (props.offer as PopulatedOffer).offeree?._id;
   const handleChange = (event: any) => {
     event.preventDefault();
     const { name, value } = event.target;
@@ -62,7 +64,7 @@ const OfferModal: FC<OfferContentProps> = (props) => {
       quantity: string | undefined;
     },
   );
-  const isValid = () => { 
+  const isValid = () => {
     return (
       formData.price &&
       formData.price >= 0 &&
@@ -119,7 +121,7 @@ const OfferModal: FC<OfferContentProps> = (props) => {
 
   const handleSubmit = async () => {
     if (isValid()) {
-      setIsLoading(true)
+      setIsLoading(true);
       await createOffer({
         quantity: formData.quantity,
         price: formData.price,
@@ -130,7 +132,7 @@ const OfferModal: FC<OfferContentProps> = (props) => {
         advert: props.advert?._id,
       } as Offer)
         .then((newOffer) => {
-          props.onClose()
+          props.onClose();
           if (newOffer) {
             setIsLoading(false);
             setShowCreationModal(true);
@@ -162,9 +164,7 @@ const OfferModal: FC<OfferContentProps> = (props) => {
           : 'Price is missing',
         quantity: formData.quantity
           ? formData.quantity > 0
-            ? (                
-                  formData.quantity <= props.advert?.quantity!
-              )
+            ? formData.quantity <= props.advert?.quantity!
               ? undefined
               : 'Quantity must be less or equal to available Quantity'
             : 'Quantity must be greater than 0'
@@ -190,7 +190,7 @@ const OfferModal: FC<OfferContentProps> = (props) => {
 
   const handleConsentChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setIsConsentChecked(event.target.checked);
-    };
+  };
   const handleAccept = async () => {
     setIsLoading(true);
     try {
@@ -512,12 +512,15 @@ const OfferModal: FC<OfferContentProps> = (props) => {
             </Row>
           </Modal.Body>
           {(!props.offer ||
-            !['Rejected','Accepted', 'Canceled', 'Canceled - Out of Stock'].includes(
-              props.offer.status!,
-            )) && (
+            ![
+              'Rejected',
+              'Accepted',
+              'Canceled',
+              'Canceled - Out of Stock',
+            ].includes(props.offer.status!)) && (
             <Modal.Footer
               style={{
-                justifyContent: offeree ? 'center' : 'space-between'
+                justifyContent: offeree ? 'center' : 'space-between',
               }}
             >
               {offeree && props.offer?.status === 'Open' && (
@@ -547,8 +550,13 @@ const OfferModal: FC<OfferContentProps> = (props) => {
               {!props.offer && (
                 <>
                   <div>
-                    <input type="checkbox" id="consent-checkbox" checked={isConsentChecked}
-                      onChange={handleConsentChange} style={{marginRight: '5px'}}/>
+                    <input
+                      type="checkbox"
+                      id="consent-checkbox"
+                      checked={isConsentChecked}
+                      onChange={handleConsentChange}
+                      style={{ marginRight: '5px' }}
+                    />
                     <label htmlFor="consent-checkbox">
                       I agree to the terms and conditions
                     </label>

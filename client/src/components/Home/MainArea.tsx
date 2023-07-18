@@ -17,7 +17,7 @@ export function MainArea() {
     setShowModal(false);
   };
 
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   return (
     <>
@@ -81,7 +81,7 @@ export function MainArea() {
                 paddingLeft: 50,
                 paddingRight: 50,
               }}
-              onClick={() => navigate("/adverts")}
+              onClick={() => navigate('/adverts')}
             >
               BROWSE ADVERTS
             </Button>

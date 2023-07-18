@@ -1,5 +1,8 @@
 import React, { useContext, useEffect, useState } from 'react';
-import Tabs, { AdvertSortCriteria, OfferSortCriteria } from '../../ContentTabs/Tabs';
+import Tabs, {
+  AdvertSortCriteria,
+  OfferSortCriteria,
+} from '../../ContentTabs/Tabs';
 import ContentTab from '../../ContentTabs/ContentTab';
 import ProductInfoBar from '../ProductInfoBar';
 import {
@@ -12,15 +15,18 @@ import NoResultsMessage from '../NoResultsMessage';
 import { LoginContext } from '../../../contexts/LoginContext';
 import { FadeLoader } from 'react-spinners';
 import { palette } from '../../../utils/colors';
-function sortClosed(adverts: (Advert|PopulatedAdvert)[]) {
-  return adverts.sort((a,b) => {
+function sortClosed(adverts: (Advert | PopulatedAdvert)[]) {
+  return adverts.sort((a, b) => {
     if (a.status === AdvertStatus.Closed && b.status !== AdvertStatus.Closed) {
-      return -1
+      return -1;
     } else {
-      if (b.status === AdvertStatus.Closed && a.status !== AdvertStatus.Closed) {
-        return 1
+      if (
+        b.status === AdvertStatus.Closed &&
+        a.status !== AdvertStatus.Closed
+      ) {
+        return 1;
       } else {
-        return 0
+        return 0;
       }
     }
   });
@@ -33,14 +39,16 @@ const MyAdvertsContent: React.FC = () => {
   const [sellingAdverts, setSellingAdverts] = useState([] as PopulatedAdvert[]);
   const { user } = useContext(LoginContext);
 
-  const [searchText, setSearchText] = useState("");
-  const [sortCriteria, setSortCriteria] = useState<AdvertSortCriteria | OfferSortCriteria>(AdvertSortCriteria.NONE);
+  const [searchText, setSearchText] = useState('');
+  const [sortCriteria, setSortCriteria] = useState<
+    AdvertSortCriteria | OfferSortCriteria
+  >(AdvertSortCriteria.NONE);
   const [isLoading, setIsLoading] = useState(false);
   // False == order asc , True == order desc
   const [sortOrder, setSortOrder] = useState(false);
   useEffect(() => {
     setIsLoading(true);
-    console.log(user)
+    console.log(user);
     const fetchData = async () => {
       try {
         if (user) {
@@ -58,94 +66,112 @@ const MyAdvertsContent: React.FC = () => {
     };
     fetchData();
     if (sellingAdverts && buyingAdverts) {
-      setIsLoading(false)
+      setIsLoading(false);
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-
-
   /**
-   * Filters the displayed adverts based on the search text and sorts it based on 
-   * the selected criteria in the specified order 
+   * Filters the displayed adverts based on the search text and sorts it based on
+   * the selected criteria in the specified order
    * @param list the list to be filtered and sorted
-   * @returns 
+   * @returns
    */
-  function sortedAndFilteredItems(list: PopulatedAdvert[] ) : PopulatedAdvert[]{
+  function sortedAndFilteredItems(list: PopulatedAdvert[]): PopulatedAdvert[] {
     let result = list
-      .filter(x => x.productname?.toLowerCase().includes(searchText.toLocaleLowerCase()))
+      .filter((x) =>
+        x.productname?.toLowerCase().includes(searchText.toLocaleLowerCase()),
+      )
       .sort((a, b) => {
-          switch (sortCriteria) {
-            case AdvertSortCriteria.NONE:
-              return 0;
-            case AdvertSortCriteria.NAME:
-              return (a.productname ?? "").localeCompare(b.productname ?? "");
-            case AdvertSortCriteria.DATE:
-              return ((a.createdAt ?? "") > (b.createdAt ?? "") ? 1 : ((a.createdAt ?? "") < (b.createdAt ?? "") ? -1 : 0));
-            case AdvertSortCriteria.PRICE:
-              return (a.price ?? 0) - (b.price ?? 0);
-            case AdvertSortCriteria.Quantity:
-              return (a.quantity ?? 0) - (b.quantity ?? 0);
-            default:
-              return 0;
-          }
-      })
-      if (sortCriteria === AdvertSortCriteria.NONE) {
-        result = sortClosed(list) as PopulatedAdvert[]
-      }
-      return sortOrder ? result : result.reverse();
+        switch (sortCriteria) {
+          case AdvertSortCriteria.NONE:
+            return 0;
+          case AdvertSortCriteria.NAME:
+            return (a.productname ?? '').localeCompare(b.productname ?? '');
+          case AdvertSortCriteria.DATE:
+            return (a.createdAt ?? '') > (b.createdAt ?? '')
+              ? 1
+              : (a.createdAt ?? '') < (b.createdAt ?? '')
+              ? -1
+              : 0;
+          case AdvertSortCriteria.PRICE:
+            return (a.price ?? 0) - (b.price ?? 0);
+          case AdvertSortCriteria.Quantity:
+            return (a.quantity ?? 0) - (b.quantity ?? 0);
+          default:
+            return 0;
+        }
+      });
+    if (sortCriteria === AdvertSortCriteria.NONE) {
+      result = sortClosed(list) as PopulatedAdvert[];
+    }
+    return sortOrder ? result : result.reverse();
   }
-  
-  return (
-    isLoading ? (
-      <FadeLoader
-        color={palette.subSectionsBgAccent}
-        style={{
-          position: 'absolute',
-          left: '45%',
-          right: '45%',
-          top: '45%',
-          bottom: '45%',
-        }}
-      />
-    ) : 
+
+  return isLoading ? (
+    <FadeLoader
+      color={palette.subSectionsBgAccent}
+      style={{
+        position: 'absolute',
+        left: '45%',
+        right: '45%',
+        top: '45%',
+        bottom: '45%',
+      }}
+    />
+  ) : (
     <div>
-      <Tabs isOffer = {false} searchText={searchText} setSearchText={setSearchText} sortCriteria={sortCriteria} setSortCriteria={setSortCriteria} sortOrder= {sortOrder} setSortOrder={setSortOrder}>
+      <Tabs
+        isOffer={false}
+        searchText={searchText}
+        setSearchText={setSearchText}
+        sortCriteria={sortCriteria}
+        setSortCriteria={setSortCriteria}
+        sortOrder={sortOrder}
+        setSortOrder={setSortOrder}
+      >
         <ContentTab title="Selling Ads">
-          {sellingAdverts.length > 0 ? sortedAndFilteredItems(sellingAdverts).map((product, index) => {
-            return (
-              <ProductInfoBar
-                key={index}
-                productId={product._id}
-                imageUrl={product.imageurl}
-                name={product.productname}
-                date={product.createdAt?.toString().substring(0, 10)}
-                quantity={product.quantity}
-                price={product.price}
-                highlight={searchText}
-                status={product.status}
-              />
-            );
-          }) : <NoResultsMessage/>}
+          {sellingAdverts.length > 0 ? (
+            sortedAndFilteredItems(sellingAdverts).map((product, index) => {
+              return (
+                <ProductInfoBar
+                  key={index}
+                  productId={product._id}
+                  imageUrl={product.imageurl}
+                  name={product.productname}
+                  date={product.createdAt?.toString().substring(0, 10)}
+                  quantity={product.quantity}
+                  price={product.price}
+                  highlight={searchText}
+                  status={product.status}
+                />
+              );
+            })
+          ) : (
+            <NoResultsMessage />
+          )}
         </ContentTab>
         <ContentTab title="Buying Ads">
-          {buyingAdverts.length > 0 ? sortedAndFilteredItems(buyingAdverts).map((product, index) => {
-            return (
-              <ProductInfoBar
-                key={index}
-                productId={product._id}
-                imageUrl={product.imageurl}
-                name={product.productname}
-                date={product.createdAt!.toString().substring(0, 10)}
-                quantity={product.quantity}
-                price={product.price}
-                highlight={searchText}
-                status={product.status ? product.status : undefined}
-              />
-            );
-          }) : <NoResultsMessage/>}
+          {buyingAdverts.length > 0 ? (
+            sortedAndFilteredItems(buyingAdverts).map((product, index) => {
+              return (
+                <ProductInfoBar
+                  key={index}
+                  productId={product._id}
+                  imageUrl={product.imageurl}
+                  name={product.productname}
+                  date={product.createdAt!.toString().substring(0, 10)}
+                  quantity={product.quantity}
+                  price={product.price}
+                  highlight={searchText}
+                  status={product.status ? product.status : undefined}
+                />
+              );
+            })
+          ) : (
+            <NoResultsMessage />
+          )}
         </ContentTab>
-        
       </Tabs>
     </div>
   );

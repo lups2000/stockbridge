@@ -52,21 +52,22 @@ const ProductDetailsTopBar: React.FC<ProductDetailsTopBarProps> = (props) => {
       >
         PRODUCT DETAILS
       </BodyText>
-     
-     {props.advert.status !== AdvertStatus.Closed && <Button
-        style={{
-          backgroundColor: 'transparent',
-          border: 'none',
-        }}
-        onClick={openModal}
-      >
-        <Image
-          src={props.owner ? edit : review}
-          width={props.owner ? 25 : 40}
-          height={props.owner ? 25 : 40}
-        />
-      </Button>
-    }
+
+      {props.advert.status !== AdvertStatus.Closed && (
+        <Button
+          style={{
+            backgroundColor: 'transparent',
+            border: 'none',
+          }}
+          onClick={openModal}
+        >
+          <Image
+            src={props.owner ? edit : review}
+            width={props.owner ? 25 : 40}
+            height={props.owner ? 25 : 40}
+          />
+        </Button>
+      )}
       {showAdvertModal && (
         <EditAdvertModal
           isShowing={showAdvertModal}

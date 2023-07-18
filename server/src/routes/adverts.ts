@@ -38,5 +38,4 @@ advertRouter
   .route('/getCategoriesByStore/:store')
   .get(protect, getCategoriesByStore);
 
-
 advertRouter.route('/prioritizeAdvert/:advert').get(protect, prioritizeAdvert);

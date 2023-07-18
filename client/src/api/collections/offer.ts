@@ -7,7 +7,7 @@ export enum OfferStatus {
   ACCEPTED = 'Accepted',
   REJECTED = 'Rejected',
   CANCELED_OUT_OF_STOCK = 'Canceled - Out of Stock',
-  CANCELED_USER = 'Canceled'
+  CANCELED_USER = 'Canceled',
 }
 
 export interface Offer {

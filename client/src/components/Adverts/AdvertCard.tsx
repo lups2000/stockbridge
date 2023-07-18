@@ -98,7 +98,7 @@ export const AdvertCard: FC<AdvertCardProps> = (props) => {
             width: props.icon ? 200 : 160,
             height: 150,
             objectFit: 'cover',
-            borderRadius: 8
+            borderRadius: 8,
           }}
         />
       </div>
@@ -120,15 +120,10 @@ export const AdvertCard: FC<AdvertCardProps> = (props) => {
             {truncatedName}
           </BodyText>
           <ColoredLine
-           
             width={30}
-           
             height={3}
-           
             color={palette.advertCardLine}
-           
             marginTop={-10}
-         
           />
         </div>
         <div

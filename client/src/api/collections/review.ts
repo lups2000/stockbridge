@@ -65,7 +65,9 @@ export async function getReviewsByAdvert(advertId: string): Promise<Review[]> {
   );
 }
 
-export async function getReviewsByReviewee(store: string): Promise<PopulatedReview[]> {
+export async function getReviewsByReviewee(
+  store: string,
+): Promise<PopulatedReview[]> {
   return await apiClient.get<PopulatedReview[]>(
     `/reviews/getReviewsByReviewee/${store}`,
     {

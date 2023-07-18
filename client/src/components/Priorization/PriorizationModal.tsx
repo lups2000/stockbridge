@@ -4,7 +4,6 @@ import { useNavigate } from 'react-router-dom';
 import { prioritizeAdvert } from '../../api/collections/advert';
 import { LoginContext } from '../../contexts/LoginContext';
 
-
 import { palette } from '../../utils/colors';
 import { BodyText } from '../Text/BodyText';
 import { Tickets } from './Tickets';
@@ -19,7 +18,7 @@ const PriorizationModal: FC<PriorizationModalProps> = (props) => {
   const navigate = useNavigate();
   const handleBoost = async () => {
     try {
-      await prioritizeAdvert(props.advertID)
+      await prioritizeAdvert(props.advertID);
       props.onClose(true);
     } catch (error) {
       console.log(error);

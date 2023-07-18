@@ -14,7 +14,7 @@ import { palette } from '../utils/colors';
 import { UserIconDropdown } from './UserIconDropdown';
 import { CategoriesDropdown } from './CategoriesDropdown';
 import useMediaQuery from '../hooks/useMediaQuery';
-import "./override.css"
+import './override.css';
 
 /**
  * This component represents the navbarBS of our website.
@@ -36,7 +36,7 @@ export function Navbar() {
       const currentUrl = window.location.pathname;
       if (currentUrl === '/adverts') {
         search.set('q', searchInput);
-        setSearch(search,{replace: true});
+        setSearch(search, { replace: true });
       } else {
         navigate(`/adverts?q=${searchInput}`);
       }
@@ -48,7 +48,7 @@ export function Navbar() {
       return;
     } else {
       search.delete('q');
-      setSearch(search,{replace: true});
+      setSearch(search, { replace: true });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchInput]);
@@ -106,7 +106,7 @@ export function Navbar() {
                 onChange={(e) => setSearchInput(e.target.value)}
                 onKeyDown={(e) => {
                   if (e.key === 'Enter') {
-                    e.preventDefault()
+                    e.preventDefault();
                     handleSearchClick();
                   }
                 }}

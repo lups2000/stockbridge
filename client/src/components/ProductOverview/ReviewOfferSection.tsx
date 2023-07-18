@@ -1,7 +1,6 @@
 import { FC } from 'react';
 import { BodyText } from '../Text/BodyText';
 
-
 type ReviewOfferSectionProps = {
   children: any;
   section: string;

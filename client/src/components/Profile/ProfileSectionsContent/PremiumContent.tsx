@@ -123,8 +123,7 @@ const PremiumContent = () => {
 
   const plans = subscriptionPlans.map((obj, i) => {
     return (
-      
-        <Card
+      <Card
         key={obj.header}
         header={obj.header}
         price={obj.price}
@@ -143,7 +142,6 @@ const PremiumContent = () => {
         disabled={obj.disabled}
         mutedText={obj.mutedText}
       />
-     
     );
   });
 
@@ -177,7 +175,8 @@ const PremiumContent = () => {
             <Alert variant="secondary">
               <>
                 <b>Current Time Period:{'   '}</b>
-                  {user?.subscription?.from.toString().slice(0,10)} - {user?.subscription?.to.toString().slice(0,10)}
+                {user?.subscription?.from.toString().slice(0, 10)} -{' '}
+                {user?.subscription?.to.toString().slice(0, 10)}
               </>
             </Alert>
           )}

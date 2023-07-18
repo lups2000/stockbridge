@@ -16,13 +16,13 @@ const Types = mongoose.Schema.Types;
 const ColorSchema = new mongoose.Schema<Color>({
   name: {
     type: Types.String,
-    required: [false, 'please add the color name']
-  }, 
+    required: [false, 'please add the color name'],
+  },
   hex: {
     type: Types.String,
-    required: [false]
-  }
-})
+    required: [false],
+  },
+});
 const advertSchema = new mongoose.Schema<Advert>({
   productname: {
     type: Types.String,
@@ -177,12 +177,19 @@ advertSchema.pre('save', async function (next) {
 advertSchema.pre('findOneAndUpdate', async function (next) {
   const thisAdvert = this.getUpdate() as Advert;
 
-  if (!Object.getOwnPropertyNames(thisAdvert).some(property => (property != 'prioritized') && (property != 'id') )) {
+  if (
+    !Object.getOwnPropertyNames(thisAdvert).some(
+      (property) => property != 'prioritized' && property != 'id',
+    )
+  ) {
     const fetchedAdvert = await advertModel.findById(thisAdvert.id);
 
-    const concernedUser = await userModel.findOneAndUpdate({_id: fetchedAdvert?.store}, {
-      $inc: {prioritisationTickets: -1}
-    });
+    const concernedUser = await userModel.findOneAndUpdate(
+      { _id: fetchedAdvert?.store },
+      {
+        $inc: { prioritisationTickets: -1 },
+      },
+    );
   }
   next();
 });

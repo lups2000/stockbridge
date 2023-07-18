@@ -206,7 +206,6 @@ const StoreDetailsForm: React.FC = () => {
     }
   };
 
-
   return (
     <>
       <Form onSubmit={handleSubmit} className={'m-2'}>

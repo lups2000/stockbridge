@@ -15,7 +15,7 @@ const ContentTab: React.FC<Props> = ({ children }) => {
         flex: 'column',
         gap: 10,
         minWidth: '5em',
-        minHeight: '5em'
+        minHeight: '5em',
       }}
     >
       {children}

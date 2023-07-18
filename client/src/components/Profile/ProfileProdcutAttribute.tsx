@@ -8,28 +8,37 @@ type ProfileProdcutAttributeProps = {
   border?: boolean;
   margin?: string;
   fontSize?: string;
-  highlight? : string;
+  highlight?: string;
 };
-const ProfileProdcutAttribute: React.FC<ProfileProdcutAttributeProps> = (props) => {
+const ProfileProdcutAttribute: React.FC<ProfileProdcutAttributeProps> = (
+  props,
+) => {
   const textRef = useRef<HTMLDivElement | null>(null);
 
-    useEffect(() => {
-        const node = textRef.current;
-        if (node) {
-          // Reset the div's content before adding new text
-          node.innerHTML = '';
-            const textNode = document.createTextNode(props.value as string);
-            node.appendChild(textNode);
+  useEffect(() => {
+    const node = textRef.current;
+    if (node) {
+      // Reset the div's content before adding new text
+      node.innerHTML = '';
+      const textNode = document.createTextNode(props.value as string);
+      node.appendChild(textNode);
 
-            if (props.highlight && props.highlight?.trim()) {
-                const innerHTML = node.innerHTML;
-                const index = innerHTML.toLocaleLowerCase().indexOf(props.highlight.toLowerCase());
-                if (index >= 0) { 
-                    node.innerHTML = innerHTML.substring(0, index) + "<span class='highlight'>" + innerHTML.substring(index, index+props.highlight.length) + "</span>" + innerHTML.substring(index + props.highlight.length);
-                }
-            }
+      if (props.highlight && props.highlight?.trim()) {
+        const innerHTML = node.innerHTML;
+        const index = innerHTML
+          .toLocaleLowerCase()
+          .indexOf(props.highlight.toLowerCase());
+        if (index >= 0) {
+          node.innerHTML =
+            innerHTML.substring(0, index) +
+            "<span class='highlight'>" +
+            innerHTML.substring(index, index + props.highlight.length) +
+            '</span>' +
+            innerHTML.substring(index + props.highlight.length);
         }
-    }, [props.value, props.highlight]);
+      }
+    }
+  }, [props.value, props.highlight]);
   return (
     <div
       style={{
@@ -39,7 +48,7 @@ const ProfileProdcutAttribute: React.FC<ProfileProdcutAttributeProps> = (props) 
         textAlign: 'start',
         alignItems: 'center',
         justifyContent: 'center',
-        width: "100%",
+        width: '100%',
         gap: '10%',
         color: 'black',
       }}
@@ -53,30 +62,30 @@ const ProfileProdcutAttribute: React.FC<ProfileProdcutAttributeProps> = (props) 
       >
         {props.name}:
       </BodyText>
-      {
-        props.highlight ? <div
-        className="font-link"
-        style={{
-          width: '100%',
-          fontFamily: 'Poppins',
-          font: 'light',
-          fontSize: props.fontSize ? props.fontSize : '20px',
-          marginBottom: "0.8em"
-        }}
-        ref={textRef}
-      >
-      </div> : <BodyText
-        style={{
-          width: '100%',
-          fontFamily: 'Poppins',
-          font: 'light',
-          fontSize: props.fontSize ? props.fontSize : '20px',
-        }}
-      >
-        {`${props?.value} ${props?.unit ? props?.unit : ''}`}
-      </BodyText>
-      }
-      
+      {props.highlight ? (
+        <div
+          className="font-link"
+          style={{
+            width: '100%',
+            fontFamily: 'Poppins',
+            font: 'light',
+            fontSize: props.fontSize ? props.fontSize : '20px',
+            marginBottom: '0.8em',
+          }}
+          ref={textRef}
+        ></div>
+      ) : (
+        <BodyText
+          style={{
+            width: '100%',
+            fontFamily: 'Poppins',
+            font: 'light',
+            fontSize: props.fontSize ? props.fontSize : '20px',
+          }}
+        >
+          {`${props?.value} ${props?.unit ? props?.unit : ''}`}
+        </BodyText>
+      )}
     </div>
   );
 };

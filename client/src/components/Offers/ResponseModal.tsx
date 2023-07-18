@@ -7,8 +7,6 @@ import outofstock from '../../assets/out-of-stock.svg';
 import { Image } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 
-
-
 export enum ResponseType {
   SUCCESSFUL_OFFER_CREATION,
   UNSUCCESSFUL_OFFER_CREATION,
@@ -21,7 +19,7 @@ export enum ResponseType {
   UNSUCCESSFUL_ADVERT_CREATION,
   SUCCESSFUL_ADVERT_UPDATE,
   UNSUCCESSFUL_ADVERT_UPDATE,
-  OUT_OF_ADVERTS
+  OUT_OF_ADVERTS,
 }
 
 type OfferCreationModalProps = {
@@ -34,24 +32,34 @@ type OfferCreationModalProps = {
 const ResponseModal: FC<OfferCreationModalProps> = (props) => {
   const creation =
     props.responseType === ResponseType.SUCCESSFUL_OFFER_CREATION ||
-    props.responseType === ResponseType.UNSUCCESSFUL_OFFER_CREATION || props.responseType === ResponseType.OUT_OF_STOCK || props.responseType === ResponseType.SUCCESSFUL_ADVERT_CREATION ||
-    props.responseType === ResponseType.UNSUCCESSFUL_ADVERT_CREATION || props.responseType === ResponseType.OUT_OF_ADVERTS;
+    props.responseType === ResponseType.UNSUCCESSFUL_OFFER_CREATION ||
+    props.responseType === ResponseType.OUT_OF_STOCK ||
+    props.responseType === ResponseType.SUCCESSFUL_ADVERT_CREATION ||
+    props.responseType === ResponseType.UNSUCCESSFUL_ADVERT_CREATION ||
+    props.responseType === ResponseType.OUT_OF_ADVERTS;
   const acceptance =
     props.responseType === ResponseType.SUCCESSFUL_OFFER_ACCEPTANCE ||
     props.responseType === ResponseType.UNSUCCESSFUL_OFFER_ACCEPTANCE;
-  const update = props.responseType === ResponseType.SUCCESSFUL_ADVERT_UPDATE || props.responseType === ResponseType.UNSUCCESSFUL_ADVERT_UPDATE
+  const update =
+    props.responseType === ResponseType.SUCCESSFUL_ADVERT_UPDATE ||
+    props.responseType === ResponseType.UNSUCCESSFUL_ADVERT_UPDATE;
   const successfull = [
     ResponseType.SUCCESSFUL_OFFER_ACCEPTANCE,
     ResponseType.SUCCESSFUL_OFFER_CREATION,
     ResponseType.SUCCESSFUL_OFFER_REJECTION,
     ResponseType.SUCCESSFUL_ADVERT_CREATION,
-    ResponseType.SUCCESSFUL_ADVERT_UPDATE
+    ResponseType.SUCCESSFUL_ADVERT_UPDATE,
   ].includes(props.responseType);
 
-  const advert = props.responseType === ResponseType.SUCCESSFUL_ADVERT_CREATION || props.responseType === ResponseType.UNSUCCESSFUL_ADVERT_CREATION || props.responseType === ResponseType.SUCCESSFUL_ADVERT_UPDATE || props.responseType === ResponseType.UNSUCCESSFUL_ADVERT_UPDATE || props.responseType === ResponseType.OUT_OF_ADVERTS;
+  const advert =
+    props.responseType === ResponseType.SUCCESSFUL_ADVERT_CREATION ||
+    props.responseType === ResponseType.UNSUCCESSFUL_ADVERT_CREATION ||
+    props.responseType === ResponseType.SUCCESSFUL_ADVERT_UPDATE ||
+    props.responseType === ResponseType.UNSUCCESSFUL_ADVERT_UPDATE ||
+    props.responseType === ResponseType.OUT_OF_ADVERTS;
   const outOfStock = props.responseType === ResponseType.OUT_OF_STOCK;
   const outOfAdverts = props.responseType === ResponseType.OUT_OF_ADVERTS;
-  const navigate = useNavigate(); 
+  const navigate = useNavigate();
   return (
     <Modal
       show={props.isShowing}
@@ -81,14 +89,16 @@ const ResponseModal: FC<OfferCreationModalProps> = (props) => {
                 fontWeight: 600,
                 fontSize: 20,
               }}
-            > {
-                advert ? 'Advert ' : 'Offer '
-              }
+            >
+              {' '}
+              {advert ? 'Advert ' : 'Offer '}
               {acceptance
                 ? 'Acceptance'
                 : creation
                 ? 'Creation'
-                : update? 'Update' : 'Rejection'}
+                : update
+                ? 'Update'
+                : 'Rejection'}
             </BodyText>
           </Col>
         </Row>
@@ -98,32 +108,39 @@ const ResponseModal: FC<OfferCreationModalProps> = (props) => {
             alignItems: 'center',
             justifyContent: 'center',
             textAlign: 'center',
-            gap: '0.8em'
+            gap: '0.8em',
           }}
         >
-            <Image
-              src={successfull ? success : outOfStock ? outofstock: fail}
-              style={{
-                width: '20%',
-              }}
-            ></Image>
-            <BodyText
-              style={{
-                textAlign: 'center'
-              }}
-            >
-              {advert ? 'Advert ' : 'Offer '}
-              was {successfull ? 'successfully' : 'not successfully'}{' '}
-              {acceptance ? 'accepted' : creation ? 'created' : update ? 'updated' : 'rejected'}!
-            </BodyText>
-            {outOfStock && <BodyText>
-              The product has run out of stock!
-            </BodyText>}
-            {outOfAdverts && <BodyText>
+          <Image
+            src={successfull ? success : outOfStock ? outofstock : fail}
+            style={{
+              width: '20%',
+            }}
+          ></Image>
+          <BodyText
+            style={{
+              textAlign: 'center',
+            }}
+          >
+            {advert ? 'Advert ' : 'Offer '}
+            was {successfull ? 'successfully' : 'not successfully'}{' '}
+            {acceptance
+              ? 'accepted'
+              : creation
+              ? 'created'
+              : update
+              ? 'updated'
+              : 'rejected'}
+            !
+          </BodyText>
+          {outOfStock && <BodyText>The product has run out of stock!</BodyText>}
+          {outOfAdverts && (
+            <BodyText>
               You have reached the limit number of adverts for this week!
-            </BodyText>}
-            {
-              !advert && <BodyText
+            </BodyText>
+          )}
+          {!advert && (
+            <BodyText
               style={{
                 textDecoration: 'underline',
                 cursor: 'pointer',
@@ -132,9 +149,7 @@ const ResponseModal: FC<OfferCreationModalProps> = (props) => {
             >
               More Info
             </BodyText>
-            }
-              
-            
+          )}
         </Row>
       </Modal.Body>
     </Modal>
