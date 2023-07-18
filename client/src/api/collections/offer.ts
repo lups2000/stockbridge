@@ -14,7 +14,7 @@ export interface Offer {
   _id?: string;
   price?: number;
   quantity?: number;
-  status?: OfferStatus;
+  status: OfferStatus;
   message?: string;
   createdAt?: Date;
   offeror?: string;
@@ -26,7 +26,7 @@ export interface PopulatedOffer {
   _id?: string;
   price?: number;
   quantity?: number;
-  status?: OfferStatus;
+  status: OfferStatus;
   message?: string;
   createdAt?: Date;
   offeror?: User;
