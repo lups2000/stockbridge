@@ -1,8 +1,13 @@
 import advertModel from '../models/Advert';
 import type { Advert, ProductCategory } from '../entities/advertEntity';
+import { AdvertStatus } from '../entities/advertEntity';
 import logger from '../config/logger';
 import { AppError } from '../utils/errorHandler';
-import { ObjectId } from 'mongodb';
+import {
+  SubscriptionStatus,
+  SubscriptionType,
+  User,
+} from '../entities/userEntity';
 
 const serviceName = 'advertServices';
 
@@ -12,7 +17,10 @@ const serviceName = 'advertServices';
  * @param populate determines if the result should be populated
  * @returns Promise containing the advert
  */
-export const findAdvertById = async (id: string, populate = true): Promise<Advert> => {
+export const findAdvertById = async (
+  id: string,
+  populate = true,
+): Promise<Advert> => {
   logger.debug(`${serviceName}: Finding advert with id: ${id}`);
   const advert = await populateResult(advertModel.findById(id), populate);
 
@@ -28,10 +36,52 @@ export const findAdvertById = async (id: string, populate = true): Promise<Adver
 /**
  * create an advert
  * @param advert
+ * @param user
  * @returns Promise containing the advert
  */
-export const createAdvert = async (advert: Advert) => {
+export const createAdvert = async (advert: Advert, user: User) => {
   logger.debug(`${serviceName}: Creating advert ${advert.productname}`);
+
+  // Get count of adverts from the last week
+  const count = await advertModel.countDocuments({
+    createdAt: {
+      $gte: new Date(new Date().getTime() - 7 * 24 * 60 * 60 * 1000),
+    },
+    store: user.id,
+    status: AdvertStatus.Ongoing,
+  });
+
+  logger.debug(`${serviceName}: Count of adverts from the last week: ${count}`);
+
+  let advertLimit = 3;
+  if (
+    user.subscription &&
+    user.subscription.status === SubscriptionStatus.ACTIVE
+  ) {
+    switch (user.subscription.type) {
+      case SubscriptionType.BASIC_SUBSCRIPTION:
+        advertLimit = 10;
+        break;
+      case SubscriptionType.ADVANCED_SUBSCRIPTION:
+        advertLimit = 15;
+        break;
+      case SubscriptionType.PREMIUM_SUBSCRIPTION:
+        advertLimit = Number.MAX_SAFE_INTEGER;
+        break;
+      default:
+        advertLimit = 3;
+    }
+  }
+
+  if (count >= advertLimit) {
+    logger.error(`${serviceName}: Advert limit reached for user ${user.id}`);
+    throw new AppError(
+      `Advert limit reached`,
+      `Advert limit reachedAdvert limit of ${advertLimit} reached`,
+      400,
+    );
+  }
+
   return await advertModel.create(advert);
 };
 
@@ -43,7 +93,7 @@ export const createAdvert = async (advert: Advert) => {
  */
 export const updateAdvert = async (id: string, advert: Advert) => {
   logger.debug(`${serviceName}: Updating advert with id: ${id} `);
-  return advertModel.findOneAndUpdate({_id: id}, advert, {
+  return advertModel.findOneAndUpdate({ _id: id }, advert, {
     new: true,
     runValidators: true,
   });
@@ -106,16 +156,15 @@ export const findAllAdverts = async (
   }*/
 
   if (search) {
-    const regex = new RegExp(search, "i"); //The "i" stands for case-insensitive matching.
+    const regex = new RegExp(search, 'i'); //The "i" stands for case-insensitive matching.
     queryFilter = {
       ...queryFilter,
       $or: [
         { description: { $regex: regex } },
         { productname: { $regex: regex } },
-      ]
+      ],
     };
   }
-
 
   if (radius) {
     queryFilter = {
@@ -268,7 +317,6 @@ export const getPopularAdverts = async (limit: number) => {
     { $limit: limit },
   ]);
 };
-
 
 /**
  * Populates the referenced elements in a document
