@@ -51,6 +51,7 @@ const AdvertsTabContent: FC<AdvertsTabContentProps> = (props) => {
                   prioritized={item.prioritized}
                   creationDate={item.createdAt}
                   fancyEffect={true}
+                  category={item.category}
                 />
               </Col>
             ))}
