@@ -59,7 +59,7 @@ export function Navbar() {
         expand="lg"
         sticky="top"
         style={{ backgroundColor: palette.pageBG }}
-        className='no-padding-right'
+        //className='no-padding-right'
       >
         <Container fluid>
           <NavbarBS.Brand>

@@ -15,13 +15,13 @@ type ProductDetailsTopBarProps = {
 const ProductDetailsTopBar: React.FC<ProductDetailsTopBarProps> = (props) => {
   const [showAdvertModal, setShowAdvertModal] = useState(false);
   const [showReviewModal, setShowReviewModal] = useState(false);
+
   const closeModal = () => {
     if (props.owner) {
       setShowAdvertModal(false);
     } else {
       setShowReviewModal(false);
     }
-    window.location.reload();
   };
   const openModal = () => {
     if (props.owner) {
@@ -30,22 +30,24 @@ const ProductDetailsTopBar: React.FC<ProductDetailsTopBarProps> = (props) => {
       setShowReviewModal(true);
     }
   };
+
   return (
     <div
       style={{
+        width: '100%',
         display: 'flex',
         flexDirection: 'row',
-        width: '100%',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        paddingTop: 15,
+        paddingLeft: 15,
       }}
     >
       <BodyText
         style={{
-          fontFamily: 'poppins',
-          color: 'black',
-          width: '100%',
-          fontSize: '36px',
+          fontSize: 30,
           fontWeight: 600,
-          paddingLeft: '10px',
+          marginBottom: 0,
         }}
       >
         PRODUCT DETAILS
@@ -53,14 +55,16 @@ const ProductDetailsTopBar: React.FC<ProductDetailsTopBarProps> = (props) => {
      
      {props.advert.status !== AdvertStatus.Closed && <Button
         style={{
-          width: 'full',
-          marginRight: '20px',
           backgroundColor: 'transparent',
-          borderColor: 'transparent',
+          border: 'none',
         }}
         onClick={openModal}
       >
-        <Image src={props.owner ? edit : review}></Image>
+        <Image
+          src={props.owner ? edit : review}
+          width={props.owner ? 25 : 40}
+          height={props.owner ? 25 : 40}
+        />
       </Button>
     }
       {showAdvertModal && (

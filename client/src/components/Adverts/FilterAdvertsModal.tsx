@@ -70,7 +70,7 @@ export const FilterAdvertsModal: FC<FilterAdvertsModalProps> = (props) => {
 
   const handleConfirm = () => {
     saveResults();
-    if (selectedCategories) {
+    if (selectedCategories && selectedCategories.length > 0) {
       const categories = selectedCategories.join(',');
       search.set('category[in]', categories);
       setSearch(search, { replace: true });

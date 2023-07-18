@@ -36,10 +36,10 @@ export const AdvertsPagination: FC = () => {
   useEffect(() => {
     const cat = search.get('category[in]');
     if (cat !== null && cat !== category) {
-      if(cat.includes(",")){ //it means that we have selected more than one category
-        setCategory("Adverts selected categories")
-      }
-      else{
+      if (cat.includes(',')) {
+        //it means that we have selected more than one category
+        setCategory('Adverts selected categories');
+      } else {
         setCategory(cat);
       }
     } else {
@@ -76,7 +76,9 @@ export const AdvertsPagination: FC = () => {
       'quantity[lte]',
       'radius',
 
-      'sort',
+      'q', //search
+
+      'sort', //sorting
     ];
     const paramKeys = Array.from(search.keys());
 

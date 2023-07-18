@@ -12,6 +12,10 @@ export const palette = {
   placeholderTextBootstrap: '#808080',
   borderBoostrap: '#cccccc',
 
+  openOffer: '#6097f0',
+  rejectedOffer: '#d16260',
+  acceptedOffer: '#52b399',
+  canceledOffer: '#e8ad64',
   advertCardBg: "#FFF5F8",
   advertCardLine: "#4ECBA9",
   advertCardButton: "#233EC9"

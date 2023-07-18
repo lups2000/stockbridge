@@ -51,7 +51,7 @@ export const Filters: FC = () => {
   };
 
   const handleConfirm = () => {
-    if (selectedCategories) {
+    if (selectedCategories && selectedCategories.length > 0) {
       const categories = selectedCategories.join(',');
       search.set('category[in]', categories);
       setSearch(search, { replace: true });

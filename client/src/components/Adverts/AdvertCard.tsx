@@ -68,7 +68,7 @@ export const AdvertCard: FC<AdvertCardProps> = (props) => {
         transition: props.fancyEffect
           ? 'transform 0.3s, box-shadow 0.3s'
           : undefined,
-        cursor: 'pointer',
+        cursor: props.fancyEffect ? 'pointer' : undefined,
         backgroundColor: props.fancyEffect ? palette.advertCardBg : 'white',
       }}
       onMouseEnter={
@@ -89,13 +89,19 @@ export const AdvertCard: FC<AdvertCardProps> = (props) => {
       }
       onClick={props.fancyEffect ? handleAdvertClick : undefined}
     >
-      <Image
-        src={props.icon || defaultIcon}
-        alt="image"
-        width={props.icon ? 200 : 160}
-        height={props.icon ? 200 : 150}
-        style={{ marginTop: 30 }}
-      />
+      <div style={{ paddingLeft: 50, paddingRight: 50 }}>
+        <Image
+          src={props.icon || defaultIcon}
+          alt="image"
+          style={{
+            marginTop: 30,
+            width: props.icon ? 200 : 160,
+            height: 150,
+            objectFit: 'cover',
+            borderRadius: 8
+          }}
+        />
+      </div>
       <div
         style={{
           display: 'flex',
@@ -114,10 +120,15 @@ export const AdvertCard: FC<AdvertCardProps> = (props) => {
             {truncatedName}
           </BodyText>
           <ColoredLine
+           
             width={30}
+           
             height={3}
+           
             color={palette.advertCardLine}
+           
             marginTop={-10}
+         
           />
         </div>
         <div
@@ -159,7 +170,7 @@ export const AdvertCard: FC<AdvertCardProps> = (props) => {
           border: 'none',
           borderRadius: 0,
         }}
-        onClick={handleAdvertClick}
+        onClick={!props.fancyEffect ? handleAdvertClick : undefined}
       >
         View Advert
       </Button>

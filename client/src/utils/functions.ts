@@ -1,5 +1,7 @@
 // in this file we put the main functions we need
 import { ChangeEvent } from 'react';
+import { OfferStatus } from '../api/collections/offer';
+import { palette } from './colors';
 
 import { AdvertSortCriteria, ExtraCriteria, OfferSortCriteria } from '../components/ContentTabs/Tabs';
 import { PopulatedOffer } from '../api/collections/offer';
@@ -122,6 +124,20 @@ export function checkExpirationDateAvert(date: string) {
   return false;
 }
 
+export function colorMap(status: OfferStatus): string {
+  switch (status) {
+    case OfferStatus.OPEN:
+      return palette.openOffer;
+    case OfferStatus.ACCEPTED:
+      return palette.acceptedOffer;
+    case OfferStatus.REJECTED:
+      return palette.rejectedOffer;
+    case OfferStatus.CANCELED_USER || OfferStatus.CANCELED_OUT_OF_STOCK:
+      return palette.canceledOffer;
+    default:
+      return '';
+  }
+}
 
   /**
    * Filters the displayed offers based on the search text and sorts it based on 

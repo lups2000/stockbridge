@@ -175,7 +175,6 @@ advertSchema.pre('save', async function (next) {
 });
 
 advertSchema.pre('findOneAndUpdate', async function (next) {
-  
   const thisAdvert = this.getUpdate() as Advert;
 
   if (!Object.getOwnPropertyNames(thisAdvert).some(property => (property != 'prioritized') && (property != 'id') )) {

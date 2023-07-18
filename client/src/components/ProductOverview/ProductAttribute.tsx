@@ -1,5 +1,5 @@
+import React, { FC } from 'react';
 import _ from 'lodash';
-import React from 'react';
 import { BodyText } from '../Text/BodyText';
 
 type ProductAttributeProps = {
@@ -10,9 +10,9 @@ type ProductAttributeProps = {
   border?: boolean;
   margin?: string;
   fontSize?: string;
+  width?: number
 };
     
-
 function mapAttributeName(name: string): string {
   switch (name) {
     case 'color': 
@@ -51,7 +51,8 @@ function mapAttributeName(name: string): string {
           return 'Recyclable';
           case 'energyClass':
           return 'Energy Class';
-
+    case 'category':
+      return 'Category'
     default: 
       return '';
 
@@ -74,7 +75,7 @@ function getUnit(attribute: string) {
       return '€';
   }
 }
-const ProductAttribute: React.FC<ProductAttributeProps> = (props) => {
+const ProductAttribute: FC<ProductAttributeProps> = (props) => {
   const unit = getUnit(props.name);
   const border = !_.isNil(unit)
   return (
@@ -85,16 +86,15 @@ const ProductAttribute: React.FC<ProductAttributeProps> = (props) => {
         flexDirection: 'row',
         textAlign: 'start',
         alignItems: 'center',
+        gap: 30,
         justifyContent: 'center',
         color: 'black',
       }}
     >
       <BodyText
         style={{
-          fontWeight: 'bold',
-          fontFamily: 'Poppins',
-          width: '150px',
-          fontSize: props.fontSize ? props.fontSize : '20px',
+          fontWeight: 600,
+          fontSize: props.fontSize ? props.fontSize : 20,
         }}
       >
         {mapAttributeName(props.name)}:

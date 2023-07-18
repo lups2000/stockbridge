@@ -1,6 +1,5 @@
 import { FC, useContext, useState } from 'react';
 import { Button, Col, Form, Modal, Row, Image } from 'react-bootstrap';
-import { useNavigate } from 'react-router-dom';
 import { PopulatedAdvert } from '../../api/collections/advert';
 import {
   createOffer,
@@ -42,14 +41,12 @@ function colorMap(status: OfferStatus): string {
 }
 const OfferModal: FC<OfferContentProps> = (props) => {
   const { user } = useContext(LoginContext);
-  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     quantity: props.offer?.quantity ? props.offer?.quantity : 0,
     price: props.offer?.price ? props.offer?.price : 0,
     createdAt: new Date(),
   } as Offer);
-
-  const offeree = user?._id === (props.offer as PopulatedOffer).offeree?._id;
+  const offeree = props.offer?.offeree && user?._id === (props.offer as PopulatedOffer).offeree?._id;
   const handleChange = (event: any) => {
     event.preventDefault();
     const { name, value } = event.target;
@@ -396,7 +393,7 @@ const OfferModal: FC<OfferContentProps> = (props) => {
                   <Form.Label>
                     {props.advert?.type === 'Sell' ? 'Seller' : 'Buyer'}:{' '}
                     {props.storeName}
-                    {Ratings(props.rating ? props.rating : 0)}
+                    {Ratings(props.rating ? props.rating : 0, 'red')}
                   </Form.Label>
                 </Row>
                 <Row>
@@ -515,7 +512,7 @@ const OfferModal: FC<OfferContentProps> = (props) => {
             </Row>
           </Modal.Body>
           {(!props.offer ||
-            !['Rejected', 'Canceled', 'Canceled - Out of Stock'].includes(
+            !['Rejected','Accepted', 'Canceled', 'Canceled - Out of Stock'].includes(
               props.offer.status!,
             )) && (
             <Modal.Footer
@@ -568,18 +565,6 @@ const OfferModal: FC<OfferContentProps> = (props) => {
                     Confirm
                   </Button>
                 </>
-              )}
-              {offeree && props.offer?.status === 'Accepted' && (
-                <Button
-                  className="text-white"
-                  onClick={() => navigate('/userInfo')}
-                  style={{
-                    background: palette.green,
-                    borderColor: palette.green,
-                  }}
-                >
-                  See Order
-                </Button>
               )}
             </Modal.Footer>
           )}
