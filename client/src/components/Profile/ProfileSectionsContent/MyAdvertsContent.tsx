@@ -10,6 +10,8 @@ import {
 } from '../../../api/collections/advert';
 import NoResultsMessage from '../NoResultsMessage';
 import { LoginContext } from '../../../contexts/LoginContext';
+import { FadeLoader } from 'react-spinners';
+import { palette } from '../../../utils/colors';
 function sortClosed(adverts: (Advert|PopulatedAdvert)[]) {
   return adverts.sort((a,b) => {
     if (a.status === AdvertStatus.Closed && b.status !== AdvertStatus.Closed) {
@@ -33,11 +35,12 @@ const MyAdvertsContent: React.FC = () => {
 
   const [searchText, setSearchText] = useState("");
   const [sortCriteria, setSortCriteria] = useState<AdvertSortCriteria | OfferSortCriteria>(AdvertSortCriteria.NONE);
+  const [isLoading, setIsLoading] = useState(false);
   // False == order asc , True == order desc
   const [sortOrder, setSortOrder] = useState(false);
-
-
   useEffect(() => {
+    setIsLoading(true);
+    console.log(user)
     const fetchData = async () => {
       try {
         if (user) {
@@ -54,7 +57,11 @@ const MyAdvertsContent: React.FC = () => {
       }
     };
     fetchData();
-  }, [user]);
+    if (sellingAdverts && buyingAdverts) {
+      setIsLoading(false)
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
 
 
@@ -88,8 +95,20 @@ const MyAdvertsContent: React.FC = () => {
       }
       return sortOrder ? result : result.reverse();
   }
-
+  
   return (
+    isLoading ? (
+      <FadeLoader
+        color={palette.subSectionsBgAccent}
+        style={{
+          position: 'absolute',
+          left: '45%',
+          right: '45%',
+          top: '45%',
+          bottom: '45%',
+        }}
+      />
+    ) : 
     <div>
       <Tabs isOffer = {false} searchText={searchText} setSearchText={setSearchText} sortCriteria={sortCriteria} setSortCriteria={setSortCriteria} sortOrder= {sortOrder} setSortOrder={setSortOrder}>
         <ContentTab title="Selling Ads">
@@ -100,7 +119,7 @@ const MyAdvertsContent: React.FC = () => {
                 productId={product._id}
                 imageUrl={product.imageurl}
                 name={product.productname}
-                date={product.purchaseDate?.toString().substring(0, 10)}
+                date={product.createdAt?.toString().substring(0, 10)}
                 quantity={product.quantity}
                 price={product.price}
                 highlight={searchText}
@@ -117,7 +136,7 @@ const MyAdvertsContent: React.FC = () => {
                 productId={product._id}
                 imageUrl={product.imageurl}
                 name={product.productname}
-                date={product.purchaseDate?.toString().substring(0, 10)}
+                date={product.createdAt!.toString().substring(0, 10)}
                 quantity={product.quantity}
                 price={product.price}
                 highlight={searchText}

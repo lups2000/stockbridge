@@ -30,7 +30,6 @@ const ProfileProdcutAttribute: React.FC<ProfileProdcutAttributeProps> = (props) 
             }
         }
     }, [props.value, props.highlight]);
-
   return (
     <div
       style={{
