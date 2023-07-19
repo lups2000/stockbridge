@@ -139,6 +139,7 @@ const OfferModal: FC<OfferContentProps> = (props) => {
             if (newOffer.status === OfferStatus.CANCELED_OUT_OF_STOCK) {
               setOutOfStockError(true);
               setShowOutOfStockModal(true);
+              setShowCreationModal(false)
               setAcceptanceError(false);
               setCreationError(false);
               setRejectionError(false);

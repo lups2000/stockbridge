@@ -191,6 +191,7 @@ export const ProductDetails: FC<ProductDetailsProps> = (props) => {
                                   : value
                               }
                               color={value.hex}
+                              padding={'5px 25px'}
                             ></ProductAttribute>
                           </div>
                         )
