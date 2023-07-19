@@ -16,7 +16,6 @@ type LeftTabProps = {
  */
 export function ProfileSectionTab(props: LeftTabProps) {
   const matches = useMediaQuery('(min-width: 1527px)');
-  const tooSmall = useMediaQuery('(min-width: 1070px)');
   return (
     <li
       className="profile-section-tab"

@@ -35,7 +35,6 @@ const StoreDetailsModal: FC<StoreDetailsProps> = (props) => {
     const fetchReviews = async () => {
       try {
         const fetchedReviews = await getReviewsByReviewee(props.store);
-        console.log(fetchedReviews);
         setReviews(fetchedReviews);
       } catch (error) {
         console.log('an error happened');
