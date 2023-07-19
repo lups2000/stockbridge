@@ -35,14 +35,11 @@ const OfferBarUserProfile: React.FC<OfferBarUserProfileProps> = (props) => {
     setShowModal(true);
   };
   const [offerer, setOfferer] = useState({} as PopulatedUser);
-  const [offeree, setOfferee] = useState({} as PopulatedUser);
   useEffect(() => {
     const fetchData = async () => {
       try {
         const fetchedOfferor = await getStore(props.offer.offeror!);
         setOfferer(fetchedOfferor);
-        const fetchedOfferee = await getStore(props.offer.offeree!);
-        setOfferee(fetchedOfferee);
       } catch (error) {
         console.error(error);
       }

@@ -1,9 +1,9 @@
-import React, { CSSProperties, FC, useState } from 'react';
+import { CSSProperties, FC, useState } from 'react';
 import { BodyText } from '../../Text/BodyText';
 import { Ratings } from '../../Ratings';
 import { OfferStatus, PopulatedOffer } from '../../../api/collections/offer';
 import { OfferModal } from '../../Offers/OfferModal';
-import { AdvertType, PopulatedAdvert } from '../../../api/collections/advert';
+import { PopulatedAdvert } from '../../../api/collections/advert';
 import outOfStock from '../../../assets/out-of-stock.svg';
 interface OfferCardProps {
   status: OfferStatus;
