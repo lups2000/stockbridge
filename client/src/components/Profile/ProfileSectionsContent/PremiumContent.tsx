@@ -40,7 +40,7 @@ const subscriptionPlans: CardProps[] = [
   {
     header: 'Basic Subscription',
     price: 10,
-    features: ['10 Adverts/Week', '3 Priority Adverts/Week', '24/7 Support'],
+    features: ['10 Adverts/Week', '12 Priority Adverts/Month', '24/7 Support'],
     buttonLabel: 'Purchase',
     outline: true,
     disabled: false,
@@ -49,7 +49,7 @@ const subscriptionPlans: CardProps[] = [
   {
     header: 'Advanced Subscription',
     price: 15,
-    features: ['15 Adverts/Week', '5 Priority Adverts/Week', '24/7 Support'],
+    features: ['15 Adverts/Week', '20 Priority Adverts/Month', '24/7 Support'],
     buttonLabel: 'Purchase',
     outline: true,
     disabled: false,
@@ -60,7 +60,7 @@ const subscriptionPlans: CardProps[] = [
     price: 30,
     features: [
       'Unlimited Adverts/Week',
-      '10 Priority Adverts/Week',
+      '40 Priority Adverts/Month',
       '24/7 Support',
     ],
     buttonLabel: 'Purchase',
