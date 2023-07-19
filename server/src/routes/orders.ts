@@ -15,10 +15,14 @@ export const orderRouter = Router();
 
 orderRouter.route('/getUserSpecificOrders').get(protect, getUserSpecificOrders);
 
-orderRouter.route('/getOrderByOffer/:offer').get(getOrdersOfOffer);
+orderRouter.route('/getOrderByOffer/:offer').get(protect, getOrdersOfOffer);
 
 orderRouter.route('/cancelOrder/:id').put(protect, cancelOrder);
 
-orderRouter.route('/').post(postOrder).get(getOrders);
+orderRouter.route('/').post(protect, postOrder).get(protect, getOrders);
 
-orderRouter.route('/:id').get(getOrder).put(putOrder).delete(deleteOrder);
+orderRouter
+  .route('/:id')
+  .get(protect, getOrder)
+  .put(protect, putOrder)
+  .delete(protect, deleteOrder);
