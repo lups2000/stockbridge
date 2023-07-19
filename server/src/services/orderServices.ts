@@ -109,17 +109,6 @@ export const cancelOrder = async (id: string, user: User) => {
     }
   }
 
-  // await advertModel.findByIdAndUpdate(
-  //   offer.advert,
-  //   {
-  //     $inc: { quantity: offer.quantity },
-  //     status: AdvertStatus.Ongoing,
-  //   },
-  //   {
-  //     new: true,
-  //   },
-  // )!;
-
   await orderModel.findByIdAndUpdate(
     id,
     {

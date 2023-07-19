@@ -15,14 +15,18 @@ const serviceName = 'advertServices';
  * Find an advert by id
  * @param id
  * @param populate determines if the result should be populated
+ * @param hide hides details about the advert from non logged in users
  * @returns Promise containing the advert
  */
 export const findAdvertById = async (
   id: string,
   populate = true,
+  hide = false,
 ): Promise<Advert> => {
   logger.debug(`${serviceName}: Finding advert with id: ${id}`);
-  const advert = await populateResult(advertModel.findById(id), populate);
+  let query = hide ? advertModel.findById(id).select('productname prioritized quantity description price imageurl createdAt category')
+    : advertModel.findById(id);
+  const advert = await populateResult(query, populate);
 
   if (!advert) {
     logger.error(`${serviceName}: Advert not found with id of ${id}`);
@@ -145,7 +149,7 @@ export const findAllAdverts = async (
   radius?: number,
   center?: number[],
   queryStr?: string,
-  populate = true,
+  populate = false,
 ) => {
   logger.debug(`${serviceName}: Finding all adverts with pagination`);
   logger.debug(`${serviceName}: Query string: ${queryStr}`);
@@ -241,7 +245,8 @@ export const findAllAdverts = async (
   const total = await advertModel.countDocuments(queryFilter);
 
   query = query.skip(startIndex).limit(limit);
-
+  // Selects the fields that can be displayed for all users
+  query = query.select('productname prioritized quantity description status price imageurl createdAt category');
   const results = await query;
 
   const pagination: {
@@ -280,7 +285,7 @@ export const getAdvertsByCategory = async (
     `${serviceName}: Requesting all adverts with category: ${category}`,
   );
   return await populateResult(
-    advertModel.find({ category: category }),
+    advertModel.find({ category: category }).select('productname prioritized quantity status description price imageurl createdAt category'),
     populate,
   );
 };
@@ -319,6 +324,11 @@ export const getPopularCategories = async (limit: number) => {
   ]);
 };
 
+/**
+ * Retrieves the advert Ids of the top "limit" (as number) ads of each category.
+ * @param limit 
+ * @returns 
+ */
 export const getPopularAdverts = async (limit: number) => {
   logger.debug(`${serviceName}: Requesting most popular adverts`);
   return advertModel.aggregate([
