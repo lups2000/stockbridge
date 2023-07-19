@@ -224,12 +224,9 @@ export const getPopularCategories = asyncHandler(
 export const getPopularAdverts = asyncHandler(
   async (req: AuthenticatedRequest, res: Response) => {
     const limit = req.query.limit ? parseInt(req.query.limit as string) : 10;
-    const adverts = await getPopularAdvertsService(limit);
-    const results = [] as Advert[];
-    for (const advert of adverts) {
-      results.push(await findAdvertById(advert._id));
-    }
-    res.status(200).json({ results });
+    const popularAdvertsIds = await getPopularAdvertsService(limit);
+    const popularAdverts = await Promise.all(popularAdvertsIds.map(x => findAdvertById(x._id, false, true)));    
+    res.status(200).json({ popularAdverts });
   },
 );
 
