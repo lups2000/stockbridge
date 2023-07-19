@@ -4,8 +4,8 @@ import { Review } from './review';
 import { User } from './user';
 
 export enum AdvertType {
-  Sell,
-  Ask,
+  Sell = 'Sell',
+  Ask = 'Ask',
 }
 
 export enum AdvertStatus {

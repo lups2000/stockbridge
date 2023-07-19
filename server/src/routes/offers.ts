@@ -1,5 +1,7 @@
 import { Router } from 'express';
 import {
+  acceptOffer,
+  cancelOffer,
   deleteOffer,
   getOffer,
   getOffers,
@@ -9,6 +11,7 @@ import {
   getUserSpecificOffers,
   postOffer,
   putOffer,
+  rejectOffer,
 } from '../controllers/offerController';
 import { protect } from '../middlewares/authMiddleware';
 
@@ -27,7 +30,9 @@ offerRouter
 offerRouter.route('/getUserSpecificOffers').get(protect, getUserSpecificOffers);
 
 offerRouter.route('/getOffersByAdvert/:advert').get(protect, getOffersByAdvert);
-
+offerRouter.route('/rejectOffer/:user').put(protect, rejectOffer)
+offerRouter.route('/acceptOffer/:user').put(protect, acceptOffer)
+offerRouter.route('/cancelOffer/:user').put(protect, cancelOffer)
 offerRouter
   .route('/:id')
   .get(protect, getOffer)
