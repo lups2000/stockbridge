@@ -355,81 +355,43 @@ const OfferModal: FC<OfferContentProps> = (props) => {
               style={{
                 justifyContent: 'center',
                 alignItems: 'center',
+                height: '70%'
               }}
             >
-              {props.advert?.imageurl && (
-                <Col>
+                <Col style={{
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  position: 'relative',
+                  bottom: '1em'
+                }}>
+                <Form.Label
+                    style={{
+                      fontSize: '24px',
+                      fontWeight: 400,
+                      marginBottom: '1em'
+                    }}
+                  >
+                    {props.advert?.productname}
+                  </Form.Label>
                   <Image
                     style={{
-                      width: '160px',
-                      height: '160px',
-                      borderRadius: '60px',
+                      width: '10em',
+                      height: '10em',
+                      borderRadius: 60,
                     }}
                     src={props.advert?.imageurl}
                   />
                 </Col>
-              )}
+
+              {
+                props.offer &&
               <Col
                 style={{
                   marginLeft: props.advert?.imageurl ? '' : '100px',
                 }}
               >
-                <Row>
-                  <Form.Label
-                    style={{
-                      fontSize: '24px',
-                      fontWeight: 400,
-                    }}
-                  >
-                    {props.advert?.productname}
-                  </Form.Label>
-                </Row>
-                {props.advert?.color && (
-                  <Row
-                    style={{
-                      marginTop: '10px',
-                    }}
-                  >
-                    <Form.Label>Color: {props.advert?.color.name}</Form.Label>
-                  </Row>
-                )}
-                {props.advert?.purchaseDate && (
-                  <Row
-                    style={{
-                      marginTop: '10px',
-                    }}
-                  >
-                    <Form.Label>
-                      Purchase Date:
-                      {' ' +
-                        props.advert?.purchaseDate.toString().substring(0, 10)}
-                    </Form.Label>
-                  </Row>
-                )}
-                {props.advert?.expirationDate && (
-                  <Row
-                    style={{
-                      marginTop: '10px',
-                    }}
-                  >
-                    <Form.Label>
-                      Expiration Date:
-                      {' ' +
-                        props.advert?.expirationDate
-                          .toString()
-                          .substring(0, 10)}
-                    </Form.Label>
-                  </Row>
-                )}
-              </Col>
-              <Col>
-                <Row>
-                  <Form.Label>
-                    {props.advert?.type === 'Sell' ? 'Seller' : 'Buyer'}:{' '}
-                    {props.storeName}
-                    {Ratings(props.rating ? props.rating : 0, 'red')}
-                  </Form.Label>
-                </Row>
                 <Row>
                   <Form.Group
                     style={{
@@ -447,6 +409,131 @@ const OfferModal: FC<OfferContentProps> = (props) => {
                       }}
                     >
                       Price {props.offer ? '' : '(€)'}
+                    </Form.Label>
+                    {props.offer ? (
+                      <Form.Label
+                        style={{
+                          color: palette.gray,
+                          font: 'bold',
+                          fontWeight: 600,
+                        }}
+                      >
+                        {props.advert?.price} €
+                      </Form.Label>
+                    ) : (
+                      <div
+                        style={{
+                          display: 'flex',
+                          flexDirection: 'column',
+                          gap: '10%',
+                        }}
+                      >
+                        <Form.Control
+                          style={{
+                            width: '60%',
+                            color: palette.gray,
+                          }}
+                          type="number"
+                          name="price"
+                          value={formData.price}
+                          min={0}
+                          onChange={handleChange}
+                          required
+                          isInvalid={!!errors.price}
+                        />
+                        <Form.Control.Feedback type="invalid">
+                          {errors.price}
+                        </Form.Control.Feedback>
+                      </div>
+                    )}
+                  </Form.Group>
+                </Row>
+                <Row>
+                  <Form.Group
+                    style={{
+                      display: 'flex',
+                      flexDirection: 'row',
+                      alignItems: 'center',
+                      alignContent: 'center',
+                      gap: '10%',
+                      marginTop: '10px',
+                    }}
+                  >
+                    <Form.Label
+                      style={{
+                        width: props.offer ? '60px' : '110px',
+                      }}
+                    >
+                      Quantity {props.offer ? '' : '(pcs)'}
+                    </Form.Label>
+                    {props.offer ? (
+                      <Form.Label
+                        style={{
+                          color: palette.gray,
+                          font: 'bold',
+                          fontWeight: 600,
+                        }}
+                      >
+                        {props.advert?.quantity} pcs
+                      </Form.Label>
+                    ) : (
+                      <div
+                        style={{
+                          display: 'flex',
+                          flexDirection: 'column',
+                          gap: '10%',
+                        }}
+                      >
+                        <Form.Control
+                          style={{
+                            width: '60%',
+                            color: palette.gray,
+                          }}
+                          type="number"
+                          name="quantity"
+                          min={1}
+                          value={formData.quantity}
+                          onChange={handleChange}
+                          required
+                          isInvalid={!_.isNil(errors.quantity)}
+                        />
+                        <Form.Control.Feedback type="invalid">
+                          {errors.quantity}
+                        </Form.Control.Feedback>
+                      </div>
+                    )}
+                  </Form.Group>
+                </Row>
+              </Col>
+              }
+              <Col style={{
+                position: 'relative',
+                bottom: '1.7em'
+              }}>
+                <Row>
+                  <Form.Label>
+                    {props.advert?.type === 'Sell' ? 'Buyer' : 'Seller'}:{' '}
+                    {props.storeName}
+                    {Ratings(props.rating ? props.rating : 0, 'red')}
+                  </Form.Label>
+                </Row>
+                <Row>
+                  <Form.Group
+                    style={{
+                      display: 'flex',
+                      flexDirection: 'row',
+                      alignItems: 'center',
+                      alignContent: 'center',
+                      gap: '10%',
+                      marginTop: '10px',
+                    }}
+                  >
+                    <Form.Label
+                      style={{
+                        width: props.offer ? '130px' : '110px',
+                      }}
+                    >
+                     Offered Price {props.offer ? '' : '(€)'}
                     </Form.Label>
                     {props.offer ? (
                       <Form.Label
@@ -499,10 +586,10 @@ const OfferModal: FC<OfferContentProps> = (props) => {
                   >
                     <Form.Label
                       style={{
-                        width: props.offer ? '60px' : '110px',
+                        width: props.offer ? '130px' : '110px',
                       }}
                     >
-                      Quantity {props.offer ? '' : '(pcs)'}
+                     Offered Quantity {props.offer ? '' : '(pcs)'}
                     </Form.Label>
                     {props.offer ? (
                       <Form.Label
