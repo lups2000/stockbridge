@@ -83,7 +83,6 @@ export async function getUserSpecificOffers(
   advertType: string,
   offerType: string,
 ): Promise<PopulatedOffer[]> {
-  console.debug(user, advertType, offerType);
   return await apiClient.get<PopulatedOffer[]>(
     `/offers/getUserSpecificOffers`,
     { withCredentials: true },

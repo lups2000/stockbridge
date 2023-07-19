@@ -1,7 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 import Tabs, {
   AdvertSortCriteria,
-  ExtraCriteria,
   OfferSortCriteria,
 } from '../../ContentTabs/Tabs';
 import ContentTab from '../../ContentTabs/ContentTab';
@@ -23,8 +22,6 @@ import {
   sortedAndFilteredOffers,
   sortedAndFilteredOrders,
 } from '../../../utils/functions';
-import { FadeLoader } from 'react-spinners';
-import { palette } from '../../../utils/colors';
 import LoadingElementsContent from './LoadingElementsContent';
 
 /**

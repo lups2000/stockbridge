@@ -48,7 +48,6 @@ const MyAdvertsContent: React.FC = () => {
   const [sortOrder, setSortOrder] = useState(false);
   useEffect(() => {
     setIsLoading(true);
-    console.log(user);
     const fetchData = async () => {
       try {
         if (user) {
