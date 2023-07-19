@@ -73,6 +73,7 @@ const ProductDetailsTopBar: React.FC<ProductDetailsTopBarProps> = (props) => {
           isShowing={showAdvertModal}
           onClose={closeModal}
           advert={props.advert}
+          editMode={true}
         />
       )}
       {showReviewModal && (

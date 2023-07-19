@@ -9,6 +9,7 @@ import {
   Sizes,
   Options,
   EnergyClass,
+  closeAdvert,
 } from '../../api/collections/advert';
 import { ChromePicker } from 'react-color';
 import { palette } from '../../utils/colors';
@@ -31,6 +32,7 @@ type EditAdvertContentProps = {
   isShowing: boolean;
   onClose: () => void;
   advert?: PopulatedAdvert;
+  editMode: boolean;
 };
 export function groupList(attributeList: string[], n: number): string[][] {
   const groupedList: string[][] = [];
@@ -513,6 +515,20 @@ export const EditAdvertModal: FC<EditAdvertContentProps> = (props) => {
   };
 
   const navigate = useNavigate();
+
+  const handleCloseAdvert = async () => {
+    try {
+      if (props.advert?._id) {
+        await closeAdvert(props.advert?._id);
+        setResponseType(ResponseType.SUCCESSFUL_ADVERT_DELETION);
+        setShowResponseModal(true);
+      }
+    } catch {
+      setResponseType(ResponseType.UNSUCCESSFUL_ADVERT_DELETION);
+      setShowResponseModal(true);
+    }
+  };
+
   const handleSubmit = async () => {
     if (!loggedIn) {
       navigate('/signIn');
@@ -658,12 +674,12 @@ export const EditAdvertModal: FC<EditAdvertContentProps> = (props) => {
       isShowing={showResponseModal}
       advertID={props.advert ? props.advert._id! : advertID}
       onClose={function (responseType: ResponseType): void {
-        if (responseType === ResponseType.SUCCESSFUL_ADVERT_CREATION) {
-          props.onClose();
-          window.location.reload();
-        } else {
-          props.onClose();
+        if (responseType === ResponseType.SUCCESSFUL_ADVERT_DELETION) {
+          navigate('/userInfo'); //redirect user to the userInfo page
         }
+        //in every case we reload the window
+        props.onClose();
+        window.location.reload();
       }}
     />
   ) : (
@@ -957,15 +973,22 @@ export const EditAdvertModal: FC<EditAdvertContentProps> = (props) => {
         </Form>
       </Modal.Body>
       <Modal.Footer>
+        {props.editMode ? (
+          <Button
+            style={{ backgroundColor: palette.subSectionsBgAccent, border: 'none' }}
+            onClick={handleCloseAdvert}
+          >
+            Close Advert
+          </Button>
+        ) : undefined}
         <Button
-          className="text-white"
           style={{
-            background: palette.subSectionsBgAccent,
-            borderColor: palette.subSectionsBgAccent,
+            background: palette.green,
+            border: "none",
           }}
           onClick={handleSubmit}
         >
-          Submit
+          {props.editMode ? 'Save' : 'Submit'}
         </Button>
       </Modal.Footer>
     </Modal>
