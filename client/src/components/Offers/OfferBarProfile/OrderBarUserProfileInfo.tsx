@@ -30,15 +30,16 @@ const OrderBarUserProfileInfo: React.FC<OrderBarUserProfileInfoProps> = (
         return ['bi-check-circle', '#4ECBA9', 'Received'];
       case OrderStatus.PAYMENT_PENDING:
         return ['bi-credit-card', '#4285F4', 'Payment pending'];
-      case OrderStatus.SHIPMENT_PENDING:
-        return ['bi-bi-truck', '#4285F4', 'Shipment pending'];
+      case OrderStatus.CANCELLED:
+        return ['bi-x-circle', '#4285F4', 'Cancelled'];
       default:
         return ['bi-credit-card', '#4285F4', 'Payment pending'];
     }
   };
 
   // The status of the order is pending.
-  const isPendingOrder = props.order.status === OrderStatus.PAYMENT_PENDING;
+  const isPendingOrder =
+    !props.order.status || props.order.status === OrderStatus.PAYMENT_PENDING;
 
   const [isHovered, setIsHovered] = useState(false);
   const handleMouseOver = () => {
@@ -51,9 +52,11 @@ const OrderBarUserProfileInfo: React.FC<OrderBarUserProfileInfoProps> = (
 
   return (
     <li
-      className={`product-bar offer ${isPendingOrder ? "order-bar-clickable" : "non-clickable"} row`}
+      className={`product-bar offer ${
+        isPendingOrder ? 'order-bar-clickable' : 'non-clickable'
+      } row`}
       style={{ backgroundColor: 'white' }}
-      onClick= {props.onClick}
+      onClick={isPendingOrder ? props.onClick : undefined}
     >
       <div className="product-image col-2">
         <Image

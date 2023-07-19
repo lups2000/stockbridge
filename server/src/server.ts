@@ -23,7 +23,9 @@ import bodyParser from 'body-parser';
 import storeRouter from './routes/stores';
 import { offerRouter } from './routes/offers';
 import { orderRouter } from './routes/orders';
-import stripe, { stripeRouter } from './routes/stripe';
+import { stripeRouter } from './routes/stripe';
+import './utils/mailService';
+
 connectDB();
 
 const app: Express = express();

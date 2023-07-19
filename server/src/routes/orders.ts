@@ -1,5 +1,6 @@
 import { Router } from 'express';
 import {
+  cancelOrder,
   deleteOrder,
   getOrder,
   getOrders,
@@ -15,6 +16,8 @@ export const orderRouter = Router();
 orderRouter.route('/getUserSpecificOrders').get(protect, getUserSpecificOrders);
 
 orderRouter.route('/getOrderByOffer/:offer').get(getOrdersOfOffer);
+
+orderRouter.route('/cancelOrder/:id').put(protect, cancelOrder);
 
 orderRouter.route('/').post(postOrder).get(getOrders);
 

@@ -2,7 +2,7 @@ import { Offer } from './offerEntity';
 
 export enum OrderStatus {
   PAYMENT_PENDING = 'PAYMENT_PENDING',
-  SHIPMENT_PENDING = 'SHIPMENT_PENDING',
+  CANCELLED = 'CANCELLED',
   RECEIVED = 'RECEIVED',
 }
 

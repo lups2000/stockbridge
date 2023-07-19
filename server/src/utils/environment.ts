@@ -16,6 +16,11 @@ const env = cleanEnv(process.env, {
   STRIPE_SECRET_KEY: str(),
   STRIPE_WEBHOOK_SECRET: str(),
   MAPQUEST_API_KEY: str(),
+  SMTP_HOST: str({ default: 'smtp.gmail.com' }),
+  SMTP_PORT: num({ default: 587 }),
+  SMTP_USER: str({ default: 'aseteam40' }),
+  SMTP_PASSWORD: str({ default: 'ibvgrokidsuartuh' }),
+  FROM_EMAIL: str({ default: 'aseteam40@gmail.com' }),
 });
 
 export default env;
