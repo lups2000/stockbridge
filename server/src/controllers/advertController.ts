@@ -10,6 +10,7 @@ import {
   getPopularCategories as getPopularCategoriesService,
   getPopularAdverts as getPopularAdvertsService,
   getAdvertsByStore,
+  closeAdvertService
 } from '../services/advertServices';
 import { AuthenticatedRequest } from '../middlewares/authMiddleware';
 import {
@@ -21,6 +22,7 @@ import { ObjectId } from 'mongodb';
 import { AppError } from '../utils/errorHandler';
 import { User } from '../entities/userEntity';
 import advertModel from '../models/Advert';
+import logger from '../config/logger';
 
 /**
  * This method returns an advert by id   *
@@ -134,7 +136,23 @@ export const deleteAdvert = asyncHandler(
     const { id } = req.params;
     await _checkUserCanEditOrDeleteAdvert(req);
     const advert = await delAdvert(id);
-    res.status(204).json(advert);
+    res.status(200).json(advert);
+  },
+);
+
+/**
+ * This method closes an advert by id   *
+ * @param req - The request object
+ * @param res - The response object
+ * @returns closed advert object.
+ */
+export const closeAdvert = asyncHandler(
+  async (req: AuthenticatedRequest, res: Response) => {
+    logger.warn("close advert method")
+    const { id } = req.params;
+    await _checkUserCanEditOrDeleteAdvert(req);
+    const advert = await closeAdvertService(id);
+    res.status(200).json(advert);
   },
 );
 
@@ -225,6 +243,8 @@ async function _checkUserCanEditOrDeleteAdvert(req: AuthenticatedRequest) {
   const { id } = req.params;
   const advert = await findAdvertById(id, false);
   // The user editing or deleting must be the one who created the advert.
+  logger.warn(advert.store)
+  logger.warn(userId)
   if (!advert.store.equals(userId)) {
     throw new AppError(
       'Not authorized to edit this route',
@@ -234,8 +254,8 @@ async function _checkUserCanEditOrDeleteAdvert(req: AuthenticatedRequest) {
   }
   if (advert.status !== AdvertStatus.Ongoing) {
     throw new AppError(
-      'Not authorized to edit this advert',
-      'Not authorized to edit this advert',
+      'Error in editing the advert',
+      'Error in editing the advert',
       600,
     );
   }

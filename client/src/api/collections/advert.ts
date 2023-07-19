@@ -198,6 +198,12 @@ export async function deleteAdvert(id: string): Promise<void> {
   });
 }
 
+export async function closeAdvert(id: string): Promise<void> {
+  return await apiClient.put<void>(`/adverts/closeAdvertById/${id}`, {
+    withCredentials: true,
+  });
+}
+
 export async function getAdvertsByUser(
   store: string | undefined,
 ): Promise<Advert[]> {
