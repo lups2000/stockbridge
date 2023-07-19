@@ -2,8 +2,8 @@ import { ObjectId } from 'mongodb';
 import { Location } from './userEntity';
 
 export enum AdvertType {
-  Sell,
-  Ask,
+  Sell = 'Sell',
+  Ask = 'Ask',
 }
 
 export enum AdvertStatus {

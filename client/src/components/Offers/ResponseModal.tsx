@@ -22,12 +22,15 @@ export enum ResponseType {
   SUCCESSFUL_ADVERT_DELETION, // New attribute
   UNSUCCESSFUL_ADVERT_DELETION, // New attribute
   OUT_OF_ADVERTS,
+  SUCCESSFUL_CANCEL,
+  UNSUCCESSFUL_CANCEL
 }
 
 type OfferCreationModalProps = {
   responseType: ResponseType;
   isShowing: boolean;
   advertID?: string;
+  buying?: boolean;
   onClose: (responseType: ResponseType) => void;
 };
 
@@ -45,6 +48,8 @@ const ResponseModal: FC<OfferCreationModalProps> = (props) => {
   const update =
     props.responseType === ResponseType.SUCCESSFUL_ADVERT_UPDATE ||
     props.responseType === ResponseType.UNSUCCESSFUL_ADVERT_UPDATE;
+  const cancel = props.responseType === ResponseType.SUCCESSFUL_CANCEL ||
+  props.responseType === ResponseType.UNSUCCESSFUL_CANCEL;
 
   const deletion =
     props.responseType === ResponseType.SUCCESSFUL_ADVERT_DELETION ||
@@ -55,6 +60,7 @@ const ResponseModal: FC<OfferCreationModalProps> = (props) => {
     ResponseType.SUCCESSFUL_OFFER_REJECTION,
     ResponseType.SUCCESSFUL_ADVERT_CREATION,
     ResponseType.SUCCESSFUL_ADVERT_UPDATE,
+    ResponseType.SUCCESSFUL_CANCEL,
     ResponseType.SUCCESSFUL_ADVERT_DELETION,
   ].includes(props.responseType);
 
@@ -108,7 +114,7 @@ const ResponseModal: FC<OfferCreationModalProps> = (props) => {
                 ? 'Creation'
                 : update
                 ? 'Update'
-                : 'Rejection'}
+                : cancel ? 'Cancel' : 'Rejection'}
             </BodyText>
           </Col>
         </Row>
@@ -140,6 +146,7 @@ const ResponseModal: FC<OfferCreationModalProps> = (props) => {
               ? 'created'
               : update
               ? 'updated'
+              : cancel ? 'canceled'
               : deletion
               ? 'deleted'
               : 'rejected'}
@@ -157,7 +164,7 @@ const ResponseModal: FC<OfferCreationModalProps> = (props) => {
                 textDecoration: 'underline',
                 cursor: 'pointer',
               }}
-              onClick={() => navigate('/userInfo')}
+              onClick={() => navigate(`/userInfo?${props.buying ? 'Buying' : 'Selling'}`)}
             >
               More Info
             </BodyText>
