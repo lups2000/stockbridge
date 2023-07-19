@@ -767,6 +767,7 @@ export const EditAdvertModal: FC<EditAdvertContentProps> = (props) => {
                 }
                 style={{
                   width: encodedImage ? '100%' : '30%',
+                  maxHeight: 200,
                   objectFit: 'cover',
                   cursor: 'pointer',
                 }}
