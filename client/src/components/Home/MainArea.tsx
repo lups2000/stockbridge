@@ -104,7 +104,7 @@ export function MainArea() {
         </div>
       </div>
       {showModal && (
-        <EditAdvertModal isShowing={showModal} onClose={closeModal} />
+        <EditAdvertModal isShowing={showModal} onClose={closeModal} editMode={false}/>
       )}
     </>
   );

@@ -110,6 +110,21 @@ export const delAdvert = async (id: string) => {
 };
 
 /**
+ * Close an advert
+ * @param id - The ID of the advert to cancel
+ * @returns Promise containing the closed advert
+ */
+export const closeAdvertService = async (id: string) => {
+  logger.debug(`${serviceName}: Close advert with id: ${id}`);
+  const updatedAdvert = await advertModel.findOneAndUpdate(
+    { _id: id },
+    { status: 'Closed' }, // Set the new status -> canceled
+    { new: true, runValidators: true }
+  );
+  return updatedAdvert;
+};
+
+/**
  * Find all adverts
  * @param page page number
  * @param limit number of items per page

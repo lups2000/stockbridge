@@ -11,6 +11,7 @@ import {
   putAdvert,
   getCategoriesByStore,
   prioritizeAdvert,
+  closeAdvert,
 } from '../controllers/advertController';
 import { protect, setUserIfAvailable } from '../middlewares/authMiddleware';
 
@@ -39,3 +40,5 @@ advertRouter
   .get(protect, getCategoriesByStore);
 
 advertRouter.route('/prioritizeAdvert/:advert').get(protect, prioritizeAdvert);
+
+advertRouter.route('/closeAdvertById/:id').get(protect, closeAdvert);

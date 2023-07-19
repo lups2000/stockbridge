@@ -1,4 +1,4 @@
-import { PopulatedAdvert } from '../../api/collections/advert';
+import { AdvertStatus, PopulatedAdvert } from '../../api/collections/advert';
 import { BodyText } from '../Text/BodyText';
 import { ProductAttribute } from './ProductAttribute';
 import { Image } from 'react-bootstrap';
@@ -7,7 +7,7 @@ import { FC, useState, useEffect } from 'react';
 import useMediaQuery from '../../hooks/useMediaQuery';
 import { palette } from '../../utils/colors';
 import { categoryToAttributes, groupList } from './EditAdvertModal';
-
+import closedTag from '../../assets/closed-tag.svg';
 interface ProductDetailsProps {
   advert: PopulatedAdvert;
 }
@@ -108,7 +108,7 @@ export const ProductDetails: FC<ProductDetailsProps> = (props) => {
                     {advert.type ? advert.type : ''}
                   </BodyText>
                 </div>
-                {advert.prioritized ? (
+                {(advert.prioritized && advert.status === AdvertStatus.Ongoing) ? (
                   <div
                     style={{
                       backgroundColor: palette.subSectionsBgAccent,
@@ -227,6 +227,15 @@ export const ProductDetails: FC<ProductDetailsProps> = (props) => {
               </div>
             </div>
           </div>
+          {advert.status === AdvertStatus.Closed && (
+        <Image src={closedTag} style={{
+          width: '11%', 
+          height: '10%',
+          position: 'relative', 
+          top: -40,
+          right: -70
+        }}/>
+          )}
         </div>
       </div>
     </>
