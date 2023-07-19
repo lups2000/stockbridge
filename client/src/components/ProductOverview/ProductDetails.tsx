@@ -35,7 +35,7 @@ export const ProductDetails: FC<ProductDetailsProps> = (props) => {
         style={{
           display: 'flex',
           flexDirection: isColumn ? 'column' : 'row',
-          alignItems: isColumn ? 'center' : 'start',
+          alignItems: 'center',
           gap: 50,
           marginLeft: 30,
           position: 'relative',
@@ -45,7 +45,7 @@ export const ProductDetails: FC<ProductDetailsProps> = (props) => {
           style={{
             display: 'flex',
             flexDirection: isColumn ? 'column' : 'row',
-            alignItems: isColumn ? 'center' : undefined,
+            alignItems: 'center',
             gap: 50,
           }}
         >
@@ -57,7 +57,7 @@ export const ProductDetails: FC<ProductDetailsProps> = (props) => {
               height: 'auto',
               borderRadius: !advert.imageurl ? 30 : undefined,
               borderColor: 'transparent',
-              objectFit: 'cover',
+              objectFit: 'contain',
             }}
             src={advert?.imageurl ? advert?.imageurl : imagePlaceholder}
           />
@@ -149,10 +149,13 @@ export const ProductDetails: FC<ProductDetailsProps> = (props) => {
                 {advert?.description ? advert.description : ''}
               </BodyText>
             </div>
+            <div style={{
+              marginBottom: 30
+            }}>
             <ProductAttribute
               name="category"
               value={advert.category ? advert.category : ''}
-            />
+            /></div>
             {groupList(categoryToAttributes(advert.category!) ?? [], 2).map(
               (g, index) => {
                 return (
@@ -163,7 +166,7 @@ export const ProductDetails: FC<ProductDetailsProps> = (props) => {
                       flexDirection: isColumn ? 'column' : 'row',
                       alignItems: 'start',
                       justifyContent: 'start',
-                      marginTop: '5%',
+                      marginTop: 10,
                       width: 'auto',
                       gap: 50,
                     }}
@@ -206,21 +209,21 @@ export const ProductDetails: FC<ProductDetailsProps> = (props) => {
               style={{
                 display: 'flex',
                 flexDirection: isColumn ? 'column' : 'row',
-                gap: 50,
+                gap: !isColumn ? 50 : 0,
                 alignItems: 'start',
                 justifyContent: 'start',
-                marginTop: '5%',
+                marginTop: 30,
                 width: 'auto',
               }}
             >
-              <div style={{ width: '50%' }}>
+              <div style={{ width: '100%' }}>
                 <ProductAttribute
                   name="quantity"
                   value={advert?.quantity}
                   padding={'5px 25px'}
                 />
               </div>
-              <div style={{ width: '50%' }}>
+              <div style={{ width: '100%' }}>
                 <ProductAttribute
                   name="price"
                   value={advert?.price}
