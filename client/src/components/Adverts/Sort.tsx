@@ -130,7 +130,7 @@ export const Sort: FC = () => {
           alignSelf: 'center',
           background: 'none',
           border: 'none',
-          paddingRight: 0
+          paddingRight: 0,
         }}
         onClick={handleToggleSortOrder}
       >

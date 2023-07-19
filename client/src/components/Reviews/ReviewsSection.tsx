@@ -170,7 +170,7 @@ const ReviewsSection: FC<ReviewsSectionProps> = (props) => {
             alignSelf: 'center',
             background: 'none',
             border: 'none',
-            fontSize: '2em'
+            fontSize: '2em',
           }}
           onClick={handleToggleSortOrder}
         >

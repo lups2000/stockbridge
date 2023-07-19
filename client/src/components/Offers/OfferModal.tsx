@@ -8,7 +8,7 @@ import {
   Offer,
   OfferStatus,
   PopulatedOffer,
-  rejectOffer
+  rejectOffer,
 } from '../../api/collections/offer';
 import { LoginContext } from '../../contexts/LoginContext';
 import { Ratings } from '../Ratings';
@@ -88,7 +88,7 @@ const OfferModal: FC<OfferContentProps> = (props) => {
   const [showOutOfStockModal, setShowOutOfStockModal] = useState(false);
   const [isConsentChecked, setIsConsentChecked] = useState(false);
   const closeModal = (responseType: ResponseType) => {
-    props.onClose()
+    props.onClose();
     switch (responseType) {
       case ResponseType.SUCCESSFUL_OFFER_ACCEPTANCE:
         setShowAcceptanceModal(false);
@@ -125,10 +125,10 @@ const OfferModal: FC<OfferContentProps> = (props) => {
         window.location.reload();
         break;
       case ResponseType.UNSUCCESSFUL_CANCEL:
-          setShowCancelationModal(false);
-          break;
+        setShowCancelationModal(false);
+        break;
       default:
-        console.log("Invalid response type!");
+        console.log('Invalid response type!');
     }
   };
 
@@ -152,7 +152,7 @@ const OfferModal: FC<OfferContentProps> = (props) => {
             if (newOffer.status === OfferStatus.CANCELED_OUT_OF_STOCK) {
               setOutOfStockError(true);
               setShowOutOfStockModal(true);
-              setShowCreationModal(false)
+              setShowCreationModal(false);
               setAcceptanceError(false);
               setCreationError(false);
               setRejectionError(false);
@@ -190,7 +190,7 @@ const OfferModal: FC<OfferContentProps> = (props) => {
   const handleReject = async () => {
     try {
       if (props.offer?._id) {
-        await rejectOffer(props.offer as PopulatedOffer, user?._id!)
+        await rejectOffer(props.offer as PopulatedOffer, user?._id!);
       }
       setShowRejectionModal(true);
     } catch (error) {
@@ -204,7 +204,7 @@ const OfferModal: FC<OfferContentProps> = (props) => {
   const handleAccept = async () => {
     try {
       if (props.offer?._id) {
-        await acceptOffer(props.offer as PopulatedOffer, user?._id!)
+        await acceptOffer(props.offer as PopulatedOffer, user?._id!);
       }
       setShowAcceptanceModal(true);
     } catch (error) {
@@ -216,7 +216,7 @@ const OfferModal: FC<OfferContentProps> = (props) => {
     try {
       if (props.offer?._id) {
         setIsLoading(true);
-        await cancelOffer(props.offer as PopulatedOffer, user?._id!)
+        await cancelOffer(props.offer as PopulatedOffer, user?._id!);
       }
       setShowCancelationModal(true);
       setIsLoading(false);
@@ -280,15 +280,17 @@ const OfferModal: FC<OfferContentProps> = (props) => {
           }
           onClose={closeModal}
         />
-      ) : showCancelationModal ? <ResponseModal
-      isShowing={showCancelationModal}
-      responseType={
-        cancelationError
-          ? ResponseType.UNSUCCESSFUL_CANCEL
-          : ResponseType.SUCCESSFUL_CANCEL
-      }
-      onClose={closeModal}
-    /> : (
+      ) : showCancelationModal ? (
+        <ResponseModal
+          isShowing={showCancelationModal}
+          responseType={
+            cancelationError
+              ? ResponseType.UNSUCCESSFUL_CANCEL
+              : ResponseType.SUCCESSFUL_CANCEL
+          }
+          onClose={closeModal}
+        />
+      ) : (
         <Modal
           show={props.isShowing}
           onHide={() => props.onClose()}
@@ -398,8 +400,9 @@ const OfferModal: FC<OfferContentProps> = (props) => {
                     }}
                   >
                     <Form.Label>
-                      Purchase Date: 
-                      {" "+ props.advert?.purchaseDate.toString().substring(0, 10) }
+                      Purchase Date:
+                      {' ' +
+                        props.advert?.purchaseDate.toString().substring(0, 10)}
                     </Form.Label>
                   </Row>
                 )}
@@ -411,7 +414,10 @@ const OfferModal: FC<OfferContentProps> = (props) => {
                   >
                     <Form.Label>
                       Expiration Date:
-                      {" "+ props.advert?.expirationDate.toString().substring(0, 10)}
+                      {' ' +
+                        props.advert?.expirationDate
+                          .toString()
+                          .substring(0, 10)}
                     </Form.Label>
                   </Row>
                 )}
@@ -539,12 +545,14 @@ const OfferModal: FC<OfferContentProps> = (props) => {
               </Col>
             </Row>
           </Modal.Body>
-          {(!props.offer ||
-              OfferStatus.OPEN === props.offer.status
-            ) && (
+          {(!props.offer || OfferStatus.OPEN === props.offer.status) && (
             <Modal.Footer
               style={{
-                justifyContent: offeree ? 'center' : props.offer ? 'center' : 'space-between',
+                justifyContent: offeree
+                  ? 'center'
+                  : props.offer
+                  ? 'center'
+                  : 'space-between',
               }}
             >
               {offeree && props.offer?.status === OfferStatus.OPEN && (
@@ -571,8 +579,7 @@ const OfferModal: FC<OfferContentProps> = (props) => {
                   Accept
                 </Button>
               )}
-              {
-                !offeree && props.offer?.status === OfferStatus.OPEN && 
+              {!offeree && props.offer?.status === OfferStatus.OPEN && (
                 <Button
                   className="text-white"
                   onClick={handleCancel}
@@ -581,9 +588,9 @@ const OfferModal: FC<OfferContentProps> = (props) => {
                     borderColor: palette.canceledOffer,
                   }}
                 >
-                 Cancel
+                  Cancel
                 </Button>
-              }
+              )}
               {!props.offer && (
                 <>
                   <div>

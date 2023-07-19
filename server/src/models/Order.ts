@@ -43,7 +43,7 @@ export const orderSchema = new mongoose.Schema<Order>({
 orderSchema.pre('findOneAndUpdate', async function (next) {
   const thisOrder = this.getUpdate() as Order;
   try {
-    const thisFilter: {offer: string} = this.getQuery() as {offer: string};
+    const thisFilter: { offer: string } = this.getQuery() as { offer: string };
     const offer = await offerModel.findById(thisFilter.offer);
     if (offer) {
       const advert = await findAdvertById(offer?.advert.toString());
@@ -65,9 +65,11 @@ orderSchema.pre('findOneAndUpdate', async function (next) {
         await advertModel.findByIdAndUpdate(advert.id, advert);
       }
     }
-    next()
+    next();
   } catch (error) {
-    logger.error(`Failed updating advert corresponding to order ${thisOrder.id}`);
+    logger.error(
+      `Failed updating advert corresponding to order ${thisOrder.id}`,
+    );
   }
 });
 

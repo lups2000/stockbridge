@@ -48,8 +48,7 @@ export const TopAdverts: FC = () => {
       .catch((err) => console.log(err));
   }, []);
 
-  return (
-    topAdverts?.length! > 0 ?
+  return topAdverts?.length! > 0 ? (
     <div>
       <BodyText style={{ fontSize: 20, fontWeight: 600, paddingLeft: 25 }}>
         Top Adverts
@@ -90,6 +89,8 @@ export const TopAdverts: FC = () => {
           <FadeLoader color={palette.subSectionsBgAccent} />
         )}
       </div>
-    </div> : <></>
+    </div>
+  ) : (
+    <></>
   );
 };

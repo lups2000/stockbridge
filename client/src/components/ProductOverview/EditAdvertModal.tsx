@@ -675,13 +675,12 @@ export const EditAdvertModal: FC<EditAdvertContentProps> = (props) => {
       advertID={props.advert ? props.advert._id! : advertID}
       onClose={function (responseType: ResponseType): void {
         if (responseType === ResponseType.SUCCESSFUL_ADVERT_CREATION) {
-          navigate(`/productoverview/${advertID}`)
+          navigate(`/productoverview/${advertID}`);
+        } else {
+          if (responseType === ResponseType.SUCCESSFUL_ADVERT_UPDATE) {
+            window.location.reload();
+          }
         }
-          else { 
-            if (responseType === ResponseType.SUCCESSFUL_ADVERT_UPDATE) {
-            window.location.reload()
-            }
-        } 
         if (responseType === ResponseType.SUCCESSFUL_ADVERT_DELETION) {
           navigate('/userInfo'); //redirect user to the userInfo page
         }
@@ -983,7 +982,10 @@ export const EditAdvertModal: FC<EditAdvertContentProps> = (props) => {
       <Modal.Footer>
         {props.editMode ? (
           <Button
-            style={{ backgroundColor: palette.subSectionsBgAccent, border: 'none' }}
+            style={{
+              backgroundColor: palette.subSectionsBgAccent,
+              border: 'none',
+            }}
             onClick={handleCloseAdvert}
           >
             Close Advert
@@ -992,7 +994,7 @@ export const EditAdvertModal: FC<EditAdvertContentProps> = (props) => {
         <Button
           style={{
             background: palette.green,
-            border: "none",
+            border: 'none',
           }}
           onClick={handleSubmit}
         >

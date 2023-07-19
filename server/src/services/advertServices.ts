@@ -119,7 +119,7 @@ export const closeAdvertService = async (id: string) => {
   const updatedAdvert = await advertModel.findOneAndUpdate(
     { _id: id },
     { status: 'Closed' }, // Set the new status -> canceled
-    { new: true, runValidators: true }
+    { new: true, runValidators: true },
   );
   return updatedAdvert;
 };

@@ -35,14 +35,20 @@ export const OffersSection: FC<OffersSectionProps> = (props) => {
     AdvertSortCriteria | OfferSortCriteria
   >(AdvertSortCriteria.NONE);
   const [sortOrder, setSortOrder] = useState(false);
-  const [expandedSections, setExpandedSections] = useState<OfferStatus[]>([OfferStatus.ACCEPTED, OfferStatus.OPEN, OfferStatus.CANCELED_USER, OfferStatus.CANCELED_OUT_OF_STOCK, OfferStatus.REJECTED]);
+  const [expandedSections, setExpandedSections] = useState<OfferStatus[]>([
+    OfferStatus.ACCEPTED,
+    OfferStatus.OPEN,
+    OfferStatus.CANCELED_USER,
+    OfferStatus.CANCELED_OUT_OF_STOCK,
+    OfferStatus.REJECTED,
+  ]);
 
   const offerValues = [
     ...Object.values(AdvertSortCriteria),
     ...Object.values(ExtraCriteria),
   ];
 
-  useEffect(() => {    
+  useEffect(() => {
     const fetchData = async () => {
       if (props.advert._id) {
         try {

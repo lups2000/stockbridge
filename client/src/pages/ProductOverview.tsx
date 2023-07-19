@@ -65,7 +65,7 @@ const ProductOverview = () => {
       }
     };
     fetchData();
-  }, [id, navigate]);
+  }, [id, loggedIn, navigate]);
 
   return (
     <Page>

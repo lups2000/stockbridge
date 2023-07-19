@@ -126,7 +126,9 @@ const Tabs: React.FC<Props> = ({
                 </option>
               ))
             : advertValues.map((item, index) => (
-                <option key={index} value={item}>{item}</option>
+                <option key={index} value={item}>
+                  {item}
+                </option>
               ))}
         </select>
         <Button
