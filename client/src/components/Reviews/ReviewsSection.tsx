@@ -10,8 +10,6 @@ import gridIcon from '../../assets/grid.svg';
 import listIcon from '../../assets/list.svg';
 import useMediaQuery from '../../hooks/useMediaQuery';
 import { BodyText } from '../Text/BodyText';
-import sortingUpIcon from '../../assets/sortUpAlt.svg';
-import sortingDownIcon from '../../assets/sortDownAlt.svg';
 import ReactPaginate from 'react-paginate';
 
 type ReviewsSectionProps = {
@@ -172,14 +170,16 @@ const ReviewsSection: FC<ReviewsSectionProps> = (props) => {
             alignSelf: 'center',
             background: 'none',
             border: 'none',
+            fontSize: '2em'
           }}
           onClick={handleToggleSortOrder}
         >
-          <Image
-            src={!sortOrder ? sortingUpIcon : sortingDownIcon}
-            width={33}
-            height={33}
-          />
+          <i
+            className={sortOrder ? 'bi bi-sort-down' : 'bi bi-sort-up'}
+            style={{
+              color: '#f76c6c',
+            }}
+          ></i>
         </Button>
       </div>
       <div

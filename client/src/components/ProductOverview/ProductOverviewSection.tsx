@@ -60,7 +60,11 @@ const ProductOverviewSection: React.FC<ProductOverviewSectionProps> = (
             position: 'relative',
           }}
         >
-          {props.advert ? <ProductDetails advert={props.advert} /> : undefined}
+          {props.advert ? (
+            <>
+              <ProductDetails advert={props.advert} />
+            </>
+          ) : undefined}
           {!props.advert.prioritized || !owner ? (
             <div>
               <Button

@@ -75,7 +75,7 @@ const leftTabs: {
  */
 export function UserInfo() {
   const history = createBrowserHistory();
-  const { isLoading } = useContext(LoginContext);
+  const { loggedIn, isLoading } = useContext(LoginContext);
   const matches = useMediaQuery('(min-width: 1070px)');
   const tabContext = useContext(SelectedTabContext);
   const navigate = useNavigate();
@@ -84,10 +84,15 @@ export function UserInfo() {
    * Sets the link to the active tab.
    */
   useEffect(() => {
+    // If not logged in, redirect to home page
+    if (!loggedIn) {
+      navigate('/signIn');
+    }
+
     try {
       history.push(`?${leftTabs[tabContext.selectedProfileSection].link}`);
     } catch {
-      navigate('*'); //not found page
+      navigate('/404'); //not found page
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [tabContext.selectedProfileSection]);

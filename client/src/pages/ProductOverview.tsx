@@ -34,7 +34,7 @@ const ProductOverview = () => {
   } as PopulatedAdvert);
   const [store, setStore] = useState({} as PopulatedUser);
 
-  const { user } = useContext(LoginContext);
+  const { loggedIn, user } = useContext(LoginContext);
   const owner = store._id === user?._id;
 
   const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -56,8 +56,12 @@ const ProductOverview = () => {
             }
           }
         }
-      } catch (error) {
-        navigate('*'); //not found page
+      } catch (error: any) {
+        if (!loggedIn) {
+          navigate('/signIn');
+        } else {
+          navigate('/404'); //not found page
+        }
       }
     };
     fetchData();

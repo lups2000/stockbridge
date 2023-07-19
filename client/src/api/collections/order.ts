@@ -67,7 +67,6 @@ export async function getUserSpecificOrders(
   user: string,
   orderType: string,
 ): Promise<PopulatedOrder[]> {
-  console.debug(user, orderType);
   return await apiClient.get<PopulatedOrder[]>(
     `/orders/getUserSpecificOrders`,
     { withCredentials: true },

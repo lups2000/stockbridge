@@ -32,6 +32,22 @@ const OrderBarUserProfile: React.FC<OrderBarUserProfileProps> = (props) => {
     fetchData();
   }, []);
 
+  // Show order modal.
+  const [showModal, setShowModal] = useState(false);
+  const closeModal = () => {
+    setShowModal(false);
+  };
+
+  const closeModalOnSave = () => {
+    setShowModal(false);
+    //change to set Advert
+    window.location.reload();
+  };
+
+  const openModal = () => {
+    setShowModal(true);
+  };
+
   return (
     <>
       <OrderBarUserProfileInfo
@@ -41,7 +57,11 @@ const OrderBarUserProfile: React.FC<OrderBarUserProfileProps> = (props) => {
         offer={props.order.offer as PopulatedOffer}
         outgoing={props.outgoing}
         highlight={props.highlight}
-      />
+        onClick={openModal}
+      />    
+      {showModal && (
+        <span>This is my modal</span>
+      )}
     </>
   );
 };
