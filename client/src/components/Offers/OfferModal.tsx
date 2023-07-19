@@ -8,8 +8,7 @@ import {
   Offer,
   OfferStatus,
   PopulatedOffer,
-  rejectOffer,
-  updateOffer,
+  rejectOffer
 } from '../../api/collections/offer';
 import { LoginContext } from '../../contexts/LoginContext';
 import { Ratings } from '../Ratings';
