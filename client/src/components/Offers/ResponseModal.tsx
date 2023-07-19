@@ -23,7 +23,7 @@ export enum ResponseType {
   UNSUCCESSFUL_ADVERT_DELETION, // New attribute
   OUT_OF_ADVERTS,
   SUCCESSFUL_CANCEL,
-  UNSUCCESSFUL_CANCEL
+  UNSUCCESSFUL_CANCEL,
 }
 
 type OfferCreationModalProps = {
@@ -48,8 +48,9 @@ const ResponseModal: FC<OfferCreationModalProps> = (props) => {
   const update =
     props.responseType === ResponseType.SUCCESSFUL_ADVERT_UPDATE ||
     props.responseType === ResponseType.UNSUCCESSFUL_ADVERT_UPDATE;
-  const cancel = props.responseType === ResponseType.SUCCESSFUL_CANCEL ||
-  props.responseType === ResponseType.UNSUCCESSFUL_CANCEL;
+  const cancel =
+    props.responseType === ResponseType.SUCCESSFUL_CANCEL ||
+    props.responseType === ResponseType.UNSUCCESSFUL_CANCEL;
 
   const deletion =
     props.responseType === ResponseType.SUCCESSFUL_ADVERT_DELETION ||
@@ -114,7 +115,9 @@ const ResponseModal: FC<OfferCreationModalProps> = (props) => {
                 ? 'Creation'
                 : update
                 ? 'Update'
-                : cancel ? 'Cancel' : 'Rejection'}
+                : cancel
+                ? 'Cancel'
+                : 'Rejection'}
             </BodyText>
           </Col>
         </Row>
@@ -146,7 +149,8 @@ const ResponseModal: FC<OfferCreationModalProps> = (props) => {
               ? 'created'
               : update
               ? 'updated'
-              : cancel ? 'canceled'
+              : cancel
+              ? 'canceled'
               : deletion
               ? 'deleted'
               : 'rejected'}
@@ -164,7 +168,9 @@ const ResponseModal: FC<OfferCreationModalProps> = (props) => {
                 textDecoration: 'underline',
                 cursor: 'pointer',
               }}
-              onClick={() => navigate(`/userInfo?${props.buying ? 'Buying' : 'Selling'}`)}
+              onClick={() =>
+                navigate(`/userInfo?${props.buying ? 'Buying' : 'Selling'}`)
+              }
             >
               More Info
             </BodyText>

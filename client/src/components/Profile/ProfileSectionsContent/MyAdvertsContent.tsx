@@ -116,10 +116,9 @@ const MyAdvertsContent: React.FC = () => {
         setSortOrder={setSortOrder}
       >
         <ContentTab title="Selling Ads">
-        {isLoading ? (
+          {isLoading ? (
             <LoadingElementsContent />
-          ) :
-          sellingAdverts.length > 0 ? (
+          ) : sellingAdverts.length > 0 ? (
             sortedAndFilteredItems(sellingAdverts).map((product, index) => {
               return (
                 <ProductInfoBar
@@ -140,10 +139,9 @@ const MyAdvertsContent: React.FC = () => {
           )}
         </ContentTab>
         <ContentTab title="Buying Ads">
-        {isLoading ? (
+          {isLoading ? (
             <LoadingElementsContent />
-          ) :
-          buyingAdverts.length > 0 ? (
+          ) : buyingAdverts.length > 0 ? (
             sortedAndFilteredItems(buyingAdverts).map((product, index) => {
               return (
                 <ProductInfoBar

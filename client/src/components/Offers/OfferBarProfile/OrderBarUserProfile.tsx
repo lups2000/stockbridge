@@ -1,7 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { PopulatedOffer } from '../../../api/collections/offer';
 import { Advert } from '../../../api/collections/advert';
-import { User } from '../../../api/collections/user';
 import {
   cancelOrder as cancelOrderAPI,
   NestedPopulatedOrder,
@@ -25,14 +24,10 @@ type OrderBarUserProfileProps = {
  */
 const OrderBarUserProfile: React.FC<OrderBarUserProfileProps> = (props) => {
   const { user } = useContext(LoginContext);
-  const [offerer, setOfferer] = useState({} as User);
-  const [offeree, setOfferee] = useState({} as User);
   const [isPayer, setIsPayer] = useState<boolean | undefined>(undefined);
   useEffect(() => {
     const fetchData = () => {
       try {
-        setOfferer(props.order.offer?.offeror!);
-        setOfferee(props.order.offer?.offeree!);
         if (props.advert.type === 'Ask') {
           // Offeree is the payer
           setIsPayer(props.order.offer?.offeree?._id === user?._id);
@@ -45,7 +40,12 @@ const OrderBarUserProfile: React.FC<OrderBarUserProfileProps> = (props) => {
       }
     };
     fetchData();
-  }, []);
+  }, [
+    props.advert.type,
+    props.order.offer?.offeree?._id,
+    props.order.offer?.offeror?._id,
+    user?._id,
+  ]);
 
   // Show order modal.
   const [showModal, setShowModal] = useState(false);

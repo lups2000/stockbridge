@@ -108,7 +108,8 @@ export const ProductDetails: FC<ProductDetailsProps> = (props) => {
                     {advert.type ? advert.type : ''}
                   </BodyText>
                 </div>
-                {(advert.prioritized && advert.status === AdvertStatus.Ongoing) ? (
+                {advert.prioritized &&
+                advert.status === AdvertStatus.Ongoing ? (
                   <div
                     style={{
                       backgroundColor: palette.subSectionsBgAccent,
@@ -229,13 +230,16 @@ export const ProductDetails: FC<ProductDetailsProps> = (props) => {
             </div>
           </div>
           {advert.status === AdvertStatus.Closed && (
-        <Image src={closedTag} style={{
-          width: '11%', 
-          height: '10%',
-          position: 'relative', 
-          top: -40,
-          right: -70
-        }}/>
+            <Image
+              src={closedTag}
+              style={{
+                width: '11%',
+                height: '10%',
+                position: 'relative',
+                top: -40,
+                right: -70,
+              }}
+            />
           )}
         </div>
       </div>

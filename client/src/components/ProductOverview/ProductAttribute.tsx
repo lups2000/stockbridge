@@ -118,7 +118,7 @@ const ProductAttribute: FC<ProductAttributeProps> = (props) => {
           justifyContent: 'start',
           font: 'light',
           fontSize: props.fontSize ? props.fontSize : '20px',
-          padding : props.padding ?? undefined
+          padding: props.padding ?? undefined,
         }}
       >
         {`${props?.value ?? ''} ${unit ?? ''}`}

@@ -10,7 +10,7 @@ import {
   getPopularCategories as getPopularCategoriesService,
   getPopularAdverts as getPopularAdvertsService,
   getAdvertsByStore,
-  closeAdvertService
+  closeAdvertService,
 } from '../services/advertServices';
 import { AuthenticatedRequest } from '../middlewares/authMiddleware';
 import {

@@ -37,35 +37,40 @@ export const Filters: FC = () => {
   }, [search.get('category[in]')]);
 
   useEffect(() => {
-    const priceMin = search.get('price[gte]')
-    const priceMax = search.get("price[lte]")
+    const priceMin = search.get('price[gte]');
+    const priceMax = search.get('price[lte]');
     if (priceMax !== null && priceMax && priceMin !== null && priceMin) {
-      setRangePrice([Number(priceMin),Number(priceMax)])
+      setRangePrice([Number(priceMin), Number(priceMax)]);
     } else {
-      setRangePrice([0,1000])
+      setRangePrice([0, 1000]);
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [search.get('price[gte]'),search.get("price[lte]")]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [search.get('price[gte]'), search.get('price[lte]')]);
 
   useEffect(() => {
-    const quantityMin = search.get('quantity[gte]')
-    const quantityMax = search.get("quantity[lte]")
-    if (quantityMax !== null && quantityMax && quantityMin !== null && quantityMin) {
-      setRangeQuantity([Number(quantityMin),Number(quantityMax)])
+    const quantityMin = search.get('quantity[gte]');
+    const quantityMax = search.get('quantity[lte]');
+    if (
+      quantityMax !== null &&
+      quantityMax &&
+      quantityMin !== null &&
+      quantityMin
+    ) {
+      setRangeQuantity([Number(quantityMin), Number(quantityMax)]);
     } else {
-      setRangeQuantity([0,1000])
+      setRangeQuantity([0, 1000]);
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [search.get('quantity[gte]'),search.get("quantity[lte]")]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [search.get('quantity[gte]'), search.get('quantity[lte]')]);
 
   useEffect(() => {
-    const radius = search.get('radius')
+    const radius = search.get('radius');
     if (radius !== null && radius) {
-      setRadius(Number(radius))
+      setRadius(Number(radius));
     } else {
-      setRadius(0)
+      setRadius(0);
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [search.get('radius')]);
 
   const handleReset = () => {
@@ -94,7 +99,7 @@ export const Filters: FC = () => {
     }
 
     if (rangePrice) {
-      console.log(rangePrice)
+      console.log(rangePrice);
       const minPrice = rangePrice[0];
       const maxPrice = rangePrice[1];
       search.set('price[gte]', minPrice.toString());

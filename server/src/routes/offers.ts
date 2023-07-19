@@ -30,9 +30,9 @@ offerRouter
 offerRouter.route('/getUserSpecificOffers').get(protect, getUserSpecificOffers);
 
 offerRouter.route('/getOffersByAdvert/:advert').get(protect, getOffersByAdvert);
-offerRouter.route('/rejectOffer/:user').put(protect, rejectOffer)
-offerRouter.route('/acceptOffer/:user').put(protect, acceptOffer)
-offerRouter.route('/cancelOffer/:user').put(protect, cancelOffer)
+offerRouter.route('/rejectOffer/:user').put(protect, rejectOffer);
+offerRouter.route('/acceptOffer/:user').put(protect, acceptOffer);
+offerRouter.route('/cancelOffer/:user').put(protect, cancelOffer);
 offerRouter
   .route('/:id')
   .get(protect, getOffer)
