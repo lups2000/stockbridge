@@ -36,6 +36,38 @@ export const Filters: FC = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [search.get('category[in]')]);
 
+  useEffect(() => {
+    const priceMin = search.get('price[gte]')
+    const priceMax = search.get("price[lte]")
+    if (priceMax !== null && priceMax && priceMin !== null && priceMin) {
+      setRangePrice([Number(priceMin),Number(priceMax)])
+    } else {
+      setRangePrice([0,1000])
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [search.get('price[gte]'),search.get("price[lte]")]);
+
+  useEffect(() => {
+    const quantityMin = search.get('quantity[gte]')
+    const quantityMax = search.get("quantity[lte]")
+    if (quantityMax !== null && quantityMax && quantityMin !== null && quantityMin) {
+      setRangeQuantity([Number(quantityMin),Number(quantityMax)])
+    } else {
+      setRangeQuantity([0,1000])
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [search.get('quantity[gte]'),search.get("quantity[lte]")]);
+
+  useEffect(() => {
+    const radius = search.get('radius')
+    if (radius !== null && radius) {
+      setRadius(Number(radius))
+    } else {
+      setRadius(0)
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [search.get('radius')]);
+
   const handleReset = () => {
     setSelectedCategories([]);
     setRangePrice([0, 1000]);
@@ -51,6 +83,10 @@ export const Filters: FC = () => {
   };
 
   const handleConfirm = () => {
+    if (selectedCategories.length <= 0) {
+      search.delete('category[in]');
+      setSearch(search, { replace: true });
+    }
     if (selectedCategories && selectedCategories.length > 0) {
       const categories = selectedCategories.join(',');
       search.set('category[in]', categories);
@@ -58,6 +94,7 @@ export const Filters: FC = () => {
     }
 
     if (rangePrice) {
+      console.log(rangePrice)
       const minPrice = rangePrice[0];
       const maxPrice = rangePrice[1];
       search.set('price[gte]', minPrice.toString());
@@ -259,7 +296,7 @@ export const Filters: FC = () => {
         <Form.Control
           style={{ color: '#918383' }}
           type="number"
-          value={radius ?? 0}
+          value={radius !== 0 ? radius : '-'}
           onChange={(event: ChangeEvent<HTMLInputElement>) =>
             setRadius(Number(event.target.value))
           }
