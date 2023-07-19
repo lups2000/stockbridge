@@ -114,29 +114,6 @@ const StoreDetailsForm: React.FC = () => {
     setCountry(e.target.value);
   };
 
-  // const [cardHolder, setCardHolder] = useState(user?.paymentMethod!.name || '');
-  // const [cardNumber, setCardNumber] = useState(
-  //   user?.paymentMethod!.cardNumber || '',
-  // );
-  // const [cvv, setCvv] = useState(user?.paymentMethod!.cvv || '');
-  // const [expiration, setExpiration] = useState('');
-  //
-  // const handleCardHolderChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-  //   setCardHolder(e.target.value);
-  // };
-  //
-  // const handleCardNumberChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-  //   setCardNumber(autocompleteCardNumber(e) ?? '');
-  // };
-  //
-  // const handleCcvChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-  //   setCvv(e.target.value);
-  // };
-  //
-  // const handleExpirationChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-  //   setExpiration(autocompleteExpirationDate(e) ?? '');
-  // };
-
   let notify: () => void;
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -152,14 +129,7 @@ const StoreDetailsForm: React.FC = () => {
         postalCode: postalCode || undefined,
         country: country || undefined,
       };
-      // const paymentMethod: PaymentMethod = {
-      //   name: cardHolder || undefined,
-      //   cardNumber: cardNumber || undefined,
-      //   cvv: cvv || undefined,
-      //   expirationDate: expiration
-      //     ? expDatePaymentToDate(expiration)
-      //     : undefined,
-      // };
+
       const updatedUser: PopulatedUser = {
         name: name || undefined,
         email: email || undefined,
@@ -169,11 +139,6 @@ const StoreDetailsForm: React.FC = () => {
         ...(Object.values(address).some((value) => value !== undefined) && {
           address,
         }),
-        // ...(Object.values(paymentMethod).some(
-        //   (value) => value !== undefined,
-        // ) && {
-        //   paymentMethod,
-        // }),
       };
       try {
         await updateUser(user?._id!, updatedUser);
@@ -212,7 +177,7 @@ const StoreDetailsForm: React.FC = () => {
         <StoreDetailsHeader
           name={{ value: name, onChange: handleNameChange }}
           image={{ value: image, setValue: setImage }}
-          joined={new Date()}
+          joined={ user?.createdAt ?? new Date() }
           onChangeError={(error) => setError(error)}
         />
         <AccountInformationForm

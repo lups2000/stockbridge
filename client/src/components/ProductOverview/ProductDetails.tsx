@@ -170,15 +170,18 @@ export const ProductDetails: FC<ProductDetailsProps> = (props) => {
                   >
                     {g.map((attribute) => {
                       let attributeValue = (advert as any)[attribute];
-                      const value = [
+                      let value = '';
+                      if (attributeValue) {
+                        value = [
                           'purchaseDate',
                           'expirationDate',
                           'createdAt',
                         ].includes(attribute)
                           ? attributeValue.toString().substring(0, 10)
                           : attribute === 'color'
-                          ? (attributeValue.name ? attributeValue.name !== '' ? attributeValue.name : attributeValue.hex : attributeValue.hex)
-                          : attributeValue
+                            ? (attributeValue.name ? attributeValue.name !== '' ? attributeValue.name : attributeValue.hex : attributeValue.hex)
+                            : attributeValue
+                      }
                       return (
                         attribute in advert &&
                         value && value !== '' && (
