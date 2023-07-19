@@ -70,8 +70,9 @@ export const AdvertsGrid: FC<AdvertGridProps> = (props) => {
         <div
           className="row"
           style={{
-            marginLeft: !props.isMapOpen ? 50 : 2,
-            marginRight: !props.isMapOpen ? 50 : 2,
+            marginLeft: 'auto',
+            marginRight: 'auto',
+            paddingLeft: 25,
             display: 'flex',
             justifyContent: !props.isMapOpen && matches ? 'left' : 'center',
             flexWrap: 'wrap',
