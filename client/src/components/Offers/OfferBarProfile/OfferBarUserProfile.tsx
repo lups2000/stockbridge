@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { Offer, PopulatedOffer } from '../../../api/collections/offer';
+import { PopulatedOffer } from '../../../api/collections/offer';
 import { PopulatedAdvert } from '../../../api/collections/advert';
 import { OfferModal } from '../OfferModal';
-import { getStore, User } from '../../../api/collections/user';
+import { User } from '../../../api/collections/user';
 import { OfferBarUserProfileInfo } from './OfferBarUserProfileInfo';
 
 type OfferBarUserProfileProps = {
@@ -33,12 +33,10 @@ const OfferBarUserProfile: React.FC<OfferBarUserProfileProps> = (props) => {
     setShowModal(true);
   };
   const [offerer, setOfferer] = useState({} as User);
-  const [offeree, setOfferee] = useState({} as User);
   useEffect(() => {
     const fetchData = () => {
       try {
         setOfferer(props.offer.offeror!);
-        setOfferee(props.offer.offeree!);
       } catch (error) {
         console.error(error);
       }

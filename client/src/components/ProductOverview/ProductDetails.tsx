@@ -2,12 +2,13 @@ import { AdvertStatus, PopulatedAdvert } from '../../api/collections/advert';
 import { BodyText } from '../Text/BodyText';
 import { ProductAttribute } from './ProductAttribute';
 import { Image } from 'react-bootstrap';
-import imagePlaceholder from '../../assets/product-placeholder.png';
 import { FC, useState, useEffect } from 'react';
 import useMediaQuery from '../../hooks/useMediaQuery';
 import { palette } from '../../utils/colors';
 import { categoryToAttributes, groupList } from './EditAdvertModal';
 import closedTag from '../../assets/closed-tag.svg';
+import { mapIcon } from '../Home/TopCategories';
+
 interface ProductDetailsProps {
   advert: PopulatedAdvert;
 }
@@ -16,8 +17,9 @@ export const ProductDetails: FC<ProductDetailsProps> = (props) => {
   const { advert } = props;
   const [isColumn, setIsColumn] = useState(false);
   const matches2 = useMediaQuery('(min-width: 990px)');
-
+  const [defaultIcon, setDefaultIcon] = useState<string>();
   useEffect(() => {
+    setDefaultIcon(mapIcon(props.advert.category ?? ''));
     const handleResize = () => {
       setIsColumn(window.innerWidth <= 990);
     };
@@ -27,8 +29,8 @@ export const ProductDetails: FC<ProductDetailsProps> = (props) => {
     return () => {
       window.removeEventListener('resize', handleResize);
     };
-  }, []);
-
+  }, [props.advert.category]);
+  console.log(`default: ${defaultIcon}`);
   return (
     <>
       <div
@@ -36,32 +38,27 @@ export const ProductDetails: FC<ProductDetailsProps> = (props) => {
           display: 'flex',
           flexDirection: isColumn ? 'column' : 'row',
           alignItems: 'center',
+          justifyContent: 'start',
           gap: 50,
-          marginLeft: 30,
-          position: 'relative',
+          paddingLeft: 100,
         }}
-      >
-        <div
-          style={{
-            display: 'flex',
-            flexDirection: isColumn ? 'column' : 'row',
-            alignItems: 'center',
-            gap: 50,
-          }}
-        >
+      > 
+          {
+          (advert.imageurl) &&
           <Image
             style={{
               maxWidth: matches2 ? 350 : 200,
               maxHeight: matches2 ? 350 : 200,
               width: '100%',
               height: 'auto',
-              borderRadius: !advert.imageurl ? 30 : undefined,
+              borderRadius: 30,
               borderColor: 'transparent',
               objectFit: 'contain',
             }}
-            src={advert?.imageurl ? advert?.imageurl : imagePlaceholder}
+            src={advert?.imageurl ?? defaultIcon}
           />
-          <div style={{ width: !isColumn ? 700 : undefined }}>
+          }
+          <div style={{ width: !isColumn ? '70em' : undefined }}>
             <div
               style={{
                 display: 'flex',
@@ -155,6 +152,7 @@ export const ProductDetails: FC<ProductDetailsProps> = (props) => {
             <ProductAttribute
               name="category"
               value={advert.category ? advert.category : ''}
+              nameWidth='20%'
             /></div>
             {groupList(categoryToAttributes(advert.category!) ?? [], 2).map(
               (g, index) => {
@@ -195,7 +193,7 @@ export const ProductDetails: FC<ProductDetailsProps> = (props) => {
                                   : value
                               }
                               color={value.hex}
-                              padding={'5px 25px'}
+                              padding={'5px'}
                             ></ProductAttribute>
                           </div>
                         )
@@ -244,7 +242,6 @@ export const ProductDetails: FC<ProductDetailsProps> = (props) => {
               }}
             />
           )}
-        </div>
       </div>
     </>
   );

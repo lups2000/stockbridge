@@ -11,6 +11,7 @@ type ProductAttributeProps = {
   margin?: string;
   fontSize?: string;
   padding?: string;
+  nameWidth?: string;
 };
 
 function mapAttributeName(name: string): string {
@@ -85,13 +86,13 @@ const ProductAttribute: FC<ProductAttributeProps> = (props) => {
         flexDirection: 'row',
         textAlign: 'start',
         alignItems: 'center',
-        gap: 30,
         color: 'black',
       }}
     >
       <BodyText
         style={{
           fontWeight: 600,
+          width: props.nameWidth ?? '40%',
           fontSize: props.fontSize ? props.fontSize : 20,
         }}
       >
@@ -118,7 +119,7 @@ const ProductAttribute: FC<ProductAttributeProps> = (props) => {
           justifyContent: 'start',
           font: 'light',
           fontSize: props.fontSize ? props.fontSize : '20px',
-          padding: props.padding ?? undefined,
+          padding: border ? props.padding : undefined,
         }}
       >
         {`${props?.value ?? ''} ${unit ?? ''}`}
