@@ -9,9 +9,7 @@ import {
 import { OfferCard } from './OfferCard';
 import { BodyText } from '../../Text/BodyText';
 import { colorMap } from '../../../utils/functions';
-import { Button, Image } from 'react-bootstrap';
-import sortingUpIcon from '../../../assets/sortUpAlt.svg';
-import sortingDownIcon from '../../../assets/sortDownAlt.svg';
+import { Button } from 'react-bootstrap';
 import {
   AdvertSortCriteria,
   ExtraCriteria,
@@ -37,14 +35,14 @@ export const OffersSection: FC<OffersSectionProps> = (props) => {
     AdvertSortCriteria | OfferSortCriteria
   >(AdvertSortCriteria.NONE);
   const [sortOrder, setSortOrder] = useState(false);
-  const [expandedSections, setExpandedSections] = useState<OfferStatus[]>([]);
+  const [expandedSections, setExpandedSections] = useState<OfferStatus[]>([OfferStatus.ACCEPTED, OfferStatus.OPEN, OfferStatus.CANCELED_USER, OfferStatus.CANCELED_OUT_OF_STOCK, OfferStatus.REJECTED]);
 
   const offerValues = [
     ...Object.values(AdvertSortCriteria),
     ...Object.values(ExtraCriteria),
   ];
 
-  useEffect(() => {
+  useEffect(() => {    
     const fetchData = async () => {
       if (props.advert._id) {
         try {
@@ -249,14 +247,16 @@ export const OffersSection: FC<OffersSectionProps> = (props) => {
             alignSelf: 'center',
             background: 'none',
             border: 'none',
+            fontSize: '2em',
           }}
           onClick={handleToggleSortOrder}
         >
-          <Image
-            src={!sortOrder ? sortingUpIcon : sortingDownIcon}
-            width={33}
-            height={33}
-          />
+          <i
+            className={sortOrder ? 'bi bi-sort-down' : 'bi bi-sort-up'}
+            style={{
+              color: '#f76c6c',
+            }}
+          ></i>
         </Button>
       </div>
 
