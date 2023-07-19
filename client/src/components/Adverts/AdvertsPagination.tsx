@@ -89,7 +89,7 @@ export const AdvertsPagination: FC = () => {
     if (areParamsValid) {
       return;
     } else {
-      navigate('*'); //not found page
+      navigate('/404'); //not found page
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [search]);
