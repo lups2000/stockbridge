@@ -30,7 +30,6 @@ export const ProductDetails: FC<ProductDetailsProps> = (props) => {
       window.removeEventListener('resize', handleResize);
     };
   }, [props.advert.category]);
-  console.log(`default: ${defaultIcon}`);
   return (
     <>
       <div
@@ -170,10 +169,19 @@ export const ProductDetails: FC<ProductDetailsProps> = (props) => {
                     }}
                   >
                     {g.map((attribute) => {
-                      const value = (advert as any)[attribute];
+                      let attributeValue = (advert as any)[attribute];
+                      const value = [
+                          'purchaseDate',
+                          'expirationDate',
+                          'createdAt',
+                        ].includes(attribute)
+                          ? attributeValue.toString().substring(0, 10)
+                          : attribute === 'color'
+                          ? (attributeValue.name ? attributeValue.name !== '' ? attributeValue.name : attributeValue.hex : attributeValue.hex)
+                          : attributeValue
                       return (
                         attribute in advert &&
-                        value && (
+                        value && value !== '' && (
                           <div
                             style={{
                               width: isColumn ? '100%' : '50%',
@@ -182,17 +190,9 @@ export const ProductDetails: FC<ProductDetailsProps> = (props) => {
                             <ProductAttribute
                               name={attribute}
                               value={
-                                [
-                                  'purchaseDate',
-                                  'expirationDate',
-                                  'createdAt',
-                                ].includes(attribute)
-                                  ? value.toString().substring(0, 10)
-                                  : attribute === 'color'
-                                  ? value.name
-                                  : value
+                                value
                               }
-                              color={value.hex}
+                              color={attributeValue.hex}
                               padding={'5px'}
                             ></ProductAttribute>
                           </div>
