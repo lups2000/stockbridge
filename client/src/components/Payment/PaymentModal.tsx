@@ -16,7 +16,7 @@ import 'react-toastify/dist/ReactToastify.css';
 export default function PaymentModal(props: PaymentProps) {
   const stripe = useStripe();
   const elements = useElements();
-  const sleep = (ms: number) => new Promise(r => setTimeout(r, ms));
+  const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
   const [message, setMessage] = useState<string>('');
   const [isLoading, setIsLoading] = useState(false);
 
@@ -111,8 +111,10 @@ export default function PaymentModal(props: PaymentProps) {
       setMessage('');
       if (props.onSuccess) {
         props.onSuccess();
-        await sleep(2000);
-        window.location.reload()
+        if (props.type !== PaymentType.SETUP_INTENT) {
+          await sleep(2000);
+          window.location.reload();
+        }
       }
       toast.success('Succeeded!', {
         position: 'bottom-right',

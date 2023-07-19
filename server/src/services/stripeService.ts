@@ -11,6 +11,7 @@ import { handleSubscription } from './userServices';
 import userModel from '../models/User';
 import orderModel from '../models/Order';
 import { OrderStatus } from '../entities/orderEntity';
+import { notifyAboutOrder } from './orderServices';
 
 const serviceName = 'stripeService';
 const stripe = new Stripe(environment.STRIPE_SECRET_KEY, {
@@ -294,7 +295,7 @@ export const handleSuccessfulPaymentIntent = async (
   product: string,
 ) => {
   logger.debug(
-    `${serviceName}: Handling successful payment intent for ${userId}`,
+    `${serviceName}: Handling successful payment intent for ${userId} and ${product}`,
   );
   const user = (await userModel.findById(userId)) as User;
   switch (true) {
@@ -323,6 +324,8 @@ export const handleSuccessfulPaymentIntent = async (
           status: OrderStatus.RECEIVED,
         },
       );
+
+      await notifyAboutOrder(offerId, false);
       break;
     default:
       throw new AppError('Product not found', 'Product not found', 404);

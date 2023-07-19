@@ -7,6 +7,7 @@ import {
   delOrder,
   findAllOrders,
   findOrderByOffer,
+  cancelOrder as cancelOrderService,
 } from '../services/orderServices';
 import { AuthenticatedRequest } from '../middlewares/authMiddleware';
 import { ObjectId } from 'mongodb';
@@ -18,6 +19,7 @@ import {
   findAllOffersByOfferor,
 } from '../services/offerServices';
 import { Advert } from '../entities/advertEntity';
+import { User } from '../entities/userEntity';
 
 /**
  * This method returns a order by id
@@ -49,6 +51,15 @@ export const getOrders = asyncHandler(
     // Return only orders related to the user.
     orders = _findAndCheckRelatedOrders(userId, orders);
     res.status(200).json(orders);
+  },
+);
+
+export const cancelOrder = asyncHandler(
+  async (req: AuthenticatedRequest, res: Response) => {
+    const { id } = req.params;
+    const user = req.user as User;
+    await cancelOrderService(id, user);
+    res.status(200).json({ message: 'Order cancelled' });
   },
 );
 
