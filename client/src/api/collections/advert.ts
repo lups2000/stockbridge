@@ -198,8 +198,8 @@ export async function deleteAdvert(id: string): Promise<void> {
   });
 }
 
-export async function closeAdvert(id: string): Promise<void> {
-  return await apiClient.put<void>(`/adverts/closeAdvertById/${id}`, {
+export async function closeAdvert(id: string): Promise<Advert> {
+  return await apiClient.get<Advert>(`/adverts/closeAdvertById/${id}`, {
     withCredentials: true,
   });
 }

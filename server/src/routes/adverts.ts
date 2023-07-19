@@ -41,4 +41,4 @@ advertRouter
 
 advertRouter.route('/prioritizeAdvert/:advert').get(protect, prioritizeAdvert);
 
-advertRouter.route('/closeAdvertById/:id').put(protect, closeAdvert);
+advertRouter.route('/closeAdvertById/:id').get(protect, closeAdvert);

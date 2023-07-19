@@ -148,7 +148,6 @@ export const deleteAdvert = asyncHandler(
  */
 export const closeAdvert = asyncHandler(
   async (req: AuthenticatedRequest, res: Response) => {
-    logger.warn("close advert method")
     const { id } = req.params;
     await _checkUserCanEditOrDeleteAdvert(req);
     const advert = await closeAdvertService(id);
@@ -243,8 +242,6 @@ async function _checkUserCanEditOrDeleteAdvert(req: AuthenticatedRequest) {
   const { id } = req.params;
   const advert = await findAdvertById(id, false);
   // The user editing or deleting must be the one who created the advert.
-  logger.warn(advert.store)
-  logger.warn(userId)
   if (!advert.store.equals(userId)) {
     throw new AppError(
       'Not authorized to edit this route',
