@@ -20,11 +20,12 @@
   - Run `stripe login` to login to our stripe account preferably using the --interactive flag
   - Stripe credentials: email: `stockbridge-seba@proton.me`/ password: `_Z.xm4g5ii3!up5`
   - Run `yarn stripe` from the root directory or `stripe listen --forward-to localhost:3001/api/v1/stripe/webhook` to listen to webhooks
-  - Please make sure that the webhook signing secret is the same as the one in the .env file (STRIPE_WEBHOOK_SECRET). Otherwise, set it.
+  - Running `yarn stripe` will provide you with a signing key. Please make sure that that webhook signing secret is the same as the one in the .env file (STRIPE_WEBHOOK_SECRET). Otherwise, set it.
+  - Keep `yarn stripe` running in the background
 - Please make sure that the `.env` file is present under `env` directory which is under the `server` directory. The content of the `.env` file should the same as down below. If not, please set it.
 - Finally, run `yarn start` from the root directory to start both the frontend and backend. Alternatively, you can run `yarn server` and `yarn client` to start the backend and frontend respectively. Check `package.json` for more details.
 
-## Getting started
+## Additional information (For developers)
 
 To install packages, go to root directory and run: `yarn install`
 
