@@ -134,7 +134,7 @@ export const Sort: FC = () => {
         onClick={handleToggleSortOrder}
       >
         <i
-          className={sortOrder ? 'bi bi-sort-down-alt' : 'bi bi-sort-up-alt'}
+          className={sortOrder ? 'bi bi-sort-down' : 'bi bi-sort-up'}
           style={{
             color: '#f76c6c',
             fontSize: 33,
