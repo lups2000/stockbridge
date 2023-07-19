@@ -6,7 +6,6 @@ import {
   type SubscriptionStatus,
   SubscriptionType,
 } from '../entities/userEntity';
-import * as _ from 'lodash';
 import orderModel from '../models/Order';
 import { OrderStatus } from '../entities/orderEntity';
 const serviceName = 'userServices';
@@ -138,6 +137,19 @@ export const handleSubscription = async (
     to: endDate!,
     type: subscriptionType!,
   };
+  switch (subscriptionType) {
+    case SubscriptionType.BASIC_SUBSCRIPTION:
+      user.prioritisationTickets += 12;
+      break;
+    case SubscriptionType.ADVANCED_SUBSCRIPTION:
+      user.prioritisationTickets += 20;
+      break;
+    case SubscriptionType.PREMIUM_SUBSCRIPTION:
+      user.prioritisationTickets += 40;
+      break;
+    default:
+      break;
+  }
   logger.debug(`${serviceName}: Updating user ${userId} with ${user}`);
   await userModel.findByIdAndUpdate(user.id, user);
 };

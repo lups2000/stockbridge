@@ -13,8 +13,7 @@ import {
 } from '../../../api/collections/advert';
 import NoResultsMessage from '../NoResultsMessage';
 import { LoginContext } from '../../../contexts/LoginContext';
-import { FadeLoader } from 'react-spinners';
-import { palette } from '../../../utils/colors';
+import LoadingElementsContent from './LoadingElementsContent';
 function sortClosed(adverts: (Advert | PopulatedAdvert)[]) {
   return adverts.sort((a, b) => {
     if (a.status === AdvertStatus.Closed && b.status !== AdvertStatus.Closed) {
@@ -43,7 +42,7 @@ const MyAdvertsContent: React.FC = () => {
   const [sortCriteria, setSortCriteria] = useState<
     AdvertSortCriteria | OfferSortCriteria
   >(AdvertSortCriteria.NONE);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   // False == order asc , True == order desc
   const [sortOrder, setSortOrder] = useState(false);
   useEffect(() => {
@@ -58,15 +57,13 @@ const MyAdvertsContent: React.FC = () => {
           let buyingAds = fetchedAdverts.filter((x) => x.type === 'Ask');
           buyingAds = sortClosed(buyingAds) as Advert[];
           setBuyingAdverts(buyingAds as PopulatedAdvert[]);
+          setIsLoading(false);
         }
       } catch (error) {
         console.error(error);
       }
     };
     fetchData();
-    if (sellingAdverts && buyingAdverts) {
-      setIsLoading(false);
-    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -107,18 +104,7 @@ const MyAdvertsContent: React.FC = () => {
     return sortOrder ? result : result.reverse();
   }
 
-  return isLoading ? (
-    <FadeLoader
-      color={palette.subSectionsBgAccent}
-      style={{
-        position: 'absolute',
-        left: '45%',
-        right: '45%',
-        top: '45%',
-        bottom: '45%',
-      }}
-    />
-  ) : (
+  return (
     <div>
       <Tabs
         isOffer={false}
@@ -130,7 +116,10 @@ const MyAdvertsContent: React.FC = () => {
         setSortOrder={setSortOrder}
       >
         <ContentTab title="Selling Ads">
-          {sellingAdverts.length > 0 ? (
+        {isLoading ? (
+            <LoadingElementsContent />
+          ) :
+          sellingAdverts.length > 0 ? (
             sortedAndFilteredItems(sellingAdverts).map((product, index) => {
               return (
                 <ProductInfoBar
@@ -151,7 +140,10 @@ const MyAdvertsContent: React.FC = () => {
           )}
         </ContentTab>
         <ContentTab title="Buying Ads">
-          {buyingAdverts.length > 0 ? (
+        {isLoading ? (
+            <LoadingElementsContent />
+          ) :
+          buyingAdverts.length > 0 ? (
             sortedAndFilteredItems(buyingAdverts).map((product, index) => {
               return (
                 <ProductInfoBar
