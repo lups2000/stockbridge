@@ -75,8 +75,8 @@ export const TopCategories: FC = () => {
   const handleItemClick = (el: string) => {
     navigate(`/adverts?category[in]=${el}`);
   };
-
   return (
+    topCategories?.length! > 0 ?
     <div>
       <BodyText style={{ fontSize: 20, fontWeight: 600, paddingLeft: 25 }}>
         Most Popular Categories
@@ -142,5 +142,6 @@ export const TopCategories: FC = () => {
         )}
       </div>
     </div>
+    : <></>
   );
 };

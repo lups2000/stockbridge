@@ -91,7 +91,10 @@ const OrderBarUserProfile: React.FC<OrderBarUserProfileProps> = (props) => {
           setLoadPaymentModal(true);
           closeModal();
         }}
-        onCancel={cancelOrder}
+        onCancel={() => {
+          cancelOrder();
+          window.location.reload();
+        }}
       />
       {isPayer && loadPaymentModal && (
         <PaymentElement

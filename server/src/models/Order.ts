@@ -40,13 +40,15 @@ export const orderSchema = new mongoose.Schema<Order>({
     type: Types.String,
   },
 });
-orderSchema.pre<Order>('save', async function (next) {
+orderSchema.pre('findOneAndUpdate', async function (next) {
+  const thisOrder = this.getUpdate() as Order;
   try {
-    const offer = await offerModel.findById(this.offer);
+    const thisFilter: {offer: string} = this.getQuery() as {offer: string};
+    const offer = await offerModel.findById(thisFilter.offer);
     if (offer) {
       const advert = await findAdvertById(offer?.advert.toString());
-      if (advert?.quantity) {
-        advert.quantity = advert?.quantity - this.quantity;
+      if (advert?.quantity && thisOrder.status == OrderStatus.RECEIVED) {
+        advert.quantity = advert?.quantity - offer.quantity;
         if (advert.quantity <= 0) {
           advert.status = AdvertStatus.Closed;
         }
@@ -56,19 +58,17 @@ orderSchema.pre<Order>('save', async function (next) {
             fetchedOffer.status === OfferStatus.OPEN &&
             fetchedOffer.quantity > advert.quantity
           ) {
-            logger.warn(fetchedOffer);
             fetchedOffer.status = OfferStatus.CANCELED_OUT_OF_STOCK;
             await offerModel.findByIdAndUpdate(fetchedOffer.id, fetchedOffer);
           }
         });
         await advertModel.findByIdAndUpdate(advert.id, advert);
       }
-      next();
     }
+    next()
   } catch (error) {
-    logger.error(`Failed updating advert corresponding to order ${this.id}`);
+    logger.error(`Failed updating advert corresponding to order ${thisOrder.id}`);
   }
-  next();
 });
 
 orderSchema.pre<Order>('save', async function (next) {

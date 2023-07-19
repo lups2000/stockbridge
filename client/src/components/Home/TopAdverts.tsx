@@ -49,6 +49,7 @@ export const TopAdverts: FC = () => {
   }, []);
 
   return (
+    topAdverts?.length! > 0 ?
     <div>
       <BodyText style={{ fontSize: 20, fontWeight: 600, paddingLeft: 25 }}>
         Top Adverts
@@ -89,6 +90,6 @@ export const TopAdverts: FC = () => {
           <FadeLoader color={palette.subSectionsBgAccent} />
         )}
       </div>
-    </div>
+    </div> : <></>
   );
 };

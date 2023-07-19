@@ -8,7 +8,7 @@ import offerModel from '../models/Offer';
 import { User } from '../entities/userEntity';
 import { sendMail } from '../utils/mailService';
 import userModel from '../models/User';
-import { AdvertStatus } from '../entities/advertEntity';
+import { OfferStatus } from '../entities/offerEntity';
 
 const serviceName = 'orderServices';
 
@@ -109,16 +109,16 @@ export const cancelOrder = async (id: string, user: User) => {
     }
   }
 
-  await advertModel.findByIdAndUpdate(
-    offer.advert,
-    {
-      $inc: { quantity: offer.quantity },
-      status: AdvertStatus.Ongoing,
-    },
-    {
-      new: true,
-    },
-  )!;
+  // await advertModel.findByIdAndUpdate(
+  //   offer.advert,
+  //   {
+  //     $inc: { quantity: offer.quantity },
+  //     status: AdvertStatus.Ongoing,
+  //   },
+  //   {
+  //     new: true,
+  //   },
+  // )!;
 
   await orderModel.findByIdAndUpdate(
     id,
@@ -129,6 +129,12 @@ export const cancelOrder = async (id: string, user: User) => {
       runValidators: true,
     },
   );
+
+  await offerModel.findByIdAndUpdate(order.offer, {
+    status: OfferStatus.CANCELED_USER
+  },{
+    runValidators: true,
+  },)
 
   await notifyAboutOrder(offer.id, true);
 };
