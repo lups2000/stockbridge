@@ -48,10 +48,10 @@ const StoreDetailsHeader: React.FC<StoreDetailsProps> = (props) => {
     year: 'numeric',
   };
 
-  const formattedJoinDate: string = props.joined.toLocaleDateString(
-    undefined,
-    options,
-  );
+  const formattedJoinDate: string = new Date(props.joined).toLocaleDateString('en-US', {
+    month: 'long',
+    year: 'numeric',
+  });
 
   return (
     <Container className="p-2 m-2" fluid>
@@ -95,7 +95,7 @@ const StoreDetailsHeader: React.FC<StoreDetailsProps> = (props) => {
               }}
             />
           </Title>
-          <BodyText style={{}}>{`Joined on ${formattedJoinDate}`}</BodyText>
+          <BodyText style={{}}>{`Joined on: ${formattedJoinDate}`}</BodyText>
         </Col>
       </Row>
       <Modal show={showModal} onHide={handleCloseModal}>
