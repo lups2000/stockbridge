@@ -3,8 +3,8 @@ import { BodyText } from '../../Text/BodyText';
 import { Ratings } from '../../Ratings';
 import { OfferStatus, PopulatedOffer } from '../../../api/collections/offer';
 import { OfferModal } from '../../Offers/OfferModal';
-import { PopulatedAdvert } from '../../../api/collections/advert';
-
+import { AdvertType, PopulatedAdvert } from '../../../api/collections/advert';
+import outOfStock from '../../../assets/out-of-stock.svg';
 interface OfferCardProps {
   status: OfferStatus;
   offer: PopulatedOffer;
@@ -85,7 +85,8 @@ export const OfferCard: FC<OfferCardProps> = (props) => {
             display: 'flex',
             flexDirection: 'row',
             alignItems: 'center',
-            justifyContent: 'center',
+            justifyContent: 'start',
+            marginLeft: '33%',
             gap: 50,
           }}
         >
@@ -105,6 +106,16 @@ export const OfferCard: FC<OfferCardProps> = (props) => {
               {props.offer.price + ' €'}
             </BodyText>
           </BodyText>
+          {props.offer.status === OfferStatus.CANCELED_OUT_OF_STOCK && (
+                <img
+                  style={{
+                    marginLeft: '4em'
+                    
+                  }}
+                  src={outOfStock}
+                  alt="OOS"
+                />
+          )}
         </div>
       </div>
       {showModal && (
@@ -114,8 +125,8 @@ export const OfferCard: FC<OfferCardProps> = (props) => {
           onSave={closeModalOnSave}
           advert={props.advert}
           offer={props.offer}
-          storeName={props.offer.offeree?.name}
-          rating={props.offer.offeree?.rating}
+          storeName={props.offer.offeror?.name}
+          rating={props.offer.offeror?.rating}
         />
       )}
     </>

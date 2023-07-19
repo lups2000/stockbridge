@@ -108,8 +108,8 @@ const OfferBarUserProfile: React.FC<OfferBarUserProfileProps> = (props) => {
             onSave={closeModalOnSave}
             advert={props.advert}
             offer={props.offer}
-            storeName={offeree.name!}
-            rating={offeree.rating!}
+            storeName={offerer.name!}
+            rating={offerer.rating!}
           />
         )}
       </div>
