@@ -19,6 +19,8 @@ export enum ResponseType {
   UNSUCCESSFUL_ADVERT_CREATION,
   SUCCESSFUL_ADVERT_UPDATE,
   UNSUCCESSFUL_ADVERT_UPDATE,
+  SUCCESSFUL_ADVERT_DELETION, // New attribute
+  UNSUCCESSFUL_ADVERT_DELETION, // New attribute
   OUT_OF_ADVERTS,
 }
 
@@ -43,12 +45,17 @@ const ResponseModal: FC<OfferCreationModalProps> = (props) => {
   const update =
     props.responseType === ResponseType.SUCCESSFUL_ADVERT_UPDATE ||
     props.responseType === ResponseType.UNSUCCESSFUL_ADVERT_UPDATE;
+
+  const deletion =
+    props.responseType === ResponseType.SUCCESSFUL_ADVERT_DELETION ||
+    props.responseType === ResponseType.UNSUCCESSFUL_ADVERT_DELETION;
   const successfull = [
     ResponseType.SUCCESSFUL_OFFER_ACCEPTANCE,
     ResponseType.SUCCESSFUL_OFFER_CREATION,
     ResponseType.SUCCESSFUL_OFFER_REJECTION,
     ResponseType.SUCCESSFUL_ADVERT_CREATION,
     ResponseType.SUCCESSFUL_ADVERT_UPDATE,
+    ResponseType.SUCCESSFUL_ADVERT_DELETION,
   ].includes(props.responseType);
 
   const advert =
@@ -56,10 +63,13 @@ const ResponseModal: FC<OfferCreationModalProps> = (props) => {
     props.responseType === ResponseType.UNSUCCESSFUL_ADVERT_CREATION ||
     props.responseType === ResponseType.SUCCESSFUL_ADVERT_UPDATE ||
     props.responseType === ResponseType.UNSUCCESSFUL_ADVERT_UPDATE ||
-    props.responseType === ResponseType.OUT_OF_ADVERTS;
+    props.responseType === ResponseType.OUT_OF_ADVERTS ||
+    props.responseType === ResponseType.SUCCESSFUL_ADVERT_DELETION ||
+    props.responseType === ResponseType.UNSUCCESSFUL_ADVERT_DELETION;
   const outOfStock = props.responseType === ResponseType.OUT_OF_STOCK;
   const outOfAdverts = props.responseType === ResponseType.OUT_OF_ADVERTS;
   const navigate = useNavigate();
+
   return (
     <Modal
       show={props.isShowing}
@@ -130,6 +140,8 @@ const ResponseModal: FC<OfferCreationModalProps> = (props) => {
               ? 'created'
               : update
               ? 'updated'
+              : deletion
+              ? 'deleted'
               : 'rejected'}
             !
           </BodyText>
