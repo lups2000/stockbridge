@@ -10,7 +10,7 @@ type ProductAttributeProps = {
   border?: boolean;
   margin?: string;
   fontSize?: string;
-  width?: number;
+  padding?: string;
 };
 
 function mapAttributeName(name: string): string {
@@ -86,7 +86,6 @@ const ProductAttribute: FC<ProductAttributeProps> = (props) => {
         textAlign: 'start',
         alignItems: 'center',
         gap: 30,
-        justifyContent: 'center',
         color: 'black',
       }}
     >
@@ -113,15 +112,13 @@ const ProductAttribute: FC<ProductAttributeProps> = (props) => {
       )}
       <BodyText
         style={{
-          width: props.color ? '4.5em' : '7.5em',
-          height: border ? '40px' : '',
           borderRadius: '10px',
           border: border ? '3px solid black' : '',
           textAlign: border ? 'center' : 'start',
           justifyContent: 'start',
-          fontFamily: 'Poppins',
           font: 'light',
           fontSize: props.fontSize ? props.fontSize : '20px',
+          padding : props.padding ?? undefined
         }}
       >
         {`${props?.value ?? ''} ${unit ?? ''}`}
