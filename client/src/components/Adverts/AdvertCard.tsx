@@ -48,8 +48,8 @@ export const AdvertCard: FC<AdvertCardProps> = (props) => {
       : props.name;
 
   const truncatedDesc =
-    props.description && props.description.length > 50
-      ? `${props.description.slice(0, 50)}...`
+    props.description && props.description.length > 30
+      ? `${props.description.slice(0, 30)}...`
       : props.description;
 
   const defaultIcon = mapIcon(props.category || '');
@@ -58,7 +58,7 @@ export const AdvertCard: FC<AdvertCardProps> = (props) => {
     <div
       style={{
         width: 300,
-        height: props.fancyEffect ? 380 : 425,
+        height: props.fancyEffect ? 400 : 425,
         borderRadius: 8,
         position: 'relative',
         border: props.fancyEffect ? '0.5px solid black' : undefined,
@@ -151,7 +151,7 @@ export const AdvertCard: FC<AdvertCardProps> = (props) => {
         }}
       >
         <BodyText
-          style={{ fontSize: 15, fontWeight: 400, textAlign: 'center' }}
+          style={{ fontSize: 15, fontWeight: 400, textAlign: 'center', overflow: 'hidden' }}
         >
           {truncatedDesc}
         </BodyText>
