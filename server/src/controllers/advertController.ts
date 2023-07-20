@@ -22,7 +22,6 @@ import { ObjectId } from 'mongodb';
 import { AppError } from '../utils/errorHandler';
 import { User } from '../entities/userEntity';
 import advertModel from '../models/Advert';
-import logger from '../config/logger';
 
 /**
  * This method returns an advert by id   *
@@ -90,6 +89,7 @@ export const getAdverts = asyncHandler(
       radius === 0 || !req.user ? undefined : radius,
       radius === 0 || !req.user ? undefined : req.user?.location?.coordinates,
       queryStr,
+      !!req.user,
     );
 
     res.status(200).json(results);
@@ -225,7 +225,9 @@ export const getPopularAdverts = asyncHandler(
   async (req: AuthenticatedRequest, res: Response) => {
     const limit = req.query.limit ? parseInt(req.query.limit as string) : 10;
     const popularAdvertsIds = await getPopularAdvertsService(limit);
-    const popularAdverts = await Promise.all(popularAdvertsIds.map(x => findAdvertById(x._id, false, true)));    
+    const popularAdverts = await Promise.all(
+      popularAdvertsIds.map((x) => findAdvertById(x._id, false, true)),
+    );
     res.status(200).json({ popularAdverts });
   },
 );

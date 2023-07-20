@@ -24,7 +24,12 @@ export const findAdvertById = async (
   hide = false,
 ): Promise<Advert> => {
   logger.debug(`${serviceName}: Finding advert with id: ${id}`);
-  let query = hide ? advertModel.findById(id).select('productname prioritized quantity description price imageurl createdAt category')
+  let query = hide
+    ? advertModel
+        .findById(id)
+        .select(
+          'productname prioritized quantity description price imageurl createdAt category',
+        )
     : advertModel.findById(id);
   const advert = await populateResult(query, populate);
 
@@ -138,6 +143,7 @@ export const closeAdvertService = async (id: string) => {
  * @param center center of the search area
  * @param queryStr query string
  * @param populate determines if the result should be populated
+ * @param isUserLogged determines if the user is logged in
  * @returns Promise containing all adverts
  */
 
@@ -150,6 +156,7 @@ export const findAllAdverts = async (
   center?: number[],
   queryStr?: string,
   populate = false,
+  isUserLogged = false,
 ) => {
   logger.debug(`${serviceName}: Finding all adverts with pagination`);
   logger.debug(`${serviceName}: Query string: ${queryStr}`);
@@ -246,7 +253,12 @@ export const findAllAdverts = async (
 
   query = query.skip(startIndex).limit(limit);
   // Selects the fields that can be displayed for all users
-  query = query.select('productname prioritized quantity description status price imageurl createdAt category');
+  if (!isUserLogged) {
+    query = query.select(
+      'productname prioritized quantity description status price imageurl createdAt category',
+    );
+  }
+
   const results = await query;
 
   const pagination: {
@@ -285,7 +297,11 @@ export const getAdvertsByCategory = async (
     `${serviceName}: Requesting all adverts with category: ${category}`,
   );
   return await populateResult(
-    advertModel.find({ category: category }).select('productname prioritized quantity status description price imageurl createdAt category'),
+    advertModel
+      .find({ category: category })
+      .select(
+        'productname prioritized quantity status description price imageurl createdAt category location',
+      ),
     populate,
   );
 };
@@ -326,8 +342,8 @@ export const getPopularCategories = async (limit: number) => {
 
 /**
  * Retrieves the advert Ids of the top "limit" (as number) ads of each category.
- * @param limit 
- * @returns 
+ * @param limit
+ * @returns
  */
 export const getPopularAdverts = async (limit: number) => {
   logger.debug(`${serviceName}: Requesting most popular adverts`);
