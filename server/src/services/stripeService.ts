@@ -239,10 +239,6 @@ export const webhookHandler = async (
         paymentIntent.metadata.product,
       );
       break;
-    case 'payment_method.attached':
-      const paymentMethod = event.data.object;
-      logger.debug(`${serviceName}: PaymentMethod was attached to a Customer!`);
-      break;
     // ... handle other event types
     case 'setup_intent.succeeded':
       logger.debug(`${serviceName}: SetupIntent was successful!`);
@@ -311,7 +307,7 @@ export const handleSuccessfulPaymentIntent = async (
     case product === 'Basic Subscription':
     case product === 'Advanced Subscription':
     case product === 'Premium Subscription':
-      break;
+      return;
     case product.startsWith('offerId_'):
       const offerId = product.split('_')[1];
       logger.debug(

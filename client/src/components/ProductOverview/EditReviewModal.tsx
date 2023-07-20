@@ -5,6 +5,7 @@ import { Review, createReview } from '../../api/collections/review';
 import { LoginContext } from '../../contexts/LoginContext';
 import { palette } from '../../utils/colors';
 import { Ratings } from '../Ratings';
+import { toast, ToastContainer } from 'react-toastify';
 
 type EditReviewContentProps = {
   isShowing: boolean;
@@ -53,75 +54,90 @@ const EditReviewModal: FC<EditReviewContentProps> = (props) => {
         }
       } catch (error) {
         console.error(error);
+        const notify = () =>
+          toast.error('Error when submitting review', {
+            position: 'bottom-right',
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: 'colored',
+          });
+        notify();
       }
     }
   };
 
   return (
-    <Modal show={props.isShowing} onHide={props.onClose}>
-      <Modal.Header closeButton>
-        <Modal.Title>Write your review</Modal.Title>
-      </Modal.Header>
-      <Modal.Body>
-        <Form>
-          <Form.Group
+    <>
+      <Modal show={props.isShowing} onHide={props.onClose}>
+        <Modal.Header closeButton>
+          <Modal.Title>Write your review</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <Form>
+            <Form.Group
+              style={{
+                display: 'flex',
+                flexDirection: 'row',
+                alignItems: 'center',
+                justifyContent: 'center',
+                width: 'auto',
+                gap: '70%',
+              }}
+            >
+              <Form.Label
+                style={{
+                  color: palette.gray,
+                }}
+              >
+                Review
+              </Form.Label>
+              {Ratings(rating, 'red', handleRatingChange)}
+            </Form.Group>
+            <Form.Group>
+              <Form.Control
+                style={{
+                  padding: '10px',
+                  color: palette.gray,
+                  margin: '5px',
+                  overflow: 'hidden',
+                }}
+                as="textarea"
+                rows={3}
+                name="description"
+                value={description}
+                onChange={handleDescriptionChange}
+                isInvalid={error}
+              />
+              <Form.Control.Feedback
+                style={{
+                  margin: '5px',
+                }}
+                type="invalid"
+              >
+                {error && 'Review incomplete'}
+              </Form.Control.Feedback>
+            </Form.Group>
+          </Form>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button
+            className="text-white"
+            onClick={handleSubmit}
             style={{
-              display: 'flex',
-              flexDirection: 'row',
-              alignItems: 'center',
-              justifyContent: 'center',
-              width: 'auto',
-              gap: '70%',
+              background: palette.subSectionsBgAccent,
+              borderColor: palette.subSectionsBgAccent,
             }}
           >
-            <Form.Label
-              style={{
-                color: palette.gray,
-              }}
-            >
-              Review
-            </Form.Label>
-            {Ratings(rating, 'red', handleRatingChange)}
-          </Form.Group>
-          <Form.Group>
-            <Form.Control
-              style={{
-                padding: '10px',
-                color: palette.gray,
-                margin: '5px',
-                overflow: 'hidden',
-              }}
-              as="textarea"
-              rows={3}
-              name="description"
-              value={description}
-              onChange={handleDescriptionChange}
-              isInvalid={error}
-            />
-            <Form.Control.Feedback
-              style={{
-                margin: '5px',
-              }}
-              type="invalid"
-            >
-              {error && 'Review incomplete'}
-            </Form.Control.Feedback>
-          </Form.Group>
-        </Form>
-      </Modal.Body>
-      <Modal.Footer>
-        <Button
-          className="text-white"
-          onClick={handleSubmit}
-          style={{
-            background: palette.subSectionsBgAccent,
-            borderColor: palette.subSectionsBgAccent,
-          }}
-        >
-          Submit
-        </Button>
-      </Modal.Footer>
-    </Modal>
+            Submit
+          </Button>
+        </Modal.Footer>
+      </Modal>
+      <ToastContainer />
+    </>
   );
 };
 

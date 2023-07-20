@@ -2,12 +2,7 @@ import userModel from '../models/User';
 import type { User } from '../entities/userEntity';
 import logger from '../config/logger';
 import { AppError } from '../utils/errorHandler';
-import {
-  type SubscriptionStatus,
-  SubscriptionType,
-} from '../entities/userEntity';
-import orderModel from '../models/Order';
-import { OrderStatus } from '../entities/orderEntity';
+import { SubscriptionStatus, SubscriptionType } from '../entities/userEntity';
 const serviceName = 'userServices';
 
 /**
@@ -81,45 +76,6 @@ export const findAllUsers = async () => {
   return userModel.find();
 };
 
-export const handleSuccessfulPaymentIntent = async (
-  userId: string,
-  product: string,
-) => {
-  logger.debug(
-    `${serviceName}: Handling successful payment intent for ${userId}`,
-  );
-  const user = (await userModel.findById(userId)) as User;
-  switch (true) {
-    case product === 'Basic Pack':
-      user.prioritisationTickets += 5;
-      break;
-    case product === 'Advanced Pack':
-      user.prioritisationTickets += 10;
-      break;
-    case product === 'Premium Pack':
-      user.prioritisationTickets += 20;
-      break;
-    case product === 'Basic Subscription':
-    case product === 'Advanced Subscription':
-    case product === 'Premium Subscription':
-      break;
-    case product.startsWith('offerId_'):
-      const offerId = product.split('_')[1];
-      orderModel.findOneAndUpdate(
-        { offer: offerId },
-        {
-          status: OrderStatus.RECEIVED,
-        },
-      );
-      break;
-    default:
-      if (!product.startsWith('offerId_')) {
-        throw new AppError('Product not found', 'Product not found', 404);
-      }
-  }
-  await userModel.findByIdAndUpdate(user.id, user);
-};
-
 export const handleSubscription = async (
   userId: string,
   status: SubscriptionStatus,
@@ -137,18 +93,20 @@ export const handleSubscription = async (
     to: endDate!,
     type: subscriptionType!,
   };
-  switch (subscriptionType) {
-    case SubscriptionType.BASIC_SUBSCRIPTION:
-      user.prioritisationTickets += 12;
-      break;
-    case SubscriptionType.ADVANCED_SUBSCRIPTION:
-      user.prioritisationTickets += 20;
-      break;
-    case SubscriptionType.PREMIUM_SUBSCRIPTION:
-      user.prioritisationTickets += 40;
-      break;
-    default:
-      break;
+  if (status === SubscriptionStatus.ACTIVE) {
+    switch (subscriptionType) {
+      case SubscriptionType.BASIC_SUBSCRIPTION:
+        user.prioritisationTickets += 12;
+        break;
+      case SubscriptionType.ADVANCED_SUBSCRIPTION:
+        user.prioritisationTickets += 20;
+        break;
+      case SubscriptionType.PREMIUM_SUBSCRIPTION:
+        user.prioritisationTickets += 40;
+        break;
+      default:
+        break;
+    }
   }
   logger.debug(`${serviceName}: Updating user ${userId} with ${user}`);
   await userModel.findByIdAndUpdate(user.id, user);
