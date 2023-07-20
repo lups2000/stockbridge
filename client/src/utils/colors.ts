@@ -8,10 +8,10 @@ export const palette = {
   green: '#4ecba9',
   gray: '#6c757d',
   loginTitle: '#472FC9',
-
+  yellow: '#ffc071',
   placeholderTextBootstrap: '#808080',
   borderBoostrap: '#cccccc',
-
+  blue: '#4285F4',
   openOffer: '#6097f0',
   rejectedOffer: '#d16260',
   acceptedOffer: '#52b399',
