@@ -99,7 +99,7 @@ const MyAdvertsContent: React.FC = () => {
         }
       });
     if (sortCriteria === AdvertSortCriteria.NONE) {
-      result = sortClosed(list) as PopulatedAdvert[];
+      result = sortClosed(result) as PopulatedAdvert[];
     }
     return sortOrder ? result : result.reverse();
   }

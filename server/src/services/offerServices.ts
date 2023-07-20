@@ -2,6 +2,8 @@ import offerModel from '../models/Offer';
 import type { Offer } from '../entities/offerEntity';
 import logger from '../config/logger';
 import { AppError } from '../utils/errorHandler';
+import { findUserById } from './userServices';
+import { sendMail } from '../utils/mailService';
 
 const serviceName = 'offerServices';
 
@@ -112,6 +114,27 @@ export const findAllOffersByAdvert = async (
     `${serviceName}: Requesting all offers related to advert: ${advert}`,
   );
   return await populateResult(offerModel.find({ advert: advert }), populate);
+};
+
+/**
+ * Notifies the user about offer changes
+ * @param id offer id
+ */
+export const notifyAboutCanceledOffer = async (id: string) => {
+  const offer = await findOfferById(id);
+  if (!offer) {
+    logger.error(`${serviceName}: Could not find the offer. Mail not sent`);
+  }
+  const user = await findUserById(offer.offeror);
+  if (!user) {
+    logger.error(`${serviceName}: Could not find offeror. Mail not sent`);
+  } else {
+    await sendMail(
+      `${user.email}`,
+      'Offer cancelled',
+      `Your offer ${id} for advert ${offer.advert.productname} with ID: ${offer.advert._id} has been cancelled due to stock limit.`,
+    );
+  }
 };
 
 /**
