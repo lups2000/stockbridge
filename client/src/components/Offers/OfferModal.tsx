@@ -375,7 +375,8 @@ const OfferModal: FC<OfferContentProps> = (props) => {
                   >
                     {props.advert?.productname}
                   </Form.Label>
-                  <Image
+                  {
+                    props.advert?.imageurl &&  <Image
                     style={{
                       width: '10em',
                       height: '10em',
@@ -383,6 +384,8 @@ const OfferModal: FC<OfferContentProps> = (props) => {
                     }}
                     src={props.advert?.imageurl}
                   />
+                  }
+                 
                 </Col>
 
               {
@@ -647,8 +650,8 @@ const OfferModal: FC<OfferContentProps> = (props) => {
                   className="text-white"
                   onClick={handleReject}
                   style={{
-                    background: palette.rejectedOffer,
-                    borderColor: palette.rejectedOffer,
+                    background: palette.subSectionsBgAccent,
+                    borderColor: palette.subSectionsBgAccent,
                   }}
                 >
                   Reject
@@ -659,8 +662,8 @@ const OfferModal: FC<OfferContentProps> = (props) => {
                   className="text-white"
                   onClick={handleAccept}
                   style={{
-                    background: palette.acceptedOffer,
-                    borderColor: palette.acceptedOffer,
+                    background: palette.green,
+                    borderColor: palette.green,
                   }}
                 >
                   Accept
@@ -671,8 +674,8 @@ const OfferModal: FC<OfferContentProps> = (props) => {
                   className="text-white"
                   onClick={handleCancel}
                   style={{
-                    background: palette.canceledOffer,
-                    borderColor: palette.canceledOffer,
+                    background: palette.yellow,
+                    borderColor: palette.yellow,
                   }}
                 >
                   Cancel
@@ -697,8 +700,8 @@ const OfferModal: FC<OfferContentProps> = (props) => {
                     onClick={handleSubmit}
                     disabled={!isConsentChecked}
                     style={{
-                      background: palette.acceptedOffer,
-                      borderColor: palette.acceptedOffer,
+                      background: palette.green,
+                      borderColor: palette.green,
                     }}
                   >
                     Confirm

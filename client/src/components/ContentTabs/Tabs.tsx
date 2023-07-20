@@ -141,7 +141,7 @@ const Tabs: React.FC<Props> = ({
           onClick={handleToggleSortOrder}
         >
           <i
-            className={sortOrder ? 'bi bi-sort-down' : 'bi bi-sort-up'}
+            className={sortOrder ? 'bi bi-sort-up' : 'bi bi-sort-down'}
             style={{
               color: '#f76c6c',
             }}
