@@ -132,7 +132,7 @@ export const About: FC = () => {
         >
           <Title style={{ fontWeight: 500, marginTop: 50 }}>Our Story</Title>
           <BodyText style={{ fontSize: 18, marginTop: 20 }}>
-            IDK what I can write here but it's a nice section lol. suggestions?
+            IDK what I can write here but it's a nice section lol.
           </BodyText>
         </div>
       </div>

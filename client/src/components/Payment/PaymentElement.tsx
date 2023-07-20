@@ -85,7 +85,7 @@ const PaymentElement = (props: PaymentProps) => {
               if (props.onSuccess) {
                 props.onSuccess();
                 if (props.type !== PaymentType.SETUP_INTENT) {
-                  await sleep(2000);
+                  await sleep(3000);
                   window.location.reload();
                 }
               }
