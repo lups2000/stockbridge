@@ -5,7 +5,7 @@
 - Backend: can be found in `server` directory
 - Frontend: can be found in `client` directory
 
-## Credentials 
+## Credentials
 
 - Proton mail access credentials (https://proton.me/mail): email: `stockbridge-seba@proton.me` / password: `xfV8scJqwvwE7Z-`
 - MongoDB atlas credentials (to login to atlas) (https://www.mongodb.com/atlas): email: `stockbridge-seba@proton.me` / password: `8jB8p7!GGN5ejFh`
@@ -16,7 +16,7 @@
 ## Starting the application
 
 - Run `yarn install` in root directory to install all dependencies
-- Install stripe CLI  on your machine: https://stripe.com/docs/stripe-cli
+- Install stripe CLI on your machine: https://stripe.com/docs/stripe-cli
   - Run `stripe login` to login to our stripe account preferably using the --interactive flag
   - Stripe credentials: email: `stockbridge-seba@proton.me`/ password: `_Z.xm4g5ii3!up5`
   - Run `yarn stripe` from the root directory or `stripe listen --forward-to localhost:3001/api/v1/stripe/webhook` to listen to webhooks
@@ -26,14 +26,18 @@
 - Finally, run `yarn start` from the root directory to start both the frontend and backend. Alternatively, you can run `yarn server` and `yarn client` to start the backend and frontend respectively. Check `package.json` for more details.
 
 ## Note about user names
+
 - Matteo Luppi
+
   - 100372313+lups2000@users.noreply.github.com
   - ge92qes@mytum.de
 
 - Chaima Ghaddab
+
   - chaima.ghaddab@tum.de
 
 - Mohamed Bilel Besrour
+
   - ge49gej@mytum.de
 
 - Achref Aloui / alouiii
@@ -80,6 +84,7 @@ $ npx typedoc --out docs src
 and check the documentation under typescript-docu
 
 ## .env file
+
 ```
 NODE_ENV=development
 PORT=3001

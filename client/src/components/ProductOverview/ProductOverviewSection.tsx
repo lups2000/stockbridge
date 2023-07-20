@@ -65,7 +65,10 @@ const ProductOverviewSection: React.FC<ProductOverviewSectionProps> = (
               <ProductDetails advert={props.advert} />
             </>
           ) : undefined}
-          {((owner && !props.advert.prioritized && props.advert.status === AdvertStatus.Ongoing) || (!owner && props.advert.status === AdvertStatus.Ongoing)) ? (
+          {(owner &&
+            !props.advert.prioritized &&
+            props.advert.status === AdvertStatus.Ongoing) ||
+          (!owner && props.advert.status === AdvertStatus.Ongoing) ? (
             <div>
               <Button
                 style={{

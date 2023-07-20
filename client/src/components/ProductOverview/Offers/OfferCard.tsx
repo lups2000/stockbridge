@@ -107,14 +107,13 @@ export const OfferCard: FC<OfferCardProps> = (props) => {
             </BodyText>
           </BodyText>
           {props.offer.status === OfferStatus.CANCELED_OUT_OF_STOCK && (
-                <img
-                  style={{
-                    marginLeft: '4em'
-                    
-                  }}
-                  src={outOfStock}
-                  alt="OOS"
-                />
+            <img
+              style={{
+                marginLeft: '4em',
+              }}
+              src={outOfStock}
+              alt="OOS"
+            />
           )}
         </div>
       </div>

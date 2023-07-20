@@ -8,13 +8,15 @@ const Tickets = (tickets: number) => {
   }
   return (
     <div>
-      {
-        tickets > 20 ? <BodyText>{tickets} tickets</BodyText> : numberRange.map((star) => (
+      {tickets > 20 ? (
+        <BodyText>{tickets} tickets</BodyText>
+      ) : (
+        numberRange.map((star) => (
           <span key={star} style={{ color: palette.subSectionsBgAccent }}>
             &#x25CF;
           </span>
         ))
-      } 
+      )}
     </div>
   );
 };
