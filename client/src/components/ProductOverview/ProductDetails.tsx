@@ -240,8 +240,8 @@ export const ProductDetails: FC<ProductDetailsProps> = (props) => {
                 width: '11%',
                 height: '10%',
                 position: 'relative',
-                top: -40,
-                right: -70,
+                top: "-4em",
+                right: "4em",
               }}
             />
           )}
