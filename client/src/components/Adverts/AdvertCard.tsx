@@ -151,7 +151,12 @@ export const AdvertCard: FC<AdvertCardProps> = (props) => {
         }}
       >
         <BodyText
-          style={{ fontSize: 15, fontWeight: 400, textAlign: 'center', overflow: 'hidden' }}
+          style={{
+            fontSize: 15,
+            fontWeight: 400,
+            textAlign: 'center',
+            overflow: 'hidden',
+          }}
         >
           {truncatedDesc}
         </BodyText>

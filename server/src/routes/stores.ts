@@ -4,6 +4,6 @@ import { protect } from '../middlewares/authMiddleware';
 
 export const storeRouter = Router();
 
-storeRouter.route('/:id').get(protect,getStore);
+storeRouter.route('/:id').get(protect, getStore);
 
 export default storeRouter;

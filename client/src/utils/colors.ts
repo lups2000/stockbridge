@@ -19,7 +19,7 @@ export const palette = {
   advertCardBg: '#FFF5F8',
   advertCardLine: '#4ECBA9',
   advertCardButton: '#233EC9',
-  basicSub: "#FF9D28",
-  advancedSub: "#8F00FF",
-  premiumSub: "#05922D"
+  basicSub: '#FF9D28',
+  advancedSub: '#8F00FF',
+  premiumSub: '#05922D',
 };

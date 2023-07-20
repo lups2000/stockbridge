@@ -10,10 +10,7 @@ import {
 
 export const userRouter = Router();
 
-userRouter
-  .route('/')
-  .post(protect, postUser)
-  .get(protect, getUsers);
+userRouter.route('/').post(protect, postUser).get(protect, getUsers);
 
 userRouter
   .route('/:id')

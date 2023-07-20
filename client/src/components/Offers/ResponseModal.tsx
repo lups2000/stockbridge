@@ -23,12 +23,12 @@ export enum ResponseType {
   SUCCESSFUL_ADVERT_UPDATE,
   UNSUCCESSFUL_ADVERT_UPDATE,
   SUCCESSFUL_ADVERT_DELETION,
-  UNSUCCESSFUL_ADVERT_DELETION, 
+  UNSUCCESSFUL_ADVERT_DELETION,
   OUT_OF_ADVERTS,
   SUCCESSFUL_CANCEL,
   UNSUCCESSFUL_CANCEL,
   SUCCESSFUL_REVIEW,
-  UNSUCCESSFUL_REVIEW
+  UNSUCCESSFUL_REVIEW,
 }
 
 type OfferCreationModalProps = {
@@ -40,8 +40,16 @@ type OfferCreationModalProps = {
 };
 
 const ResponseModal: FC<OfferCreationModalProps> = (props) => {
-  const creation =
-  [ResponseType.SUCCESSFUL_OFFER_CREATION, ResponseType.UNSUCCESSFUL_OFFER_CREATION, ResponseType.SUCCESSFUL_OFFER_CREATION, ResponseType.SUCCESSFUL_ADVERT_CREATION, ResponseType.UNSUCCESSFUL_ADVERT_CREATION, ResponseType.OUT_OF_ADVERTS, ResponseType.SUCCESSFUL_REVIEW, ResponseType.UNSUCCESSFUL_REVIEW].includes(props.responseType)
+  const creation = [
+    ResponseType.SUCCESSFUL_OFFER_CREATION,
+    ResponseType.UNSUCCESSFUL_OFFER_CREATION,
+    ResponseType.SUCCESSFUL_OFFER_CREATION,
+    ResponseType.SUCCESSFUL_ADVERT_CREATION,
+    ResponseType.UNSUCCESSFUL_ADVERT_CREATION,
+    ResponseType.OUT_OF_ADVERTS,
+    ResponseType.SUCCESSFUL_REVIEW,
+    ResponseType.UNSUCCESSFUL_REVIEW,
+  ].includes(props.responseType);
   const acceptance =
     props.responseType === ResponseType.SUCCESSFUL_OFFER_ACCEPTANCE ||
     props.responseType === ResponseType.UNSUCCESSFUL_OFFER_ACCEPTANCE;
@@ -62,11 +70,21 @@ const ResponseModal: FC<OfferCreationModalProps> = (props) => {
     ResponseType.SUCCESSFUL_ADVERT_UPDATE,
     ResponseType.SUCCESSFUL_CANCEL,
     ResponseType.SUCCESSFUL_ADVERT_DELETION,
-    ResponseType.SUCCESSFUL_REVIEW
+    ResponseType.SUCCESSFUL_REVIEW,
   ].includes(props.responseType);
 
-  const advert = [ResponseType.SUCCESSFUL_ADVERT_CREATION, ResponseType.UNSUCCESSFUL_ADVERT_CREATION, ResponseType.SUCCESSFUL_ADVERT_UPDATE, ResponseType.UNSUCCESSFUL_ADVERT_UPDATE, ResponseType.OUT_OF_ADVERTS, ResponseType.SUCCESSFUL_ADVERT_DELETION, ResponseType.UNSUCCESSFUL_ADVERT_DELETION].includes(props.responseType);
-  const review = props.responseType === ResponseType.SUCCESSFUL_REVIEW || props.responseType === ResponseType.UNSUCCESSFUL_REVIEW;
+  const advert = [
+    ResponseType.SUCCESSFUL_ADVERT_CREATION,
+    ResponseType.UNSUCCESSFUL_ADVERT_CREATION,
+    ResponseType.SUCCESSFUL_ADVERT_UPDATE,
+    ResponseType.UNSUCCESSFUL_ADVERT_UPDATE,
+    ResponseType.OUT_OF_ADVERTS,
+    ResponseType.SUCCESSFUL_ADVERT_DELETION,
+    ResponseType.UNSUCCESSFUL_ADVERT_DELETION,
+  ].includes(props.responseType);
+  const review =
+    props.responseType === ResponseType.SUCCESSFUL_REVIEW ||
+    props.responseType === ResponseType.UNSUCCESSFUL_REVIEW;
   const outOfStock = props.responseType === ResponseType.OUT_OF_STOCK;
   const outOfAdverts = props.responseType === ResponseType.OUT_OF_ADVERTS;
   const navigate = useNavigate();
@@ -150,7 +168,11 @@ const ResponseModal: FC<OfferCreationModalProps> = (props) => {
             !
           </BodyText>
           {outOfStock && <BodyText>The product has run out of stock!</BodyText>}
-          {review && !successfull && <BodyText>You have already posted a review to this advert!</BodyText> }
+          {review && !successfull && (
+            <BodyText>
+              You have already posted a review to this advert!
+            </BodyText>
+          )}
           {outOfAdverts && (
             <BodyText>
               You have reached the limit number of adverts for this week!

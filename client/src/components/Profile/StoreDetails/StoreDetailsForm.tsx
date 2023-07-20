@@ -177,7 +177,7 @@ const StoreDetailsForm: React.FC = () => {
         <StoreDetailsHeader
           name={{ value: name, onChange: handleNameChange }}
           image={{ value: image, setValue: setImage }}
-          joined={ user?.createdAt ?? new Date() }
+          joined={user?.createdAt ?? new Date()}
           onChangeError={(error) => setError(error)}
         />
         <AccountInformationForm

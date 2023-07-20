@@ -77,15 +77,25 @@ const EditReviewModal: FC<EditReviewContentProps> = (props) => {
     }
   };
   const onClose = () => {
-    props.onClose()
+    props.onClose();
     setShowResponseModal(false);
     if (!error) {
-      window.location.reload()
+      window.location.reload();
     }
-  }
+  };
   return (
     <>
-    {showResponseModal && <ResponseModal isShowing={showResponseModal} responseType={reviewError ? ResponseType.UNSUCCESSFUL_REVIEW : ResponseType.SUCCESSFUL_REVIEW} onClose={onClose}/>}
+      {showResponseModal && (
+        <ResponseModal
+          isShowing={showResponseModal}
+          responseType={
+            reviewError
+              ? ResponseType.UNSUCCESSFUL_REVIEW
+              : ResponseType.SUCCESSFUL_REVIEW
+          }
+          onClose={onClose}
+        />
+      )}
       <Modal show={props.isShowing} onHide={props.onClose}>
         <Modal.Header closeButton>
           <Modal.Title>Write your review</Modal.Title>
