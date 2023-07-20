@@ -26,7 +26,9 @@ const Card = (props: CardProps) => {
       : palette.premiumSub
     : palette.subSectionsBgAccent;
 
-  const paleColor = `${color}30`; // Here, '30' represents 30% opacity
+  const paleColor = `${color}40`; // Here, '40' represents 40% opacity
+
+  const selectedCard = props.buttonLabel.includes('Cancel');
 
   return (
     <BootStrapCard
@@ -38,13 +40,13 @@ const Card = (props: CardProps) => {
         width: '18rem',
         borderRadius: 20,
         borderColor: isHovered ? color : undefined,
-        transition: 'transform 0.3s, box-shadow 0.3s', // Add transition for smooth effect
-        transform: isHovered ? 'scale(1.05)' : 'scale(1)', // Apply scaling effect on hover
-        boxShadow: isHovered ? '0 4px 8px rgba(0, 0, 0, 0.1)' : 'none', // Add shadow on hover
-        backgroundColor: props.buttonLabel.includes("Cancel") ? paleColor : undefined, // Use paleColor when outline is true
+        transition: 'transform 0.3s, box-shadow 0.3s',
+        transform: isHovered ? 'scale(1.05)' : 'scale(1)',
+        boxShadow: isHovered ? '0 4px 8px rgba(0, 0, 0, 0.1)' : 'none',
+        backgroundColor: selectedCard ? paleColor : undefined,
       }}
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
+      onMouseEnter={() => (!props.disabled ? setIsHovered(true) : undefined)}
+      onMouseLeave={() => (!props.disabled ? setIsHovered(false) : undefined)}
     >
       <BootStrapCard.Body>
         <h4 style={{ marginBottom: 50 }}>{props.header}</h4>
@@ -69,7 +71,15 @@ const Card = (props: CardProps) => {
             width: '100%',
             border: 'none',
             backgroundColor: color,
-            opacity: isHovered ? (isPlan ? 0.8 : 1.0) : 0.6,
+            opacity: isPlan
+              ? selectedCard
+                ? 0.8
+                : isHovered
+                ? isPlan
+                  ? 0.8
+                  : 1.0
+                : 0.6
+              : 1.0,
             borderRadius: 15,
           }}
         >
