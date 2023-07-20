@@ -225,10 +225,10 @@ export const getPopularAdverts = asyncHandler(
   async (req: AuthenticatedRequest, res: Response) => {
     const limit = req.query.limit ? parseInt(req.query.limit as string) : 10;
     const popularAdvertsIds = await getPopularAdvertsService(limit);
-    const popularAdverts = await Promise.all(
+    const results = await Promise.all(
       popularAdvertsIds.map((x) => findAdvertById(x._id, false, true)),
     );
-    res.status(200).json({ popularAdverts });
+    res.status(200).json({ results });
   },
 );
 
