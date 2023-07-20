@@ -10,17 +10,9 @@ import {
 
 export const userRouter = Router();
 
-//userRouter.use(protect)
-
-// userRouter.route('/getAuthenticatedUser')
-//     .get(protect, getAuthenticatedUser);
-//
-// userRouter.route('/getNonAuthenticatedUser')
-//     .get(getNonAuthenticatedUser);
-
 userRouter
   .route('/')
-  .post(protect, postUser) //TODO: This route should be removed later
+  .post(protect, postUser)
   .get(protect, getUsers);
 
 userRouter

@@ -7,6 +7,9 @@ import outofstock from '../../assets/out-of-stock.svg';
 import { Image } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 
+/**
+ * Needs refactoring
+ */
 export enum ResponseType {
   SUCCESSFUL_OFFER_CREATION,
   UNSUCCESSFUL_OFFER_CREATION,
@@ -19,8 +22,8 @@ export enum ResponseType {
   UNSUCCESSFUL_ADVERT_CREATION,
   SUCCESSFUL_ADVERT_UPDATE,
   UNSUCCESSFUL_ADVERT_UPDATE,
-  SUCCESSFUL_ADVERT_DELETION, // New attribute
-  UNSUCCESSFUL_ADVERT_DELETION, // New attribute
+  SUCCESSFUL_ADVERT_DELETION,
+  UNSUCCESSFUL_ADVERT_DELETION, 
   OUT_OF_ADVERTS,
   SUCCESSFUL_CANCEL,
   UNSUCCESSFUL_CANCEL,

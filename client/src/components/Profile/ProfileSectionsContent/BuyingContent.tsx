@@ -22,8 +22,6 @@ import {
   NestedPopulatedOrder,
   getUserSpecificOrders,
 } from '../../../api/collections/order';
-import { palette } from '../../../utils/colors';
-import { FadeLoader } from 'react-spinners';
 import LoadingElementsContent from './LoadingElementsContent';
 
 /**
@@ -81,7 +79,7 @@ const BuyingContent: React.FC = () => {
       }
     };
     fetchData();
-  }, []);
+  }, [user?._id]);
 
   return (
     <div>
