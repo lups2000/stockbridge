@@ -6,6 +6,7 @@ import { LoginContext } from '../../contexts/LoginContext';
 import { palette } from '../../utils/colors';
 import { Ratings } from '../Ratings';
 import { toast, ToastContainer } from 'react-toastify';
+import { ResponseModal, ResponseType } from '../Offers/ResponseModal';
 
 type EditReviewContentProps = {
   isShowing: boolean;
@@ -32,6 +33,8 @@ const EditReviewModal: FC<EditReviewContentProps> = (props) => {
     setError(false);
   };
 
+  const [showResponseModal, setShowResponseModal] = useState(false);
+  const [reviewError, setReviewError] = useState(false);
   const { user } = useContext(LoginContext);
   const handleSubmit = async () => {
     if (!rating || !description) {
@@ -47,14 +50,16 @@ const EditReviewModal: FC<EditReviewContentProps> = (props) => {
             reviewedAdvert: props.advert,
             createdAt: new Date(),
           } as Review);
+          setReviewError(false);
+          setShowResponseModal(true);
         }
-        if (props.onClose) {
+        /* if (props.onClose) {
           props.onClose();
           window.location.reload();
-        }
+        } */
       } catch (error) {
         console.error(error);
-        const notify = () =>
+        /* const notify = () =>
           toast.error('Error when submitting review', {
             position: 'bottom-right',
             autoClose: 5000,
@@ -65,13 +70,22 @@ const EditReviewModal: FC<EditReviewContentProps> = (props) => {
             progress: undefined,
             theme: 'colored',
           });
-        notify();
+        notify(); */
+        setShowResponseModal(true);
+        setReviewError(true);
       }
     }
   };
-
+  const onClose = () => {
+    props.onClose()
+    setShowResponseModal(false);
+    if (!error) {
+      window.location.reload()
+    }
+  }
   return (
     <>
+    {showResponseModal && <ResponseModal isShowing={showResponseModal} responseType={reviewError ? ResponseType.UNSUCCESSFUL_REVIEW : ResponseType.SUCCESSFUL_REVIEW} onClose={onClose}/>}
       <Modal show={props.isShowing} onHide={props.onClose}>
         <Modal.Header closeButton>
           <Modal.Title>Write your review</Modal.Title>
