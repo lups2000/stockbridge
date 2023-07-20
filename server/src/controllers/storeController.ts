@@ -19,7 +19,9 @@ export const getStore = asyncHandler(
       name: user.name,
       address: user.address,
       rating: user.rating,
+      email: user.email,
       createdAt: user.createdAt,
+      phoneNumber: user.phoneNumber
     });
   },
 );

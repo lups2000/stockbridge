@@ -134,5 +134,5 @@ export async function logout(): Promise<string> {
 }
 
 export async function getStore(id: String): Promise<PopulatedUser> {
-  return await apiClient.get<PopulatedUser>(`/stores/${id}`);
+  return await apiClient.get<PopulatedUser>(`/stores/${id}`, { withCredentials: true });
 }
