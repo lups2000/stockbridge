@@ -1,7 +1,7 @@
 import { ApiClient } from '../apiClient';
 import { Offer } from './offer';
 import { Review } from './review';
-import { User } from './user';
+import { Location, User } from './user';
 
 export enum AdvertType {
   Sell = 'Sell',
@@ -123,6 +123,7 @@ export interface Advert {
   weight?: number;
   pages?: number;
   material?: string;
+  location?: Location;
 }
 
 export interface PopulatedAdvert {
@@ -156,6 +157,7 @@ export interface PopulatedAdvert {
   pages?: number;
   volume?: number;
   material?: string;
+  location?: Location;
 }
 
 const apiClient = new ApiClient();

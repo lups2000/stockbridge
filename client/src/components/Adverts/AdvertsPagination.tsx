@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useMemo, useState } from 'react';
+import React, { FC, useContext, useEffect, useMemo, useState } from 'react';
 import { Button, Stack } from 'react-bootstrap';
 import { Filters } from './Filters';
 import useMediaQuery from '../../hooks/useMediaQuery';
@@ -8,12 +8,15 @@ import { useAdverts } from '../../hooks/useAdverts';
 import { AdvertsGrid } from './AdvertsGrid';
 import { palette } from '../../utils/colors';
 import { Page } from '../Page';
+import { LoginContext } from '../../contexts/LoginContext';
 
 /**
  * Component that gets the advert and manage advert displaying, filters, sorting and pagination.
  */
 export const AdvertsPagination: FC = () => {
   const [search, setSearch] = useSearchParams();
+
+  const { loggedIn } = useContext(LoginContext);
 
   const navigate = useNavigate();
 
@@ -132,16 +135,18 @@ export const AdvertsPagination: FC = () => {
               right: 12,
             }}
           >
-            <Button
-              style={{
-                backgroundColor: palette.subSectionsBgAccent,
-                border: 'none',
-                zIndex: 1000,
-              }}
-              onClick={handleMapClick}
-            >
-              {mapMode ? 'Close Map' : 'View on Map'}
-            </Button>
+            {loggedIn && (
+              <Button
+                style={{
+                  backgroundColor: palette.subSectionsBgAccent,
+                  border: 'none',
+                  zIndex: 1000,
+                }}
+                onClick={handleMapClick}
+              >
+                {mapMode ? 'Close Map' : 'View on Map'}
+              </Button>
+            )}
             <Sort />
           </div>
         </Stack>
