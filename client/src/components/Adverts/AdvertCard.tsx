@@ -97,7 +97,7 @@ export const AdvertCard: FC<AdvertCardProps> = (props) => {
             marginTop: 30,
             width: props.icon ? 200 : 160,
             height: 160,
-            objectFit: 'cover',
+            objectFit: 'contain',
             borderRadius: 8,
           }}
         />
