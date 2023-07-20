@@ -28,7 +28,7 @@
 ## Note about user names
 - Matteo Luppi
   - 100372313+lups2000@users.noreply.github.com
-  -ge92qes@mytum.de
+  - ge92qes@mytum.de
 
 - Chaima Ghaddab
   - chaima.ghaddab@tum.de
