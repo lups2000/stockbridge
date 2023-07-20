@@ -5,7 +5,7 @@ import { Review, createReview } from '../../api/collections/review';
 import { LoginContext } from '../../contexts/LoginContext';
 import { palette } from '../../utils/colors';
 import { Ratings } from '../Ratings';
-import { toast, ToastContainer } from 'react-toastify';
+import { ToastContainer } from 'react-toastify';
 import { ResponseModal, ResponseType } from '../Offers/ResponseModal';
 
 type EditReviewContentProps = {

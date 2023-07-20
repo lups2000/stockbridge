@@ -1,6 +1,6 @@
-import { FC, useEffect, useState } from 'react';
+import { FC } from 'react';
 import { PopulatedAdvert } from '../../api/collections/advert';
-import { getOffersByAdvert, OfferStatus } from '../../api/collections/offer';
+import { OfferStatus } from '../../api/collections/offer';
 import { ReviewOfferSection } from '../ProductOverview/ReviewOfferSection';
 import { OfferSection } from './OfferSection';
 

@@ -41,13 +41,7 @@ const StoreDetailsHeader: React.FC<StoreDetailsProps> = (props) => {
   const handleCloseModal = () => {
     setShowModal(false);
   };
-
-  const options: Intl.DateTimeFormatOptions = {
-    month: 'long',
-    day: 'numeric',
-    year: 'numeric',
-  };
-
+  
   const formattedJoinDate: string = new Date(props.joined).toLocaleDateString('en-US', {
     month: 'long',
     year: 'numeric',

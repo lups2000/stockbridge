@@ -68,7 +68,7 @@ export const delUser = async (id: string) => {
 };
 
 /**
- * Find all users // TODO: This is a test function, remove it later
+ * Find all users
  * @returns Promise containing all users
  */
 export const findAllUsers = async () => {

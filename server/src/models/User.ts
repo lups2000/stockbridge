@@ -190,6 +190,12 @@ userSchema.pre('findOneAndUpdate', async function (next) {
     };
     this.setUpdate({ ...update, location });
   }
+
+  if (update.password) {
+    const salt = await bcrypt.genSalt(10);
+    const password = await bcrypt.hash(update.password, salt);
+    this.setUpdate({ ...update, password });
+  }
 });
 
 // Encrypt password using bcrypt while updating (admin)
