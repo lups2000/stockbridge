@@ -1,7 +1,7 @@
 import mongoose from 'mongoose';
 import logger from '../config/logger';
-import { Advert, AdvertStatus } from '../entities/advertEntity';
-import { OfferStatus } from '../entities/offerEntity';
+import { AdvertStatus } from '../entities/advertEntity';
+import { Offer, OfferStatus } from '../entities/offerEntity';
 import { OrderStatus, Order } from '../entities/orderEntity';
 import { findAdvertById } from '../services/advertServices';
 import {
@@ -13,6 +13,7 @@ import { createStripePaymentIntent } from '../services/stripeService';
 import userModel from './User';
 import advertModel from './Advert';
 import { User } from '../entities/userEntity';
+import { sendMail } from '../utils/mailService';
 
 const Types = mongoose.Schema.Types;
 
@@ -88,10 +89,21 @@ orderSchema.pre<Order>('save', async function (next) {
   } else {
     payer = offeree as User;
   }
+
+  try {
+    await sendMail(
+      `${offeree?.email}, ${offeror?.email}`,
+      `Order ${this.id} has been created`,
+      `Order ${this.id} for advert ${advert?.productname} has been created and is awaiting payment`,
+    );
+  } catch (error) {
+    logger.error(`Failed sending mail to ${offeree?.email}, ${offeror?.email}`);
+  }
+
   const paymentIntent = await createStripePaymentIntent(
     payer as User,
     this.totalPrice,
-    'offerId_' + (offer as unknown as Advert).id.toString(),
+    'offerId_' + (offer as unknown as Offer).id.toString(),
     {
       off_session: true,
       confirm: true,
