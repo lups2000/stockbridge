@@ -20,7 +20,7 @@ const prioTickets: CardProps[] = [
   },
   {
     header: 'Advanced Pack',
-    price: 10,
+    price: 9,
     features: ['10 Tickets'],
     buttonLabel: 'Purchase',
     outline: true,
