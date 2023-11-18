@@ -1,9 +1,31 @@
-# stockbridge
+# StockBridge
 
-## Structure
+StockBridge is a cutting-edge platform designed to assist small and medium-sized stores in addressing challenges related to surplus inventory of slow-moving products or unexpected surges in product demand. It achieves this by bringing together stores with similar product categories on a single platform.
+
+## Assessment Method / Grading
+
+The student's performance was evaluated based on presentations and deliverables, divided into three milestones.
+
+### Milestone 1: Business Idea and Business Model (10%)
+
+During this phase, we focused on establishing the foundational elements of the project. We formulated a business idea and subsequently discussed it through the lens of a Business Model Canvas (BMC), accompanied by a detailed description of the product's value proposition.<br>
+More info [here](deliverables/a1-business-idea-team-27.pdf)
+
+### Milestone 2: Customer Journey, Personas, Mockups, Data Model (15%)
+
+This milestone delved into the design and planning aspects of the project. We created UML diagrams for the database and presented an entire customer journey through mockups designed with Figma.<br>
+More info [here](deliverables/a2-technical-description-team-27.pdf)
+
+### Milestone 3: Final Prototype (75%)
+
+The final milestone centered around the execution and presentation of the developed web application to an audience.<br>
+More info [here](deliverables/a3-screenshots-team-27.pdf)
+
+## Structure of the project
 
 - Backend: can be found in `server` directory
 - Frontend: can be found in `client` directory
+- Deliverables
 
 ## Credentials
 
@@ -25,22 +47,10 @@
 - Please make sure that the `.env` file is present under `env` directory which is under the `server` directory. The content of the `.env` file should the same as down below. If not, please set it.
 - Finally, run `yarn start` from the root directory to start both the frontend and backend. Alternatively, you can run `yarn server` and `yarn client` to start the backend and frontend respectively. Check `package.json` for more details.
 
-## Note about user names
+## Contributors
 
 - Matteo Luppi
 - Chaima Ghaddab
 - Mohamed Bilel Besrour
 - Achref Aloui
 
-## Additional information (For developers)
-
-To install packages, go to root directory and run: `yarn install`
-
-Script that can be executed can be found in `package.json` under `scripts` section.
-
-For server and client, scripts can be found in their respective `package.json` files.
-
-To run server, for example, go to root directory and run: `yarn server` or `yarn server:dev` for development mode.
-
-To add dependencies, go to root directory and run: `yarn workspace <workspace-name> add <package-name>`
-For example, to add `express` to server, run: `yarn workspace server add express`
