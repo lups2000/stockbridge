@@ -28,21 +28,9 @@
 ## Note about user names
 
 - Matteo Luppi
-
-  - 100372313+lups2000@users.noreply.github.com
-  - ge92qes@mytum.de
-
 - Chaima Ghaddab
-
-  - chaima.ghaddab@tum.de
-
 - Mohamed Bilel Besrour
-
-  - ge49gej@mytum.de
-
-- Achref Aloui / alouiii
-  - ge36miw@mytum.de
-  - achref.aloui73@gmail.com
+- Achref Aloui
 
 ## Additional information (For developers)
 
@@ -56,60 +44,3 @@ To run server, for example, go to root directory and run: `yarn server` or `yarn
 
 To add dependencies, go to root directory and run: `yarn workspace <workspace-name> add <package-name>`
 For example, to add `express` to server, run: `yarn workspace server add express`
-
-Questions? Contact Bilel
-
-### Documentation
-
-This is an example of how a method documentation should be writte.
-
-/\*\*
-
-- This method calculates the mean to x and y. \*
-- @param x - The first input number
-- @param y - The second input number
-- @returns The arithmetic mean of `x` and `y`
-  \*/
-  public static getAverage(x: number, y: number): number {
-  // res contains the result of the operation.
-  let res = (x + y) / 2.0;
-  return res;
-  }
-
-To better view the documented methods with TypeDoc, run the following command under the client and server directories:
-$ npm i typescript
-$ npm i typedoc
-$ npx typedoc --out docs src
-
-and check the documentation under typescript-docu
-
-## .env file
-
-```
-NODE_ENV=development
-PORT=3001
-LOG_LEVEL=debug
-
-MONGO_URI=mongodb+srv://admin:aHFSMJA3CN3rrLLq@cluster0.frqicbu.mongodb.net/prod?retryWrites=true&w=majority
-
-GEOCODER_PROVIDER=
-GEOCODER_API_KEY=
-
-FILE_UPLOAD_PATH=./public/uploads
-MAX_FILE_UPLOAD=1000000
-
-JWT_SECRET=0398cbfb9f1b8bfb4bb246062c13c05a2e0b9e9306290b56379086659722fae1
-JWT_EXPIRE=30d
-JWT_COOKIE_EXPIRE=30
-
-SMTP_HOST=smtp.gmail.com
-SMTP_PORT=587
-SMTP_USER=aseteam40
-SMTP_PASSWORD=ibvgrokidsuartuh
-FROM_EMAIL=aseteam40@gmail.com
-
-STRIPE_SECRET_KEY=sk_test_51NHlGhHGv7rRxdJf6nfjmzwt07zDyinUtMTmxpubd9s0LMHtM5N7tJy3W9pxFA5OgFtesXMvYvTlT4nM4oatdlFc00STXe2CPk
-STRIPE_WEBHOOK_SECRET=whsec_54c00de6dfa26d55c10a7f2a75ac6ef8ef90c682102c551226aac6afa2b2fecc
-
-MAPQUEST_API_KEY=4iEyc3CavS7d6WNKpXB2zSGdrhG8kuuT
-```
